@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { 
   CreditCard, 
   DollarSign, 
@@ -11,11 +13,18 @@ import {
   Users, 
   LogOut,
   Menu,
-  X
+  X,
+  MessageCircle,
+  Phone,
+  CheckCircle,
+  AlertCircle,
+  User
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const menuItems = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
@@ -24,6 +33,21 @@ const menuItems = [
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
+];
+
+const whatsappContacts = [
+  { 
+    label: 'Previdência', 
+    number: '5571985496972',
+    displayNumber: '(71) 98549-6972',
+    color: 'bg-sbpm-green hover:bg-sbpm-green/90'
+  },
+  { 
+    label: 'Assistência à Saúde', 
+    number: '5571987943414',
+    displayNumber: '(71) 98794-3414',
+    color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
+  },
 ];
 
 export default function Dashboard() {
@@ -90,6 +114,18 @@ export default function Dashboard() {
         {/* Sidebar Desktop */}
         <aside className="hidden md:block w-64 min-h-[calc(100vh-64px)] bg-card border-r shadow-sm">
           <nav className="p-4 space-y-1">
+            <Link
+              to="/dashboard"
+              className={cn(
+                'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
+                location.pathname === '/dashboard'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-muted'
+              )}
+            >
+              <User className="h-5 w-5" />
+              <span className="font-medium">Início</span>
+            </Link>
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -126,6 +162,19 @@ export default function Dashboard() {
             <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
             <aside className="fixed left-0 top-0 h-full w-64 bg-card shadow-xl pt-16 animate-fade-in">
               <nav className="p-4 space-y-1">
+                <Link
+                  to="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
+                    location.pathname === '/dashboard'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-foreground hover:bg-muted'
+                  )}
+                >
+                  <User className="h-5 w-5" />
+                  <span className="font-medium">Início</span>
+                </Link>
                 {menuItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
@@ -171,62 +220,296 @@ export default function Dashboard() {
           )}
         </main>
       </div>
+
+      {/* WhatsApp Floating Buttons */}
+      <div className="fixed bottom-4 right-4 flex flex-col gap-2 z-40">
+        {whatsappContacts.map((contact) => (
+          <a
+            key={contact.number}
+            href={`https://wa.me/${contact.number}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              'flex items-center gap-2 px-4 py-3 rounded-full text-white shadow-lg transition-all hover:scale-105',
+              contact.color
+            )}
+          >
+            <MessageCircle className="h-5 w-5" />
+            <span className="text-sm font-medium hidden sm:inline">{contact.label}</span>
+            <span className="text-xs sm:hidden">{contact.label}</span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
 
 function DashboardHome() {
-  const { associado, limite } = useAssociado();
+  const { associado, dependentes, limite, carencias, informes } = useAssociado();
   
   const limiteDisponivel = limite 
     ? Number(limite.limite_total) - Number(limite.limite_utilizado)
     : 0;
 
+  const limiteTotal = limite ? Number(limite.limite_total) : 0;
+  const limiteUtilizado = limite ? Number(limite.limite_utilizado) : 0;
+  const percentualUtilizado = limiteTotal > 0 ? (limiteUtilizado / limiteTotal) * 100 : 0;
+
+  const carenciasLiberadas = carencias.filter(c => c.status === 'liberado').length;
+  const carenciasEmEspera = carencias.filter(c => c.status === 'em_carencia').length;
+
+  const tipoLabel: Record<string, string> = {
+    conjuge: 'Cônjuge',
+    filho: 'Filho(a)',
+    pai_mae: 'Pai/Mãe',
+    outro: 'Outro',
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">
-          Bem-vindo, {associado?.nome.split(' ')[0]}!
-        </h2>
-        <p className="text-muted-foreground">
-          Acesse suas informações através do menu ao lado.
-        </p>
+      {/* Header de Boas-vindas */}
+      <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl p-6 shadow-lg">
+        <div className="flex items-center gap-4">
+          <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center">
+            <User className="h-8 w-8" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold">
+              Bem-vindo, {associado?.nome.split(' ')[0]}!
+            </h2>
+            <p className="opacity-90">
+              Matrícula: {associado?.matricula} | Membro desde {associado?.data_admissao && format(new Date(associado.data_admissao), "MMMM 'de' yyyy", { locale: ptBR })}
+            </p>
+          </div>
+        </div>
       </div>
 
+      {/* Grid Principal */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Card Limite */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <DollarSign className="h-5 w-5 text-primary" />
+              Limite Disponível
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <p className="text-3xl font-bold text-primary">
+                {limiteDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+              </p>
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Utilizado</span>
+                  <span className="font-medium">{percentualUtilizado.toFixed(0)}%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary transition-all"
+                    style={{ width: `${percentualUtilizado}%` }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {limiteUtilizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} de {limiteTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </p>
+              </div>
+              <Link to="/dashboard/limite">
+                <Button variant="outline" size="sm" className="w-full mt-2">
+                  Ver Detalhes
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Card Carências */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Clock className="h-5 w-5 text-primary" />
+              Carências
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <div className="flex gap-4">
+                <div className="flex-1 text-center p-3 bg-green-50 rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-1" />
+                  <p className="text-2xl font-bold text-green-600">{carenciasLiberadas}</p>
+                  <p className="text-xs text-green-700">Liberados</p>
+                </div>
+                <div className="flex-1 text-center p-3 bg-amber-50 rounded-lg">
+                  <AlertCircle className="h-6 w-6 text-amber-600 mx-auto mb-1" />
+                  <p className="text-2xl font-bold text-amber-600">{carenciasEmEspera}</p>
+                  <p className="text-xs text-amber-700">Em Carência</p>
+                </div>
+              </div>
+              <Link to="/dashboard/carencias">
+                <Button variant="outline" size="sm" className="w-full">
+                  Ver Todas
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Card Dependentes */}
+        <Card className="hover:shadow-lg transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Users className="h-5 w-5 text-primary" />
+              Dependentes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              <p className="text-3xl font-bold text-primary">{dependentes.length}</p>
+              <div className="space-y-1">
+                {dependentes.slice(0, 2).map((dep) => (
+                  <div key={dep.id} className="flex items-center gap-2 text-sm">
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    <span className="truncate">{dep.nome}</span>
+                    <Badge variant="secondary" className="ml-auto text-xs">
+                      {tipoLabel[dep.tipo]}
+                    </Badge>
+                  </div>
+                ))}
+                {dependentes.length > 2 && (
+                  <p className="text-xs text-muted-foreground">
+                    +{dependentes.length - 2} outro(s)
+                  </p>
+                )}
+              </div>
+              <Link to="/dashboard/dependentes">
+                <Button variant="outline" size="sm" className="w-full">
+                  Ver Todos
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Seção de Ações Rápidas */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Link
           to="/dashboard/carteirinha"
-          className="bg-card p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow"
+          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
         >
-          <CreditCard className="h-10 w-10 text-primary mb-3" />
-          <h3 className="font-semibold text-lg">Carteirinha Digital</h3>
-          <p className="text-muted-foreground text-sm">
-            Visualize e baixe sua carteirinha
-          </p>
-        </Link>
-
-        <Link
-          to="/dashboard/limite"
-          className="bg-card p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow"
-        >
-          <DollarSign className="h-10 w-10 text-primary mb-3" />
-          <h3 className="font-semibold text-lg">Limite Disponível</h3>
-          <p className="text-2xl font-bold text-primary mt-1">
-            {limiteDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-          </p>
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <CreditCard className="h-6 w-6 text-primary" />
+          </div>
+          <span className="font-medium text-sm">Carteirinha</span>
         </Link>
 
         <Link
           to="/dashboard/clinicas"
-          className="bg-card p-6 rounded-xl border shadow-sm hover:shadow-md transition-shadow"
+          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
         >
-          <Building2 className="h-10 w-10 text-primary mb-3" />
-          <h3 className="font-semibold text-lg">Clínicas e Parceiros</h3>
-          <p className="text-muted-foreground text-sm">
-            Encontre clínicas conveniadas
-          </p>
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Building2 className="h-6 w-6 text-primary" />
+          </div>
+          <span className="font-medium text-sm">Clínicas</span>
         </Link>
+
+        <Link
+          to="/dashboard/informes"
+          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
+        >
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <FileText className="h-6 w-6 text-primary" />
+          </div>
+          <span className="font-medium text-sm">Informes</span>
+        </Link>
+
+        <a
+          href={`https://wa.me/5571985496972`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
+        >
+          <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+            <Phone className="h-6 w-6 text-green-600" />
+          </div>
+          <span className="font-medium text-sm">Contato</span>
+        </a>
       </div>
+
+      {/* Informações do Associado */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <User className="h-5 w-5 text-primary" />
+            Dados Cadastrais
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Nome Completo</p>
+              <p className="font-medium">{associado?.nome}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">CPF</p>
+              <p className="font-medium">{associado?.cpf}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Matrícula</p>
+              <p className="font-medium">{associado?.matricula}</p>
+            </div>
+            {associado?.email && (
+              <div>
+                <p className="text-sm text-muted-foreground">Email</p>
+                <p className="font-medium">{associado.email}</p>
+              </div>
+            )}
+            {associado?.telefone && (
+              <div>
+                <p className="text-sm text-muted-foreground">Telefone</p>
+                <p className="font-medium">{associado.telefone}</p>
+              </div>
+            )}
+            {associado?.endereco && (
+              <div>
+                <p className="text-sm text-muted-foreground">Endereço</p>
+                <p className="font-medium">{associado.endereco}</p>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Contatos WhatsApp */}
+      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageCircle className="h-5 w-5 text-green-600" />
+            Canais de Atendimento
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {whatsappContacts.map((contact) => (
+              <a
+                key={contact.number}
+                href={`https://wa.me/${contact.number}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-all"
+              >
+                <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                  <MessageCircle className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-semibold">{contact.label}</p>
+                  <p className="text-sm text-muted-foreground">{contact.displayNumber}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
