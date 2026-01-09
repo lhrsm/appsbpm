@@ -110,6 +110,7 @@ export type Database = {
           especialidade: string | null
           horario_funcionamento: string | null
           id: string
+          logo_url: string | null
           nome: string
           telefone: string | null
           updated_at: string
@@ -123,6 +124,7 @@ export type Database = {
           especialidade?: string | null
           horario_funcionamento?: string | null
           id?: string
+          logo_url?: string | null
           nome: string
           telefone?: string | null
           updated_at?: string
@@ -136,6 +138,7 @@ export type Database = {
           especialidade?: string | null
           horario_funcionamento?: string | null
           id?: string
+          logo_url?: string | null
           nome?: string
           telefone?: string | null
           updated_at?: string
