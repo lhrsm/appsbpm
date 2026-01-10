@@ -37,15 +37,33 @@ const menuItems = [
 
 const whatsappContacts = [
   { 
-    label: 'Previdência', 
+    label: 'Previdência - Tina ou Valéria', 
     number: '5571985496972',
     displayNumber: '(71) 98549-6972',
     color: 'bg-sbpm-green hover:bg-sbpm-green/90'
   },
   { 
-    label: 'Assistência à Saúde', 
+    label: 'Assistência à Saúde - Rejane', 
     number: '5571987943414',
     displayNumber: '(71) 98794-3414',
+    color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
+  },
+  { 
+    label: 'Assistência à Saúde - Tânia', 
+    number: '5571999234059',
+    displayNumber: '(71) 99923-4059',
+    color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
+  },
+  { 
+    label: 'Assistência à Saúde - Fabiane', 
+    number: '5571981468013',
+    displayNumber: '(71) 98146-8013',
+    color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
+  },
+  { 
+    label: 'Assistência à Saúde - Tiago', 
+    number: '5571996340317',
+    displayNumber: '(71) 99634-0317',
     color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
   },
 ];

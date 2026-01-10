@@ -1,41 +1,159 @@
 import { useAssociado } from '@/contexts/AssociadoContext';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { FileText, Download, Calendar, AlertCircle } from 'lucide-react';
 
 export default function Informes() {
-  const { informes } = useAssociado();
+  const { informes, associado, dependentes } = useAssociado();
 
   const handleDownload = (url: string | null, ano: number) => {
     if (url) {
       window.open(url, '_blank');
     } else {
-      // Gerar PDF simples para demonstração
+      // Gerar PDF seguindo o modelo SBPM
       const printWindow = window.open('', '_blank');
       if (printWindow) {
+        // Calcular valores fictícios para demonstração
+        const valorTitular = (1759.10).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        
+        // Criar linhas de dependentes
+        const dependentesRows = dependentes.map(dep => {
+          const valorDep = (1465.86).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+          return `
+            <tr>
+              <td>${dep.cpf || '-'}</td>
+              <td>${dep.nome}</td>
+              <td>R$ ${valorDep}</td>
+              <td>Dependente</td>
+            </tr>
+          `;
+        }).join('');
+
         printWindow.document.write(`
           <!DOCTYPE html>
           <html>
             <head>
               <title>Informe de Rendimentos ${ano}</title>
               <style>
-                body { font-family: Arial, sans-serif; padding: 40px; }
-                h1 { color: #1e7a4a; }
-                .header { border-bottom: 2px solid #1e7a4a; padding-bottom: 20px; margin-bottom: 20px; }
+                @page {
+                  size: A4;
+                  margin: 20mm;
+                }
+                * {
+                  box-sizing: border-box;
+                  margin: 0;
+                  padding: 0;
+                }
+                body { 
+                  font-family: Arial, sans-serif;
+                  font-size: 11pt;
+                  line-height: 1.4;
+                  color: #333;
+                  padding: 20px;
+                }
+                .header {
+                  text-align: center;
+                  margin-bottom: 30px;
+                }
+                .header-title {
+                  font-size: 14pt;
+                  font-weight: bold;
+                  margin-bottom: 8px;
+                }
+                .header-subtitle {
+                  font-size: 9pt;
+                  color: #555;
+                  margin-bottom: 5px;
+                }
+                .header-address {
+                  font-size: 8pt;
+                  color: #666;
+                  margin-bottom: 3px;
+                }
+                .header-contact {
+                  font-size: 8pt;
+                  color: #666;
+                }
+                .declaration-title {
+                  font-size: 16pt;
+                  font-weight: bold;
+                  text-align: center;
+                  margin: 30px 0 20px 0;
+                  text-decoration: underline;
+                }
+                .declaration-text {
+                  text-align: justify;
+                  margin-bottom: 25px;
+                  line-height: 1.6;
+                }
+                table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-bottom: 30px;
+                }
+                th, td {
+                  border: 1px solid #333;
+                  padding: 10px 8px;
+                  text-align: left;
+                }
+                th {
+                  background-color: #f0f0f0;
+                  font-weight: bold;
+                }
+                .date-location {
+                  text-align: right;
+                  margin-top: 40px;
+                  font-style: italic;
+                }
+                @media print {
+                  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
               </style>
             </head>
             <body>
               <div class="header">
-                <h1>SBPM - Sociedade Beneficente da PM</h1>
-                <h2>Informe de Rendimentos - Ano ${ano}</h2>
+                <div class="header-title">SOCIEDADE BENEFICENTE DA POLÍCIA MILITAR DO ESTADO DA BAHIA</div>
+                <div class="header-subtitle">Fundada em 11 de maio de 1905 e considerada de utilidade pública por lei estadual nº 1.177 de 12/08/1916</div>
+                <div class="header-address">Rua General Labatut, nº 46 edf. Cel Octávio Brandão - Barris - Salvador - Ba - Cep.: 40.070-100</div>
+                <div class="header-contact">CNPJ: 13.595.996/0001-77 fone: (71) 3328-6911 / 3329-1423 fax: (71) 3328-6180</div>
+                <div class="header-contact">site: www.sbpmbahia.com.br / email: contato@sbpmbahia.com.br</div>
               </div>
-              <p>Este é um documento de demonstração.</p>
-              <p>O informe de rendimentos real estará disponível quando o arquivo for cadastrado no sistema.</p>
+
+              <div class="declaration-title">DECLARAÇÃO</div>
+
+              <p class="declaration-text">
+                Declara-se para os devidos fins, que o associado(a) contribuiu durante o exercício de ${ano}, 
+                para esta Instituição com os valores abaixo especificados, referente ao Benefício Assistencial.
+              </p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>C.P.F</th>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>${associado?.cpf || '-'}</td>
+                    <td>${associado?.nome || '-'}</td>
+                    <td>R$ ${valorTitular}</td>
+                    <td>Associado Titular</td>
+                  </tr>
+                  ${dependentesRows}
+                </tbody>
+              </table>
+
+              <div class="date-location">
+                Salvador, ${new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </div>
+
               <script>
                 setTimeout(() => {
                   window.print();
-                }, 500);
+                }, 300);
               </script>
             </body>
           </html>

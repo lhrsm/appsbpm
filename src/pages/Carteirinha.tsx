@@ -130,37 +130,177 @@ export default function Carteirinha() {
 
   const handleDownloadPDF = async () => {
     const printWindow = window.open('', '_blank');
-    if (!printWindow || !cardRef.current) return;
+    if (!printWindow) return;
 
-    const cardHtml = cardRef.current.outerHTML;
+    // Dados da carteirinha
+    const currentNome = selectedDependente?.nome || associado.nome;
+    const currentCpf = selectedDependente?.cpf || associado.cpf;
+    const currentTipo = selectedDependente ? tipoLabel[selectedDependente.tipo] : 'Associado';
+    const formatCpf = (cpf: string) => {
+      if (!cpf) return '';
+      const cleaned = cpf.replace(/\D/g, '');
+      if (cleaned.length !== 11) return cpf;
+      return cleaned.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    };
+
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
           <title>Carteirinha SBPM</title>
           <style>
+            @page {
+              size: 85.6mm 53.98mm;
+              margin: 0;
+            }
+            * {
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+            }
             body { 
-              margin: 0; 
-              padding: 20px; 
-              display: flex; 
-              justify-content: center; 
-              align-items: center; 
-              min-height: 100vh;
-              background: #f5f5f5;
+              margin: 0;
+              padding: 0;
               font-family: Arial, sans-serif;
+              width: 85.6mm;
+              height: 53.98mm;
+            }
+            .card {
+              width: 85.6mm;
+              height: 53.98mm;
+              border: 1px solid #ccc;
+              border-radius: 4mm;
+              overflow: hidden;
+              background: white;
+            }
+            .header {
+              display: flex;
+              align-items: flex-start;
+              padding: 3mm;
+              border-bottom: 0.5px solid #ddd;
+            }
+            .logo {
+              width: 12mm;
+              height: 12mm;
+              object-fit: contain;
+              margin-right: 2mm;
+            }
+            .title {
+              flex: 1;
+              text-align: center;
+              font-size: 8pt;
+              font-weight: bold;
+              color: #333;
+            }
+            .header-info {
+              text-align: right;
+              font-size: 6pt;
+            }
+            .header-info div {
+              margin-bottom: 1mm;
+            }
+            .body {
+              padding: 3mm;
+            }
+            .name {
+              font-size: 9pt;
+              font-weight: bold;
+              text-transform: uppercase;
+              color: #111;
+              margin-bottom: 1mm;
+            }
+            .type {
+              font-size: 6pt;
+              color: #666;
+              margin-bottom: 2mm;
+            }
+            .titular-info {
+              margin-top: 2mm;
+            }
+            .titular-name {
+              font-size: 7pt;
+              font-weight: bold;
+              text-transform: uppercase;
+            }
+            .titular-label {
+              font-size: 5pt;
+              color: #666;
+            }
+            .info-row {
+              display: flex;
+              justify-content: space-between;
+              font-size: 6pt;
+              margin-top: 2mm;
+            }
+            .info-row span {
+              color: #666;
+            }
+            .info-row strong {
+              color: #333;
+            }
+            .signatures {
+              display: flex;
+              justify-content: space-between;
+              padding: 2mm 3mm;
+              border-top: 0.5px solid #ddd;
+              margin-top: auto;
+            }
+            .signature {
+              text-align: center;
+              width: 35mm;
+            }
+            .signature-line {
+              border-top: 0.5px solid #666;
+              margin-bottom: 1mm;
+            }
+            .signature-label {
+              font-size: 5pt;
+              color: #666;
             }
             @media print {
-              body { background: white; }
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             }
           </style>
         </head>
         <body>
-          ${cardHtml}
+          <div class="card">
+            <div class="header">
+              <img src="${window.location.origin}/sbpm-logo.jpeg" class="logo" />
+              <div class="title">Assistência Ambulatorial</div>
+              <div class="header-info">
+                <div><span>Matrícula: </span><strong>${associado.matricula}</strong></div>
+                <div><span>Expedição: </span><strong>${dataExpedicao}</strong></div>
+              </div>
+            </div>
+            <div class="body">
+              <div class="name">${currentNome}</div>
+              <div class="type">${currentTipo}</div>
+              ${selectedDependente ? `
+                <div class="titular-info">
+                  <div class="titular-name">${associado.nome}</div>
+                  <div class="titular-label">Associado</div>
+                </div>
+              ` : ''}
+              <div class="info-row">
+                <div><span>CPF.: </span><strong>${formatCpf(currentCpf || '')}</strong></div>
+                <div><span>Validade: </span><strong>${dataValidade}</strong></div>
+              </div>
+            </div>
+            <div class="signatures">
+              <div class="signature">
+                <div class="signature-line"></div>
+                <div class="signature-label">Presidente</div>
+              </div>
+              <div class="signature">
+                <div class="signature-line"></div>
+                <div class="signature-label">Assinatura Associado</div>
+              </div>
+            </div>
+          </div>
           <script>
             setTimeout(() => {
               window.print();
-              window.close();
-            }, 500);
+            }, 300);
           </script>
         </body>
       </html>
