@@ -26,13 +26,21 @@ import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-const menuItems = [
+// Menu completo para titular
+const menuItemsTitular = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
   { path: '/dashboard/carencias', label: 'Carências', icon: Clock },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
+];
+
+// Menu restrito para dependentes
+const menuItemsDependente = [
+  { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
+  { path: '/dashboard/carencias', label: 'Procedimentos', icon: Clock },
+  { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
 ];
 
 const whatsappContacts = [
@@ -69,10 +77,13 @@ const whatsappContacts = [
 ];
 
 export default function Dashboard() {
-  const { associado, logout } = useAssociado();
+  const { associado, logout, isDependente, dependenteLogado } = useAssociado();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Usar menu apropriado baseado se é dependente ou titular
+  const menuItems = isDependente ? menuItemsDependente : menuItemsTitular;
 
   useEffect(() => {
     if (!associado) {
@@ -80,12 +91,27 @@ export default function Dashboard() {
     }
   }, [associado, navigate]);
 
+  // Redirect dependente if trying to access restricted routes
+  useEffect(() => {
+    if (isDependente) {
+      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes'];
+      if (restrictedPaths.includes(location.pathname)) {
+        navigate('/dashboard/carteirinha');
+      }
+    }
+  }, [isDependente, location.pathname, navigate]);
+
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
   if (!associado) return null;
+
+  // Nome a exibir - do dependente ou do titular
+  const nomeExibir = isDependente && dependenteLogado 
+    ? dependenteLogado.nome 
+    : associado.nome;
 
   return (
     <div className="min-h-screen bg-background">
@@ -101,7 +127,8 @@ export default function Dashboard() {
             <div className="hidden sm:block">
               <h1 className="font-bold text-lg">Portal do Associado</h1>
               <p className="text-xs opacity-90">
-                Olá, {associado.nome.split(' ')[0]} | Mat: {associado.matricula}
+                Olá, {nomeExibir.split(' ')[0]} | Mat: {associado.matricula}
+                {isDependente && <Badge variant="secondary" className="ml-2 text-xs">Dependente</Badge>}
               </p>
             </div>
           </div>
@@ -263,7 +290,7 @@ export default function Dashboard() {
 }
 
 function DashboardHome() {
-  const { associado, dependentes, limite, carencias, informes } = useAssociado();
+  const { associado, dependentes, limite, carencias, isDependente, dependenteLogado } = useAssociado();
   
   const limiteDisponivel = limite 
     ? Number(limite.limite_total) - Number(limite.limite_utilizado)
@@ -283,6 +310,11 @@ function DashboardHome() {
     outro: 'Outro',
   };
 
+  // Nome e dados a exibir
+  const nomeExibir = isDependente && dependenteLogado 
+    ? dependenteLogado.nome 
+    : associado?.nome || '';
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header de Boas-vindas */}
@@ -293,60 +325,69 @@ function DashboardHome() {
           </div>
           <div>
             <h2 className="text-2xl font-bold">
-              Bem-vindo, {associado?.nome.split(' ')[0]}!
+              Bem-vindo, {nomeExibir.split(' ')[0]}!
+              {isDependente && <Badge variant="secondary" className="ml-2 text-sm">Dependente</Badge>}
             </h2>
             <p className="opacity-90">
-              Matrícula: {associado?.matricula} | Membro desde {associado?.data_admissao && format(new Date(associado.data_admissao), "MMMM 'de' yyyy", { locale: ptBR })}
+              {isDependente 
+                ? `Dependente de ${associado?.nome} | Mat: ${associado?.matricula}`
+                : `Matrícula: ${associado?.matricula} | Membro desde ${associado?.data_admissao && format(new Date(associado.data_admissao), "MMMM 'de' yyyy", { locale: ptBR })}`
+              }
             </p>
           </div>
         </div>
       </div>
 
-      {/* Grid Principal */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Card Limite */}
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <DollarSign className="h-5 w-5 text-primary" />
-              Limite Disponível
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <p className="text-3xl font-bold text-primary">
-                {limiteDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </p>
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Utilizado</span>
-                  <span className="font-medium">{percentualUtilizado.toFixed(0)}%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-primary transition-all"
-                    style={{ width: `${percentualUtilizado}%` }}
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {limiteUtilizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} de {limiteTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+      {/* Grid Principal - Condicional baseado em isDependente */}
+      <div className={cn(
+        "grid gap-4",
+        isDependente ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+      )}>
+        {/* Card Limite - Apenas para titular */}
+        {!isDependente && (
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <DollarSign className="h-5 w-5 text-primary" />
+                Limite Disponível
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-3xl font-bold text-primary">
+                  {limiteDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </p>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Utilizado</span>
+                    <span className="font-medium">{percentualUtilizado.toFixed(0)}%</span>
+                  </div>
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary transition-all"
+                      style={{ width: `${percentualUtilizado}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {limiteUtilizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} de {limiteTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                  </p>
+                </div>
+                <Link to="/dashboard/limite">
+                  <Button variant="outline" size="sm" className="w-full mt-2">
+                    Ver Detalhes
+                  </Button>
+                </Link>
               </div>
-              <Link to="/dashboard/limite">
-                <Button variant="outline" size="sm" className="w-full mt-2">
-                  Ver Detalhes
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Card Carências */}
+        {/* Card Carências/Procedimentos */}
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Clock className="h-5 w-5 text-primary" />
-              Carências
+              {isDependente ? 'Procedimentos' : 'Carências'}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -365,43 +406,67 @@ function DashboardHome() {
               </div>
               <Link to="/dashboard/carencias">
                 <Button variant="outline" size="sm" className="w-full">
-                  Ver Todas
+                  Ver {isDependente ? 'Procedimentos' : 'Todas'}
                 </Button>
               </Link>
             </div>
           </CardContent>
         </Card>
 
-        {/* Card Dependentes */}
+        {/* Card Dependentes - Apenas para titular */}
+        {!isDependente && (
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Users className="h-5 w-5 text-primary" />
+                Dependentes
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-3xl font-bold text-primary">{dependentes.length}</p>
+                <div className="space-y-1">
+                  {dependentes.slice(0, 2).map((dep) => (
+                    <div key={dep.id} className="flex items-center gap-2 text-sm">
+                      <User className="h-4 w-4 text-muted-foreground" />
+                      <span className="truncate">{dep.nome}</span>
+                      <Badge variant="secondary" className="ml-auto text-xs">
+                        {tipoLabel[dep.tipo]}
+                      </Badge>
+                    </div>
+                  ))}
+                  {dependentes.length > 2 && (
+                    <p className="text-xs text-muted-foreground">
+                      +{dependentes.length - 2} outro(s)
+                    </p>
+                  )}
+                </div>
+                <Link to="/dashboard/dependentes">
+                  <Button variant="outline" size="sm" className="w-full">
+                    Ver Todos
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Card Clínicas e Parceiros - Para todos */}
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Users className="h-5 w-5 text-primary" />
-              Dependentes
+              <Building2 className="h-5 w-5 text-primary" />
+              Clínicas e Parceiros
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <p className="text-3xl font-bold text-primary">{dependentes.length}</p>
-              <div className="space-y-1">
-                {dependentes.slice(0, 2).map((dep) => (
-                  <div key={dep.id} className="flex items-center gap-2 text-sm">
-                    <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="truncate">{dep.nome}</span>
-                    <Badge variant="secondary" className="ml-auto text-xs">
-                      {tipoLabel[dep.tipo]}
-                    </Badge>
-                  </div>
-                ))}
-                {dependentes.length > 2 && (
-                  <p className="text-xs text-muted-foreground">
-                    +{dependentes.length - 2} outro(s)
-                  </p>
-                )}
-              </div>
-              <Link to="/dashboard/dependentes">
+              <p className="text-muted-foreground text-sm">
+                Consulte nossa rede de clínicas e parceiros credenciados
+              </p>
+              <Link to="/dashboard/clinicas">
                 <Button variant="outline" size="sm" className="w-full">
-                  Ver Todos
+                  Ver Rede Credenciada
                 </Button>
               </Link>
             </div>
@@ -410,7 +475,10 @@ function DashboardHome() {
       </div>
 
       {/* Seção de Ações Rápidas */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className={cn(
+        "grid gap-4",
+        isDependente ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4"
+      )}>
         <Link
           to="/dashboard/carteirinha"
           className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
@@ -431,15 +499,18 @@ function DashboardHome() {
           <span className="font-medium text-sm">Clínicas</span>
         </Link>
 
-        <Link
-          to="/dashboard/informes"
-          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
-        >
-          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <FileText className="h-6 w-6 text-primary" />
-          </div>
-          <span className="font-medium text-sm">Informes</span>
-        </Link>
+        {/* Informes - Apenas para titular */}
+        {!isDependente && (
+          <Link
+            to="/dashboard/informes"
+            className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
+          >
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <FileText className="h-6 w-6 text-primary" />
+            </div>
+            <span className="font-medium text-sm">Informes</span>
+          </Link>
+        )}
 
         <a
           href={`https://wa.me/5571985496972`}
@@ -454,49 +525,93 @@ function DashboardHome() {
         </a>
       </div>
 
-      {/* Informações do Associado */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-primary" />
-            Dados Cadastrais
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Nome Completo</p>
-              <p className="font-medium">{associado?.nome}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">CPF</p>
-              <p className="font-medium">{associado?.cpf}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Matrícula</p>
-              <p className="font-medium">{associado?.matricula}</p>
-            </div>
-            {associado?.email && (
+      {/* Informações do Dependente logado */}
+      {isDependente && dependenteLogado && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-primary" />
+              Meus Dados
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-muted-foreground">Email</p>
-                <p className="font-medium">{associado.email}</p>
+                <p className="text-sm text-muted-foreground">Nome Completo</p>
+                <p className="font-medium">{dependenteLogado.nome}</p>
               </div>
-            )}
-            {associado?.telefone && (
               <div>
-                <p className="text-sm text-muted-foreground">Telefone</p>
-                <p className="font-medium">{associado.telefone}</p>
+                <p className="text-sm text-muted-foreground">CPF</p>
+                <p className="font-medium">{dependenteLogado.cpf || 'Não informado'}</p>
               </div>
-            )}
-            {associado?.endereco && (
               <div>
-                <p className="text-sm text-muted-foreground">Endereço</p>
-                <p className="font-medium">{associado.endereco}</p>
+                <p className="text-sm text-muted-foreground">Tipo</p>
+                <p className="font-medium">{tipoLabel[dependenteLogado.tipo]}</p>
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              {dependenteLogado.data_nascimento && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Data de Nascimento</p>
+                  <p className="font-medium">{format(new Date(dependenteLogado.data_nascimento), "dd/MM/yyyy")}</p>
+                </div>
+              )}
+              <div>
+                <p className="text-sm text-muted-foreground">Titular</p>
+                <p className="font-medium">{associado?.nome}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Matrícula do Titular</p>
+                <p className="font-medium">{associado?.matricula}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Informações do Associado - Apenas para titular */}
+      {!isDependente && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-primary" />
+              Dados Cadastrais
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Nome Completo</p>
+                <p className="font-medium">{associado?.nome}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">CPF</p>
+                <p className="font-medium">{associado?.cpf}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Matrícula</p>
+                <p className="font-medium">{associado?.matricula}</p>
+              </div>
+              {associado?.email && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="font-medium">{associado.email}</p>
+                </div>
+              )}
+              {associado?.telefone && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Telefone</p>
+                  <p className="font-medium">{associado.telefone}</p>
+                </div>
+              )}
+              {associado?.endereco && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Endereço</p>
+                  <p className="font-medium">{associado.endereco}</p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Contatos WhatsApp */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none">

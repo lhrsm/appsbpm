@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { useAssociado } from '@/contexts/AssociadoContext';
+import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,7 +15,16 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { setAssociado, setDependentes, setLimite, setHistoricoLimite, setCarencias, setInformes } = useAssociado();
+  const { 
+    setAssociado, 
+    setDependentes, 
+    setLimite, 
+    setHistoricoLimite, 
+    setCarencias, 
+    setInformes,
+    setIsDependente,
+    setDependenteLogado
+  } = useAssociado();
 
   // Remove formatting from CPF for comparison
   const cleanCpf = (cpf: string) => cpf.replace(/\D/g, '');
@@ -39,6 +48,8 @@ export default function Login() {
       
       // Buscar associado pela matrícula ou CPF
       let associadoData = null;
+      let dependenteData: Dependente | null = null;
+      let isLoginAsDependente = false;
       
       // First try by matricula
       const { data: byMatricula } = await supabase
@@ -51,14 +62,39 @@ export default function Login() {
       if (byMatricula) {
         associadoData = byMatricula;
       } else {
-        // Try by CPF (cleaned)
-        const { data: byCpf } = await supabase
+        // Try by CPF in associados table
+        const { data: allAssociados } = await supabase
           .from('associados')
           .select('*')
           .eq('ativo', true);
         
-        // Find by CPF (removing formatting from both sides)
-        associadoData = byCpf?.find(a => cleanCpf(a.cpf) === cleanedCredential) || null;
+        associadoData = allAssociados?.find(a => cleanCpf(a.cpf) === cleanedCredential) || null;
+        
+        // If not found in associados, try in dependentes table
+        if (!associadoData) {
+          const { data: allDependentes } = await supabase
+            .from('dependentes')
+            .select('*')
+            .eq('ativo', true);
+          
+          const foundDependente = allDependentes?.find(d => d.cpf && cleanCpf(d.cpf) === cleanedCredential);
+          
+          if (foundDependente) {
+            // Found a dependente, now get the associated associado
+            const { data: associadoDoDepData } = await supabase
+              .from('associados')
+              .select('*')
+              .eq('id', foundDependente.associado_id)
+              .eq('ativo', true)
+              .maybeSingle();
+            
+            if (associadoDoDepData) {
+              associadoData = associadoDoDepData;
+              dependenteData = foundDependente as Dependente;
+              isLoginAsDependente = true;
+            }
+          }
+        }
       }
 
       if (!associadoData) {
@@ -74,7 +110,7 @@ export default function Login() {
       // Carregar dados relacionados em paralelo
       const [dependentesRes, limiteRes, historicoRes, carenciasRes, informesRes] = await Promise.all([
         supabase.from('dependentes').select('*').eq('associado_id', associadoData.id).eq('ativo', true),
-        supabase.from('limites').select('*').eq('associado_id', associadoData.id).single(),
+        supabase.from('limites').select('*').eq('associado_id', associadoData.id).maybeSingle(),
         supabase.from('historico_limite').select('*').eq('associado_id', associadoData.id).order('data_utilizacao', { ascending: false }),
         supabase.from('carencias').select('*').eq('associado_id', associadoData.id),
         supabase.from('informes_rendimentos').select('*').eq('associado_id', associadoData.id).order('ano', { ascending: false }),
@@ -86,10 +122,16 @@ export default function Login() {
       setHistoricoLimite(historicoRes.data || []);
       setCarencias(carenciasRes.data || []);
       setInformes(informesRes.data || []);
+      setIsDependente(isLoginAsDependente);
+      setDependenteLogado(dependenteData);
+
+      const nomeExibir = isLoginAsDependente && dependenteData 
+        ? dependenteData.nome.split(' ')[0] 
+        : associadoData.nome.split(' ')[0];
 
       toast({
         title: 'Bem-vindo!',
-        description: `Olá, ${associadoData.nome.split(' ')[0]}!`,
+        description: `Olá, ${nomeExibir}!`,
       });
 
       navigate('/dashboard');

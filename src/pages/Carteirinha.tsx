@@ -124,18 +124,39 @@ function CarteirinhaCard({
 }
 
 export default function Carteirinha() {
-  const { associado, dependentes } = useAssociado();
+  const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
   const [selectedDependente, setSelectedDependente] = useState<Dependente | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const tipoLabel: Record<string, string> = {
+    conjuge: 'Cônjuge',
+    filho: 'Filho(a)',
+    pai_mae: 'Pai/Mãe',
+    outro: 'Outro',
+  };
+
+  const hoje = new Date();
+  const dataExpedicao = format(hoje, 'dd/MM/yyyy', { locale: ptBR });
+  
+  // Validade: 1 ano a partir de hoje
+  const dataValidade = format(
+    new Date(hoje.getFullYear() + 1, hoje.getMonth(), hoje.getDate()),
+    'dd/MM/yyyy',
+    { locale: ptBR }
+  );
 
   const handleDownloadPDF = async () => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
-    // Dados da carteirinha
-    const currentNome = selectedDependente?.nome || associado.nome;
-    const currentCpf = selectedDependente?.cpf || associado.cpf;
-    const currentTipo = selectedDependente ? tipoLabel[selectedDependente.tipo] : 'Associado';
+    // Se é dependente logado, usa os dados do dependente logado
+    // Se é titular, usa os dados do selecionado ou do titular
+    const currentData = isDependente && dependenteLogado 
+      ? { nome: dependenteLogado.nome, cpf: dependenteLogado.cpf, tipo: tipoLabel[dependenteLogado.tipo], isDep: true }
+      : selectedDependente 
+        ? { nome: selectedDependente.nome, cpf: selectedDependente.cpf, tipo: tipoLabel[selectedDependente.tipo], isDep: true }
+        : { nome: associado?.nome || '', cpf: associado?.cpf || '', tipo: 'Associado', isDep: false };
+
     const formatCpf = (cpf: string) => {
       if (!cpf) return '';
       const cleaned = cpf.replace(/\D/g, '');
@@ -268,21 +289,21 @@ export default function Carteirinha() {
               <img src="${window.location.origin}/sbpm-logo.jpeg" class="logo" />
               <div class="title">Assistência Ambulatorial</div>
               <div class="header-info">
-                <div><span>Matrícula: </span><strong>${associado.matricula}</strong></div>
+                <div><span>Matrícula: </span><strong>${associado?.matricula}</strong></div>
                 <div><span>Expedição: </span><strong>${dataExpedicao}</strong></div>
               </div>
             </div>
             <div class="body">
-              <div class="name">${currentNome}</div>
-              <div class="type">${currentTipo}</div>
-              ${selectedDependente ? `
+              <div class="name">${currentData.nome}</div>
+              <div class="type">${currentData.tipo}</div>
+              ${currentData.isDep ? `
                 <div class="titular-info">
-                  <div class="titular-name">${associado.nome}</div>
+                  <div class="titular-name">${associado?.nome}</div>
                   <div class="titular-label">Associado</div>
                 </div>
               ` : ''}
               <div class="info-row">
-                <div><span>CPF.: </span><strong>${formatCpf(currentCpf || '')}</strong></div>
+                <div><span>CPF.: </span><strong>${formatCpf(currentData.cpf || '')}</strong></div>
                 <div><span>Validade: </span><strong>${dataValidade}</strong></div>
               </div>
             </div>
@@ -310,23 +331,40 @@ export default function Carteirinha() {
 
   if (!associado) return null;
 
-  const tipoLabel: Record<string, string> = {
-    conjuge: 'Cônjuge',
-    filho: 'Filho(a)',
-    pai_mae: 'Pai/Mãe',
-    outro: 'Outro',
-  };
+  // Se é dependente logado, mostra apenas a carteirinha dele
+  if (isDependente && dependenteLogado) {
+    return (
+      <div className="space-y-6 animate-fade-in">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Minha Carteirinha</h2>
+          <p className="text-muted-foreground">
+            Sua carteirinha de identificação junto à SBPM
+          </p>
+        </div>
 
-  const hoje = new Date();
-  const dataExpedicao = format(hoje, 'dd/MM/yyyy', { locale: ptBR });
-  
-  // Validade: 1 ano a partir de hoje
-  const dataValidade = format(
-    new Date(hoje.getFullYear() + 1, hoje.getMonth(), hoje.getDate()),
-    'dd/MM/yyyy',
-    { locale: ptBR }
-  );
+        <div className="flex flex-col items-center gap-4">
+          <CarteirinhaCard
+            cardRef={cardRef}
+            nome={dependenteLogado.nome}
+            matricula={associado.matricula}
+            cpf={dependenteLogado.cpf || ''}
+            tipo="dependente"
+            tipoParentesco={tipoLabel[dependenteLogado.tipo]}
+            dataExpedicao={dataExpedicao}
+            dataValidade={dataValidade}
+            nomeTitular={associado.nome}
+          />
 
+          <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
+            <Download className="h-4 w-4 mr-2" />
+            Baixar Carteirinha (PDF)
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Visão do titular - pode ver sua carteirinha e dos dependentes
   return (
     <div className="space-y-6 animate-fade-in">
       <div>

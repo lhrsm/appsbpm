@@ -58,12 +58,16 @@ interface AssociadoContextType {
   historicoLimite: HistoricoLimite[];
   carencias: Carencia[];
   informes: InformeRendimento[];
+  isDependente: boolean;
+  dependenteLogado: Dependente | null;
   setAssociado: (associado: Associado | null) => void;
   setDependentes: (dependentes: Dependente[]) => void;
   setLimite: (limite: Limite | null) => void;
   setHistoricoLimite: (historico: HistoricoLimite[]) => void;
   setCarencias: (carencias: Carencia[]) => void;
   setInformes: (informes: InformeRendimento[]) => void;
+  setIsDependente: (isDependente: boolean) => void;
+  setDependenteLogado: (dependente: Dependente | null) => void;
   logout: () => void;
 }
 
@@ -76,6 +80,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [historicoLimite, setHistoricoLimite] = useState<HistoricoLimite[]>([]);
   const [carencias, setCarencias] = useState<Carencia[]>([]);
   const [informes, setInformes] = useState<InformeRendimento[]>([]);
+  const [isDependente, setIsDependente] = useState<boolean>(false);
+  const [dependenteLogado, setDependenteLogado] = useState<Dependente | null>(null);
 
   const logout = () => {
     setAssociado(null);
@@ -84,6 +90,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setHistoricoLimite([]);
     setCarencias([]);
     setInformes([]);
+    setIsDependente(false);
+    setDependenteLogado(null);
   };
 
   return (
@@ -95,12 +103,16 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         historicoLimite,
         carencias,
         informes,
+        isDependente,
+        dependenteLogado,
         setAssociado,
         setDependentes,
         setLimite,
         setHistoricoLimite,
         setCarencias,
         setInformes,
+        setIsDependente,
+        setDependenteLogado,
         logout,
       }}
     >
