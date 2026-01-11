@@ -11,19 +11,22 @@ import { Loader2 } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 
 export default function Login() {
-  const [matricula, setMatricula] = useState('');
+  const [credential, setCredential] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { setAssociado, setDependentes, setLimite, setHistoricoLimite, setCarencias, setInformes } = useAssociado();
 
+  // Remove formatting from CPF for comparison
+  const cleanCpf = (cpf: string) => cpf.replace(/\D/g, '');
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!matricula.trim()) {
+    if (!credential.trim()) {
       toast({
         title: 'Erro',
-        description: 'Por favor, informe sua matrícula.',
+        description: 'Por favor, informe sua matrícula ou CPF.',
         variant: 'destructive',
       });
       return;
@@ -32,18 +35,36 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // Buscar associado pela matrícula
-      const { data: associadoData, error: associadoError } = await supabase
+      const cleanedCredential = cleanCpf(credential.trim());
+      
+      // Buscar associado pela matrícula ou CPF
+      let associadoData = null;
+      
+      // First try by matricula
+      const { data: byMatricula } = await supabase
         .from('associados')
         .select('*')
-        .eq('matricula', matricula.trim())
+        .eq('matricula', credential.trim())
         .eq('ativo', true)
-        .single();
+        .maybeSingle();
+      
+      if (byMatricula) {
+        associadoData = byMatricula;
+      } else {
+        // Try by CPF (cleaned)
+        const { data: byCpf } = await supabase
+          .from('associados')
+          .select('*')
+          .eq('ativo', true);
+        
+        // Find by CPF (removing formatting from both sides)
+        associadoData = byCpf?.find(a => cleanCpf(a.cpf) === cleanedCredential) || null;
+      }
 
-      if (associadoError || !associadoData) {
+      if (!associadoData) {
         toast({
-          title: 'Matrícula não encontrada',
-          description: 'Verifique sua matrícula e tente novamente.',
+          title: 'Credencial não encontrada',
+          description: 'Verifique sua matrícula ou CPF e tente novamente.',
           variant: 'destructive',
         });
         setLoading(false);
@@ -99,21 +120,21 @@ export default function Login() {
             Portal do Associado
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Acesse com sua matrícula para consultar seus benefícios
+            Acesse com sua matrícula ou CPF para consultar seus benefícios
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="matricula" className="text-foreground font-medium">
-                Matrícula
+              <Label htmlFor="credential" className="text-foreground font-medium">
+                Matrícula ou CPF
               </Label>
               <Input
-                id="matricula"
+                id="credential"
                 type="text"
-                placeholder="Digite sua matrícula"
-                value={matricula}
-                onChange={(e) => setMatricula(e.target.value)}
+                placeholder="Digite sua matrícula ou CPF"
+                value={credential}
+                onChange={(e) => setCredential(e.target.value)}
                 className="h-12 text-lg"
                 disabled={loading}
               />
