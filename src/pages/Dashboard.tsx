@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
@@ -18,13 +18,17 @@ import {
   Phone,
   CheckCircle,
   AlertCircle,
-  User
+  User,
+  Globe,
+  Facebook,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 
 // Menu completo para titular
 const menuItemsTitular = [
@@ -73,6 +77,46 @@ const whatsappContacts = [
     number: '5571996340317',
     displayNumber: '(71) 99634-0317',
     color: 'bg-sbpm-blue hover:bg-sbpm-blue/90'
+  },
+];
+
+const phoneContacts = [
+  {
+    label: 'Centro Médico - Javanete',
+    displayNumber: '(71) 98791-2258',
+    icon: Phone,
+  },
+  {
+    label: 'Posto Odontológico - Márcia',
+    displayNumber: '(71) 98791-2263',
+    icon: Phone,
+  },
+];
+
+const socialLinks = [
+  {
+    label: 'Facebook',
+    url: 'https://www.facebook.com.br/sbpm.ba',
+    icon: Facebook,
+    color: 'bg-blue-600 hover:bg-blue-700',
+  },
+  {
+    label: 'Instagram',
+    url: 'https://www.instagram.com.br/sbpm.ba',
+    icon: Instagram,
+    color: 'bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 hover:from-purple-600 hover:via-pink-600 hover:to-orange-600',
+  },
+  {
+    label: 'LinkedIn',
+    url: 'https://www.linkedin.com/company/sociedade-beneficente-da-policia-militar-da-bahia/',
+    icon: Linkedin,
+    color: 'bg-blue-700 hover:bg-blue-800',
+  },
+  {
+    label: 'Website',
+    url: 'https://www.sbpmbahia.com.br',
+    icon: Globe,
+    color: 'bg-primary hover:bg-primary/90',
   },
 ];
 
@@ -320,9 +364,13 @@ function DashboardHome() {
       {/* Header de Boas-vindas */}
       <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl p-6 shadow-lg">
         <div className="flex items-center gap-4">
-          <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center">
-            <User className="h-8 w-8" />
-          </div>
+          <ProfilePhotoUpload
+            currentPhotoUrl={isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url}
+            userId={isDependente && dependenteLogado ? dependenteLogado.id : associado?.id || ''}
+            userType={isDependente ? 'dependente' : 'associado'}
+            userName={nomeExibir}
+            size="lg"
+          />
           <div>
             <h2 className="text-2xl font-bold">
               Bem-vindo, {nomeExibir.split(' ')[0]}!
@@ -613,7 +661,7 @@ function DashboardHome() {
         </Card>
       )}
 
-      {/* Contatos WhatsApp */}
+      {/* Contatos WhatsApp e Telefones */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -621,7 +669,8 @@ function DashboardHome() {
             Canais de Atendimento
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+          {/* WhatsApp Contacts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {whatsappContacts.map((contact) => (
               <a
@@ -640,6 +689,49 @@ function DashboardHome() {
                 </div>
               </a>
             ))}
+          </div>
+
+          {/* Phone Contacts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {phoneContacts.map((contact) => (
+              <div
+                key={contact.displayNumber}
+                className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm"
+              >
+                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                  <Phone className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-semibold">{contact.label}</p>
+                  <p className="text-sm text-muted-foreground">{contact.displayNumber}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Social Links */}
+          <div>
+            <p className="text-sm font-medium text-muted-foreground mb-3">Redes Sociais e Website</p>
+            <div className="flex flex-wrap gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      'flex items-center gap-2 px-4 py-2 rounded-full text-white shadow-sm hover:shadow-md transition-all',
+                      social.color
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="text-sm font-medium">{social.label}</span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </CardContent>
       </Card>
