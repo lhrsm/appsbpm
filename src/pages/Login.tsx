@@ -155,7 +155,7 @@ export default function Login() {
             <img
               src={sbpmLogo}
               alt="SBPM - Sociedade Beneficente da Polícia Militar"
-              className="h-32 w-auto object-contain"
+              className="h-32 w-auto object-contain mix-blend-multiply"
             />
           </div>
           <CardTitle className="text-2xl font-bold text-primary">
