@@ -26,7 +26,8 @@ function CarteirinhaCard({
   matricula, 
   cpf, 
   tipo, 
-  tipoParentesco, 
+  tipoParentesco,
+  fotoUrl,
   dataExpedicao, 
   dataValidade,
   nomeTitular,
@@ -45,15 +46,23 @@ function CarteirinhaCard({
       className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-lg shadow-xl overflow-hidden"
       style={{ fontFamily: 'Arial, sans-serif' }}
     >
-      {/* Header com Logo e Título */}
+      {/* Header com Logo/Foto e Título */}
       <div className="flex items-start p-4 border-b border-gray-200">
         <div className="flex items-center gap-4 flex-1">
           <div className="relative">
-            <img 
-              src={sbpmLogo} 
-              alt="SANITAS" 
-              className="h-16 w-16 object-contain"
-            />
+            {fotoUrl ? (
+              <img 
+                src={fotoUrl} 
+                alt={nome} 
+                className="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
+              />
+            ) : (
+              <img 
+                src={sbpmLogo} 
+                alt="SBPM" 
+                className="h-16 w-16 object-contain"
+              />
+            )}
           </div>
           <div className="flex-1">
             <h2 className="text-lg font-bold text-gray-800 text-center">
@@ -350,6 +359,7 @@ export default function Carteirinha() {
             cpf={dependenteLogado.cpf || ''}
             tipo="dependente"
             tipoParentesco={tipoLabel[dependenteLogado.tipo]}
+            fotoUrl={dependenteLogado.foto_url}
             dataExpedicao={dataExpedicao}
             dataValidade={dataValidade}
             nomeTitular={associado.nome}
@@ -384,6 +394,7 @@ export default function Carteirinha() {
             cpf={selectedDependente?.cpf || associado.cpf}
             tipo={selectedDependente ? 'dependente' : 'titular'}
             tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+            fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
             dataExpedicao={dataExpedicao}
             dataValidade={dataValidade}
             nomeTitular={selectedDependente ? associado.nome : undefined}
