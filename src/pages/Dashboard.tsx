@@ -310,25 +310,6 @@ export default function Dashboard() {
         </main>
       </div>
 
-      {/* WhatsApp Floating Buttons */}
-      <div className="fixed bottom-4 right-4 flex flex-col gap-2 z-40">
-        {whatsappContacts.map((contact) => (
-          <a
-            key={contact.number}
-            href={`https://wa.me/${contact.number}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              'flex items-center gap-2 px-4 py-3 rounded-full text-white shadow-lg transition-all hover:scale-105',
-              contact.color
-            )}
-          >
-            <MessageCircle className="h-5 w-5" />
-            <span className="text-sm font-medium hidden sm:inline">{contact.label}</span>
-            <span className="text-xs sm:hidden">{contact.label}</span>
-          </a>
-        ))}
-      </div>
     </div>
   );
 }
