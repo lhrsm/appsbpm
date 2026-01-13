@@ -34,7 +34,6 @@ import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 const menuItemsTitular = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
-  { path: '/dashboard/carencias', label: 'Carências', icon: Clock },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
@@ -43,7 +42,6 @@ const menuItemsTitular = [
 // Menu restrito para dependentes
 const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
-  { path: '/dashboard/carencias', label: 'Procedimentos', icon: Clock },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
 ];
 
@@ -121,7 +119,7 @@ const socialLinks = [
 ];
 
 export default function Dashboard() {
-  const { associado, logout, isDependente, dependenteLogado } = useAssociado();
+  const { associado, logout, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -315,7 +313,7 @@ export default function Dashboard() {
 }
 
 function DashboardHome() {
-  const { associado, dependentes, limite, carencias, isDependente, dependenteLogado } = useAssociado();
+  const { associado, dependentes, limite, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
   
   const limiteDisponivel = limite 
     ? Number(limite.limite_total) - Number(limite.limite_utilizado)
@@ -324,9 +322,6 @@ function DashboardHome() {
   const limiteTotal = limite ? Number(limite.limite_total) : 0;
   const limiteUtilizado = limite ? Number(limite.limite_utilizado) : 0;
   const percentualUtilizado = limiteTotal > 0 ? (limiteUtilizado / limiteTotal) * 100 : 0;
-
-  const carenciasLiberadas = carencias.filter(c => c.status === 'liberado').length;
-  const carenciasEmEspera = carencias.filter(c => c.status === 'em_carencia').length;
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -351,6 +346,13 @@ function DashboardHome() {
             userType={isDependente ? 'dependente' : 'associado'}
             userName={nomeExibir}
             size="lg"
+            onPhotoUpdated={(newUrl) => {
+              if (isDependente && dependenteLogado) {
+                setDependenteLogado({ ...dependenteLogado, foto_url: newUrl });
+              } else if (associado) {
+                setAssociado({ ...associado, foto_url: newUrl });
+              }
+            }}
           />
           <div>
             <h2 className="text-2xl font-bold">
@@ -384,7 +386,7 @@ function DashboardHome() {
             <CardContent>
               <div className="space-y-3">
                 <p className="text-3xl font-bold text-primary">
-                  {limiteDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                  {(100 - percentualUtilizado).toFixed(0)}%
                 </p>
                 <div className="space-y-1">
                   <div className="flex justify-between text-sm">
@@ -410,37 +412,6 @@ function DashboardHome() {
             </CardContent>
           </Card>
         )}
-
-        {/* Card Carências/Procedimentos */}
-        <Card className="hover:shadow-lg transition-shadow">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Clock className="h-5 w-5 text-primary" />
-              {isDependente ? 'Procedimentos' : 'Carências'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex gap-4">
-                <div className="flex-1 text-center p-3 bg-green-50 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-green-600 mx-auto mb-1" />
-                  <p className="text-2xl font-bold text-green-600">{carenciasLiberadas}</p>
-                  <p className="text-xs text-green-700">Liberados</p>
-                </div>
-                <div className="flex-1 text-center p-3 bg-amber-50 rounded-lg">
-                  <AlertCircle className="h-6 w-6 text-amber-600 mx-auto mb-1" />
-                  <p className="text-2xl font-bold text-amber-600">{carenciasEmEspera}</p>
-                  <p className="text-xs text-amber-700">Em Carência</p>
-                </div>
-              </div>
-              <Link to="/dashboard/carencias">
-                <Button variant="outline" size="sm" className="w-full">
-                  Ver {isDependente ? 'Procedimentos' : 'Todas'}
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Card Dependentes - Apenas para titular */}
         {!isDependente && (
