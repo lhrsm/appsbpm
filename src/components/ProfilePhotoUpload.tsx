@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,6 +29,10 @@ export default function ProfilePhotoUpload({
   const [photoUrl, setPhotoUrl] = useState(currentPhotoUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    setPhotoUrl(currentPhotoUrl);
+  }, [currentPhotoUrl]);
 
   const sizeClasses = {
     sm: 'h-12 w-12',
