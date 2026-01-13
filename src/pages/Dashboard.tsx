@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -335,6 +336,38 @@ function DashboardHome() {
     ? dependenteLogado.nome 
     : associado?.nome || '';
 
+  // Garante que a foto venha sempre do backend ao entrar no painel (evita estado stale após logout/login)
+  useEffect(() => {
+    const loadPhoto = async () => {
+      if (!associado?.id) return;
+
+      if (isDependente && dependenteLogado?.id) {
+        const { data } = await supabase
+          .from('dependentes')
+          .select('foto_url')
+          .eq('id', dependenteLogado.id)
+          .maybeSingle();
+
+        if (data?.foto_url) {
+          setDependenteLogado({ ...dependenteLogado, foto_url: data.foto_url });
+        }
+        return;
+      }
+
+      const { data } = await supabase
+        .from('associados')
+        .select('foto_url')
+        .eq('id', associado.id)
+        .maybeSingle();
+
+      if (data?.foto_url) {
+        setAssociado({ ...associado, foto_url: data.foto_url });
+      }
+    };
+
+    loadPhoto();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [associado?.id, isDependente, dependenteLogado?.id]);
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header de Boas-vindas */}
