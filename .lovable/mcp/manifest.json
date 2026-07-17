@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/functions/v1/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://iidqanlvudhrqobipimf.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "sbpm-bahia-mcp",
+      "version": "0.1.0",
+      "title": "SBPM Bahia — Parceiros e Atendimento"
+    },
+    "tools": [
+      {
+        "name": "list_parceiros",
+        "title": "Listar clínicas e parceiros",
+        "description": "Lista todas as clínicas, laboratórios e parceiros conveniados da SBPM (Sociedade Beneficente da Polícia Militar da Bahia). Inclui nome, especialidade, cidade, endereço, telefone e horário de funcionamento. Dados públicos.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "cidade": {
+              "description": "Filtrar por cidade (opcional). Ex.: 'Salvador', 'Feira de Santana'.",
+              "type": "string"
+            },
+            "especialidade": {
+              "description": "Filtrar por especialidade (opcional). Ex.: 'Laboratório', 'Ortopedia'.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Número máximo de resultados. Padrão: 100.",
+              "type": "integer",
+              "minimum": -9007199254740991,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_cidades_atendidas",
+        "title": "Listar cidades atendidas",
+        "description": "Lista todas as cidades onde a SBPM possui clínicas ou parceiros conveniados, com a contagem de parceiros por cidade. Dados públicos.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_canais_atendimento",
+        "title": "Listar canais de atendimento",
+        "description": "Lista os canais oficiais de atendimento da SBPM Bahia (WhatsApp por setor e atendente). Dados públicos.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
