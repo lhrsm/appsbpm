@@ -12,6 +12,7 @@ import Carencias from "./pages/Carencias";
 import Clinicas from "./pages/Clinicas";
 import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
+import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
               <Route path="carteirinha" element={<Carteirinha />} />
