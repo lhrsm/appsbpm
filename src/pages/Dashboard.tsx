@@ -30,6 +30,7 @@ import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
+import ComunicadosBanner from '@/components/ComunicadosBanner';
 
 // Menu completo para titular
 const menuItemsTitular = [
@@ -300,7 +301,8 @@ export default function Dashboard() {
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 md:p-6">
+        <main className="flex-1 p-4 md:p-6 space-y-4">
+          <ComunicadosBanner />
           {location.pathname === '/dashboard' ? (
             <DashboardHome />
           ) : (
