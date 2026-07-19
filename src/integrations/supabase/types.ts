@@ -145,6 +145,48 @@ export type Database = {
         }
         Relationships: []
       }
+      comunicados: {
+        Row: {
+          ativo: boolean
+          cidade_alvo: string | null
+          created_at: string
+          data_fim: string | null
+          data_inicio: string
+          id: string
+          mensagem: string
+          segmento: string
+          tipo: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cidade_alvo?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          mensagem: string
+          segmento?: string
+          tipo?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cidade_alvo?: string | null
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          mensagem?: string
+          segmento?: string
+          tipo?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dependentes: {
         Row: {
           associado_id: string
