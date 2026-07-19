@@ -14,6 +14,15 @@ import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminAssociados from "./pages/admin/AdminAssociados";
+import AdminDependentes from "./pages/admin/AdminDependentes";
+import AdminLimites from "./pages/admin/AdminLimites";
+import AdminCarencias from "./pages/admin/AdminCarencias";
+import AdminClinicas from "./pages/admin/AdminClinicas";
+import AdminInformes from "./pages/admin/AdminInformes";
 
 const queryClient = new QueryClient();
 
