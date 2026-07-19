@@ -81,8 +81,10 @@ export default function AdminSincronizacao() {
         ? JSON.parse(editing.mapeamento || "{}") : editing.mapeamento || {},
     };
     const { error } = editing.id
-      ? await supabase.from("sync_sources").update(payload).eq("id", editing.id)
-      : await supabase.from("sync_sources").insert(payload as never);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ? await supabase.from("sync_sources").update(payload as any).eq("id", editing.id)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      : await supabase.from("sync_sources").insert(payload as any);
     if (error) return toast.error(error.message);
     toast.success("Fonte salva");
     setOpenSrc(false); setEditing(emptySource); load();
