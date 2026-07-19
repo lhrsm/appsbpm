@@ -262,6 +262,15 @@ export default function AdminAutomacoes() {
             />
           </div>
           <div>
+            <Label>Mensagem (opcional)</Label>
+            <Textarea
+              value={form.mensagem}
+              onChange={(e) => setForm({ ...form, mensagem: e.target.value })}
+              placeholder="Use variáveis como {{nome}}, {{matricula}}..."
+              rows={3}
+            />
+          </div>
+          <div>
             <Label>Descrição (opcional)</Label>
             <Textarea
               value={form.descricao}
@@ -272,6 +281,33 @@ export default function AdminAutomacoes() {
           <Button onClick={criar}>
             <Plus className="w-4 h-4 mr-2" /> Criar automação
           </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Sparkles className="w-4 h-4 text-primary" /> Modelos prontos
+          </CardTitle>
+          <CardDescription>
+            Clique em "Usar modelo" para preencher o formulário acima automaticamente.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-3">
+            {modelos.map((m) => (
+              <div key={m.id} className="border rounded-lg p-3 flex flex-col gap-2">
+                <div>
+                  <h4 className="font-medium text-sm">{m.nome}</h4>
+                  <p className="text-xs text-muted-foreground">{m.descricao}</p>
+                </div>
+                <p className="text-xs bg-muted/50 rounded p-2 line-clamp-3">{m.mensagem}</p>
+                <Button size="sm" variant="outline" onClick={() => usarModelo(m)}>
+                  <Sparkles className="w-3 h-3 mr-1" /> Usar modelo
+                </Button>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
