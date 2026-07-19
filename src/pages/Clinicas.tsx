@@ -150,15 +150,26 @@ export default function Clinicas() {
                         )}
                         
                         <div className="flex-1 space-y-3">
-                          <div>
-                            <h4 className="font-semibold text-lg text-foreground">
-                              {clinica.nome}
-                            </h4>
-                            {clinica.especialidade && (
-                              <Badge variant="outline" className="mt-1">
-                                {clinica.especialidade}
-                              </Badge>
-                            )}
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <h4 className="font-semibold text-lg text-foreground">
+                                {clinica.nome}
+                              </h4>
+                              {clinica.especialidade && (
+                                <Badge variant="outline" className="mt-1">
+                                  {clinica.especialidade}
+                                </Badge>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleFav(clinica.id)}
+                              aria-label="Favoritar"
+                              className="shrink-0"
+                            >
+                              <Star className={`h-5 w-5 ${favoritos.has(clinica.id) ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground"}`} />
+                            </Button>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
@@ -200,6 +211,26 @@ export default function Clinicas() {
                               </div>
                             )}
                           </div>
+
+                          {clinica.telefone && (
+                            <div className="pt-1">
+                              <Button
+                                asChild
+                                size="sm"
+                                variant="outline"
+                                className="text-green-700 border-green-300 hover:bg-green-50"
+                              >
+                                <a
+                                  href={`https://wa.me/55${clinica.telefone.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá! Sou associado da SBPM e gostaria de mais informações.`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <MessageCircle className="h-4 w-4 mr-1" />
+                                  WhatsApp
+                                </a>
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
