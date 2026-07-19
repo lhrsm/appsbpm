@@ -118,7 +118,7 @@ export default function AdminAniversariantes() {
     let ok = 0, fail = 0;
     for (const p of alvos) {
       const primeiroNome = p.nome.split(" ")[0];
-      const msg = mensagem.replaceAll("{{nome}}", primeiroNome);
+      const msg = mensagem.split("{{nome}}").join(primeiroNome);
       try {
         const { data, error } = await supabase.functions.invoke("send-whatsapp", {
           body: { ...zapi, phone: p.telefone!, message: msg },
