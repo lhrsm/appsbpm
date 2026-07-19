@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, Trash2, Plus, Search } from "lucide-react";
 import { toast } from "sonner";
+import { logAudit } from "@/lib/audit";
 
 export type FieldType = "text" | "number" | "date" | "boolean" | "textarea" | "select";
 export interface FieldDef {
@@ -62,10 +63,11 @@ export default function CrudTable({ title, table, fields, searchField, orderBy =
       if (payload[f.key] === "") payload[f.key] = null;
     });
     const isNew = !payload.id;
-    const { error } = isNew
-      ? await (supabase.from as any)(table).insert(payload)
-      : await (supabase.from as any)(table).update(payload).eq("id", payload.id);
+    const { data, error } = isNew
+      ? await (supabase.from as any)(table).insert(payload).select().maybeSingle()
+      : await (supabase.from as any)(table).update(payload).eq("id", payload.id).select().maybeSingle();
     if (error) return toast.error(error.message);
+    await logAudit(isNew ? "create" : "update", table, data?.id ?? payload.id, payload);
     toast.success(isNew ? "Criado com sucesso" : "Atualizado");
     setOpen(false);
     setEditing(null);
@@ -76,6 +78,7 @@ export default function CrudTable({ title, table, fields, searchField, orderBy =
     if (!confirm("Deseja realmente excluir este registro?")) return;
     const { error } = await (supabase.from as any)(table).delete().eq("id", id);
     if (error) return toast.error(error.message);
+    await logAudit("delete", table, id);
     toast.success("Excluído");
     load();
   };
