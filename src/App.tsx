@@ -29,6 +29,8 @@ import AdminSincronizacao from "./pages/admin/AdminSincronizacao";
 import AdminConfiguracoes from "./pages/admin/AdminConfiguracoes";
 import AdminAniversariantes from "./pages/admin/AdminAniversariantes";
 import AdminComunicados from "./pages/admin/AdminComunicados";
+import AdminImportar from "./pages/admin/AdminImportar";
+import AdminAuditoria from "./pages/admin/AdminAuditoria";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +68,8 @@ const App = () => (
               <Route path="configuracoes" element={<AdminConfiguracoes />} />
               <Route path="aniversariantes" element={<AdminAniversariantes />} />
               <Route path="comunicados" element={<AdminComunicados />} />
+              <Route path="importar" element={<AdminImportar />} />
+              <Route path="auditoria" element={<AdminAuditoria />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
