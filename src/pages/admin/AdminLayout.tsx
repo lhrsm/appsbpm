@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 const nav = [
@@ -13,6 +13,7 @@ const nav = [
   { to: "/admin/carencias", icon: Clock, label: "Carências" },
   { to: "/admin/clinicas", icon: Building2, label: "Clínicas & Parceiros" },
   { to: "/admin/informes", icon: FileText, label: "Informes" },
+  { to: "/admin/sincronizacao", icon: RefreshCw, label: "Sincronização" },
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
   { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
 ];
