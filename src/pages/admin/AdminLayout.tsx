@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone } from "lucide-react";
 import { toast } from "sonner";
 
 const nav = [
   { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
+  { to: "/admin/aniversariantes", icon: Cake, label: "Aniversariantes" },
+  { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
   { to: "/admin/limites", icon: Wallet, label: "Limites" },
   { to: "/admin/carencias", icon: Clock, label: "Carências" },
   { to: "/admin/clinicas", icon: Building2, label: "Clínicas & Parceiros" },
