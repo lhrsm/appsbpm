@@ -159,12 +159,25 @@ export default function AdminAutomacoes() {
       descricao: form.descricao,
       webhookUrl: form.webhookUrl,
       evento: form.evento,
+      mensagem: form.mensagem,
       ativa: true,
       criadaEm: new Date().toISOString(),
     };
     persist([nova, ...items]);
-    setForm({ nome: "", descricao: "", webhookUrl: "", evento: "manual" });
+    setForm({ nome: "", descricao: "", webhookUrl: "", evento: "manual", mensagem: "" });
     toast.success("Automação criada");
+  };
+
+  const usarModelo = (m: Modelo) => {
+    setForm({
+      nome: m.nome,
+      descricao: m.descricao,
+      webhookUrl: "",
+      evento: m.evento,
+      mensagem: m.mensagem,
+    });
+    toast.success("Modelo carregado. Adicione o webhook e salve.");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const toggle = (id: string) => {
