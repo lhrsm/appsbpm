@@ -45,6 +45,16 @@ const App = () => (
               <Route path="informes" element={<Informes />} />
               <Route path="dependentes" element={<Dependentes />} />
             </Route>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminHome />} />
+              <Route path="associados" element={<AdminAssociados />} />
+              <Route path="dependentes" element={<AdminDependentes />} />
+              <Route path="limites" element={<AdminLimites />} />
+              <Route path="carencias" element={<AdminCarencias />} />
+              <Route path="clinicas" element={<AdminClinicas />} />
+              <Route path="informes" element={<AdminInformes />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
