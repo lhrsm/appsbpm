@@ -23,6 +23,8 @@ import AdminLimites from "./pages/admin/AdminLimites";
 import AdminCarencias from "./pages/admin/AdminCarencias";
 import AdminClinicas from "./pages/admin/AdminClinicas";
 import AdminInformes from "./pages/admin/AdminInformes";
+import AdminAutomacoes from "./pages/admin/AdminAutomacoes";
+import AdminIntegracoes from "./pages/admin/AdminIntegracoes";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +56,8 @@ const App = () => (
               <Route path="carencias" element={<AdminCarencias />} />
               <Route path="clinicas" element={<AdminClinicas />} />
               <Route path="informes" element={<AdminInformes />} />
+              <Route path="automacoes" element={<AdminAutomacoes />} />
+              <Route path="integracoes" element={<AdminIntegracoes />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
