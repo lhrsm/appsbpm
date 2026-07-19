@@ -3,7 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Building2, MapPin, Phone, Mail, Clock, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Building2, MapPin, Phone, Mail, Clock, Search, Star, MessageCircle } from 'lucide-react';
 
 interface Clinica {
   id: string;
@@ -21,8 +22,11 @@ export default function Clinicas() {
   const [clinicas, setClinicas] = useState<Clinica[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [soFavoritos, setSoFavoritos] = useState(false);
+  const [favoritos, setFavoritos] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    try { setFavoritos(new Set(JSON.parse(localStorage.getItem('sbpm_clinicas_fav') || '[]'))); } catch {}
     async function fetchClinicas() {
       const { data, error } = await supabase
         .from('clinicas_parceiros')
@@ -39,8 +43,19 @@ export default function Clinicas() {
     fetchClinicas();
   }, []);
 
+  const toggleFav = (id: string) => {
+    setFavoritos((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      localStorage.setItem('sbpm_clinicas_fav', JSON.stringify([...next]));
+      return next;
+    });
+  };
+
   const filteredClinicas = clinicas.filter((clinica) => {
+    if (soFavoritos && !favoritos.has(clinica.id)) return false;
     const searchLower = search.toLowerCase();
+    if (!searchLower) return true;
     return (
       clinica.nome.toLowerCase().includes(searchLower) ||
       clinica.cidade.toLowerCase().includes(searchLower) ||
