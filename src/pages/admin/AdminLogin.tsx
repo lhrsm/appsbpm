@@ -1,0 +1,110 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
+import { Shield } from "lucide-react";
+
+export default function AdminLogin() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) checkAdmin(data.session.user.id);
+    });
+  }, []);
+
+  const checkAdmin = async (userId: string) => {
+    const { data } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (data) navigate("/admin");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/admin` },
+        });
+        if (error) throw error;
+        toast.success("Conta criada. Um administrador precisa liberar seu acesso.");
+        if (data.user) {
+          // Try to become the first admin (only works if user_roles is empty via a policy — otherwise stays pending)
+          await supabase.from("user_roles").insert({ user_id: data.user.id, role: "admin" as const });
+        }
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        const { data: role } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+        if (!role) {
+          await supabase.auth.signOut();
+          throw new Error("Este usuário não tem permissão de administrador.");
+        }
+        toast.success("Bem-vindo!");
+        navigate("/admin");
+      }
+    } catch (err: any) {
+      toast.error(err.message ?? "Erro ao autenticar");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+            <Shield className="w-6 h-6 text-primary" />
+          </div>
+          <CardTitle>Painel Administrativo SBPM</CardTitle>
+          <CardDescription>
+            {mode === "login" ? "Acesse com seu e-mail e senha" : "Criar nova conta administrativa"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="password">Senha</Label>
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+            </div>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
+            </Button>
+            <button
+              type="button"
+              onClick={() => setMode(mode === "login" ? "signup" : "login")}
+              className="w-full text-sm text-muted-foreground hover:text-primary"
+            >
+              {mode === "login" ? "Criar nova conta administrativa" : "Já tenho conta"}
+            </button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
