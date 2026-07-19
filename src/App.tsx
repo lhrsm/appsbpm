@@ -25,6 +25,7 @@ import AdminClinicas from "./pages/admin/AdminClinicas";
 import AdminInformes from "./pages/admin/AdminInformes";
 import AdminAutomacoes from "./pages/admin/AdminAutomacoes";
 import AdminIntegracoes from "./pages/admin/AdminIntegracoes";
+import AdminSincronizacao from "./pages/admin/AdminSincronizacao";
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,7 @@ const App = () => (
               <Route path="informes" element={<AdminInformes />} />
               <Route path="automacoes" element={<AdminAutomacoes />} />
               <Route path="integracoes" element={<AdminIntegracoes />} />
+              <Route path="sincronizacao" element={<AdminSincronizacao />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

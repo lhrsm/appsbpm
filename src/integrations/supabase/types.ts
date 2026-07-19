@@ -297,6 +297,116 @@ export type Database = {
           },
         ]
       }
+      sync_logs: {
+        Row: {
+          detalhes: Json | null
+          finalizado_em: string | null
+          id: string
+          iniciado_em: string
+          mensagem: string | null
+          registros_atualizados: number | null
+          registros_inseridos: number | null
+          registros_processados: number | null
+          source_id: string | null
+          status: string
+        }
+        Insert: {
+          detalhes?: Json | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          registros_atualizados?: number | null
+          registros_inseridos?: number | null
+          registros_processados?: number | null
+          source_id?: string | null
+          status: string
+        }
+        Update: {
+          detalhes?: Json | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          registros_atualizados?: number | null
+          registros_inseridos?: number | null
+          registros_processados?: number | null
+          source_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sync_logs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "sync_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sync_sources: {
+        Row: {
+          ativo: boolean
+          auth_header_name: string | null
+          auth_tipo: string
+          auth_token: string | null
+          body_template: Json | null
+          campo_chave: string
+          created_at: string
+          entidade: string
+          frequencia: string
+          headers_extras: Json | null
+          id: string
+          mapeamento: Json
+          metodo: string
+          nome: string
+          response_path: string | null
+          ultima_sincronizacao: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          ativo?: boolean
+          auth_header_name?: string | null
+          auth_tipo?: string
+          auth_token?: string | null
+          body_template?: Json | null
+          campo_chave?: string
+          created_at?: string
+          entidade: string
+          frequencia?: string
+          headers_extras?: Json | null
+          id?: string
+          mapeamento?: Json
+          metodo?: string
+          nome: string
+          response_path?: string | null
+          ultima_sincronizacao?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          ativo?: boolean
+          auth_header_name?: string | null
+          auth_tipo?: string
+          auth_token?: string | null
+          body_template?: Json | null
+          campo_chave?: string
+          created_at?: string
+          entidade?: string
+          frequencia?: string
+          headers_extras?: Json | null
+          id?: string
+          mapeamento?: Json
+          metodo?: string
+          nome?: string
+          response_path?: string | null
+          ultima_sincronizacao?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -315,6 +425,45 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      webhook_endpoints: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          entidade: string
+          id: string
+          nome: string
+          secret_token: string
+          slug: string
+          total_chamadas: number
+          ultima_chamada: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          entidade: string
+          id?: string
+          nome: string
+          secret_token: string
+          slug: string
+          total_chamadas?: number
+          ultima_chamada?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          entidade?: string
+          id?: string
+          nome?: string
+          secret_token?: string
+          slug?: string
+          total_chamadas?: number
+          ultima_chamada?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
