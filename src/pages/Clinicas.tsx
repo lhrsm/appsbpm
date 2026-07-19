@@ -3,7 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Building2, MapPin, Phone, Mail, Clock, Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Building2, MapPin, Phone, Mail, Clock, Search, Star, MessageCircle } from 'lucide-react';
 
 interface Clinica {
   id: string;
@@ -21,8 +22,11 @@ export default function Clinicas() {
   const [clinicas, setClinicas] = useState<Clinica[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [soFavoritos, setSoFavoritos] = useState(false);
+  const [favoritos, setFavoritos] = useState<Set<string>>(new Set());
 
   useEffect(() => {
+    try { setFavoritos(new Set(JSON.parse(localStorage.getItem('sbpm_clinicas_fav') || '[]'))); } catch {}
     async function fetchClinicas() {
       const { data, error } = await supabase
         .from('clinicas_parceiros')
@@ -39,8 +43,19 @@ export default function Clinicas() {
     fetchClinicas();
   }, []);
 
+  const toggleFav = (id: string) => {
+    setFavoritos((s) => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      localStorage.setItem('sbpm_clinicas_fav', JSON.stringify([...next]));
+      return next;
+    });
+  };
+
   const filteredClinicas = clinicas.filter((clinica) => {
+    if (soFavoritos && !favoritos.has(clinica.id)) return false;
     const searchLower = search.toLowerCase();
+    if (!searchLower) return true;
     return (
       clinica.nome.toLowerCase().includes(searchLower) ||
       clinica.cidade.toLowerCase().includes(searchLower) ||
@@ -67,15 +82,26 @@ export default function Clinicas() {
         </p>
       </div>
 
-      {/* Busca */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input
-          placeholder="Buscar por nome, cidade ou especialidade..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 h-12"
-        />
+      {/* Busca + filtro favoritos */}
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          <Input
+            placeholder="Buscar por nome, cidade ou especialidade..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10 h-12"
+          />
+        </div>
+        <Button
+          type="button"
+          variant={soFavoritos ? "default" : "outline"}
+          className="h-12"
+          onClick={() => setSoFavoritos((v) => !v)}
+        >
+          <Star className={`h-4 w-4 mr-2 ${soFavoritos ? "fill-current" : ""}`} />
+          Favoritos {favoritos.size > 0 && `(${favoritos.size})`}
+        </Button>
       </div>
 
       {/* Lista de Clínicas */}
@@ -124,15 +150,26 @@ export default function Clinicas() {
                         )}
                         
                         <div className="flex-1 space-y-3">
-                          <div>
-                            <h4 className="font-semibold text-lg text-foreground">
-                              {clinica.nome}
-                            </h4>
-                            {clinica.especialidade && (
-                              <Badge variant="outline" className="mt-1">
-                                {clinica.especialidade}
-                              </Badge>
-                            )}
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <h4 className="font-semibold text-lg text-foreground">
+                                {clinica.nome}
+                              </h4>
+                              {clinica.especialidade && (
+                                <Badge variant="outline" className="mt-1">
+                                  {clinica.especialidade}
+                                </Badge>
+                              )}
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => toggleFav(clinica.id)}
+                              aria-label="Favoritar"
+                              className="shrink-0"
+                            >
+                              <Star className={`h-5 w-5 ${favoritos.has(clinica.id) ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground"}`} />
+                            </Button>
                           </div>
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
@@ -174,6 +211,26 @@ export default function Clinicas() {
                               </div>
                             )}
                           </div>
+
+                          {clinica.telefone && (
+                            <div className="pt-1">
+                              <Button
+                                asChild
+                                size="sm"
+                                variant="outline"
+                                className="text-green-700 border-green-300 hover:bg-green-50"
+                              >
+                                <a
+                                  href={`https://wa.me/55${clinica.telefone.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá! Sou associado da SBPM e gostaria de mais informações.`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <MessageCircle className="h-4 w-4 mr-1" />
+                                  WhatsApp
+                                </a>
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
