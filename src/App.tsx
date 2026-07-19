@@ -23,6 +23,8 @@ import AdminLimites from "./pages/admin/AdminLimites";
 import AdminCarencias from "./pages/admin/AdminCarencias";
 import AdminClinicas from "./pages/admin/AdminClinicas";
 import AdminInformes from "./pages/admin/AdminInformes";
+import AdminAutomacoes from "./pages/admin/AdminAutomacoes";
+import AdminIntegracoes from "./pages/admin/AdminIntegracoes";
 
 const queryClient = new QueryClient();
 
