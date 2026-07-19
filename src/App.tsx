@@ -25,6 +25,7 @@ import AdminClinicas from "./pages/admin/AdminClinicas";
 import AdminInformes from "./pages/admin/AdminInformes";
 import AdminAutomacoes from "./pages/admin/AdminAutomacoes";
 import AdminIntegracoes from "./pages/admin/AdminIntegracoes";
+import AdminSincronizacao from "./pages/admin/AdminSincronizacao";
 
 const queryClient = new QueryClient();
 
