@@ -24,24 +24,33 @@ const nav = [
   { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
 
+const PREVIDENCIA_ALLOWED = new Set([
+  "/admin",
+  "/admin/associados",
+  "/admin/dependentes",
+  "/admin/peculio",
+  "/admin/informes",
+]);
+
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
+  const [isPrevidencia, setIsPrevidencia] = useState(false);
 
   useEffect(() => {
     const check = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) return navigate("/admin/login");
-      const { data: role } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", data.session.user.id)
-        .eq("role", "admin")
-        .maybeSingle();
-      if (!role) {
+      const uid = data.session.user.id;
+      const [{ data: role }, { data: prev }] = await Promise.all([
+        supabase.from("user_roles").select("role").eq("user_id", uid).eq("role", "admin").maybeSingle(),
+        supabase.from("previdencia_admins").select("user_id").eq("user_id", uid).maybeSingle(),
+      ]);
+      if (!role && !prev) {
         await supabase.auth.signOut();
         return navigate("/admin/login");
       }
+      setIsPrevidencia(!role && !!prev);
       setReady(true);
     };
     check();
@@ -58,6 +67,8 @@ export default function AdminLayout() {
   };
 
   if (!ready) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+
+  const visibleNav = isPrevidencia ? nav.filter((n) => PREVIDENCIA_ALLOWED.has(n.to)) : nav;
 
   return (
     <div className="min-h-screen flex bg-muted/30">
