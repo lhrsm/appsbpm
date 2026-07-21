@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera, Loader2, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useAssociado } from '@/contexts/AssociadoContext';
 
 interface ProfilePhotoUploadProps {
   currentPhotoUrl?: string | null;
