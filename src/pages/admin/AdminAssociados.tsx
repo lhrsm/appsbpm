@@ -35,6 +35,7 @@ interface Associado {
   data_admissao?: string;
   cep?: string;
   endereco?: string;
+  cidade?: string;
   foto_url?: string;
   ativo?: boolean;
 }
