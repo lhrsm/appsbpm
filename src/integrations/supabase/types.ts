@@ -147,12 +147,16 @@ export type Database = {
           email: string | null
           endereco: string | null
           especialidade: string | null
+          especialidades: string[]
+          estado: string | null
           horario_funcionamento: string | null
+          horarios: Json
           id: string
           logo_url: string | null
           nome: string
           telefone: string | null
           updated_at: string
+          whatsapp: string | null
         }
         Insert: {
           ativo?: boolean
@@ -161,12 +165,16 @@ export type Database = {
           email?: string | null
           endereco?: string | null
           especialidade?: string | null
+          especialidades?: string[]
+          estado?: string | null
           horario_funcionamento?: string | null
+          horarios?: Json
           id?: string
           logo_url?: string | null
           nome: string
           telefone?: string | null
           updated_at?: string
+          whatsapp?: string | null
         }
         Update: {
           ativo?: boolean
@@ -175,12 +183,16 @@ export type Database = {
           email?: string | null
           endereco?: string | null
           especialidade?: string | null
+          especialidades?: string[]
+          estado?: string | null
           horario_funcionamento?: string | null
+          horarios?: Json
           id?: string
           logo_url?: string | null
           nome?: string
           telefone?: string | null
           updated_at?: string
+          whatsapp?: string | null
         }
         Relationships: []
       }
