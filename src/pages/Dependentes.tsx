@@ -67,6 +67,19 @@ export default function Dependentes() {
   const [enviandoExcl, setEnviandoExcl] = useState(false);
   const [sucessoExcl, setSucessoExcl] = useState(false);
 
+  const pendingKey = `sbpm:dep-pending:${associado?.matricula || 'anon'}`;
+  const [pendingAcao, setPendingAcao] = useState<Record<string, 'exclusao' | 'reativacao'>>(() => {
+    try {
+      if (typeof window === 'undefined') return {};
+      const raw = window.localStorage.getItem(`sbpm:dep-pending:${associado?.matricula || 'anon'}`);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  });
+
+  useEffect(() => {
+    try { window.localStorage.setItem(pendingKey, JSON.stringify(pendingAcao)); } catch {}
+  }, [pendingAcao, pendingKey]);
+
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
     filho: 'Filho(a)',
