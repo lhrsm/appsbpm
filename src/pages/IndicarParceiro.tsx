@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
@@ -19,68 +18,110 @@ const ESTADOS = [
   'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'
 ];
 
+type ParceiroForm = {
+  nome: string;
+  email: string;
+  telefone: string;
+  estado: string;
+  cidade: string;
+  cidades: string[];
+  redes: RedeSocial[];
+};
+
+const emptyParceiro = (): ParceiroForm => ({
+  nome: '',
+  email: '',
+  telefone: '',
+  estado: '',
+  cidade: '',
+  cidades: [],
+  redes: [{ tipo: 'Instagram', valor: '' }],
+});
+
 export default function IndicarParceiro() {
   const { associado } = useAssociado();
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
-  const [estado, setEstado] = useState('');
-  const [cidades, setCidades] = useState<string[]>([]);
-  const [redes, setRedes] = useState<RedeSocial[]>([{ tipo: 'Instagram', valor: '' }]);
-  const [form, setForm] = useState({
-    nome: '',
-    email: '',
-    telefone: '',
-    cidade: '',
-  });
+  const [parceiros, setParceiros] = useState<ParceiroForm[]>([emptyParceiro()]);
 
-  const carregarCidades = async (uf: string) => {
-    setEstado(uf);
-    setForm((f) => ({ ...f, cidade: '' }));
+  const updateParceiro = (idx: number, patch: Partial<ParceiroForm>) => {
+    setParceiros((prev) => prev.map((p, i) => (i === idx ? { ...p, ...patch } : p)));
+  };
+
+  const carregarCidades = async (idx: number, uf: string) => {
+    updateParceiro(idx, { estado: uf, cidade: '', cidades: [] });
     try {
       const res = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
       const data = await res.json();
-      setCidades(data.map((c: { nome: string }) => c.nome));
+      updateParceiro(idx, { cidades: data.map((c: { nome: string }) => c.nome) });
     } catch {
-      setCidades([]);
+      updateParceiro(idx, { cidades: [] });
     }
+  };
+
+  const addParceiro = () => setParceiros((p) => [...p, emptyParceiro()]);
+  const removeParceiro = (idx: number) => setParceiros((p) => p.filter((_, i) => i !== idx));
+
+  const addRede = (idx: number) => {
+    updateParceiro(idx, { redes: [...parceiros[idx].redes, { tipo: 'Instagram', valor: '' }] });
+  };
+  const removeRede = (idx: number, ri: number) => {
+    updateParceiro(idx, { redes: parceiros[idx].redes.filter((_, i) => i !== ri) });
+  };
+  const updateRede = (idx: number, ri: number, patch: Partial<RedeSocial>) => {
+    updateParceiro(idx, {
+      redes: parceiros[idx].redes.map((r, i) => (i === ri ? { ...r, ...patch } : r)),
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!associado) return;
 
-    if (!form.nome || !form.telefone || !estado || !form.cidade) {
-      toast({ title: 'Preencha os campos obrigatórios', variant: 'destructive' });
-      return;
+    for (const p of parceiros) {
+      if (!p.nome || !p.telefone || !p.estado || !p.cidade) {
+        toast({ title: 'Preencha os campos obrigatórios de todos os parceiros', variant: 'destructive' });
+        return;
+      }
     }
 
     setLoading(true);
     try {
-      const { error } = await supabase.functions.invoke('send-parceiro-indicacao', {
-        body: {
-          indicador: {
-            nome: associado.nome,
-            email: associado.email || '',
-            telefone: associado.telefone || '',
-            matricula: associado.matricula,
-          },
-          parceiro: {
-            nome: form.nome,
-            email: form.email,
-            telefone: form.telefone,
-            estado,
-            cidade: form.cidade,
-            redes_sociais: redes.filter(r => r.valor.trim()).map(r => `${r.tipo}: ${r.valor.trim()}`).join('\n'),
-          },
-        },
-      });
+      const indicador = {
+        nome: associado.nome,
+        email: associado.email || '',
+        telefone: associado.telefone || '',
+        matricula: associado.matricula,
+      };
 
-      if (error) throw error;
+      const results = await Promise.all(
+        parceiros.map((p) =>
+          supabase.functions.invoke('send-parceiro-indicacao', {
+            body: {
+              indicador,
+              parceiro: {
+                nome: p.nome,
+                email: p.email,
+                telefone: p.telefone,
+                estado: p.estado,
+                cidade: p.cidade,
+                redes_sociais: p.redes
+                  .filter((r) => r.valor.trim())
+                  .map((r) => `${r.tipo}: ${r.valor.trim()}`)
+                  .join('\n'),
+              },
+            },
+          }),
+        ),
+      );
+
+      const firstError = results.find((r) => r.error);
+      if (firstError?.error) throw firstError.error;
 
       setEnviado(true);
       toast({
-        title: 'Indicação enviada!',
-        description: 'O e-mail foi recebido pelo departamento comercial.',
+        title: 'Indicações enviadas!',
+        description: `${parceiros.length} indicação(ões) recebida(s) pelo departamento comercial.`,
       });
     } catch (err) {
       console.error(err);
@@ -100,18 +141,15 @@ export default function IndicarParceiro() {
         <Card>
           <CardContent className="p-8 text-center space-y-4">
             <CheckCircle2 className="h-16 w-16 text-sbpm-green mx-auto" />
-            <h2 className="text-2xl font-bold">Indicação enviada com sucesso!</h2>
+            <h2 className="text-2xl font-bold">Indicações enviadas com sucesso!</h2>
             <p className="text-muted-foreground">
               O e-mail foi recebido pelo departamento comercial da SBPM.
-              Em breve entraremos em contato com o parceiro indicado.
+              Em breve entraremos em contato com os parceiros indicados.
             </p>
             <Button
               onClick={() => {
                 setEnviado(false);
-                setForm({ nome: '', email: '', telefone: '', cidade: '' });
-                setRedes([{ tipo: 'Instagram', valor: '' }]);
-                setEstado('');
-                setCidades([]);
+                setParceiros([emptyParceiro()]);
               }}
             >
               Fazer nova indicação
@@ -129,7 +167,7 @@ export default function IndicarParceiro() {
         <div>
           <h1 className="text-2xl font-bold">Indicar Parceiro</h1>
           <p className="text-muted-foreground text-sm">
-            Indique um estabelecimento para se tornar parceiro da SBPM
+            Indique um ou mais estabelecimentos para se tornarem parceiros da SBPM
           </p>
         </div>
       </div>
@@ -159,110 +197,135 @@ export default function IndicarParceiro() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Dados do parceiro indicado</CardTitle>
-          </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-4">
-            <div className="md:col-span-2">
-              <Label>Nome do estabelecimento *</Label>
-              <Input
-                value={form.nome}
-                onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                maxLength={200}
-                required
-              />
-            </div>
-            <div>
-              <Label>E-mail</Label>
-              <Input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                maxLength={200}
-              />
-            </div>
-            <div>
-              <Label>Telefone *</Label>
-              <Input
-                value={form.telefone}
-                onChange={(e) => setForm({ ...form, telefone: e.target.value })}
-                maxLength={30}
-                required
-              />
-            </div>
-            <div>
-              <Label>Estado *</Label>
-              <Select value={estado} onValueChange={carregarCidades}>
-                <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                <SelectContent>
-                  {ESTADOS.map((uf) => <SelectItem key={uf} value={uf}>{uf}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label>Cidade *</Label>
-              <Select
-                value={form.cidade}
-                onValueChange={(v) => setForm({ ...form, cidade: v })}
-                disabled={!estado || cidades.length === 0}
-              >
-                <SelectTrigger><SelectValue placeholder={estado ? 'Selecione' : 'Escolha o estado'} /></SelectTrigger>
-                <SelectContent>
-                  {cidades.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="md:col-span-2 space-y-3">
-              <Label>Redes sociais</Label>
-              {redes.map((r, i) => (
-                <div key={i} className="flex gap-2">
-                  <Select
-                    value={r.tipo}
-                    onValueChange={(v) => setRedes(redes.map((x, idx) => idx === i ? { ...x, tipo: v } : x))}
-                  >
-                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      {REDES_OPCOES.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                  <Input
-                    value={r.valor}
-                    onChange={(e) => setRedes(redes.map((x, idx) => idx === i ? { ...x, valor: e.target.value } : x))}
-                    placeholder={r.tipo === 'Site' ? 'https://...' : `@usuario ou link do ${r.tipo}`}
-                    maxLength={200}
-                    className="flex-1"
-                  />
-                  {redes.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setRedes(redes.filter((_, idx) => idx !== i))}
-                      aria-label="Remover"
+        {parceiros.map((p, idx) => (
+          <Card key={idx}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+              <CardTitle className="text-lg">
+                Parceiro indicado {parceiros.length > 1 ? `#${idx + 1}` : ''}
+              </CardTitle>
+              {parceiros.length > 1 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => removeParceiro(idx)}
+                  className="text-destructive"
+                >
+                  <Trash2 className="h-4 w-4 mr-1" /> Remover
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className="grid md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <Label>Nome do estabelecimento *</Label>
+                <Input
+                  value={p.nome}
+                  onChange={(e) => updateParceiro(idx, { nome: e.target.value })}
+                  maxLength={200}
+                  required
+                />
+              </div>
+              <div>
+                <Label>E-mail</Label>
+                <Input
+                  type="email"
+                  value={p.email}
+                  onChange={(e) => updateParceiro(idx, { email: e.target.value })}
+                  maxLength={200}
+                />
+              </div>
+              <div>
+                <Label>Telefone *</Label>
+                <Input
+                  value={p.telefone}
+                  onChange={(e) => updateParceiro(idx, { telefone: e.target.value })}
+                  maxLength={30}
+                  required
+                />
+              </div>
+              <div>
+                <Label>Estado *</Label>
+                <Select value={p.estado} onValueChange={(v) => carregarCidades(idx, v)}>
+                  <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
+                  <SelectContent>
+                    {ESTADOS.map((uf) => <SelectItem key={uf} value={uf}>{uf}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label>Cidade *</Label>
+                <Select
+                  value={p.cidade}
+                  onValueChange={(v) => updateParceiro(idx, { cidade: v })}
+                  disabled={!p.estado || p.cidades.length === 0}
+                >
+                  <SelectTrigger><SelectValue placeholder={p.estado ? 'Selecione' : 'Escolha o estado'} /></SelectTrigger>
+                  <SelectContent>
+                    {p.cidades.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="md:col-span-2 space-y-3">
+                <Label>Redes sociais</Label>
+                {p.redes.map((r, ri) => (
+                  <div key={ri} className="flex gap-2">
+                    <Select
+                      value={r.tipo}
+                      onValueChange={(v) => updateRede(idx, ri, { tipo: v })}
                     >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  )}
-                </div>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setRedes([...redes, { tipo: 'Instagram', valor: '' }])}
-              >
-                <Plus className="h-4 w-4 mr-1" /> Adicionar rede social
-              </Button>
-            </div>
+                      <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {REDES_OPCOES.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                    <Input
+                      value={r.valor}
+                      onChange={(e) => updateRede(idx, ri, { valor: e.target.value })}
+                      placeholder={r.tipo === 'Site' ? 'https://...' : `@usuario ou link do ${r.tipo}`}
+                      maxLength={200}
+                      className="flex-1"
+                    />
+                    {p.redes.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeRede(idx, ri)}
+                        aria-label="Remover"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addRede(idx)}
+                >
+                  <Plus className="h-4 w-4 mr-1" /> Adicionar rede social
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
 
-          </CardContent>
-        </Card>
-
-        <Button type="submit" disabled={loading} className="w-full md:w-auto">
-          {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Handshake className="h-4 w-4 mr-2" />}
-          Enviar indicação
+        <Button
+          type="button"
+          variant="outline"
+          onClick={addParceiro}
+          className="w-full md:w-auto"
+        >
+          <Plus className="h-4 w-4 mr-2" /> Adicionar outro parceiro
         </Button>
+
+        <div>
+          <Button type="submit" disabled={loading} className="w-full md:w-auto">
+            {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Handshake className="h-4 w-4 mr-2" />}
+            Enviar {parceiros.length > 1 ? `${parceiros.length} indicações` : 'indicação'}
+          </Button>
+        </div>
       </form>
     </div>
   );
