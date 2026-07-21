@@ -8,7 +8,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Handshake, CheckCircle2, Loader2 } from 'lucide-react';
+import { Handshake, CheckCircle2, Loader2, Plus, Trash2 } from 'lucide-react';
+
+const REDES_OPCOES = [
+  'Instagram','Facebook','TikTok','YouTube','LinkedIn','Twitter/X','Site','WhatsApp','Outro',
+];
+type RedeSocial = { tipo: string; valor: string };
 
 const ESTADOS = [
   'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'
