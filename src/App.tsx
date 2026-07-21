@@ -14,6 +14,7 @@ import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
 import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import Simulador from "./pages/Simulador";
+import Perfil from "./pages/Perfil";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="dependentes" element={<Dependentes />} />
               <Route path="associacao-premiada" element={<AssociacaoPremiada />} />
               <Route path="simulador" element={<Simulador />} />
+              <Route path="perfil" element={<Perfil />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
