@@ -2,22 +2,24 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 
+const optionalStr = (max: number) => z.string().max(max).optional().or(z.literal(''));
+
 const BodySchema = z.object({
   titular: z.object({
     nome: z.string().min(1).max(200),
     matricula: z.string().min(1).max(50),
-    email: z.string().email().max(200).optional().or(z.literal('')),
-    telefone: z.string().max(30).optional().or(z.literal('')),
+    email: optionalStr(200),
+    telefone: optionalStr(30),
   }),
   dependente: z.object({
     nome: z.string().min(1).max(200),
-    cpf: z.string().max(20).optional().or(z.literal('')),
-    data_nascimento: z.string().max(20).optional().or(z.literal('')),
+    cpf: optionalStr(20),
+    data_nascimento: optionalStr(20),
     parentesco: z.string().min(1).max(80),
-    sexo: z.string().max(20).optional().or(z.literal('')),
-    telefone: z.string().max(30).optional().or(z.literal('')),
-    email: z.string().email().max(200).optional().or(z.literal('')),
-    observacoes: z.string().max(1000).optional().or(z.literal('')),
+    sexo: optionalStr(20),
+    telefone: optionalStr(30),
+    email: optionalStr(200),
+    observacoes: optionalStr(1000),
     anexos: z.array(z.string()).max(20).optional(),
   }),
 });
