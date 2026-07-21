@@ -75,6 +75,9 @@ export default function AdminAssociados() {
   const [rows, setRows] = useState<Associado[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filterPatente, setFilterPatente] = useState<string>("");
+  const [filterAtivo, setFilterAtivo] = useState<string>("");
+  const [filterCidade, setFilterCidade] = useState<string>("");
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
@@ -83,13 +86,19 @@ export default function AdminAssociados() {
     setLoading(true);
     let q = supabase.from("associados").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
+    if (filterPatente) q = q.eq("patente", filterPatente);
+    if (filterAtivo === "true") q = q.eq("ativo", true);
+    if (filterAtivo === "false") q = q.eq("ativo", false);
+    if (filterCidade) q = q.eq("cidade", filterCidade);
     const { data, error } = await q;
     if (error) toast.error(error.message);
     else setRows((data as Associado[]) ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterPatente, filterAtivo, filterCidade]);
+
+  const cidadesDisponiveis = Array.from(new Set(rows.map((r) => r.cidade).filter(Boolean) as string[])).sort();
 
   const openNew = () => {
     setEditing({ ativo: true });
