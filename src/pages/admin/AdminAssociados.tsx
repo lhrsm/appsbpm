@@ -98,7 +98,13 @@ export default function AdminAssociados() {
 
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterPatente, filterAtivo, filterCidade]);
 
-  const cidadesDisponiveis = Array.from(new Set(rows.map((r) => r.cidade).filter(Boolean) as string[])).sort();
+  const [cidadesDisponiveis, setCidadesDisponiveis] = useState<string[]>([]);
+  useEffect(() => {
+    supabase.from("associados").select("cidade").not("cidade", "is", null).then(({ data }) => {
+      const uniq = Array.from(new Set((data ?? []).map((r: any) => r.cidade).filter(Boolean))) as string[];
+      setCidadesDisponiveis(uniq.sort());
+    });
+  }, [open]);
 
   const openNew = () => {
     setEditing({ ativo: true });
