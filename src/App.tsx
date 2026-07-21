@@ -15,6 +15,7 @@ import Dependentes from "./pages/Dependentes";
 import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import Simulador from "./pages/Simulador";
 import IndicarParceiro from "./pages/IndicarParceiro";
+import Peculio from "./pages/Peculio";
 import Perfil from "./pages/Perfil";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
