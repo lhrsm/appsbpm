@@ -17,6 +17,7 @@ export type Database = {
       associados: {
         Row: {
           ativo: boolean
+          cep: string | null
           cpf: string
           created_at: string
           data_admissao: string
@@ -27,11 +28,13 @@ export type Database = {
           id: string
           matricula: string
           nome: string
+          patente: string | null
           telefone: string | null
           updated_at: string
         }
         Insert: {
           ativo?: boolean
+          cep?: string | null
           cpf: string
           created_at?: string
           data_admissao?: string
@@ -42,11 +45,13 @@ export type Database = {
           id?: string
           matricula: string
           nome: string
+          patente?: string | null
           telefone?: string | null
           updated_at?: string
         }
         Update: {
           ativo?: boolean
+          cep?: string | null
           cpf?: string
           created_at?: string
           data_admissao?: string
@@ -57,6 +62,7 @@ export type Database = {
           id?: string
           matricula?: string
           nome?: string
+          patente?: string | null
           telefone?: string | null
           updated_at?: string
         }

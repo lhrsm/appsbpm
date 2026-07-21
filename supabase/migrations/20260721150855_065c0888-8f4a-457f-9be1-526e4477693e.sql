@@ -1,0 +1,3 @@
+ALTER TABLE public.associados
+  ADD COLUMN IF NOT EXISTS patente TEXT,
+  ADD COLUMN IF NOT EXISTS cep TEXT;
