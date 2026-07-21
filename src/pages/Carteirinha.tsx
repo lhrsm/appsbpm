@@ -3,7 +3,8 @@ import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, User, Users } from 'lucide-react';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Download, User, Users, Maximize2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -135,6 +136,7 @@ function CarteirinhaCard({
 export default function Carteirinha() {
   const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
   const [selectedDependente, setSelectedDependente] = useState<Dependente | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const tipoLabel: Record<string, string> = {
@@ -352,24 +354,56 @@ export default function Carteirinha() {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <CarteirinhaCard
-            cardRef={cardRef}
-            nome={dependenteLogado.nome}
-            matricula={associado.matricula}
-            cpf={dependenteLogado.cpf || ''}
-            tipo="dependente"
-            tipoParentesco={tipoLabel[dependenteLogado.tipo]}
-            fotoUrl={dependenteLogado.foto_url}
-            dataExpedicao={dataExpedicao}
-            dataValidade={dataValidade}
-            nomeTitular={associado.nome}
-          />
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(true)}
+            className="group relative w-full max-w-lg cursor-zoom-in transition-transform hover:scale-[1.02]"
+            aria-label="Ampliar carteirinha"
+          >
+            <CarteirinhaCard
+              cardRef={cardRef}
+              nome={dependenteLogado.nome}
+              matricula={associado.matricula}
+              cpf={dependenteLogado.cpf || ''}
+              tipo="dependente"
+              tipoParentesco={tipoLabel[dependenteLogado.tipo]}
+              fotoUrl={dependenteLogado.foto_url}
+              dataExpedicao={dataExpedicao}
+              dataValidade={dataValidade}
+              nomeTitular={associado.nome}
+            />
+            <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Maximize2 className="h-4 w-4" />
+            </div>
+          </button>
 
           <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
             <Download className="h-4 w-4 mr-2" />
             Baixar Carteirinha (PDF)
           </Button>
         </div>
+
+        <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+          <DialogContent className="max-w-3xl p-6 sm:p-10 bg-muted/50">
+            <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
+            <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
+            <div className="flex justify-center">
+              <div className="scale-100 sm:scale-125 origin-center">
+                <CarteirinhaCard
+                  nome={dependenteLogado.nome}
+                  matricula={associado.matricula}
+                  cpf={dependenteLogado.cpf || ''}
+                  tipo="dependente"
+                  tipoParentesco={tipoLabel[dependenteLogado.tipo]}
+                  fotoUrl={dependenteLogado.foto_url}
+                  dataExpedicao={dataExpedicao}
+                  dataValidade={dataValidade}
+                  nomeTitular={associado.nome}
+                />
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     );
   }
@@ -387,18 +421,28 @@ export default function Carteirinha() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Carteirinha Display */}
         <div className="space-y-4">
-          <CarteirinhaCard
-            cardRef={cardRef}
-            nome={selectedDependente?.nome || associado.nome}
-            matricula={associado.matricula}
-            cpf={selectedDependente?.cpf || associado.cpf}
-            tipo={selectedDependente ? 'dependente' : 'titular'}
-            tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
-            fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
-            dataExpedicao={dataExpedicao}
-            dataValidade={dataValidade}
-            nomeTitular={selectedDependente ? associado.nome : undefined}
-          />
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(true)}
+            className="group relative w-full max-w-lg cursor-zoom-in transition-transform hover:scale-[1.02]"
+            aria-label="Ampliar carteirinha"
+          >
+            <CarteirinhaCard
+              cardRef={cardRef}
+              nome={selectedDependente?.nome || associado.nome}
+              matricula={associado.matricula}
+              cpf={selectedDependente?.cpf || associado.cpf}
+              tipo={selectedDependente ? 'dependente' : 'titular'}
+              tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+              fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+              dataExpedicao={dataExpedicao}
+              dataValidade={dataValidade}
+              nomeTitular={selectedDependente ? associado.nome : undefined}
+            />
+            <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Maximize2 className="h-4 w-4" />
+            </div>
+          </button>
 
           <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
             <Download className="h-4 w-4 mr-2" />
@@ -448,6 +492,28 @@ export default function Carteirinha() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl p-6 sm:p-10 bg-muted/50">
+          <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
+          <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
+          <div className="flex justify-center">
+            <div className="scale-100 sm:scale-125 origin-center">
+              <CarteirinhaCard
+                nome={selectedDependente?.nome || associado.nome}
+                matricula={associado.matricula}
+                cpf={selectedDependente?.cpf || associado.cpf}
+                tipo={selectedDependente ? 'dependente' : 'titular'}
+                tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+                fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+                dataExpedicao={dataExpedicao}
+                dataValidade={dataValidade}
+                nomeTitular={selectedDependente ? associado.nome : undefined}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
