@@ -267,6 +267,7 @@ export default function AdminAssociados() {
                 <div className="truncate"><span className="font-medium text-foreground">E-mail:</span> {r.email ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">Telefone:</span> {r.telefone ?? "—"}</div>
                 {r.cidade && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade}</div>}
+                {r.data_admissao && <div className="truncate"><span className="font-medium text-foreground">Admissão:</span> {isoToBR(r.data_admissao)}</div>}
               </div>
               <div className="flex justify-end gap-1 pt-2 border-t">
                 <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
