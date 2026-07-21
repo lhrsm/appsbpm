@@ -236,6 +236,7 @@ export type Database = {
           foto_url: string | null
           id: string
           nome: string
+          status: string
           tipo: Database["public"]["Enums"]["tipo_dependente"]
           updated_at: string
         }
@@ -248,6 +249,7 @@ export type Database = {
           foto_url?: string | null
           id?: string
           nome: string
+          status?: string
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
         }
@@ -260,6 +262,7 @@ export type Database = {
           foto_url?: string | null
           id?: string
           nome?: string
+          status?: string
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
         }
