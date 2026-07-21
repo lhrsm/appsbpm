@@ -346,6 +346,10 @@ export default function AdminAssociados() {
               </div>
             </div>
             <div>
+              <Label>Cidade</Label>
+              <Input value={editing?.cidade ?? ""} onChange={(e) => setEditing({ ...editing, cidade: e.target.value })} />
+            </div>
+            <div>
               <Label>URL da foto</Label>
               <Input value={editing?.foto_url ?? ""} onChange={(e) => setEditing({ ...editing, foto_url: e.target.value })} />
             </div>
