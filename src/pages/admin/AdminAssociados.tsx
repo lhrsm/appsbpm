@@ -123,7 +123,7 @@ export default function AdminAssociados() {
         return;
       }
       const partes = [data.logradouro, data.bairro, data.localidade, data.uf].filter(Boolean).join(", ");
-      setEditing((prev) => ({ ...(prev ?? {}), endereco: partes }));
+      setEditing((prev) => ({ ...(prev ?? {}), endereco: partes, cidade: data.localidade ?? prev?.cidade }));
       toast.success("Endereço preenchido");
     } catch {
       toast.error("Falha ao buscar CEP");
