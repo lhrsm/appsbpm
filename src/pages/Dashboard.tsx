@@ -27,6 +27,7 @@ import {
   Award,
   Calculator,
   UserCog,
+  Handshake,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -44,6 +45,7 @@ const menuItemsTitular = [
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
+  { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
 ];
 
@@ -145,7 +147,7 @@ export default function Dashboard() {
   // Redirect dependente if trying to access restricted routes
   useEffect(() => {
     if (isDependente) {
-      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada'];
+      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada', '/dashboard/indicar-parceiro', '/dashboard/simulador'];
       if (restrictedPaths.includes(location.pathname)) {
         navigate('/dashboard/carteirinha');
       }
