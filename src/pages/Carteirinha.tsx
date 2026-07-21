@@ -407,7 +407,7 @@ export default function Carteirinha() {
                     nomeTitular={associado.nome}
                   />
                 </div>
-                <p className="text-xs text-primary-foreground/70 mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
+                <p className="text-xs text-zinc-400 mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
               </div>
             </div>
           </DialogContent>
