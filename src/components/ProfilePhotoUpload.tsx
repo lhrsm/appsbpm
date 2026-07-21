@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera, Loader2, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useAssociado } from '@/contexts/AssociadoContext';
 
 interface ProfilePhotoUploadProps {
   currentPhotoUrl?: string | null;
@@ -29,6 +30,7 @@ export default function ProfilePhotoUpload({
   const [photoUrl, setPhotoUrl] = useState(currentPhotoUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { associado } = useAssociado();
 
   useEffect(() => {
     setPhotoUrl(currentPhotoUrl);
@@ -102,14 +104,22 @@ export default function ProfilePhotoUpload({
       // Add cache-busting parameter
       const urlWithCacheBust = `${publicUrl}?t=${Date.now()}`;
 
-      // Update database
-      const tableName = userType === 'associado' ? 'associados' : 'dependentes';
-      const { error: updateError } = await supabase
-        .from(tableName)
-        .update({ foto_url: publicUrl })
-        .eq('id', userId);
+      // Persistir foto_url via Edge Function (contorna RLS com autorização por matrícula)
+      if (!associado?.matricula) {
+        throw new Error('Sessão inválida: matrícula do titular não encontrada.');
+      }
+      const { data: updData, error: updateError } = await supabase.functions.invoke('update-perfil', {
+        body: {
+          tipo: userType,
+          id: userId,
+          matricula_titular: associado.matricula,
+          cpf: associado.cpf,
+          campos: { foto_url: publicUrl },
+        },
+      });
 
       if (updateError) throw updateError;
+      if (updData?.error) throw new Error(updData.error);
 
       setPhotoUrl(urlWithCacheBust);
       onPhotoUpdated?.(urlWithCacheBust);
