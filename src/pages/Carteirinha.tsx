@@ -397,7 +397,8 @@ export default function Carteirinha() {
             </button>
             <div className="flex items-center justify-center p-4">
 
-              <div className="rotate-90 sm:rotate-0 scale-[1.35] sm:scale-125 origin-center">
+              <div className="w-full sm:scale-125 origin-center">
+
                 <CarteirinhaCard
                   nome={dependenteLogado.nome}
                   matricula={associado.matricula}
