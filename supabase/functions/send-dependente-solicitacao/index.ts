@@ -38,12 +38,29 @@ Deno.serve(async (req) => {
       );
     }
     const { titular, dependente } = parsed.data;
+    const anexos = dependente.anexos || [];
+
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+    );
+
+    // Gerar signed URLs para os anexos (válidas por 7 dias)
+    const anexosLinks: { path: string; url: string }[] = [];
+    for (const p of anexos) {
+      const { data } = await supabase.storage.from(DESTINO_BUCKET).createSignedUrl(p, 60 * 60 * 24 * 7);
+      anexosLinks.push({ path: p, url: data?.signedUrl || '' });
+    }
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     let emailEnviado = false;
     let emailErro: string | null = null;
 
     if (RESEND_API_KEY) {
+      const listaLinks = anexosLinks.length
+        ? `<ul>${anexosLinks.map((a) => `<li><a href="${a.url}">${a.path.split('/').pop()}</a></li>`).join('')}</ul>`
+        : '<p>Nenhum anexo enviado.</p>';
+
       const html = `
         <h2>Nova Solicitação de Inclusão de Dependente</h2>
         <p><em>Status: <strong>Pendente de análise</strong></em></p>
