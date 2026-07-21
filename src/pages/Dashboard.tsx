@@ -149,7 +149,7 @@ export default function Dashboard() {
   // Redirect dependente if trying to access restricted routes
   useEffect(() => {
     if (isDependente) {
-      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada', '/dashboard/indicar-parceiro', '/dashboard/simulador'];
+      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada', '/dashboard/indicar-parceiro', '/dashboard/simulador', '/dashboard/peculio'];
       if (restrictedPaths.includes(location.pathname)) {
         navigate('/dashboard/carteirinha');
       }
