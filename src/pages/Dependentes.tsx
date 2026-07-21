@@ -12,7 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus, UserCheck } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -61,6 +61,7 @@ export default function Dependentes() {
   const [sucesso, setSucesso] = useState(false);
   const [deps, setDeps] = useState<DepForm[]>([emptyDep()]);
   const [excluirDep, setExcluirDep] = useState<any | null>(null);
+  const [acaoDep, setAcaoDep] = useState<'exclusao' | 'reativacao'>('exclusao');
   const [motivoExclusao, setMotivoExclusao] = useState('');
   const [enviandoExcl, setEnviandoExcl] = useState(false);
   const [sucessoExcl, setSucessoExcl] = useState(false);
@@ -196,6 +197,7 @@ export default function Dependentes() {
             parentesco: excluirDep.tipo || '',
           },
           motivo: motivoExclusao.trim(),
+          acao: acaoDep,
         },
       });
       if (error) {
@@ -295,16 +297,29 @@ export default function Dependentes() {
 
                   {!isDependente && s !== 'pendente' && (
                     <div className="mt-3 pt-3 border-t">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
-                        onClick={() => { setExcluirDep(dependente); setMotivoExclusao(''); setSucessoExcl(false); }}
-                      >
-                        <UserMinus className="h-4 w-4" />
-                        Solicitar exclusão
-                      </Button>
+                      {s === 'inativo' ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-green-700 hover:text-green-700 hover:bg-green-50 gap-2"
+                          onClick={() => { setExcluirDep(dependente); setAcaoDep('reativacao'); setMotivoExclusao(''); setSucessoExcl(false); }}
+                        >
+                          <UserCheck className="h-4 w-4" />
+                          Solicitar reativação
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                          onClick={() => { setExcluirDep(dependente); setAcaoDep('exclusao'); setMotivoExclusao(''); setSucessoExcl(false); }}
+                        >
+                          <UserMinus className="h-4 w-4" />
+                          Solicitar exclusão
+                        </Button>
+                      )}
                     </div>
                   )}
                 </CardContent>
@@ -522,7 +537,7 @@ export default function Dependentes() {
               <DialogHeader>
                 <DialogTitle className="text-center">Solicitação enviada</DialogTitle>
                 <DialogDescription className="text-center pt-1">
-                  A exclusão de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
+                  A {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
                   <strong> pendente de aprovação </strong> pelo setor responsável.
                 </DialogDescription>
               </DialogHeader>
@@ -533,13 +548,17 @@ export default function Dependentes() {
           ) : (
             <form onSubmit={handleSubmitExclusao} className="space-y-4">
               <DialogHeader>
-                <DialogTitle>Solicitar exclusão de dependente</DialogTitle>
+                <DialogTitle>
+                  Solicitar {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de dependente
+                </DialogTitle>
                 <DialogDescription>
-                  A exclusão de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
+                  A {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
                 </DialogDescription>
               </DialogHeader>
               <div>
-                <Label htmlFor="motivo-excl">Motivo da exclusão *</Label>
+                <Label htmlFor="motivo-excl">
+                  Motivo da {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} *
+                </Label>
                 <Textarea
                   id="motivo-excl"
                   value={motivoExclusao}
@@ -554,7 +573,7 @@ export default function Dependentes() {
                 <Button type="button" variant="outline" onClick={() => setExcluirDep(null)} disabled={enviandoExcl}>
                   Cancelar
                 </Button>
-                <Button type="submit" variant="destructive" disabled={enviandoExcl}>
+                <Button type="submit" variant={acaoDep === 'reativacao' ? 'default' : 'destructive'} disabled={enviandoExcl}>
                   {enviandoExcl ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : 'Enviar solicitação'}
                 </Button>
               </DialogFooter>

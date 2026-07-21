@@ -17,6 +17,7 @@ const BodySchema = z.object({
     parentesco: optionalStr(80),
   }),
   motivo: z.string().min(3).max(1000),
+  acao: z.enum(['exclusao', 'reativacao']).optional().default('exclusao'),
 });
 
 const DESTINO = 'previdencia@sbpmbahia.com.br';
@@ -32,7 +33,13 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
-    const { titular, dependente, motivo } = parsed.data;
+    const { titular, dependente, motivo, acao } = parsed.data;
+    const isReativacao = acao === 'reativacao';
+    const acaoLabel = isReativacao ? 'REATIVAÇÃO' : 'EXCLUSÃO';
+    const acaoLabelHtml = isReativacao ? 'Reativação' : 'Exclusão';
+    const notaFinal = isReativacao
+      ? 'O dependente permanecerá inativo até aprovação e reativação pelo setor responsável.'
+      : 'A exclusão só será efetivada após aprovação do setor responsável. O dependente ficará inativo, podendo ser reativado futuramente.';
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     let emailEnviado = false;
@@ -40,7 +47,7 @@ Deno.serve(async (req) => {
 
     if (RESEND_API_KEY) {
       const html = `
-        <h2>Solicitação de Exclusão de Dependente</h2>
+        <h2>Solicitação de ${acaoLabelHtml} de Dependente</h2>
         <p><em>Status: <strong>Pendente de aprovação</strong></em></p>
 
         <h3>Titular (Solicitante)</h3>
@@ -51,7 +58,7 @@ Deno.serve(async (req) => {
           <li><strong>Telefone:</strong> ${titular.telefone || '-'}</li>
         </ul>
 
-        <h3>Dependente a ser excluído</h3>
+        <h3>Dependente</h3>
         <ul>
           <li><strong>Nome:</strong> ${dependente.nome}</li>
           <li><strong>CPF:</strong> ${dependente.cpf || '-'}</li>
@@ -62,7 +69,7 @@ Deno.serve(async (req) => {
         <h3>Motivo informado</h3>
         <p>${motivo.replace(/\n/g, '<br/>')}</p>
 
-        <p style="font-size:11px;color:#666">A exclusão só será efetivada após aprovação do setor responsável.</p>
+        <p style="font-size:11px;color:#666">${notaFinal}</p>
       `;
 
       const resendRes = await fetch('https://api.resend.com/emails', {
@@ -72,7 +79,7 @@ Deno.serve(async (req) => {
           from: 'SBPM Portal do Associado <onboarding@resend.dev>',
           to: [DESTINO],
           reply_to: titular.email || undefined,
-          subject: `Solicitação de EXCLUSÃO de dependente — ${dependente.nome} (Matr. ${titular.matricula})`,
+          subject: `Solicitação de ${acaoLabel} de dependente — ${dependente.nome} (Matr. ${titular.matricula})`,
           html,
         }),
       });
