@@ -384,21 +384,19 @@ export default function Carteirinha() {
         </div>
 
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-          <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-transparent shadow-none">
+          <DialogContent className="max-w-3xl w-[95vw] max-h-[95vh] border-0 p-0 overflow-y-auto bg-transparent shadow-none">
             <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
             <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
             <button
               type="button"
               onClick={() => setPreviewOpen(false)}
               aria-label="Fechar"
-              className="absolute top-3 right-3 z-50 rounded-full bg-black/60 hover:bg-black/80 text-white p-2 transition-colors"
+              className="sticky top-3 float-right z-50 mr-3 rounded-full bg-black/60 hover:bg-black/80 text-white p-2 transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
-            <div className="flex items-center justify-center p-4">
-
-              <div className="w-full sm:scale-125 origin-center">
-
+            <div className="flex items-center justify-center p-4 sm:p-8">
+              <div className="w-full max-w-2xl [&>div]:max-w-none">
                 <CarteirinhaCard
                   nome={dependenteLogado.nome}
                   matricula={associado.matricula}
