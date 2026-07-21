@@ -314,7 +314,21 @@ export default function Dependentes() {
 
                   {!isDependente && s !== 'pendente' && (
                     <div className="mt-3 pt-3 border-t">
-                      {s === 'inativo' ? (
+                      {pendingAcao[dependente.id] ? (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2 rounded-md border border-yellow-200 bg-yellow-50 px-2.5 py-2 text-xs text-yellow-800">
+                            <Clock className="h-3.5 w-3.5 shrink-0" />
+                            <span className="font-medium">
+                              {pendingAcao[dependente.id] === 'reativacao'
+                                ? 'Solicitação de reativação iniciada'
+                                : 'Solicitação de exclusão iniciada'}
+                            </span>
+                          </div>
+                          <p className="text-[11px] leading-snug text-muted-foreground px-0.5">
+                            O dependente continuará com acesso aos serviços até que a alteração seja processada pelo setor responsável na próxima sincronização com o sistema da empresa.
+                          </p>
+                        </div>
+                      ) : s === 'inativo' ? (
                         <Button
                           type="button"
                           variant="ghost"
