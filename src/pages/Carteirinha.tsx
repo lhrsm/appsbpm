@@ -421,18 +421,28 @@ export default function Carteirinha() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Carteirinha Display */}
         <div className="space-y-4">
-          <CarteirinhaCard
-            cardRef={cardRef}
-            nome={selectedDependente?.nome || associado.nome}
-            matricula={associado.matricula}
-            cpf={selectedDependente?.cpf || associado.cpf}
-            tipo={selectedDependente ? 'dependente' : 'titular'}
-            tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
-            fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
-            dataExpedicao={dataExpedicao}
-            dataValidade={dataValidade}
-            nomeTitular={selectedDependente ? associado.nome : undefined}
-          />
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(true)}
+            className="group relative w-full max-w-lg cursor-zoom-in transition-transform hover:scale-[1.02]"
+            aria-label="Ampliar carteirinha"
+          >
+            <CarteirinhaCard
+              cardRef={cardRef}
+              nome={selectedDependente?.nome || associado.nome}
+              matricula={associado.matricula}
+              cpf={selectedDependente?.cpf || associado.cpf}
+              tipo={selectedDependente ? 'dependente' : 'titular'}
+              tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+              fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+              dataExpedicao={dataExpedicao}
+              dataValidade={dataValidade}
+              nomeTitular={selectedDependente ? associado.nome : undefined}
+            />
+            <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              <Maximize2 className="h-4 w-4" />
+            </div>
+          </button>
 
           <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
             <Download className="h-4 w-4 mr-2" />
