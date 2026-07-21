@@ -18,8 +18,11 @@ const BodySchema = z.object({
     telefone: z.string().max(30).optional().or(z.literal('')),
     email: z.string().email().max(200).optional().or(z.literal('')),
     observacoes: z.string().max(1000).optional().or(z.literal('')),
+    anexos: z.array(z.string()).max(20).optional(),
   }),
 });
+
+const DESTINO_BUCKET = 'dependentes-anexos';
 
 const DESTINO = 'previdencia@sbpmbahia.com.br';
 
