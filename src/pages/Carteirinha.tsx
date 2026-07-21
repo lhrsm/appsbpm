@@ -44,7 +44,7 @@ function CarteirinhaCard({
   return (
     <div
       ref={cardRef}
-      className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-lg shadow-xl overflow-hidden"
+      className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-3xl shadow-xl overflow-hidden"
       style={{ fontFamily: 'Arial, sans-serif' }}
     >
       {/* Header com Logo/Foto e Título */}
