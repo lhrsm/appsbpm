@@ -108,7 +108,8 @@ export default function IndicarParceiro() {
             <Button
               onClick={() => {
                 setEnviado(false);
-                setForm({ nome: '', email: '', telefone: '', cidade: '', redes_sociais: '' });
+                setForm({ nome: '', email: '', telefone: '', cidade: '' });
+                setRedes([{ tipo: 'Instagram', valor: '' }]);
                 setEstado('');
                 setCidades([]);
               }}
