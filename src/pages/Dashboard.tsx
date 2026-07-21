@@ -41,6 +41,7 @@ const menuItemsTitular = [
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
+  { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
 ];
 
 // Menu restrito para dependentes
