@@ -136,7 +136,12 @@ export default function Dependentes() {
           dependente: { ...form, anexos: anexosPaths },
         },
       });
-      if (error) throw error;
+      if (error) {
+        const ctx: any = (error as any).context;
+        let details = error.message;
+        try { if (ctx?.text) details = await ctx.text(); } catch {}
+        throw new Error(details);
+      }
       if (!data?.ok) throw new Error(data?.error || 'Falha ao enviar solicitação');
       setSucesso(true);
     } catch (err) {
