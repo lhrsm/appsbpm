@@ -22,13 +22,11 @@ export default function AdminLogin() {
   }, []);
 
   const checkAdmin = async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (data) navigate("/admin");
+    const [{ data: role }, { data: prev }] = await Promise.all([
+      supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+      supabase.from("previdencia_admins").select("user_id").eq("user_id", userId).maybeSingle(),
+    ]);
+    if (role || prev) navigate("/admin");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,20 +41,18 @@ export default function AdminLogin() {
         });
         if (error) throw error;
         toast.success("Conta criada. Um administrador precisa liberar seu acesso.");
-        if (data.user) {
+        if (data.user && email.toLowerCase() !== "previdencia@sbpmbahia.com.br") {
           // Try to become the first admin (only works if user_roles is empty via a policy — otherwise stays pending)
           await supabase.from("user_roles").insert({ user_id: data.user.id, role: "admin" as const });
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        const { data: role } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", data.user.id)
-          .eq("role", "admin")
-          .maybeSingle();
-        if (!role) {
+        const [{ data: role }, { data: prev }] = await Promise.all([
+          supabase.from("user_roles").select("role").eq("user_id", data.user.id).eq("role", "admin").maybeSingle(),
+          supabase.from("previdencia_admins").select("user_id").eq("user_id", data.user.id).maybeSingle(),
+        ]);
+        if (!role && !prev) {
           await supabase.auth.signOut();
           throw new Error("Este usuário não tem permissão de administrador.");
         }
