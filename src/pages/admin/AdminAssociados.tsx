@@ -216,7 +216,7 @@ export default function AdminAssociados() {
                 <TableCell>{r.telefone}</TableCell>
                 <TableCell>{r.ativo ? "Sim" : "Não"}</TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon" onClick={() => { setEditing(r); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
                 </TableCell>
               </TableRow>
