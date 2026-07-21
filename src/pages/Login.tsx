@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -13,6 +14,7 @@ import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 export default function Login() {
   const [credential, setCredential] = useState('');
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { 
