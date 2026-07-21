@@ -43,6 +43,15 @@ export default function Login() {
       return;
     }
 
+    if (!consent) {
+      toast({
+        title: 'Consentimento necessário',
+        description: 'Você precisa aceitar a Política de Privacidade para acessar o portal.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
