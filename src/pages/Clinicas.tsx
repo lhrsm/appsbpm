@@ -159,35 +159,64 @@ export default function Clinicas() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((c) => (
-            <Card key={c.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setDetail(c)}>
-              <CardContent className="pt-6 space-y-3">
+            <Card
+              key={c.id}
+              className="group relative overflow-hidden cursor-pointer border-border/60 hover:border-primary/40 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              onClick={() => setDetail(c)}
+            >
+              <CardContent className="p-4 flex flex-col h-full">
                 <div className="flex items-start gap-3">
                   {c.logo_url ? (
-                    <img src={c.logo_url} alt={c.nome} className="w-16 h-16 rounded object-contain bg-white border shrink-0" />
+                    <img src={c.logo_url} alt={c.nome} className="w-14 h-14 rounded-lg object-contain bg-white border shrink-0" />
                   ) : (
-                    <div className="w-16 h-16 rounded bg-primary/10 flex items-center justify-center shrink-0">
-                      <Building2 className="h-8 w-8 text-primary" />
+                    <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <Building2 className="h-7 w-7 text-primary" />
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold truncate">{c.nome}</h3>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />{c.cidade}{c.estado ? ` / ${c.estado}` : ''}
+                    <h3 className="font-semibold text-sm leading-tight line-clamp-2">{c.nome}</h3>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                      <MapPin className="h-3 w-3 shrink-0" />
+                      <span className="truncate">{c.cidade}{c.estado ? ` / ${c.estado}` : ''}</span>
                     </p>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {(c.especialidades ?? []).slice(0, 2).map((e) => <Badge key={e} variant="secondary" className="text-xs">{e}</Badge>)}
-                    </div>
                   </div>
-                  <button onClick={(e) => { e.stopPropagation(); toggleFav(c.id); }} aria-label="Favoritar">
-                    <Star className={`h-5 w-5 ${favoritos.has(c.id) ? 'fill-yellow-400 text-yellow-500' : 'text-muted-foreground'}`} />
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleFav(c.id); }}
+                    aria-label="Favoritar"
+                    className="p-1 -m-1 rounded-md hover:bg-muted/60 transition-colors"
+                  >
+                    <Star className={`h-4 w-4 ${favoritos.has(c.id) ? 'fill-yellow-400 text-yellow-500' : 'text-muted-foreground'}`} />
                   </button>
                 </div>
+
+                {(c.especialidades ?? []).length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-3">
+                    {(c.especialidades ?? []).slice(0, 3).map((e) => (
+                      <Badge key={e} variant="secondary" className="text-[10px] font-normal px-1.5 py-0">{e}</Badge>
+                    ))}
+                    {(c.especialidades ?? []).length > 3 && (
+                      <Badge variant="outline" className="text-[10px] font-normal px-1.5 py-0">+{(c.especialidades ?? []).length - 3}</Badge>
+                    )}
+                  </div>
+                )}
+
+                <div className="flex-1" />
+
                 {c.whatsapp && (
-                  <Button asChild size="sm" variant="outline" className="w-full text-green-700 border-green-300 hover:bg-green-50" onClick={(e) => e.stopPropagation()}>
-                    <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Sou associado da SBPM.')}`} target="_blank" rel="noreferrer">
-                      <MessageCircle className="h-4 w-4 mr-1" /> {c.whatsapp}
+                  <div className="mt-3 pt-3 border-t border-border/60 flex items-center justify-between gap-2">
+                    <span className="text-xs text-muted-foreground truncate">{c.whatsapp}</span>
+                    <a
+                      href={`https://wa.me/55${c.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Sou associado da SBPM.')}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="Abrir WhatsApp"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-green-700 hover:text-green-800 bg-green-50 hover:bg-green-100 border border-green-200 rounded-full px-2.5 py-1 transition-colors shrink-0"
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      WhatsApp
                     </a>
-                  </Button>
+                  </div>
                 )}
               </CardContent>
             </Card>
