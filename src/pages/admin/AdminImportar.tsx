@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Upload, FileText, Download, CheckCircle2, AlertCircle } from "lucide-react";
+import { Upload, FileText, Download, CheckCircle2, AlertCircle, FileDown } from "lucide-react";
 import { logAudit } from "@/lib/audit";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type TargetTable = "associados" | "dependentes" | "clinicas_parceiros" | "limites" | "informes_rendimentos";
+
+const PATENTES = ["Coronel","Tenente-Coronel","Major","Capitão","Tenente","Aspirante a Oficial","Subtenente","Sargento","Cabo","Soldado"];
+const PARENTESCOS = [
+  { value: "conjuge", label: "Cônjuge" },
+  { value: "filho", label: "Filho(a)" },
+  { value: "pai_mae", label: "Pai/Mãe" },
+  { value: "outro", label: "Outro" },
+];
 
 const TABLES: Record<TargetTable, { label: string; required: string[]; sample: string }> = {
   associados: {
@@ -75,6 +85,11 @@ export default function AdminImportar() {
   const [preview, setPreview] = useState<{ headers: string[]; rows: Record<string, string>[] } | null>(null);
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const [filtroPatente, setFiltroPatente] = useState<string>("todos");
+  const [filtroStatus, setFiltroStatus] = useState<string>("todos");
+  const [filtroTipo, setFiltroTipo] = useState<string>("todos");
+  const [filtroCidade, setFiltroCidade] = useState<string>("");
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const cfg = TABLES[target];
 
@@ -97,6 +112,75 @@ export default function AdminImportar() {
     a.download = `modelo_${target}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  const downloadPdf = async () => {
+    setGeneratingPdf(true);
+    try {
+      const doc = new jsPDF();
+      const now = new Date().toLocaleString("pt-BR");
+      let head: string[][] = [];
+      let body: any[][] = [];
+      let title = cfg.label;
+      let subtitle = "";
+
+      if (target === "associados") {
+        let q = supabase.from("associados").select("nome,matricula,cpf,patente,ativo,cidade").order("nome");
+        if (filtroPatente !== "todos") q = q.eq("patente", filtroPatente);
+        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
+        const { data, error } = await q;
+        if (error) throw error;
+        head = [["Nome", "Matrícula", "CPF", "Patente", "Status"]];
+        body = (data ?? []).map((r: any) => [r.nome, r.matricula, r.cpf, r.patente ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        subtitle = `Patente: ${filtroPatente === "todos" ? "Todas" : filtroPatente} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus} · Cidade: ${filtroCidade || "Todas"}`;
+      } else if (target === "dependentes") {
+        let q = supabase.from("dependentes").select("nome,cpf,tipo,ativo,associados(nome,matricula)").order("nome");
+        if (filtroTipo !== "todos") q = q.eq("tipo", filtroTipo as any);
+        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        const { data, error } = await q;
+        if (error) throw error;
+        head = [["Nome", "CPF", "Parentesco", "Titular", "Status"]];
+        body = (data ?? []).map((r: any) => [r.nome, r.cpf, PARENTESCOS.find(p => p.value === r.tipo)?.label ?? r.tipo, r.associados ? `${r.associados.nome} (${r.associados.matricula})` : "-", r.ativo ? "Ativo" : "Inativo"]);
+        subtitle = `Parentesco: ${filtroTipo === "todos" ? "Todos" : PARENTESCOS.find(p => p.value === filtroTipo)?.label} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
+      } else if (target === "clinicas_parceiros") {
+        let q = supabase.from("clinicas_parceiros").select("nome,categoria,cidade,estado,telefone,ativo").order("nome");
+        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
+        const { data, error } = await q;
+        if (error) throw error;
+        head = [["Nome", "Categoria", "Cidade/UF", "Telefone", "Status"]];
+        body = (data ?? []).map((r: any) => [r.nome, r.categoria ?? "-", `${r.cidade ?? "-"}/${r.estado ?? "-"}`, r.telefone ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        subtitle = `Cidade: ${filtroCidade || "Todas"} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
+      } else {
+        toast.info("Exportação em PDF disponível para Associados, Dependentes e Clínicas.");
+        setGeneratingPdf(false);
+        return;
+      }
+
+      doc.setFontSize(14);
+      doc.text(`SBPM — ${title}`, 14, 15);
+      doc.setFontSize(9);
+      doc.setTextColor(100);
+      if (subtitle) doc.text(subtitle, 14, 21);
+      doc.text(`Gerado em ${now} · ${body.length} registro(s)`, 14, 26);
+
+      autoTable(doc, {
+        head,
+        body,
+        startY: 30,
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [16, 122, 60] },
+      });
+
+      doc.save(`${target}_${Date.now()}.pdf`);
+      await logAudit("export_pdf", target, null, { count: body.length, filtros: { filtroPatente, filtroStatus, filtroTipo, filtroCidade } });
+      toast.success(`${body.length} registro(s) exportado(s) em PDF`);
+    } catch (e: any) {
+      toast.error(e.message ?? "Falha ao gerar PDF");
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   const normalizeRow = async (row: Record<string, string>): Promise<any> => {
@@ -172,9 +256,52 @@ export default function AdminImportar() {
           </p>
         </div>
 
+        {(target === "associados" || target === "dependentes" || target === "clinicas_parceiros") && (
+          <div className="border rounded-md p-4 bg-muted/30 space-y-3">
+            <p className="text-sm font-semibold">Filtros para exportação em PDF</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {target === "associados" && (
+                <div>
+                  <Label className="text-xs">Patente</Label>
+                  <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroPatente} onChange={(e) => setFiltroPatente(e.target.value)}>
+                    <option value="todos">Todas</option>
+                    {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </div>
+              )}
+              {target === "dependentes" && (
+                <div>
+                  <Label className="text-xs">Grau de parentesco</Label>
+                  <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroTipo} onChange={(e) => setFiltroTipo(e.target.value)}>
+                    <option value="todos">Todos</option>
+                    {PARENTESCOS.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
+                  </select>
+                </div>
+              )}
+              <div>
+                <Label className="text-xs">Status</Label>
+                <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroStatus} onChange={(e) => setFiltroStatus(e.target.value)}>
+                  <option value="todos">Todos</option>
+                  <option value="ativo">Ativos</option>
+                  <option value="inativo">Inativos</option>
+                </select>
+              </div>
+              {(target === "associados" || target === "clinicas_parceiros") && (
+                <div>
+                  <Label className="text-xs">Cidade (contém)</Label>
+                  <input className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroCidade} onChange={(e) => setFiltroCidade(e.target.value)} placeholder="Ex: Salvador" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-2 flex-wrap">
           <Button variant="outline" onClick={downloadSample}>
             <Download className="w-4 h-4 mr-2" />Baixar modelo CSV
+          </Button>
+          <Button variant="outline" onClick={downloadPdf} disabled={generatingPdf}>
+            <FileDown className="w-4 h-4 mr-2" />{generatingPdf ? "Gerando PDF..." : "Baixar em PDF"}
           </Button>
           <label className="inline-flex">
             <input type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} />
