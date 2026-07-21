@@ -12,7 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus, UserCheck } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
