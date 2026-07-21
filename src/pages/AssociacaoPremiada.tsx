@@ -361,7 +361,7 @@ export default function AssociacaoPremiada() {
                           <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
                           <SelectContent>
                             {PARENTESCOS.map((p) => (
-                              <SelectItem key={p} value={p}>{p}</SelectItem>
+                              <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
