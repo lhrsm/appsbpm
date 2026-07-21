@@ -384,14 +384,14 @@ export default function Carteirinha() {
         </div>
 
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-          <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-gradient-to-br from-zinc-900 via-neutral-900 to-zinc-800 shadow-2xl">
+          <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-white/95 backdrop-blur-xl shadow-2xl">
             <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
             <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
             <div className="relative px-6 py-12 sm:px-12 sm:py-16">
-              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+              <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, hsl(var(--muted-foreground)) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
               <div className="relative flex flex-col items-center gap-6">
-                <div className="text-center text-zinc-200">
-                  <p className="text-xs uppercase tracking-[0.3em] opacity-70">SBPM</p>
+                <div className="text-center text-foreground">
+                  <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">SBPM</p>
                   <p className="text-lg font-semibold mt-1">Carteirinha Digital</p>
                 </div>
                 <div className="scale-100 sm:scale-125 origin-center drop-shadow-2xl">
@@ -407,11 +407,12 @@ export default function Carteirinha() {
                     nomeTitular={associado.nome}
                   />
                 </div>
-                <p className="text-xs text-zinc-400 mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
+                <p className="text-xs text-muted-foreground mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
               </div>
             </div>
           </DialogContent>
         </Dialog>
+
       </div>
     );
   }
