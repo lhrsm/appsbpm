@@ -523,7 +523,7 @@ function DashboardHome() {
       {/* Seção de Ações Rápidas */}
       <div className={cn(
         "grid gap-4",
-        isDependente ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4"
+        isDependente ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4 lg:grid-cols-5"
       )}>
         <Link
           to="/dashboard/carteirinha"
@@ -558,6 +558,28 @@ function DashboardHome() {
           </Link>
         )}
 
+        {!isDependente && (
+          <Link
+            to="/dashboard/dependentes"
+            className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
+          >
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <Users className="h-6 w-6 text-primary" />
+            </div>
+            <span className="font-medium text-sm">Dependentes</span>
+          </Link>
+        )}
+
+        <Link
+          to="/dashboard/perfil"
+          className="bg-card p-4 rounded-xl border shadow-sm hover:shadow-md transition-all hover:scale-[1.02] flex flex-col items-center text-center gap-2"
+        >
+          <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <UserCog className="h-6 w-6 text-primary" />
+          </div>
+          <span className="font-medium text-sm">Meu Perfil</span>
+        </Link>
+
         <a
           href={`https://wa.me/5571985496972`}
           target="_blank"
@@ -570,6 +592,73 @@ function DashboardHome() {
           <span className="font-medium text-sm">Contato</span>
         </a>
       </div>
+
+      {/* Serviços Exclusivos do Titular */}
+      {!isDependente && (
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <Award className="h-5 w-5 text-sbpm-yellow" />
+            Serviços do Associado
+          </h3>
+          <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            <Link to="/dashboard/associacao-premiada">
+              <Card className="hover:shadow-lg transition-all hover:-translate-y-0.5 h-full">
+                <CardContent className="p-5 space-y-2">
+                  <div className="h-11 w-11 rounded-lg bg-sbpm-yellow/15 flex items-center justify-center">
+                    <Award className="h-6 w-6 text-sbpm-yellow" />
+                  </div>
+                  <p className="font-semibold">Associação Premiada</p>
+                  <p className="text-xs text-muted-foreground">
+                    Indique novos associados e ganhe o valor da mensalidade.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/dashboard/simulador">
+              <Card className="hover:shadow-lg transition-all hover:-translate-y-0.5 h-full">
+                <CardContent className="p-5 space-y-2">
+                  <div className="h-11 w-11 rounded-lg bg-sbpm-blue/15 flex items-center justify-center">
+                    <Calculator className="h-6 w-6 text-sbpm-blue" />
+                  </div>
+                  <p className="font-semibold">Simulador de Mensalidade</p>
+                  <p className="text-xs text-muted-foreground">
+                    Simule o valor da sua contribuição por patente e plano.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/dashboard/indicar-parceiro">
+              <Card className="hover:shadow-lg transition-all hover:-translate-y-0.5 h-full">
+                <CardContent className="p-5 space-y-2">
+                  <div className="h-11 w-11 rounded-lg bg-sbpm-green/15 flex items-center justify-center">
+                    <Handshake className="h-6 w-6 text-sbpm-green" />
+                  </div>
+                  <p className="font-semibold">Indicar Parceiro</p>
+                  <p className="text-xs text-muted-foreground">
+                    Indique estabelecimentos para a rede credenciada SBPM.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link to="/dashboard/peculio">
+              <Card className="hover:shadow-lg transition-all hover:-translate-y-0.5 h-full">
+                <CardContent className="p-5 space-y-2">
+                  <div className="h-11 w-11 rounded-lg bg-sbpm-red/15 flex items-center justify-center">
+                    <ShieldCheck className="h-6 w-6 text-sbpm-red" />
+                  </div>
+                  <p className="font-semibold">Pecúlio</p>
+                  <p className="text-xs text-muted-foreground">
+                    Cadastre os beneficiários do seu pecúlio.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Informações do Dependente logado */}
       {isDependente && dependenteLogado && (
