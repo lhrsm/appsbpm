@@ -23,7 +23,8 @@ import {
   Globe,
   Facebook,
   Instagram,
-  Linkedin
+  Linkedin,
+  Award
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -39,6 +40,7 @@ const menuItemsTitular = [
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
+  { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
 ];
 
 // Menu restrito para dependentes
@@ -138,7 +140,7 @@ export default function Dashboard() {
   // Redirect dependente if trying to access restricted routes
   useEffect(() => {
     if (isDependente) {
-      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes'];
+      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada'];
       if (restrictedPaths.includes(location.pathname)) {
         navigate('/dashboard/carteirinha');
       }

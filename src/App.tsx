@@ -12,6 +12,7 @@ import Carencias from "./pages/Carencias";
 import Clinicas from "./pages/Clinicas";
 import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
+import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="clinicas" element={<Clinicas />} />
               <Route path="informes" element={<Informes />} />
               <Route path="dependentes" element={<Dependentes />} />
+              <Route path="associacao-premiada" element={<AssociacaoPremiada />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
