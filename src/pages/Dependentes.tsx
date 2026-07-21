@@ -61,6 +61,7 @@ export default function Dependentes() {
   const [sucesso, setSucesso] = useState(false);
   const [deps, setDeps] = useState<DepForm[]>([emptyDep()]);
   const [excluirDep, setExcluirDep] = useState<any | null>(null);
+  const [acaoDep, setAcaoDep] = useState<'exclusao' | 'reativacao'>('exclusao');
   const [motivoExclusao, setMotivoExclusao] = useState('');
   const [enviandoExcl, setEnviandoExcl] = useState(false);
   const [sucessoExcl, setSucessoExcl] = useState(false);
