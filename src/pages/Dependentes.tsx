@@ -537,7 +537,7 @@ export default function Dependentes() {
               <DialogHeader>
                 <DialogTitle className="text-center">Solicitação enviada</DialogTitle>
                 <DialogDescription className="text-center pt-1">
-                  A exclusão de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
+                  A {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
                   <strong> pendente de aprovação </strong> pelo setor responsável.
                 </DialogDescription>
               </DialogHeader>
@@ -548,13 +548,17 @@ export default function Dependentes() {
           ) : (
             <form onSubmit={handleSubmitExclusao} className="space-y-4">
               <DialogHeader>
-                <DialogTitle>Solicitar exclusão de dependente</DialogTitle>
+                <DialogTitle>
+                  Solicitar {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de dependente
+                </DialogTitle>
                 <DialogDescription>
-                  A exclusão de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
+                  A {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
                 </DialogDescription>
               </DialogHeader>
               <div>
-                <Label htmlFor="motivo-excl">Motivo da exclusão *</Label>
+                <Label htmlFor="motivo-excl">
+                  Motivo da {acaoDep === 'reativacao' ? 'reativação' : 'exclusão'} *
+                </Label>
                 <Textarea
                   id="motivo-excl"
                   value={motivoExclusao}
@@ -569,7 +573,7 @@ export default function Dependentes() {
                 <Button type="button" variant="outline" onClick={() => setExcluirDep(null)} disabled={enviandoExcl}>
                   Cancelar
                 </Button>
-                <Button type="submit" variant="destructive" disabled={enviandoExcl}>
+                <Button type="submit" variant={acaoDep === 'reativacao' ? 'default' : 'destructive'} disabled={enviandoExcl}>
                   {enviandoExcl ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : 'Enviar solicitação'}
                 </Button>
               </DialogFooter>
