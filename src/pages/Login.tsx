@@ -159,56 +159,110 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
-      <Card className="w-full max-w-md shadow-xl border-0 animate-fade-in">
-        <CardHeader className="text-center pb-2">
-          <div className="flex justify-center mb-4">
-            <img
-              src={sbpmLogo}
-              alt="SBPM - Sociedade Beneficente da Polícia Militar"
-              className="h-32 w-auto object-contain mix-blend-multiply"
-            />
-          </div>
-          <CardTitle className="text-2xl font-bold text-primary">
-            Portal do Associado
-          </CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Acesse com sua matrícula ou CPF para consultar seus benefícios
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="credential" className="text-foreground font-medium">
-                Matrícula ou CPF
-              </Label>
-              <Input
-                id="credential"
-                type="text"
-                placeholder="Digite sua matrícula ou CPF"
-                value={credential}
-                onChange={(e) => setCredential(e.target.value)}
-                className="h-12 text-lg"
-                disabled={loading}
+    <div className="min-h-dvh flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
+      <a
+        href="#main-login"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+      >
+        Pular para o formulário de acesso
+      </a>
+      <main id="main-login" className="w-full max-w-md">
+        <Card className="w-full shadow-xl border-0 animate-fade-in">
+          <CardHeader className="text-center pb-2">
+            <div className="flex justify-center mb-4">
+              <img
+                src={sbpmLogo}
+                alt="SBPM - Sociedade Beneficente da Polícia Militar"
+                className="h-32 w-auto object-contain mix-blend-multiply"
               />
             </div>
-            <Button
-              type="submit"
-              className="w-full h-12 text-lg font-semibold"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Acessando...
-                </>
-              ) : (
-                'Acessar'
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+            <CardTitle className="text-2xl font-bold text-primary">
+              Portal do Associado
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Acesse com sua matrícula ou CPF para consultar seus benefícios
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-6" aria-label="Formulário de acesso ao Portal do Associado">
+              <div className="space-y-2">
+                <Label htmlFor="credential" className="text-foreground font-medium">
+                  Matrícula ou CPF
+                </Label>
+                <Input
+                  id="credential"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="username"
+                  placeholder="Digite sua matrícula ou CPF"
+                  value={credential}
+                  onChange={(e) => setCredential(e.target.value)}
+                  className="h-12 text-lg"
+                  disabled={loading}
+                  aria-required="true"
+                />
+              </div>
+
+              <div className="flex items-start gap-3 rounded-md border bg-muted/30 p-3">
+                <Checkbox
+                  id="lgpd-consent"
+                  checked={consent}
+                  onCheckedChange={(v) => setConsent(v === true)}
+                  disabled={loading}
+                  aria-describedby="lgpd-consent-desc"
+                  className="mt-0.5"
+                />
+                <Label
+                  htmlFor="lgpd-consent"
+                  id="lgpd-consent-desc"
+                  className="text-xs font-normal leading-relaxed text-muted-foreground cursor-pointer"
+                >
+                  Li e concordo com a{' '}
+                  <Link to="/privacidade" className="font-medium text-primary underline underline-offset-2">
+                    Política de Privacidade
+                  </Link>
+                  {' '}e autorizo o tratamento dos meus dados para uso do portal, conforme a LGPD.
+                </Label>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-12 text-lg font-semibold"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" />
+                    <span>Acessando...</span>
+                  </>
+                ) : (
+                  'Acessar'
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <nav
+          aria-label="Links institucionais"
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground"
+        >
+          <Link to="/privacidade" className="underline underline-offset-2 hover:text-foreground">
+            Política de Privacidade
+          </Link>
+          <span aria-hidden="true">·</span>
+          <Link to="/acessibilidade" className="underline underline-offset-2 hover:text-foreground">
+            Acessibilidade
+          </Link>
+          <span aria-hidden="true">·</span>
+          <a
+            href="mailto:contato@sbpmbahia.com.br?subject=LGPD%20-%20Solicita%C3%A7%C3%A3o%20de%20Titular"
+            className="underline underline-offset-2 hover:text-foreground"
+          >
+            Meus dados (LGPD)
+          </a>
+        </nav>
+      </main>
     </div>
   );
 }
