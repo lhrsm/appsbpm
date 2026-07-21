@@ -198,9 +198,41 @@ export default function AdminAssociados() {
         <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />Novo</Button>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
-        <Input placeholder="Buscar por nome..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+      <div className="flex flex-wrap gap-3 items-center">
+        <div className="relative w-full sm:w-64">
+          <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
+          <Input placeholder="Buscar por nome..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+        </div>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterPatente}
+          onChange={(e) => setFilterPatente(e.target.value)}
+        >
+          <option value="">Todas as patentes</option>
+          {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterAtivo}
+          onChange={(e) => setFilterAtivo(e.target.value)}
+        >
+          <option value="">Ativos e inativos</option>
+          <option value="true">Somente ativos</option>
+          <option value="false">Somente inativos</option>
+        </select>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterCidade}
+          onChange={(e) => setFilterCidade(e.target.value)}
+        >
+          <option value="">Todas as cidades</option>
+          {cidadesDisponiveis.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        {(filterPatente || filterAtivo || filterCidade) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterAtivo(""); setFilterCidade(""); }}>
+            Limpar filtros
+          </Button>
+        )}
       </div>
 
       <Card className="overflow-auto">
