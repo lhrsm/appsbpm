@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Upload, FileText, Download, CheckCircle2, AlertCircle } from "lucide-react";
+import { Upload, FileText, Download, CheckCircle2, AlertCircle, FileDown } from "lucide-react";
 import { logAudit } from "@/lib/audit";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 type TargetTable = "associados" | "dependentes" | "clinicas_parceiros" | "limites" | "informes_rendimentos";
+
+const PATENTES = ["Coronel","Tenente-Coronel","Major","Capitão","Tenente","Aspirante a Oficial","Subtenente","Sargento","Cabo","Soldado"];
+const PARENTESCOS = [
+  { value: "conjuge", label: "Cônjuge" },
+  { value: "filho", label: "Filho(a)" },
+  { value: "pai_mae", label: "Pai/Mãe" },
+  { value: "outro", label: "Outro" },
+];
 
 const TABLES: Record<TargetTable, { label: string; required: string[]; sample: string }> = {
   associados: {
