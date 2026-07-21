@@ -444,6 +444,45 @@ export type Database = {
           },
         ]
       }
+      peculio_solicitacoes: {
+        Row: {
+          associado_email: string | null
+          associado_matricula: string
+          associado_nome: string
+          associado_telefone: string | null
+          beneficiarios: Json
+          created_at: string
+          id: string
+          observacoes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          associado_email?: string | null
+          associado_matricula: string
+          associado_nome: string
+          associado_telefone?: string | null
+          beneficiarios: Json
+          created_at?: string
+          id?: string
+          observacoes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          associado_email?: string | null
+          associado_matricula?: string
+          associado_nome?: string
+          associado_telefone?: string | null
+          beneficiarios?: Json
+          created_at?: string
+          id?: string
+          observacoes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sync_logs: {
         Row: {
           detalhes: Json | null

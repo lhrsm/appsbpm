@@ -1,4 +1,5 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 
 const BodySchema = z.object({
@@ -42,6 +43,24 @@ Deno.serve(async (req) => {
         JSON.stringify({ error: 'A soma dos percentuais deve ser exatamente 100%.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
+    }
+    // Persistir solicitação (best-effort)
+    try {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL');
+      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+      if (supabaseUrl && serviceKey) {
+        const admin = createClient(supabaseUrl, serviceKey);
+        await admin.from('peculio_solicitacoes').insert({
+          associado_nome: associado.nome,
+          associado_matricula: associado.matricula,
+          associado_email: associado.email || null,
+          associado_telefone: associado.telefone || null,
+          beneficiarios,
+          status: 'pendente',
+        });
+      }
+    } catch (e) {
+      console.error('Falha ao persistir solicitação de pecúlio:', e);
     }
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
