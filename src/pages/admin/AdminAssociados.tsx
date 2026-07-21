@@ -118,13 +118,47 @@ export default function AdminAssociados() {
 
   const save = async () => {
     if (!editing) return;
+
+    // Validação de duplicidade (matrícula e CPF)
+    const matricula = (editing.matricula ?? "").trim();
+    const cpf = (editing.cpf ?? "").trim();
+    if (!matricula) return toast.error("Matrícula é obrigatória");
+    if (!cpf) return toast.error("CPF é obrigatório");
+
+    const dupChecks = await Promise.all([
+      supabase.from("associados").select("id").eq("matricula", matricula).maybeSingle(),
+      supabase.from("associados").select("id").eq("cpf", cpf).maybeSingle(),
+    ]);
+    const matriculaDup = dupChecks[0].data;
+    const cpfDup = dupChecks[1].data;
+    if (matriculaDup && matriculaDup.id !== editing.id) return toast.error("Já existe um associado com essa matrícula");
+    if (cpfDup && cpfDup.id !== editing.id) return toast.error("Já existe um associado com esse CPF");
+
+    // Validação/conversão de datas
     const payload: any = { ...editing };
+    for (const k of ["data_nascimento", "data_admissao"] as const) {
+      const v = payload[k];
+      if (v) {
+        const iso = brToISO(v);
+        if (!iso) return toast.error(`${k === "data_nascimento" ? "Data de nascimento" : "Data de admissão"} inválida (use dd/mm/aaaa)`);
+        payload[k] = iso;
+      } else {
+        payload[k] = null;
+      }
+    }
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
+
     const isNew = !payload.id;
     const { data, error } = isNew
       ? await supabase.from("associados").insert(payload).select().maybeSingle()
       : await supabase.from("associados").update(payload).eq("id", payload.id).select().maybeSingle();
-    if (error) return toast.error(error.message);
+    if (error) {
+      if ((error as any).code === "23505") {
+        const msg = error.message.includes("matricula") ? "Já existe um associado com essa matrícula" : "Já existe um associado com esse CPF";
+        return toast.error(msg);
+      }
+      return toast.error(error.message);
+    }
     await logAudit(isNew ? "create" : "update", "associados", (data as any)?.id ?? payload.id, payload);
     toast.success(isNew ? "Criado com sucesso" : "Atualizado");
     setOpen(false);
