@@ -197,6 +197,7 @@ export default function Dependentes() {
             parentesco: excluirDep.tipo || '',
           },
           motivo: motivoExclusao.trim(),
+          acao: acaoDep,
         },
       });
       if (error) {
