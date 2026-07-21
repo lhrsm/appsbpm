@@ -39,6 +39,11 @@ export default function Dependentes() {
   const [open, setOpen] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [anexos, setAnexos] = useState<File[]>([]);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+
+  const MAX_FILES = 10;
+  const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
   const [form, setForm] = useState({
     nome: '',
@@ -70,7 +75,44 @@ export default function Dependentes() {
       nome: '', cpf: '', data_nascimento: '', parentesco: '',
       sexo: '', telefone: '', email: '', observacoes: '',
     });
+    setAnexos([]);
     setSucesso(false);
+  };
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const combined = [...anexos, ...files].slice(0, MAX_FILES);
+    const filtered = combined.filter((f) => {
+      if (f.size > MAX_SIZE) {
+        toast.error(`"${f.name}" excede 10 MB e foi ignorado.`);
+        return false;
+      }
+      return true;
+    });
+    setAnexos(filtered);
+    e.target.value = '';
+  };
+
+  const removerAnexo = (idx: number) => {
+    setAnexos((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const uploadAnexos = async (): Promise<string[]> => {
+    const paths: string[] = [];
+    const folder = `solicitacoes/${associado?.matricula || 'anon'}/${Date.now()}`;
+    for (let i = 0; i < anexos.length; i++) {
+      setUploadingIdx(i);
+      const file = anexos[i];
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+      const path = `${folder}/${i}-${safeName}`;
+      const { error } = await supabase.storage
+        .from('dependentes-anexos')
+        .upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+      if (error) throw new Error(`Falha ao enviar "${file.name}": ${error.message}`);
+      paths.push(path);
+    }
+    setUploadingIdx(null);
+    return paths;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,6 +124,7 @@ export default function Dependentes() {
     }
     setEnviando(true);
     try {
+      const anexosPaths = anexos.length > 0 ? await uploadAnexos() : [];
       const { data, error } = await supabase.functions.invoke('send-dependente-solicitacao', {
         body: {
           titular: {
@@ -90,7 +133,7 @@ export default function Dependentes() {
             email: associado.email || '',
             telefone: associado.telefone || '',
           },
-          dependente: form,
+          dependente: { ...form, anexos: anexosPaths },
         },
       });
       if (error) throw error;
@@ -101,6 +144,7 @@ export default function Dependentes() {
       toast.error(msg);
     } finally {
       setEnviando(false);
+      setUploadingIdx(null);
     }
   };
 
