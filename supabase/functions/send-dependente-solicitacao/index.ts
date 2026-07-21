@@ -4,6 +4,18 @@ import { z } from 'npm:zod@3.23.8';
 
 const optionalStr = (max: number) => z.string().max(max).optional().or(z.literal(''));
 
+const DependenteSchema = z.object({
+  nome: z.string().min(1).max(200),
+  cpf: optionalStr(20),
+  data_nascimento: optionalStr(20),
+  parentesco: z.string().min(1).max(80),
+  sexo: optionalStr(20),
+  telefone: optionalStr(30),
+  email: optionalStr(200),
+  observacoes: optionalStr(1000),
+  anexos: z.array(z.string()).max(20).optional(),
+});
+
 const BodySchema = z.object({
   titular: z.object({
     nome: z.string().min(1).max(200),
@@ -11,21 +23,14 @@ const BodySchema = z.object({
     email: optionalStr(200),
     telefone: optionalStr(30),
   }),
-  dependente: z.object({
-    nome: z.string().min(1).max(200),
-    cpf: optionalStr(20),
-    data_nascimento: optionalStr(20),
-    parentesco: z.string().min(1).max(80),
-    sexo: optionalStr(20),
-    telefone: optionalStr(30),
-    email: optionalStr(200),
-    observacoes: optionalStr(1000),
-    anexos: z.array(z.string()).max(20).optional(),
-  }),
+  // aceita `dependente` (legado, um único) ou `dependentes` (array)
+  dependente: DependenteSchema.optional(),
+  dependentes: z.array(DependenteSchema).min(1).max(20).optional(),
+}).refine((d) => d.dependente || (d.dependentes && d.dependentes.length > 0), {
+  message: 'Informe pelo menos um dependente',
 });
 
 const DESTINO_BUCKET = 'dependentes-anexos';
-
 const DESTINO = 'previdencia@sbpmbahia.com.br';
 
 Deno.serve(async (req) => {
@@ -39,32 +44,54 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
-    const { titular, dependente } = parsed.data;
-    const anexos = dependente.anexos || [];
+    const { titular } = parsed.data;
+    const dependentes = parsed.data.dependentes ?? (parsed.data.dependente ? [parsed.data.dependente] : []);
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
 
-    // Gerar signed URLs para os anexos (válidas por 7 dias)
-    const anexosLinks: { path: string; url: string }[] = [];
-    for (const p of anexos) {
-      const { data } = await supabase.storage.from(DESTINO_BUCKET).createSignedUrl(p, 60 * 60 * 24 * 7);
-      anexosLinks.push({ path: p, url: data?.signedUrl || '' });
-    }
+    // Gerar signed URLs para os anexos de cada dependente
+    const dependentesComLinks = await Promise.all(dependentes.map(async (dep) => {
+      const anexos = dep.anexos || [];
+      const links: { path: string; url: string }[] = [];
+      for (const p of anexos) {
+        const { data } = await supabase.storage.from(DESTINO_BUCKET).createSignedUrl(p, 60 * 60 * 24 * 7);
+        links.push({ path: p, url: data?.signedUrl || '' });
+      }
+      return { dep, links };
+    }));
 
     const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     let emailEnviado = false;
     let emailErro: string | null = null;
 
     if (RESEND_API_KEY) {
-      const listaLinks = anexosLinks.length
-        ? `<ul>${anexosLinks.map((a) => `<li><a href="${a.url}">${a.path.split('/').pop()}</a></li>`).join('')}</ul>`
-        : '<p>Nenhum anexo enviado.</p>';
+      const blocosDependentes = dependentesComLinks.map(({ dep, links }, idx) => {
+        const listaLinks = links.length
+          ? `<ul>${links.map((a) => `<li><a href="${a.url}">${a.path.split('/').pop()}</a></li>`).join('')}</ul>`
+          : '<p>Nenhum anexo enviado.</p>';
+        return `
+          <h3>Dependente ${idx + 1}: ${dep.nome}</h3>
+          <ul>
+            <li><strong>Nome:</strong> ${dep.nome}</li>
+            <li><strong>CPF:</strong> ${dep.cpf || '-'}</li>
+            <li><strong>Data de Nascimento:</strong> ${dep.data_nascimento || '-'}</li>
+            <li><strong>Parentesco:</strong> ${dep.parentesco}</li>
+            <li><strong>Sexo:</strong> ${dep.sexo || '-'}</li>
+            <li><strong>Telefone:</strong> ${dep.telefone || '-'}</li>
+            <li><strong>E-mail:</strong> ${dep.email || '-'}</li>
+          </ul>
+          <p><strong>Observações:</strong><br/>${(dep.observacoes || '-').replace(/\n/g, '<br/>')}</p>
+          <p><strong>Documentos anexados (${links.length}):</strong></p>
+          ${listaLinks}
+          <hr/>
+        `;
+      }).join('');
 
       const html = `
-        <h2>Nova Solicitação de Inclusão de Dependente</h2>
+        <h2>Nova Solicitação de Inclusão de Dependente(s)</h2>
         <p><em>Status: <strong>Pendente de análise</strong></em></p>
 
         <h3>Titular (Solicitante)</h3>
@@ -75,25 +102,12 @@ Deno.serve(async (req) => {
           <li><strong>Telefone:</strong> ${titular.telefone || '-'}</li>
         </ul>
 
-        <h3>Dependente a ser incluído</h3>
-        <ul>
-          <li><strong>Nome:</strong> ${dependente.nome}</li>
-          <li><strong>CPF:</strong> ${dependente.cpf || '-'}</li>
-          <li><strong>Data de Nascimento:</strong> ${dependente.data_nascimento || '-'}</li>
-          <li><strong>Parentesco:</strong> ${dependente.parentesco}</li>
-          <li><strong>Sexo:</strong> ${dependente.sexo || '-'}</li>
-          <li><strong>Telefone:</strong> ${dependente.telefone || '-'}</li>
-          <li><strong>E-mail:</strong> ${dependente.email || '-'}</li>
-        </ul>
-
-        <h3>Observações</h3>
-        <p>${(dependente.observacoes || '-').replace(/\n/g, '<br/>')}</p>
-
-        <h3>Documentos anexados (${anexosLinks.length})</h3>
-        ${listaLinks}
+        <h3>Dependentes solicitados (${dependentesComLinks.length})</h3>
+        ${blocosDependentes}
         <p style="font-size:11px;color:#666">Os links dos anexos são válidos por 7 dias.</p>
       `;
 
+      const nomes = dependentesComLinks.map(({ dep }) => dep.nome).join(', ');
       const resendRes = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
@@ -101,7 +115,7 @@ Deno.serve(async (req) => {
           from: 'SBPM Portal do Associado <onboarding@resend.dev>',
           to: [DESTINO],
           reply_to: titular.email || undefined,
-          subject: `Solicitação de inclusão de dependente — ${dependente.nome} (Matr. ${titular.matricula})`,
+          subject: `Solicitação de inclusão de dependente(s) — ${nomes} (Matr. ${titular.matricula})`,
           html,
         }),
       });
@@ -117,7 +131,7 @@ Deno.serve(async (req) => {
     }
 
     return new Response(
-      JSON.stringify({ ok: true, email_enviado: emailEnviado, email_erro: emailErro }),
+      JSON.stringify({ ok: true, email_enviado: emailEnviado, email_erro: emailErro, total: dependentesComLinks.length }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
   } catch (err) {

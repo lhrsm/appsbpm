@@ -12,7 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,27 +34,32 @@ const PARENTESCOS = [
   'Outro',
 ];
 
+interface DepForm {
+  nome: string;
+  cpf: string;
+  data_nascimento: string;
+  parentesco: string;
+  sexo: string;
+  telefone: string;
+  email: string;
+  observacoes: string;
+  anexos: File[];
+}
+
+const emptyDep = (): DepForm => ({
+  nome: '', cpf: '', data_nascimento: '', parentesco: '',
+  sexo: '', telefone: '', email: '', observacoes: '', anexos: [],
+});
+
+const MAX_FILES = 10;
+const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+
 export default function Dependentes() {
   const { dependentes, associado, isDependente } = useAssociado();
   const [open, setOpen] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
-  const [anexos, setAnexos] = useState<File[]>([]);
-  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
-
-  const MAX_FILES = 10;
-  const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
-
-  const [form, setForm] = useState({
-    nome: '',
-    cpf: '',
-    data_nascimento: '',
-    parentesco: '',
-    sexo: '',
-    telefone: '',
-    email: '',
-    observacoes: '',
-  });
+  const [deps, setDeps] = useState<DepForm[]>([emptyDep()]);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -71,17 +76,21 @@ export default function Dependentes() {
   };
 
   const resetForm = () => {
-    setForm({
-      nome: '', cpf: '', data_nascimento: '', parentesco: '',
-      sexo: '', telefone: '', email: '', observacoes: '',
-    });
-    setAnexos([]);
+    setDeps([emptyDep()]);
     setSucesso(false);
   };
 
-  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateDep = (idx: number, patch: Partial<DepForm>) => {
+    setDeps((prev) => prev.map((d, i) => (i === idx ? { ...d, ...patch } : d)));
+  };
+
+  const addDep = () => setDeps((prev) => [...prev, emptyDep()]);
+  const removeDep = (idx: number) => setDeps((prev) => prev.filter((_, i) => i !== idx));
+
+  const handleFilesChange = (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    const combined = [...anexos, ...files].slice(0, MAX_FILES);
+    const current = deps[idx].anexos;
+    const combined = [...current, ...files].slice(0, MAX_FILES);
     const filtered = combined.filter((f) => {
       if (f.size > MAX_SIZE) {
         toast.error(`"${f.name}" excede 10 MB e foi ignorado.`);
@@ -89,20 +98,19 @@ export default function Dependentes() {
       }
       return true;
     });
-    setAnexos(filtered);
+    updateDep(idx, { anexos: filtered });
     e.target.value = '';
   };
 
-  const removerAnexo = (idx: number) => {
-    setAnexos((prev) => prev.filter((_, i) => i !== idx));
+  const removerAnexo = (idx: number, fileIdx: number) => {
+    updateDep(idx, { anexos: deps[idx].anexos.filter((_, i) => i !== fileIdx) });
   };
 
-  const uploadAnexos = async (): Promise<string[]> => {
+  const uploadAnexos = async (files: File[], depIdx: number): Promise<string[]> => {
     const paths: string[] = [];
-    const folder = `solicitacoes/${associado?.matricula || 'anon'}/${Date.now()}`;
-    for (let i = 0; i < anexos.length; i++) {
-      setUploadingIdx(i);
-      const file = anexos[i];
+    const folder = `solicitacoes/${associado?.matricula || 'anon'}/${Date.now()}/dep-${depIdx + 1}`;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       const safeName = file.name.replace(/[^\w.\-]+/g, '_');
       const path = `${folder}/${i}-${safeName}`;
       const { error } = await supabase.storage
@@ -111,20 +119,28 @@ export default function Dependentes() {
       if (error) throw new Error(`Falha ao enviar "${file.name}": ${error.message}`);
       paths.push(path);
     }
-    setUploadingIdx(null);
     return paths;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!associado) return;
-    if (!form.nome.trim() || !form.parentesco) {
-      toast.error('Preencha nome e parentesco.');
-      return;
+    for (let i = 0; i < deps.length; i++) {
+      const d = deps[i];
+      if (!d.nome.trim() || !d.parentesco) {
+        toast.error(`Preencha nome e parentesco do dependente ${i + 1}.`);
+        return;
+      }
     }
     setEnviando(true);
     try {
-      const anexosPaths = anexos.length > 0 ? await uploadAnexos() : [];
+      const payloadDeps = await Promise.all(
+        deps.map(async (d, i) => {
+          const paths = d.anexos.length > 0 ? await uploadAnexos(d.anexos, i) : [];
+          const { anexos, ...rest } = d;
+          return { ...rest, anexos: paths };
+        }),
+      );
       const { data, error } = await supabase.functions.invoke('send-dependente-solicitacao', {
         body: {
           titular: {
@@ -133,7 +149,7 @@ export default function Dependentes() {
             email: associado.email || '',
             telefone: associado.telefone || '',
           },
-          dependente: { ...form, anexos: anexosPaths },
+          dependentes: payloadDeps,
         },
       });
       if (error) {
@@ -149,7 +165,6 @@ export default function Dependentes() {
       toast.error(msg);
     } finally {
       setEnviando(false);
-      setUploadingIdx(null);
     }
   };
 
@@ -262,7 +277,7 @@ export default function Dependentes() {
 
       {/* Modal de solicitação */}
       <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) resetForm(); }}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           {sucesso ? (
             <div className="py-8 text-center space-y-4">
               <div className="flex justify-center">
@@ -273,7 +288,7 @@ export default function Dependentes() {
               <DialogHeader>
                 <DialogTitle className="text-center text-2xl">Solicitação enviada com sucesso!</DialogTitle>
                 <DialogDescription className="text-center text-base pt-2">
-                  Sua solicitação de inclusão de dependente foi recebida e está com status
+                  Sua solicitação de inclusão de {deps.length > 1 ? 'dependentes' : 'dependente'} foi recebida e está com status
                   <strong className="text-foreground"> pendente </strong>
                   de análise. Em breve o setor responsável entrará em contato.
                 </DialogDescription>
@@ -285,128 +300,154 @@ export default function Dependentes() {
           ) : (
             <>
               <DialogHeader>
-                <DialogTitle>Solicitar Inclusão de Dependente</DialogTitle>
+                <DialogTitle>Solicitar Inclusão de Dependente(s)</DialogTitle>
                 <DialogDescription>
-                  Preencha os dados do novo dependente. A solicitação ficará com status
+                  Preencha os dados do(s) novo(s) dependente(s). A solicitação ficará com status
                   <strong> pendente </strong> até a análise e autorização do setor responsável.
                 </DialogDescription>
               </DialogHeader>
 
               <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="md:col-span-2">
-                    <Label htmlFor="nome">Nome completo *</Label>
-                    <Input id="nome" value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} required maxLength={200} />
-                  </div>
-                  <div>
-                    <Label htmlFor="cpf">CPF</Label>
-                    <Input id="cpf" value={form.cpf} onChange={(e) => setForm({ ...form, cpf: e.target.value })} maxLength={20} />
-                  </div>
-                  <div>
-                    <Label htmlFor="data_nascimento">Data de Nascimento</Label>
-                    <Input id="data_nascimento" type="date" value={form.data_nascimento} onChange={(e) => setForm({ ...form, data_nascimento: e.target.value })} />
-                  </div>
-                  <div>
-                    <Label htmlFor="parentesco">Parentesco *</Label>
-                    <Select value={form.parentesco} onValueChange={(v) => setForm({ ...form, parentesco: v })}>
-                      <SelectTrigger id="parentesco"><SelectValue placeholder="Selecione" /></SelectTrigger>
-                      <SelectContent>
-                        {PARENTESCOS.map((p) => (<SelectItem key={p} value={p}>{p}</SelectItem>))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="sexo">Sexo</Label>
-                    <Select value={form.sexo} onValueChange={(v) => setForm({ ...form, sexo: v })}>
-                      <SelectTrigger id="sexo"><SelectValue placeholder="Selecione" /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Masculino">Masculino</SelectItem>
-                        <SelectItem value="Feminino">Feminino</SelectItem>
-                        <SelectItem value="Outro">Outro</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="telefone">Telefone</Label>
-                    <Input id="telefone" value={form.telefone} onChange={(e) => setForm({ ...form, telefone: e.target.value })} maxLength={30} />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="email">E-mail</Label>
-                    <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} maxLength={200} />
-                  </div>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="observacoes">Observações</Label>
-                    <Textarea id="observacoes" value={form.observacoes} onChange={(e) => setForm({ ...form, observacoes: e.target.value })} maxLength={1000} rows={3} />
-                  </div>
-
-                  <div className="md:col-span-2 space-y-2">
-                    <Label>Documentos (opcional)</Label>
-                    <p className="text-xs text-muted-foreground">
-                      Ex.: RG, CPF, certidão de nascimento/casamento, comprovante de residência.
-                      Até {MAX_FILES} arquivos, 10 MB cada. Formatos: PDF, JPG, PNG.
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <Input
-                        id="anexos-dep"
-                        type="file"
-                        multiple
-                        accept="application/pdf,image/jpeg,image/png,image/jpg"
-                        onChange={handleFilesChange}
-                        className="hidden"
-                        disabled={enviando || anexos.length >= MAX_FILES}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => document.getElementById('anexos-dep')?.click()}
-                        disabled={enviando || anexos.length >= MAX_FILES}
-                        className="gap-2"
-                      >
-                        <Paperclip className="h-4 w-4" />
-                        Anexar documentos
-                      </Button>
-                      <span className="text-xs text-muted-foreground">
-                        {anexos.length}/{MAX_FILES}
-                      </span>
+                {deps.map((form, idx) => (
+                  <div key={idx} className="border rounded-lg p-4 space-y-3 bg-muted/20 relative">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-sm text-foreground">Dependente {idx + 1}</h4>
+                      {deps.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeDep(idx)}
+                          disabled={enviando}
+                          className="text-destructive hover:text-destructive gap-1"
+                        >
+                          <Trash2 className="h-4 w-4" /> Remover
+                        </Button>
+                      )}
                     </div>
-                    {anexos.length > 0 && (
-                      <ul className="space-y-1">
-                        {anexos.map((f, i) => (
-                          <li key={i} className="flex items-center justify-between gap-2 text-sm border rounded-md px-2 py-1 bg-muted/40">
-                            <span className="truncate flex items-center gap-2">
-                              <Paperclip className="h-3 w-3 shrink-0" />
-                              <span className="truncate">{f.name}</span>
-                              <span className="text-xs text-muted-foreground shrink-0">
-                                ({(f.size / 1024).toFixed(0)} KB)
-                              </span>
-                              {uploadingIdx === i && (
-                                <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                              )}
-                            </span>
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="icon"
-                              className="h-6 w-6 shrink-0"
-                              onClick={() => removerAnexo(i)}
-                              disabled={enviando}
-                            >
-                              <XIcon className="h-3 w-3" />
-                            </Button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="md:col-span-2">
+                        <Label htmlFor={`nome-${idx}`}>Nome completo *</Label>
+                        <Input id={`nome-${idx}`} value={form.nome} onChange={(e) => updateDep(idx, { nome: e.target.value })} required maxLength={200} />
+                      </div>
+                      <div>
+                        <Label htmlFor={`cpf-${idx}`}>CPF</Label>
+                        <Input id={`cpf-${idx}`} value={form.cpf} onChange={(e) => updateDep(idx, { cpf: e.target.value })} maxLength={20} />
+                      </div>
+                      <div>
+                        <Label htmlFor={`data-${idx}`}>Data de Nascimento</Label>
+                        <Input id={`data-${idx}`} type="date" value={form.data_nascimento} onChange={(e) => updateDep(idx, { data_nascimento: e.target.value })} />
+                      </div>
+                      <div>
+                        <Label htmlFor={`parentesco-${idx}`}>Parentesco *</Label>
+                        <Select value={form.parentesco} onValueChange={(v) => updateDep(idx, { parentesco: v })}>
+                          <SelectTrigger id={`parentesco-${idx}`}><SelectValue placeholder="Selecione" /></SelectTrigger>
+                          <SelectContent>
+                            {PARENTESCOS.map((p) => (<SelectItem key={p} value={p}>{p}</SelectItem>))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label htmlFor={`sexo-${idx}`}>Sexo</Label>
+                        <Select value={form.sexo} onValueChange={(v) => updateDep(idx, { sexo: v })}>
+                          <SelectTrigger id={`sexo-${idx}`}><SelectValue placeholder="Selecione" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Masculino">Masculino</SelectItem>
+                            <SelectItem value="Feminino">Feminino</SelectItem>
+                            <SelectItem value="Outro">Outro</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <Label htmlFor={`tel-${idx}`}>Telefone</Label>
+                        <Input id={`tel-${idx}`} value={form.telefone} onChange={(e) => updateDep(idx, { telefone: e.target.value })} maxLength={30} />
+                      </div>
+                      <div className="md:col-span-2">
+                        <Label htmlFor={`email-${idx}`}>E-mail</Label>
+                        <Input id={`email-${idx}`} type="email" value={form.email} onChange={(e) => updateDep(idx, { email: e.target.value })} maxLength={200} />
+                      </div>
+                      <div className="md:col-span-2">
+                        <Label htmlFor={`obs-${idx}`}>Observações</Label>
+                        <Textarea id={`obs-${idx}`} value={form.observacoes} onChange={(e) => updateDep(idx, { observacoes: e.target.value })} maxLength={1000} rows={2} />
+                      </div>
+
+                      <div className="md:col-span-2 space-y-2">
+                        <Label>Documentos (opcional)</Label>
+                        <p className="text-xs text-muted-foreground">
+                          Até {MAX_FILES} arquivos, 10 MB cada. Formatos: PDF, JPG, PNG.
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id={`anexos-${idx}`}
+                            type="file"
+                            multiple
+                            accept="application/pdf,image/jpeg,image/png,image/jpg"
+                            onChange={(e) => handleFilesChange(idx, e)}
+                            className="hidden"
+                            disabled={enviando || form.anexos.length >= MAX_FILES}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => document.getElementById(`anexos-${idx}`)?.click()}
+                            disabled={enviando || form.anexos.length >= MAX_FILES}
+                            className="gap-2"
+                          >
+                            <Paperclip className="h-4 w-4" />
+                            Anexar documentos
+                          </Button>
+                          <span className="text-xs text-muted-foreground">
+                            {form.anexos.length}/{MAX_FILES}
+                          </span>
+                        </div>
+                        {form.anexos.length > 0 && (
+                          <ul className="space-y-1">
+                            {form.anexos.map((f, i) => (
+                              <li key={i} className="flex items-center justify-between gap-2 text-sm border rounded-md px-2 py-1 bg-background">
+                                <span className="truncate flex items-center gap-2">
+                                  <Paperclip className="h-3 w-3 shrink-0" />
+                                  <span className="truncate">{f.name}</span>
+                                  <span className="text-xs text-muted-foreground shrink-0">
+                                    ({(f.size / 1024).toFixed(0)} KB)
+                                  </span>
+                                </span>
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-6 w-6 shrink-0"
+                                  onClick={() => removerAnexo(idx, i)}
+                                  disabled={enviando}
+                                >
+                                  <XIcon className="h-3 w-3" />
+                                </Button>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={addDep}
+                  disabled={enviando}
+                  className="w-full gap-2"
+                >
+                  <Plus className="h-4 w-4" /> Adicionar outro dependente
+                </Button>
 
                 <DialogFooter className="gap-2">
                   <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={enviando}>
                     Cancelar
                   </Button>
                   <Button type="submit" disabled={enviando}>
-                    {enviando ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : 'Enviar solicitação'}
+                    {enviando ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : `Enviar solicitação${deps.length > 1 ? ` (${deps.length})` : ''}`}
                   </Button>
                 </DialogFooter>
               </form>
