@@ -60,6 +60,10 @@ export default function Dependentes() {
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [deps, setDeps] = useState<DepForm[]>([emptyDep()]);
+  const [excluirDep, setExcluirDep] = useState<any | null>(null);
+  const [motivoExclusao, setMotivoExclusao] = useState('');
+  const [enviandoExcl, setEnviandoExcl] = useState(false);
+  const [sucessoExcl, setSucessoExcl] = useState(false);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
