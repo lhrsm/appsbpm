@@ -492,6 +492,28 @@ export default function Carteirinha() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-3xl p-6 sm:p-10 bg-muted/50">
+          <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
+          <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
+          <div className="flex justify-center">
+            <div className="scale-100 sm:scale-125 origin-center">
+              <CarteirinhaCard
+                nome={selectedDependente?.nome || associado.nome}
+                matricula={associado.matricula}
+                cpf={selectedDependente?.cpf || associado.cpf}
+                tipo={selectedDependente ? 'dependente' : 'titular'}
+                tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+                fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+                dataExpedicao={dataExpedicao}
+                dataValidade={dataValidade}
+                nomeTitular={selectedDependente ? associado.nome : undefined}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
