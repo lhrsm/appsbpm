@@ -85,6 +85,11 @@ export default function AdminImportar() {
   const [preview, setPreview] = useState<{ headers: string[]; rows: Record<string, string>[] } | null>(null);
   const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<{ success: number; failed: number; errors: string[] } | null>(null);
+  const [filtroPatente, setFiltroPatente] = useState<string>("todos");
+  const [filtroStatus, setFiltroStatus] = useState<string>("todos");
+  const [filtroTipo, setFiltroTipo] = useState<string>("todos");
+  const [filtroCidade, setFiltroCidade] = useState<string>("");
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   const cfg = TABLES[target];
 
