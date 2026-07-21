@@ -99,11 +99,21 @@ export default function AdminClinicas() {
     return data;
   };
 
-  // filtros hierárquicos: cidades disponíveis dependem do estado; especialidades dependem das clínicas filtradas
+  // ao selecionar um estado no filtro, buscar cidades do IBGE
+  useEffect(() => {
+    if (fEstado !== "all") loadMunicipios(fEstado);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fEstado]);
+
+  // filtros hierárquicos: cidades = cidades do IBGE do estado + cidades já cadastradas
   const cidadesDisponiveis = useMemo(() => {
-    const src = fEstado === "all" ? rows : rows.filter((r) => r.estado === fEstado);
-    return Array.from(new Set(src.map((r) => r.cidade).filter(Boolean))).sort();
-  }, [rows, fEstado]);
+    if (fEstado === "all") {
+      return Array.from(new Set(rows.map((r) => r.cidade).filter(Boolean))).sort();
+    }
+    const cadastradas = rows.filter((r) => r.estado === fEstado).map((r) => r.cidade).filter(Boolean) as string[];
+    const ibge = (municipios[fEstado] ?? []).map((m) => m.nome);
+    return Array.from(new Set([...ibge, ...cadastradas])).sort();
+  }, [rows, fEstado, municipios]);
 
   const especialidadesDisponiveis = useMemo(() => {
     let src = rows;
