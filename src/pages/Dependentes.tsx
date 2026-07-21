@@ -172,6 +172,47 @@ export default function Dependentes() {
     }
   };
 
+  const handleSubmitExclusao = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!associado || !excluirDep) return;
+    if (motivoExclusao.trim().length < 3) {
+      toast.error('Informe o motivo da exclusão.');
+      return;
+    }
+    setEnviandoExcl(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-dependente-exclusao', {
+        body: {
+          titular: {
+            nome: associado.nome,
+            matricula: associado.matricula,
+            email: associado.email || '',
+            telefone: associado.telefone || '',
+          },
+          dependente: {
+            id: excluirDep.id,
+            nome: excluirDep.nome,
+            cpf: excluirDep.cpf || '',
+            parentesco: excluirDep.tipo || '',
+          },
+          motivo: motivoExclusao.trim(),
+        },
+      });
+      if (error) {
+        const ctx: any = (error as any).context;
+        let details = error.message;
+        try { if (ctx?.text) details = await ctx.text(); } catch {}
+        throw new Error(details);
+      }
+      if (!data?.ok) throw new Error(data?.error || 'Falha ao enviar solicitação');
+      setSucessoExcl(true);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao enviar solicitação');
+    } finally {
+      setEnviandoExcl(false);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
