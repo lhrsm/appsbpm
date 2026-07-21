@@ -25,12 +25,12 @@ export default function IndicarParceiro() {
   const [enviado, setEnviado] = useState(false);
   const [estado, setEstado] = useState('');
   const [cidades, setCidades] = useState<string[]>([]);
+  const [redes, setRedes] = useState<RedeSocial[]>([{ tipo: 'Instagram', valor: '' }]);
   const [form, setForm] = useState({
     nome: '',
     email: '',
     telefone: '',
     cidade: '',
-    redes_sociais: '',
   });
 
   const carregarCidades = async (uf: string) => {
