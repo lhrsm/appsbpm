@@ -333,6 +333,67 @@ export default function Dependentes() {
                     <Label htmlFor="observacoes">Observações</Label>
                     <Textarea id="observacoes" value={form.observacoes} onChange={(e) => setForm({ ...form, observacoes: e.target.value })} maxLength={1000} rows={3} />
                   </div>
+
+                  <div className="md:col-span-2 space-y-2">
+                    <Label>Documentos (opcional)</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Ex.: RG, CPF, certidão de nascimento/casamento, comprovante de residência.
+                      Até {MAX_FILES} arquivos, 10 MB cada. Formatos: PDF, JPG, PNG.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="anexos-dep"
+                        type="file"
+                        multiple
+                        accept="application/pdf,image/jpeg,image/png,image/jpg"
+                        onChange={handleFilesChange}
+                        className="hidden"
+                        disabled={enviando || anexos.length >= MAX_FILES}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById('anexos-dep')?.click()}
+                        disabled={enviando || anexos.length >= MAX_FILES}
+                        className="gap-2"
+                      >
+                        <Paperclip className="h-4 w-4" />
+                        Anexar documentos
+                      </Button>
+                      <span className="text-xs text-muted-foreground">
+                        {anexos.length}/{MAX_FILES}
+                      </span>
+                    </div>
+                    {anexos.length > 0 && (
+                      <ul className="space-y-1">
+                        {anexos.map((f, i) => (
+                          <li key={i} className="flex items-center justify-between gap-2 text-sm border rounded-md px-2 py-1 bg-muted/40">
+                            <span className="truncate flex items-center gap-2">
+                              <Paperclip className="h-3 w-3 shrink-0" />
+                              <span className="truncate">{f.name}</span>
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                ({(f.size / 1024).toFixed(0)} KB)
+                              </span>
+                              {uploadingIdx === i && (
+                                <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                              )}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 shrink-0"
+                              onClick={() => removerAnexo(i)}
+                              disabled={enviando}
+                            >
+                              <XIcon className="h-3 w-3" />
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </div>
 
                 <DialogFooter className="gap-2">
