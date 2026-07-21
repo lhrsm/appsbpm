@@ -12,6 +12,7 @@ import Carencias from "./pages/Carencias";
 import Clinicas from "./pages/Clinicas";
 import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
+import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
