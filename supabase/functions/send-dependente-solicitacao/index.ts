@@ -86,6 +86,10 @@ Deno.serve(async (req) => {
 
         <h3>Observações</h3>
         <p>${(dependente.observacoes || '-').replace(/\n/g, '<br/>')}</p>
+
+        <h3>Documentos anexados (${anexosLinks.length})</h3>
+        ${listaLinks}
+        <p style="font-size:11px;color:#666">Os links dos anexos são válidos por 7 dias.</p>
       `;
 
       const resendRes = await fetch('https://api.resend.com/emails', {
