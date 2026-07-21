@@ -12,7 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2 } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -39,6 +39,11 @@ export default function Dependentes() {
   const [open, setOpen] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
+  const [anexos, setAnexos] = useState<File[]>([]);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+
+  const MAX_FILES = 10;
+  const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
   const [form, setForm] = useState({
     nome: '',
@@ -70,7 +75,44 @@ export default function Dependentes() {
       nome: '', cpf: '', data_nascimento: '', parentesco: '',
       sexo: '', telefone: '', email: '', observacoes: '',
     });
+    setAnexos([]);
     setSucesso(false);
+  };
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const combined = [...anexos, ...files].slice(0, MAX_FILES);
+    const filtered = combined.filter((f) => {
+      if (f.size > MAX_SIZE) {
+        toast.error(`"${f.name}" excede 10 MB e foi ignorado.`);
+        return false;
+      }
+      return true;
+    });
+    setAnexos(filtered);
+    e.target.value = '';
+  };
+
+  const removerAnexo = (idx: number) => {
+    setAnexos((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const uploadAnexos = async (): Promise<string[]> => {
+    const paths: string[] = [];
+    const folder = `solicitacoes/${associado?.matricula || 'anon'}/${Date.now()}`;
+    for (let i = 0; i < anexos.length; i++) {
+      setUploadingIdx(i);
+      const file = anexos[i];
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+      const path = `${folder}/${i}-${safeName}`;
+      const { error } = await supabase.storage
+        .from('dependentes-anexos')
+        .upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+      if (error) throw new Error(`Falha ao enviar "${file.name}": ${error.message}`);
+      paths.push(path);
+    }
+    setUploadingIdx(null);
+    return paths;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,6 +124,7 @@ export default function Dependentes() {
     }
     setEnviando(true);
     try {
+      const anexosPaths = anexos.length > 0 ? await uploadAnexos() : [];
       const { data, error } = await supabase.functions.invoke('send-dependente-solicitacao', {
         body: {
           titular: {
@@ -90,7 +133,7 @@ export default function Dependentes() {
             email: associado.email || '',
             telefone: associado.telefone || '',
           },
-          dependente: form,
+          dependente: { ...form, anexos: anexosPaths },
         },
       });
       if (error) throw error;
@@ -101,6 +144,7 @@ export default function Dependentes() {
       toast.error(msg);
     } finally {
       setEnviando(false);
+      setUploadingIdx(null);
     }
   };
 
@@ -288,6 +332,67 @@ export default function Dependentes() {
                   <div className="md:col-span-2">
                     <Label htmlFor="observacoes">Observações</Label>
                     <Textarea id="observacoes" value={form.observacoes} onChange={(e) => setForm({ ...form, observacoes: e.target.value })} maxLength={1000} rows={3} />
+                  </div>
+
+                  <div className="md:col-span-2 space-y-2">
+                    <Label>Documentos (opcional)</Label>
+                    <p className="text-xs text-muted-foreground">
+                      Ex.: RG, CPF, certidão de nascimento/casamento, comprovante de residência.
+                      Até {MAX_FILES} arquivos, 10 MB cada. Formatos: PDF, JPG, PNG.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="anexos-dep"
+                        type="file"
+                        multiple
+                        accept="application/pdf,image/jpeg,image/png,image/jpg"
+                        onChange={handleFilesChange}
+                        className="hidden"
+                        disabled={enviando || anexos.length >= MAX_FILES}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => document.getElementById('anexos-dep')?.click()}
+                        disabled={enviando || anexos.length >= MAX_FILES}
+                        className="gap-2"
+                      >
+                        <Paperclip className="h-4 w-4" />
+                        Anexar documentos
+                      </Button>
+                      <span className="text-xs text-muted-foreground">
+                        {anexos.length}/{MAX_FILES}
+                      </span>
+                    </div>
+                    {anexos.length > 0 && (
+                      <ul className="space-y-1">
+                        {anexos.map((f, i) => (
+                          <li key={i} className="flex items-center justify-between gap-2 text-sm border rounded-md px-2 py-1 bg-muted/40">
+                            <span className="truncate flex items-center gap-2">
+                              <Paperclip className="h-3 w-3 shrink-0" />
+                              <span className="truncate">{f.name}</span>
+                              <span className="text-xs text-muted-foreground shrink-0">
+                                ({(f.size / 1024).toFixed(0)} KB)
+                              </span>
+                              {uploadingIdx === i && (
+                                <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                              )}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 shrink-0"
+                              onClick={() => removerAnexo(i)}
+                              disabled={enviando}
+                            >
+                              <XIcon className="h-3 w-3" />
+                            </Button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
