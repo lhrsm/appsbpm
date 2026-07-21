@@ -1,0 +1,1 @@
+UPDATE public.clinicas_parceiros SET estado = 'BA' WHERE estado IS NULL;
