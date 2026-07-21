@@ -308,6 +308,57 @@ export type Database = {
           },
         ]
       }
+      indicacoes_premiadas: {
+        Row: {
+          associado_email: string | null
+          associado_matricula: string
+          associado_nome: string
+          created_at: string
+          email_enviado: boolean
+          id: string
+          indicado_cidade: string | null
+          indicado_cpf: string | null
+          indicado_email: string | null
+          indicado_nome: string
+          indicado_telefone: string
+          observacoes: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          associado_email?: string | null
+          associado_matricula: string
+          associado_nome: string
+          created_at?: string
+          email_enviado?: boolean
+          id?: string
+          indicado_cidade?: string | null
+          indicado_cpf?: string | null
+          indicado_email?: string | null
+          indicado_nome: string
+          indicado_telefone: string
+          observacoes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          associado_email?: string | null
+          associado_matricula?: string
+          associado_nome?: string
+          created_at?: string
+          email_enviado?: boolean
+          id?: string
+          indicado_cidade?: string | null
+          indicado_cpf?: string | null
+          indicado_email?: string | null
+          indicado_nome?: string
+          indicado_telefone?: string
+          observacoes?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       informes_rendimentos: {
         Row: {
           ano: number
