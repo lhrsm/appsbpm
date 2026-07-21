@@ -32,6 +32,9 @@ import AdminAniversariantes from "./pages/admin/AdminAniversariantes";
 import AdminComunicados from "./pages/admin/AdminComunicados";
 import AdminImportar from "./pages/admin/AdminImportar";
 import AdminAuditoria from "./pages/admin/AdminAuditoria";
+import Privacidade from "./pages/Privacidade";
+import Acessibilidade from "./pages/Acessibilidade";
+import CookieConsent from "./components/CookieConsent";
 
 const queryClient = new QueryClient();
 
@@ -42,8 +45,11 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <CookieConsent />
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/privacidade" element={<Privacidade />} />
+            <Route path="/acessibilidade" element={<Acessibilidade />} />
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
