@@ -20,15 +20,24 @@ interface Dep {
 }
 
 const PARENTESCOS = [
-  'Cônjuge / Companheiro(a)',
-  'Filho(a)',
-  'Enteado(a)',
-  'Pai',
-  'Mãe',
-  'Irmão / Irmã',
-  'Neto(a)',
-  'Avô / Avó',
-  'Outro',
+  { label: 'Cônjuge ou Companheiro(a) — 5%', value: 'Cônjuge ou Companheiro(a) (5%)' },
+  { label: 'Avós — 14%', value: 'Avós (14%)' },
+  { label: 'Cunhado(a) — 10%', value: 'Cunhado(a) (10%)' },
+  { label: 'Irmão / Irmã — 10%', value: 'Irmão / Irmã (10%)' },
+  { label: 'Padrasto / Madrasta — 14%', value: 'Padrasto / Madrasta (14%)' },
+  { label: 'Pai / Mãe — 14%', value: 'Pai / Mãe (14%)' },
+  { label: 'Sogro / Sogra — 14%', value: 'Sogro / Sogra (14%)' },
+  { label: 'Tio / Tia — 14%', value: 'Tio / Tia (14%)' },
+  { label: 'Bisneto(a) — até 30 anos — 5%', value: 'Bisneto(a) até 30 anos (5%)' },
+  { label: 'Bisneto(a) — acima de 30 anos — 8%', value: 'Bisneto(a) acima de 30 anos (8%)' },
+  { label: 'Filho(a) / Enteado(a) — até 30 anos — 5%', value: 'Filho(a) / Enteado(a) até 30 anos (5%)' },
+  { label: 'Filho(a) / Enteado(a) — acima de 30 anos — 8%', value: 'Filho(a) / Enteado(a) acima de 30 anos (8%)' },
+  { label: 'Genro / Nora — até 30 anos — 5%', value: 'Genro / Nora até 30 anos (5%)' },
+  { label: 'Genro / Nora — acima de 30 anos — 8%', value: 'Genro / Nora acima de 30 anos (8%)' },
+  { label: 'Neto(a) / Neto(a) enteado(a) — até 30 anos — 5%', value: 'Neto(a) até 30 anos (5%)' },
+  { label: 'Neto(a) / Neto(a) enteado(a) — acima de 30 anos — 8%', value: 'Neto(a) acima de 30 anos (8%)' },
+  { label: 'Sobrinho(a) — até 30 anos — 5%', value: 'Sobrinho(a) até 30 anos (5%)' },
+  { label: 'Sobrinho(a) — acima de 30 anos — 8%', value: 'Sobrinho(a) acima de 30 anos (8%)' },
 ];
 
 const ACCEPT = '.pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg';
@@ -352,7 +361,7 @@ export default function AssociacaoPremiada() {
                           <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
                           <SelectContent>
                             {PARENTESCOS.map((p) => (
-                              <SelectItem key={p} value={p}>{p}</SelectItem>
+                              <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
