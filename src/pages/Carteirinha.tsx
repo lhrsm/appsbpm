@@ -496,34 +496,27 @@ export default function Carteirinha() {
       </div>
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-white/95 backdrop-blur-xl shadow-2xl">
+        <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-transparent shadow-none">
           <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
           <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
-          <div className="relative px-6 py-12 sm:px-12 sm:py-16">
-            <div className="absolute inset-0 opacity-40 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, hsl(var(--muted-foreground)) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-            <div className="relative flex flex-col items-center gap-6">
-              <div className="text-center text-foreground">
-                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">SBPM</p>
-                <p className="text-lg font-semibold mt-1">Carteirinha Digital</p>
-              </div>
-              <div className="scale-100 sm:scale-125 origin-center drop-shadow-2xl">
-                <CarteirinhaCard
-                  nome={selectedDependente?.nome || associado.nome}
-                  matricula={associado.matricula}
-                  cpf={selectedDependente?.cpf || associado.cpf}
-                  tipo={selectedDependente ? 'dependente' : 'titular'}
-                  tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
-                  fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
-                  dataExpedicao={dataExpedicao}
-                  dataValidade={dataValidade}
-                  nomeTitular={selectedDependente ? associado.nome : undefined}
-                />
-              </div>
-              <p className="text-xs text-muted-foreground mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
+          <div className="flex items-center justify-center p-4">
+            <div className="rotate-90 sm:rotate-0 scale-[1.35] sm:scale-125 origin-center">
+              <CarteirinhaCard
+                nome={selectedDependente?.nome || associado.nome}
+                matricula={associado.matricula}
+                cpf={selectedDependente?.cpf || associado.cpf}
+                tipo={selectedDependente ? 'dependente' : 'titular'}
+                tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+                fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+                dataExpedicao={dataExpedicao}
+                dataValidade={dataValidade}
+                nomeTitular={selectedDependente ? associado.nome : undefined}
+              />
             </div>
           </div>
         </DialogContent>
       </Dialog>
+
 
     </div>
   );
