@@ -23,7 +23,8 @@ import {
   Globe,
   Facebook,
   Instagram,
-  Linkedin
+  Linkedin,
+  Award
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
