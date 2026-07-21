@@ -56,7 +56,7 @@ export default function AdminDependentes() {
     setLoading(true);
     let q = supabase.from("dependentes").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
-    if (filterTipo) q = q.eq("tipo", filterTipo);
+    if (filterTipo) q = q.eq("tipo", filterTipo as any);
     if (filterAtivo === "true") q = q.eq("ativo", true);
     if (filterAtivo === "false") q = q.eq("ativo", false);
     const { data, error } = await q;
