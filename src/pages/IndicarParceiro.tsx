@@ -70,7 +70,7 @@ export default function IndicarParceiro() {
             telefone: form.telefone,
             estado,
             cidade: form.cidade,
-            redes_sociais: form.redes_sociais,
+            redes_sociais: redes.filter(r => r.valor.trim()).map(r => `${r.tipo}: ${r.valor.trim()}`).join('\n'),
           },
         },
       });
