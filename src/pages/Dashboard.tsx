@@ -28,6 +28,7 @@ import {
   Calculator,
   UserCog,
   Handshake,
+  ShieldCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
