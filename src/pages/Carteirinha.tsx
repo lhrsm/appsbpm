@@ -201,7 +201,7 @@ export default function Carteirinha() {
               width: 85.6mm;
               height: 53.98mm;
               border: 1px solid #ccc;
-              border-radius: 4mm;
+              border-radius: 6mm;
               overflow: hidden;
               background: white;
             }
