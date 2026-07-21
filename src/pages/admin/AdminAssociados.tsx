@@ -235,43 +235,47 @@ export default function AdminAssociados() {
         )}
       </div>
 
-      <Card className="overflow-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Matrícula</TableHead>
-              <TableHead>Nome</TableHead>
-              <TableHead>CPF</TableHead>
-              <TableHead>Patente</TableHead>
-              <TableHead>E-mail</TableHead>
-              <TableHead>Telefone</TableHead>
-              <TableHead>Ativo</TableHead>
-              <TableHead className="w-32">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow><TableCell colSpan={8} className="text-center py-8">Carregando...</TableCell></TableRow>
-            ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Nenhum registro</TableCell></TableRow>
-            ) : rows.map((r) => (
-              <TableRow key={r.id}>
-                <TableCell>{r.matricula}</TableCell>
-                <TableCell className="max-w-[220px] truncate">{r.nome}</TableCell>
-                <TableCell>{r.cpf}</TableCell>
-                <TableCell>{r.patente ?? ""}</TableCell>
-                <TableCell className="max-w-[200px] truncate">{r.email}</TableCell>
-                <TableCell>{r.telefone}</TableCell>
-                <TableCell>{r.ativo ? "Sim" : "Não"}</TableCell>
-                <TableCell>
-                  <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
-                  <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Card>
+      {loading ? (
+        <div className="text-center py-12 text-muted-foreground">Carregando...</div>
+      ) : rows.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground">Nenhum registro</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {rows.map((r) => (
+            <Card key={r.id} className="p-4 flex flex-col gap-3 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
+                  {r.foto_url ? (
+                    <img src={r.foto_url} alt={r.nome} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-lg font-semibold text-muted-foreground">
+                      {(r.nome ?? "?").charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold truncate">{r.nome}</div>
+                  <div className="text-xs text-muted-foreground">Matrícula: {r.matricula}</div>
+                  {r.patente && <div className="text-xs text-muted-foreground truncate">{r.patente}</div>}
+                </div>
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${r.ativo ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}>
+                  {r.ativo ? "Ativo" : "Inativo"}
+                </span>
+              </div>
+              <div className="text-xs space-y-1 text-muted-foreground">
+                <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf ?? "—"}</div>
+                <div className="truncate"><span className="font-medium text-foreground">E-mail:</span> {r.email ?? "—"}</div>
+                <div className="truncate"><span className="font-medium text-foreground">Telefone:</span> {r.telefone ?? "—"}</div>
+                {r.cidade && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade}</div>}
+              </div>
+              <div className="flex justify-end gap-1 pt-2 border-t">
+                <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">

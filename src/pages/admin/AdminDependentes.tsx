@@ -130,44 +130,56 @@ export default function AdminDependentes() {
         )}
       </div>
 
-      <Card className="overflow-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nome</TableHead>
-              <TableHead>Titular</TableHead>
-              <TableHead>CPF</TableHead>
-              <TableHead>Parentesco</TableHead>
-              <TableHead>Ativo</TableHead>
-              <TableHead className="w-32">Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow><TableCell colSpan={6} className="text-center py-8">Carregando...</TableCell></TableRow>
-            ) : rows.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">Nenhum registro</TableCell></TableRow>
-            ) : rows.map((r) => {
-              const titular = r.associado_id ? assocMap[r.associado_id] : null;
-              return (
-                <TableRow key={r.id}>
-                  <TableCell className="max-w-[220px] truncate">{r.nome}</TableCell>
-                  <TableCell className="max-w-[240px] truncate">
-                    {titular ? `${titular.matricula} — ${titular.nome}` : <span className="text-muted-foreground">—</span>}
-                  </TableCell>
-                  <TableCell>{r.cpf}</TableCell>
-                  <TableCell>{tipoLabel(r.tipo)}</TableCell>
-                  <TableCell>{r.ativo ? "Sim" : "Não"}</TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon" onClick={() => { setEditing(r); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
-                    <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Card>
+      {loading ? (
+        <div className="text-center py-12 text-muted-foreground">Carregando...</div>
+      ) : rows.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground">Nenhum registro</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {rows.map((r) => {
+            const titular = r.associado_id ? assocMap[r.associado_id] : null;
+            return (
+              <Card key={r.id} className="p-4 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-3">
+                  <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center overflow-hidden shrink-0">
+                    {r.foto_url ? (
+                      <img src={r.foto_url} alt={r.nome} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-lg font-semibold text-muted-foreground">
+                        {(r.nome ?? "?").charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold truncate">{r.nome}</div>
+                    <div className="text-xs text-muted-foreground">{tipoLabel(r.tipo)}</div>
+                  </div>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${r.ativo ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}>
+                    {r.ativo ? "Ativo" : "Inativo"}
+                  </span>
+                </div>
+                <div className="text-xs space-y-1 text-muted-foreground">
+                  <div className="truncate">
+                    <span className="font-medium text-foreground">Titular:</span>{" "}
+                    {titular ? `${titular.matricula} — ${titular.nome}` : "—"}
+                  </div>
+                  <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf ?? "—"}</div>
+                  {r.data_nascimento && (
+                    <div className="truncate">
+                      <span className="font-medium text-foreground">Nascimento:</span>{" "}
+                      {new Date(r.data_nascimento).toLocaleDateString("pt-BR")}
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-end gap-1 pt-2 border-t">
+                  <Button variant="ghost" size="icon" onClick={() => { setEditing(r); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                  <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
