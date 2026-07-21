@@ -36,6 +36,7 @@ import AdminAniversariantes from "./pages/admin/AdminAniversariantes";
 import AdminComunicados from "./pages/admin/AdminComunicados";
 import AdminImportar from "./pages/admin/AdminImportar";
 import AdminAuditoria from "./pages/admin/AdminAuditoria";
+import AdminPeculio from "./pages/admin/AdminPeculio";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
 import CookieConsent from "./components/CookieConsent";
