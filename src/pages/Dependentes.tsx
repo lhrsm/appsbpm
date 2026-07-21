@@ -206,62 +206,70 @@ export default function Dependentes() {
 
       {/* Lista */}
       {dependentes.length > 0 ? (
-        <div className="grid gap-4">
-          {dependentes.map((dependente) => (
-            <Card key={dependente.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center overflow-hidden shrink-0">
-                    {dependente.foto_url ? (
-                      <img src={dependente.foto_url} alt={dependente.nome} className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="h-8 w-8 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-start justify-between gap-2 flex-wrap">
-                      <div>
-                        <h3 className="font-semibold text-lg text-foreground">{dependente.nome}</h3>
-                        <div className="flex gap-2 flex-wrap mt-1">
-                          <Badge className={tipoColor[dependente.tipo]}>{tipoLabel[dependente.tipo]}</Badge>
-                          {(() => {
-                            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
-                            const styles: Record<string, string> = {
-                              ativo: 'bg-green-100 text-green-700 border-green-200',
-                              inativo: 'bg-red-100 text-red-700 border-red-200',
-                              pendente: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-                            };
-                            const labels: Record<string, string> = {
-                              ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente',
-                            };
-                            return (
-                              <Badge variant="outline" className={styles[s] || ''}>
-                                {labels[s] || s}
-                              </Badge>
-                            );
-                          })()}
-                        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {dependentes.map((dependente) => {
+            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
+            const styles: Record<string, string> = {
+              ativo: 'bg-green-100 text-green-700 border-green-200',
+              inativo: 'bg-red-100 text-red-700 border-red-200',
+              pendente: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+            };
+            const labels: Record<string, string> = { ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente' };
+            return (
+              <Card key={dependente.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-5 pb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center overflow-hidden shrink-0">
+                      {dependente.foto_url ? (
+                        <img src={dependente.foto_url} alt={dependente.nome} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="h-6 w-6 text-muted-foreground" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground truncate" title={dependente.nome}>
+                        {dependente.nome}
+                      </h3>
+                      <div className="flex gap-1.5 flex-wrap mt-1">
+                        <Badge className={`${tipoColor[dependente.tipo]} text-xs`}>{tipoLabel[dependente.tipo]}</Badge>
+                        <Badge variant="outline" className={`${styles[s] || ''} text-xs`}>{labels[s] || s}</Badge>
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
-                      {dependente.cpf && (
-                        <div>
-                          <span className="font-medium">CPF:</span>{' '}
-                          {dependente.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '***.$2.$3-**')}
-                        </div>
-                      )}
-                      {dependente.data_nascimento && (
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{format(new Date(dependente.data_nascimento), 'dd/MM/yyyy', { locale: ptBR })}</span>
-                        </div>
-                      )}
-                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+                    {dependente.cpf && (
+                      <div className="truncate">
+                        <span className="font-medium">CPF:</span>{' '}
+                        {dependente.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '***.$2.$3-**')}
+                      </div>
+                    )}
+                    {dependente.data_nascimento && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{format(new Date(dependente.data_nascimento), 'dd/MM/yyyy', { locale: ptBR })}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {!isDependente && s !== 'pendente' && (
+                    <div className="mt-3 pt-3 border-t">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                        onClick={() => { setExcluirDep(dependente); setMotivoExclusao(''); setSucessoExcl(false); }}
+                      >
+                        <UserMinus className="h-4 w-4" />
+                        Solicitar exclusão
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <Card>
