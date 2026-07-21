@@ -492,6 +492,21 @@ export type Database = {
         }
         Relationships: []
       }
+      previdencia_admins: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sync_logs: {
         Row: {
           detalhes: Json | null
@@ -674,6 +689,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_previdencia_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin"
