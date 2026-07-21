@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX IF NOT EXISTS associados_matricula_unique ON public.associados (matricula);
+CREATE UNIQUE INDEX IF NOT EXISTS associados_cpf_unique ON public.associados (cpf) WHERE cpf IS NOT NULL;
