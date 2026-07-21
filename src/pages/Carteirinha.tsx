@@ -384,22 +384,30 @@ export default function Carteirinha() {
         </div>
 
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-          <DialogContent className="max-w-3xl p-6 sm:p-10 bg-muted/50">
+          <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-gradient-to-br from-primary/95 via-primary to-primary/80 shadow-2xl">
             <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
             <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
-            <div className="flex justify-center">
-              <div className="scale-100 sm:scale-125 origin-center">
-                <CarteirinhaCard
-                  nome={dependenteLogado.nome}
-                  matricula={associado.matricula}
-                  cpf={dependenteLogado.cpf || ''}
-                  tipo="dependente"
-                  tipoParentesco={tipoLabel[dependenteLogado.tipo]}
-                  fotoUrl={dependenteLogado.foto_url}
-                  dataExpedicao={dataExpedicao}
-                  dataValidade={dataValidade}
-                  nomeTitular={associado.nome}
-                />
+            <div className="relative px-6 py-12 sm:px-12 sm:py-16">
+              <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+              <div className="relative flex flex-col items-center gap-6">
+                <div className="text-center text-primary-foreground/90">
+                  <p className="text-xs uppercase tracking-[0.3em] opacity-70">SBPM</p>
+                  <p className="text-lg font-semibold mt-1">Carteirinha Digital</p>
+                </div>
+                <div className="scale-100 sm:scale-125 origin-center drop-shadow-2xl">
+                  <CarteirinhaCard
+                    nome={dependenteLogado.nome}
+                    matricula={associado.matricula}
+                    cpf={dependenteLogado.cpf || ''}
+                    tipo="dependente"
+                    tipoParentesco={tipoLabel[dependenteLogado.tipo]}
+                    fotoUrl={dependenteLogado.foto_url}
+                    dataExpedicao={dataExpedicao}
+                    dataValidade={dataValidade}
+                    nomeTitular={associado.nome}
+                  />
+                </div>
+                <p className="text-xs text-primary-foreground/70 mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
               </div>
             </div>
           </DialogContent>
@@ -494,22 +502,30 @@ export default function Carteirinha() {
       </div>
 
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="max-w-3xl p-6 sm:p-10 bg-muted/50">
+        <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-gradient-to-br from-primary/95 via-primary to-primary/80 shadow-2xl">
           <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
           <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
-          <div className="flex justify-center">
-            <div className="scale-100 sm:scale-125 origin-center">
-              <CarteirinhaCard
-                nome={selectedDependente?.nome || associado.nome}
-                matricula={associado.matricula}
-                cpf={selectedDependente?.cpf || associado.cpf}
-                tipo={selectedDependente ? 'dependente' : 'titular'}
-                tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
-                fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
-                dataExpedicao={dataExpedicao}
-                dataValidade={dataValidade}
-                nomeTitular={selectedDependente ? associado.nome : undefined}
-              />
+          <div className="relative px-6 py-12 sm:px-12 sm:py-16">
+            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, white 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+            <div className="relative flex flex-col items-center gap-6">
+              <div className="text-center text-primary-foreground/90">
+                <p className="text-xs uppercase tracking-[0.3em] opacity-70">SBPM</p>
+                <p className="text-lg font-semibold mt-1">Carteirinha Digital</p>
+              </div>
+              <div className="scale-100 sm:scale-125 origin-center drop-shadow-2xl">
+                <CarteirinhaCard
+                  nome={selectedDependente?.nome || associado.nome}
+                  matricula={associado.matricula}
+                  cpf={selectedDependente?.cpf || associado.cpf}
+                  tipo={selectedDependente ? 'dependente' : 'titular'}
+                  tipoParentesco={selectedDependente ? tipoLabel[selectedDependente.tipo] : undefined}
+                  fotoUrl={selectedDependente ? selectedDependente.foto_url : associado?.foto_url}
+                  dataExpedicao={dataExpedicao}
+                  dataValidade={dataValidade}
+                  nomeTitular={selectedDependente ? associado.nome : undefined}
+                />
+              </div>
+              <p className="text-xs text-primary-foreground/70 mt-4">Apresente esta carteirinha nos parceiros credenciados</p>
             </div>
           </div>
         </DialogContent>
