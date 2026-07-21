@@ -15,6 +15,7 @@ const nav = [
   { to: "/admin/carencias", icon: Clock, label: "Carências" },
   { to: "/admin/clinicas", icon: Building2, label: "Clínicas & Parceiros" },
   { to: "/admin/informes", icon: FileText, label: "Informes" },
+  { to: "/admin/peculio", icon: HeartHandshake, label: "Pecúlio" },
   { to: "/admin/importar", icon: Upload, label: "Importar CSV" },
   { to: "/admin/sincronizacao", icon: RefreshCw, label: "Sincronização" },
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
