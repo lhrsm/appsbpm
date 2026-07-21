@@ -230,11 +230,21 @@ export default function AdminAssociados() {
             </div>
             <div>
               <Label>Data de nascimento</Label>
-              <Input type="date" value={editing?.data_nascimento ?? ""} onChange={(e) => setEditing({ ...editing, data_nascimento: e.target.value })} />
+              <Input
+                placeholder="dd/mm/aaaa"
+                maxLength={10}
+                value={editing?.data_nascimento ?? ""}
+                onChange={(e) => setEditing({ ...editing, data_nascimento: formatDateBR(e.target.value) })}
+              />
             </div>
             <div>
               <Label>Data de admissão</Label>
-              <Input type="date" value={editing?.data_admissao ?? ""} onChange={(e) => setEditing({ ...editing, data_admissao: e.target.value })} />
+              <Input
+                placeholder="dd/mm/aaaa"
+                maxLength={10}
+                value={editing?.data_admissao ?? ""}
+                onChange={(e) => setEditing({ ...editing, data_admissao: formatDateBR(e.target.value) })}
+              />
             </div>
             <div>
               <Label>CEP</Label>
