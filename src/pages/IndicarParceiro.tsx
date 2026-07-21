@@ -8,7 +8,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
-import { Handshake, CheckCircle2, Loader2 } from 'lucide-react';
+import { Handshake, CheckCircle2, Loader2, Plus, Trash2 } from 'lucide-react';
+
+const REDES_OPCOES = [
+  'Instagram','Facebook','TikTok','YouTube','LinkedIn','Twitter/X','Site','WhatsApp','Outro',
+];
+type RedeSocial = { tipo: string; valor: string };
 
 const ESTADOS = [
   'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'
@@ -20,12 +25,12 @@ export default function IndicarParceiro() {
   const [enviado, setEnviado] = useState(false);
   const [estado, setEstado] = useState('');
   const [cidades, setCidades] = useState<string[]>([]);
+  const [redes, setRedes] = useState<RedeSocial[]>([{ tipo: 'Instagram', valor: '' }]);
   const [form, setForm] = useState({
     nome: '',
     email: '',
     telefone: '',
     cidade: '',
-    redes_sociais: '',
   });
 
   const carregarCidades = async (uf: string) => {
@@ -65,7 +70,7 @@ export default function IndicarParceiro() {
             telefone: form.telefone,
             estado,
             cidade: form.cidade,
-            redes_sociais: form.redes_sociais,
+            redes_sociais: redes.filter(r => r.valor.trim()).map(r => `${r.tipo}: ${r.valor.trim()}`).join('\n'),
           },
         },
       });
@@ -103,7 +108,8 @@ export default function IndicarParceiro() {
             <Button
               onClick={() => {
                 setEnviado(false);
-                setForm({ nome: '', email: '', telefone: '', cidade: '', redes_sociais: '' });
+                setForm({ nome: '', email: '', telefone: '', cidade: '' });
+                setRedes([{ tipo: 'Instagram', valor: '' }]);
                 setEstado('');
                 setCidades([]);
               }}
@@ -207,16 +213,49 @@ export default function IndicarParceiro() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 space-y-3">
               <Label>Redes sociais</Label>
-              <Textarea
-                value={form.redes_sociais}
-                onChange={(e) => setForm({ ...form, redes_sociais: e.target.value })}
-                maxLength={1000}
-                placeholder="Instagram, Facebook, site, etc."
-                rows={3}
-              />
+              {redes.map((r, i) => (
+                <div key={i} className="flex gap-2">
+                  <Select
+                    value={r.tipo}
+                    onValueChange={(v) => setRedes(redes.map((x, idx) => idx === i ? { ...x, tipo: v } : x))}
+                  >
+                    <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {REDES_OPCOES.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+                    </SelectContent>
+                  </Select>
+                  <Input
+                    value={r.valor}
+                    onChange={(e) => setRedes(redes.map((x, idx) => idx === i ? { ...x, valor: e.target.value } : x))}
+                    placeholder={r.tipo === 'Site' ? 'https://...' : `@usuario ou link do ${r.tipo}`}
+                    maxLength={200}
+                    className="flex-1"
+                  />
+                  {redes.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setRedes(redes.filter((_, idx) => idx !== i))}
+                      aria-label="Remover"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setRedes([...redes, { tipo: 'Instagram', valor: '' }])}
+              >
+                <Plus className="h-4 w-4 mr-1" /> Adicionar rede social
+              </Button>
             </div>
+
           </CardContent>
         </Card>
 
