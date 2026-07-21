@@ -30,6 +30,7 @@ export default function ProfilePhotoUpload({
   const [photoUrl, setPhotoUrl] = useState(currentPhotoUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { associado } = useAssociado();
 
   useEffect(() => {
     setPhotoUrl(currentPhotoUrl);
