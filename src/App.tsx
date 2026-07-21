@@ -15,6 +15,7 @@ import Dependentes from "./pages/Dependentes";
 import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import Simulador from "./pages/Simulador";
 import IndicarParceiro from "./pages/IndicarParceiro";
+import Peculio from "./pages/Peculio";
 import Perfil from "./pages/Perfil";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
@@ -65,6 +66,7 @@ const App = () => (
               <Route path="associacao-premiada" element={<AssociacaoPremiada />} />
               <Route path="simulador" element={<Simulador />} />
               <Route path="indicar-parceiro" element={<IndicarParceiro />} />
+              <Route path="peculio" element={<Peculio />} />
               <Route path="perfil" element={<Perfil />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
