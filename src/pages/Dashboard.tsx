@@ -47,6 +47,7 @@ const menuItemsTitular = [
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
   { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
+  { path: '/dashboard/peculio', label: 'Pecúlio', icon: ShieldCheck },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
 ];
 
