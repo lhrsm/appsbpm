@@ -78,7 +78,7 @@ export default function AdminLayout() {
           <p className="text-xs text-muted-foreground">Painel de gestão</p>
         </div>
         <nav className="flex-1 p-3 space-y-1">
-          {nav.map((item) => (
+          {visibleNav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
