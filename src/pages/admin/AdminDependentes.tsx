@@ -13,10 +13,9 @@ import { logAudit } from "@/lib/audit";
 const TIPOS = [
   { value: "conjuge", label: "Cônjuge" },
   { value: "filho", label: "Filho(a)" },
-  { value: "pai", label: "Pai" },
-  { value: "mae", label: "Mãe" },
+  { value: "pai_mae", label: "Pai / Mãe" },
   { value: "outro", label: "Outro" },
-];
+] as const;
 
 interface Dependente {
   id?: string;
