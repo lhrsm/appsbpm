@@ -297,16 +297,29 @@ export default function Dependentes() {
 
                   {!isDependente && s !== 'pendente' && (
                     <div className="mt-3 pt-3 border-t">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
-                        onClick={() => { setExcluirDep(dependente); setMotivoExclusao(''); setSucessoExcl(false); }}
-                      >
-                        <UserMinus className="h-4 w-4" />
-                        Solicitar exclusão
-                      </Button>
+                      {s === 'inativo' ? (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-green-700 hover:text-green-700 hover:bg-green-50 gap-2"
+                          onClick={() => { setExcluirDep(dependente); setAcaoDep('reativacao'); setMotivoExclusao(''); setSucessoExcl(false); }}
+                        >
+                          <UserCheck className="h-4 w-4" />
+                          Solicitar reativação
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                          onClick={() => { setExcluirDep(dependente); setAcaoDep('exclusao'); setMotivoExclusao(''); setSucessoExcl(false); }}
+                        >
+                          <UserMinus className="h-4 w-4" />
+                          Solicitar exclusão
+                        </Button>
+                      )}
                     </div>
                   )}
                 </CardContent>
