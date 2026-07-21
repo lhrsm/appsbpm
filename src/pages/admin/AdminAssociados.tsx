@@ -35,6 +35,7 @@ interface Associado {
   data_admissao?: string;
   cep?: string;
   endereco?: string;
+  cidade?: string;
   foto_url?: string;
   ativo?: boolean;
 }
@@ -74,6 +75,9 @@ export default function AdminAssociados() {
   const [rows, setRows] = useState<Associado[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filterPatente, setFilterPatente] = useState<string>("");
+  const [filterAtivo, setFilterAtivo] = useState<string>("");
+  const [filterCidade, setFilterCidade] = useState<string>("");
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
@@ -82,13 +86,25 @@ export default function AdminAssociados() {
     setLoading(true);
     let q = supabase.from("associados").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
+    if (filterPatente) q = q.eq("patente", filterPatente);
+    if (filterAtivo === "true") q = q.eq("ativo", true);
+    if (filterAtivo === "false") q = q.eq("ativo", false);
+    if (filterCidade) q = q.eq("cidade", filterCidade);
     const { data, error } = await q;
     if (error) toast.error(error.message);
     else setRows((data as Associado[]) ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterPatente, filterAtivo, filterCidade]);
+
+  const [cidadesDisponiveis, setCidadesDisponiveis] = useState<string[]>([]);
+  useEffect(() => {
+    supabase.from("associados").select("cidade").not("cidade", "is", null).then(({ data }) => {
+      const uniq = Array.from(new Set((data ?? []).map((r: any) => r.cidade).filter(Boolean))) as string[];
+      setCidadesDisponiveis(uniq.sort());
+    });
+  }, [open]);
 
   const openNew = () => {
     setEditing({ ativo: true });
@@ -107,7 +123,7 @@ export default function AdminAssociados() {
         return;
       }
       const partes = [data.logradouro, data.bairro, data.localidade, data.uf].filter(Boolean).join(", ");
-      setEditing((prev) => ({ ...(prev ?? {}), endereco: partes }));
+      setEditing((prev) => ({ ...(prev ?? {}), endereco: partes, cidade: data.localidade ?? prev?.cidade }));
       toast.success("Endereço preenchido");
     } catch {
       toast.error("Falha ao buscar CEP");
@@ -182,9 +198,41 @@ export default function AdminAssociados() {
         <Button onClick={openNew}><Plus className="w-4 h-4 mr-2" />Novo</Button>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
-        <Input placeholder="Buscar por nome..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+      <div className="flex flex-wrap gap-3 items-center">
+        <div className="relative w-full sm:w-64">
+          <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
+          <Input placeholder="Buscar por nome..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+        </div>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterPatente}
+          onChange={(e) => setFilterPatente(e.target.value)}
+        >
+          <option value="">Todas as patentes</option>
+          {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+        </select>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterAtivo}
+          onChange={(e) => setFilterAtivo(e.target.value)}
+        >
+          <option value="">Ativos e inativos</option>
+          <option value="true">Somente ativos</option>
+          <option value="false">Somente inativos</option>
+        </select>
+        <select
+          className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+          value={filterCidade}
+          onChange={(e) => setFilterCidade(e.target.value)}
+        >
+          <option value="">Todas as cidades</option>
+          {cidadesDisponiveis.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        {(filterPatente || filterAtivo || filterCidade) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterAtivo(""); setFilterCidade(""); }}>
+            Limpar filtros
+          </Button>
+        )}
       </div>
 
       <Card className="overflow-auto">
@@ -296,6 +344,10 @@ export default function AdminAssociados() {
                 />
                 {cepLoading && <Loader2 className="w-4 h-4 absolute right-3 top-3 animate-spin text-muted-foreground" />}
               </div>
+            </div>
+            <div>
+              <Label>Cidade</Label>
+              <Input value={editing?.cidade ?? ""} onChange={(e) => setEditing({ ...editing, cidade: e.target.value })} />
             </div>
             <div>
               <Label>URL da foto</Label>

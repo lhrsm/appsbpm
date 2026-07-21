@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           ativo: boolean
           cep: string | null
+          cidade: string | null
           cpf: string
           created_at: string
           data_admissao: string
@@ -35,6 +36,7 @@ export type Database = {
         Insert: {
           ativo?: boolean
           cep?: string | null
+          cidade?: string | null
           cpf: string
           created_at?: string
           data_admissao?: string
@@ -52,6 +54,7 @@ export type Database = {
         Update: {
           ativo?: boolean
           cep?: string | null
+          cidade?: string | null
           cpf?: string
           created_at?: string
           data_admissao?: string
