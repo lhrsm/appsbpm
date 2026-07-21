@@ -1,20 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Building2, MapPin, Phone, Mail, Clock, Search, Star, MessageCircle } from 'lucide-react';
 
 interface Clinica {
   id: string;
   nome: string;
   especialidade: string | null;
+  especialidades: string[] | null;
+  estado: string | null;
   cidade: string;
   endereco: string | null;
   telefone: string | null;
+  whatsapp: string | null;
   email: string | null;
   horario_funcionamento: string | null;
+  horarios: any;
   logo_url: string | null;
 }
 
@@ -22,238 +29,203 @@ export default function Clinicas() {
   const [clinicas, setClinicas] = useState<Clinica[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [fEstado, setFEstado] = useState('all');
+  const [fCidade, setFCidade] = useState('all');
+  const [fEsp, setFEsp] = useState('all');
   const [soFavoritos, setSoFavoritos] = useState(false);
   const [favoritos, setFavoritos] = useState<Set<string>>(new Set());
+  const [detail, setDetail] = useState<Clinica | null>(null);
 
   useEffect(() => {
     try { setFavoritos(new Set(JSON.parse(localStorage.getItem('sbpm_clinicas_fav') || '[]'))); } catch {}
-    async function fetchClinicas() {
-      const { data, error } = await supabase
-        .from('clinicas_parceiros')
-        .select('*')
-        .eq('ativo', true)
-        .order('cidade', { ascending: true });
-
-      if (!error && data) {
-        setClinicas(data);
-      }
+    (async () => {
+      const { data } = await supabase.from('clinicas_parceiros').select('*').eq('ativo', true).order('cidade');
+      setClinicas((data ?? []) as any);
       setLoading(false);
-    }
-
-    fetchClinicas();
+    })();
   }, []);
 
   const toggleFav = (id: string) => {
     setFavoritos((s) => {
       const next = new Set(s);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      next.has(id) ? next.delete(id) : next.add(id);
       localStorage.setItem('sbpm_clinicas_fav', JSON.stringify([...next]));
       return next;
     });
   };
 
-  const filteredClinicas = clinicas.filter((clinica) => {
-    if (soFavoritos && !favoritos.has(clinica.id)) return false;
-    const searchLower = search.toLowerCase();
-    if (!searchLower) return true;
-    return (
-      clinica.nome.toLowerCase().includes(searchLower) ||
-      clinica.cidade.toLowerCase().includes(searchLower) ||
-      (clinica.especialidade?.toLowerCase().includes(searchLower) ?? false)
-    );
-  });
+  const estadosDisp = useMemo(
+    () => Array.from(new Set(clinicas.map((c) => c.estado).filter(Boolean))).sort() as string[],
+    [clinicas]
+  );
+  const cidadesDisp = useMemo(() => {
+    const src = fEstado === 'all' ? clinicas : clinicas.filter((c) => c.estado === fEstado);
+    return Array.from(new Set(src.map((c) => c.cidade))).sort();
+  }, [clinicas, fEstado]);
+  const espDisp = useMemo(() => {
+    let src = clinicas;
+    if (fEstado !== 'all') src = src.filter((c) => c.estado === fEstado);
+    if (fCidade !== 'all') src = src.filter((c) => c.cidade === fCidade);
+    const set = new Set<string>();
+    src.forEach((r) => {
+      (r.especialidades ?? []).forEach((e) => set.add(e));
+      if (r.especialidade) set.add(r.especialidade);
+    });
+    return Array.from(set).sort();
+  }, [clinicas, fEstado, fCidade]);
 
-  // Agrupar por cidade
-  const clinicasPorCidade = filteredClinicas.reduce((acc, clinica) => {
-    const cidade = clinica.cidade;
-    if (!acc[cidade]) {
-      acc[cidade] = [];
-    }
-    acc[cidade].push(clinica);
-    return acc;
-  }, {} as Record<string, Clinica[]>);
+  const filtered = useMemo(() => {
+    return clinicas.filter((c) => {
+      if (soFavoritos && !favoritos.has(c.id)) return false;
+      if (fEstado !== 'all' && c.estado !== fEstado) return false;
+      if (fCidade !== 'all' && c.cidade !== fCidade) return false;
+      if (fEsp !== 'all') {
+        const lista = [...(c.especialidades ?? []), c.especialidade].filter(Boolean) as string[];
+        if (!lista.includes(fEsp)) return false;
+      }
+      if (search) {
+        const s = search.toLowerCase();
+        if (!c.nome.toLowerCase().includes(s) && !c.cidade.toLowerCase().includes(s) &&
+            !(c.especialidade ?? '').toLowerCase().includes(s)) return false;
+      }
+      return true;
+    });
+  }, [clinicas, fEstado, fCidade, fEsp, search, soFavoritos, favoritos]);
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">Clínicas e Parceiros</h2>
-        <p className="text-muted-foreground">
-          Encontre clínicas e parceiros conveniados próximos a você
-        </p>
+        <h2 className="text-2xl font-bold">Clínicas e Parceiros</h2>
+        <p className="text-muted-foreground">Encontre clínicas e parceiros conveniados</p>
       </div>
 
-      {/* Busca + filtro favoritos */}
-      <div className="flex gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por nome, cidade ou especialidade..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 h-12"
-          />
-        </div>
-        <Button
-          type="button"
-          variant={soFavoritos ? "default" : "outline"}
-          className="h-12"
-          onClick={() => setSoFavoritos((v) => !v)}
-        >
-          <Star className={`h-4 w-4 mr-2 ${soFavoritos ? "fill-current" : ""}`} />
-          Favoritos {favoritos.size > 0 && `(${favoritos.size})`}
-        </Button>
-      </div>
+      {/* Filtros */}
+      <Card>
+        <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-4 gap-3">
+          <div>
+            <Label>Estado</Label>
+            <Select value={fEstado} onValueChange={(v) => { setFEstado(v); setFCidade('all'); setFEsp('all'); }}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos</SelectItem>
+                {estadosDisp.map((e) => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Cidade</Label>
+            <Select value={fCidade} onValueChange={(v) => { setFCidade(v); setFEsp('all'); }}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas</SelectItem>
+                {cidadesDisp.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Especialidade</Label>
+            <Select value={fEsp} onValueChange={setFEsp}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas</SelectItem>
+                {espDisp.map((e) => <SelectItem key={e} value={e}>{e}</SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label>Buscar</Label>
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input className="pl-9" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Nome, cidade..." />
+              </div>
+              <Button type="button" variant={soFavoritos ? 'default' : 'outline'} size="icon" onClick={() => setSoFavoritos((v) => !v)} aria-label="Favoritos">
+                <Star className={`h-4 w-4 ${soFavoritos ? 'fill-current' : ''}`} />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Lista de Clínicas */}
       {loading ? (
         <div className="text-center py-12">
           <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-          <p className="mt-4 text-muted-foreground">Carregando clínicas...</p>
         </div>
-      ) : Object.keys(clinicasPorCidade).length > 0 ? (
-        <div className="space-y-8">
-          {Object.entries(clinicasPorCidade).map(([cidade, clinicasDaCidade]) => (
-            <div key={cidade}>
-              <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-primary" />
-                {cidade}
-                <Badge variant="secondary" className="ml-2">
-                  {clinicasDaCidade.length} {clinicasDaCidade.length === 1 ? 'local' : 'locais'}
-                </Badge>
-              </h3>
-              
-              <div className="grid gap-4">
-                {clinicasDaCidade.map((clinica) => (
-                  <Card key={clinica.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="pt-6">
-                      <div className="flex flex-col md:flex-row md:items-start gap-4">
-                        {clinica.logo_url ? (
-                          <div className="w-20 h-20 rounded-lg overflow-hidden shrink-0 bg-white border flex items-center justify-center">
-                            <img 
-                              src={clinica.logo_url} 
-                              alt={`Logo ${clinica.nome}`}
-                              className="w-full h-full object-contain p-1"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                                const parent = target.parentElement;
-                                if (parent) {
-                                  parent.innerHTML = '<div class="p-3 bg-primary/10 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></div>';
-                                }
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <div className="p-3 bg-primary/10 rounded-lg shrink-0">
-                            <Building2 className="h-8 w-8 text-primary" />
-                          </div>
-                        )}
-                        
-                        <div className="flex-1 space-y-3">
-                          <div className="flex items-start justify-between gap-2">
-                            <div>
-                              <h4 className="font-semibold text-lg text-foreground">
-                                {clinica.nome}
-                              </h4>
-                              {clinica.especialidade && (
-                                <Badge variant="outline" className="mt-1">
-                                  {clinica.especialidade}
-                                </Badge>
-                              )}
-                            </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => toggleFav(clinica.id)}
-                              aria-label="Favoritar"
-                              className="shrink-0"
-                            >
-                              <Star className={`h-5 w-5 ${favoritos.has(clinica.id) ? "fill-yellow-400 text-yellow-500" : "text-muted-foreground"}`} />
-                            </Button>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                            {clinica.endereco && (
-                              <div className="flex items-start gap-2 text-muted-foreground">
-                                <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                                <span>{clinica.endereco}</span>
-                              </div>
-                            )}
-                            
-                            {clinica.telefone && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Phone className="h-4 w-4 shrink-0" />
-                                <a 
-                                  href={`tel:${clinica.telefone}`} 
-                                  className="hover:text-primary transition-colors"
-                                >
-                                  {clinica.telefone}
-                                </a>
-                              </div>
-                            )}
-                            
-                            {clinica.email && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Mail className="h-4 w-4 shrink-0" />
-                                <a 
-                                  href={`mailto:${clinica.email}`}
-                                  className="hover:text-primary transition-colors truncate"
-                                >
-                                  {clinica.email}
-                                </a>
-                              </div>
-                            )}
-                            
-                            {clinica.horario_funcionamento && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <Clock className="h-4 w-4 shrink-0" />
-                                <span>{clinica.horario_funcionamento}</span>
-                              </div>
-                            )}
-                          </div>
-
-                          {clinica.telefone && (
-                            <div className="pt-1">
-                              <Button
-                                asChild
-                                size="sm"
-                                variant="outline"
-                                className="text-green-700 border-green-300 hover:bg-green-50"
-                              >
-                                <a
-                                  href={`https://wa.me/55${clinica.telefone.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá! Sou associado da SBPM e gostaria de mais informações.`)}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <MessageCircle className="h-4 w-4 mr-1" />
-                                  WhatsApp
-                                </a>
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+      ) : filtered.length === 0 ? (
+        <Card><CardContent className="pt-6 text-center py-8">
+          <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+          <p className="text-muted-foreground">Nenhuma clínica encontrada.</p>
+        </CardContent></Card>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((c) => (
+            <Card key={c.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setDetail(c)}>
+              <CardContent className="pt-6 space-y-3">
+                <div className="flex items-start gap-3">
+                  {c.logo_url ? (
+                    <img src={c.logo_url} alt={c.nome} className="w-16 h-16 rounded object-contain bg-white border shrink-0" />
+                  ) : (
+                    <div className="w-16 h-16 rounded bg-primary/10 flex items-center justify-center shrink-0">
+                      <Building2 className="h-8 w-8 text-primary" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold truncate">{c.nome}</h3>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <MapPin className="h-3 w-3" />{c.cidade}{c.estado ? ` / ${c.estado}` : ''}
+                    </p>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {(c.especialidades ?? []).slice(0, 2).map((e) => <Badge key={e} variant="secondary" className="text-xs">{e}</Badge>)}
+                    </div>
+                  </div>
+                  <button onClick={(e) => { e.stopPropagation(); toggleFav(c.id); }} aria-label="Favoritar">
+                    <Star className={`h-5 w-5 ${favoritos.has(c.id) ? 'fill-yellow-400 text-yellow-500' : 'text-muted-foreground'}`} />
+                  </button>
+                </div>
+                {c.whatsapp && (
+                  <Button asChild size="sm" variant="outline" className="w-full text-green-700 border-green-300 hover:bg-green-50" onClick={(e) => e.stopPropagation()}>
+                    <a href={`https://wa.me/55${c.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent('Olá! Sou associado da SBPM.')}`} target="_blank" rel="noreferrer">
+                      <MessageCircle className="h-4 w-4 mr-1" /> {c.whatsapp}
+                    </a>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
           ))}
         </div>
-      ) : (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-center py-8">
-              <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">
-                {search 
-                  ? 'Nenhuma clínica encontrada para sua busca.' 
-                  : 'Nenhuma clínica cadastrada no momento.'}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
       )}
+
+      {/* Detalhe */}
+      <Dialog open={!!detail} onOpenChange={(o) => !o && setDetail(null)}>
+        <DialogContent className="max-w-lg">
+          {detail && (
+            <>
+              <DialogHeader><DialogTitle>{detail.nome}</DialogTitle></DialogHeader>
+              <div className="space-y-3 text-sm">
+                {detail.logo_url && <img src={detail.logo_url} alt="" className="w-24 h-24 rounded object-contain bg-white border" />}
+                <div className="flex flex-wrap gap-1">
+                  {(detail.especialidades ?? []).map((e) => <Badge key={e} variant="secondary">{e}</Badge>)}
+                </div>
+                {detail.endereco && <p className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5" />{detail.endereco}, {detail.cidade}{detail.estado ? ` / ${detail.estado}` : ''}</p>}
+                {detail.telefone && <p className="flex gap-2"><Phone className="h-4 w-4" /><a className="hover:underline" href={`tel:${detail.telefone}`}>{detail.telefone}</a></p>}
+                {detail.email && <p className="flex gap-2"><Mail className="h-4 w-4" /><a className="hover:underline" href={`mailto:${detail.email}`}>{detail.email}</a></p>}
+                {detail.horario_funcionamento && <p className="flex gap-2"><Clock className="h-4 w-4" />{detail.horario_funcionamento}</p>}
+                {detail.endereco && (
+                  <iframe title="Mapa" className="w-full h-56 rounded border"
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(`${detail.endereco}, ${detail.cidade} ${detail.estado ?? ''}`)}&output=embed`} loading="lazy" />
+                )}
+                {detail.whatsapp && (
+                  <Button asChild className="w-full bg-green-600 hover:bg-green-700">
+                    <a href={`https://wa.me/55${detail.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer">
+                      <MessageCircle className="h-4 w-4 mr-2" /> Abrir WhatsApp
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
