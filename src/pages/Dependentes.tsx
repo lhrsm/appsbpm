@@ -151,9 +151,29 @@ export default function Dependentes() {
                     )}
                   </div>
                   <div className="flex-1 space-y-2">
-                    <div>
-                      <h3 className="font-semibold text-lg text-foreground">{dependente.nome}</h3>
-                      <Badge className={tipoColor[dependente.tipo]}>{tipoLabel[dependente.tipo]}</Badge>
+                    <div className="flex items-start justify-between gap-2 flex-wrap">
+                      <div>
+                        <h3 className="font-semibold text-lg text-foreground">{dependente.nome}</h3>
+                        <div className="flex gap-2 flex-wrap mt-1">
+                          <Badge className={tipoColor[dependente.tipo]}>{tipoLabel[dependente.tipo]}</Badge>
+                          {(() => {
+                            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
+                            const styles: Record<string, string> = {
+                              ativo: 'bg-green-100 text-green-700 border-green-200',
+                              inativo: 'bg-red-100 text-red-700 border-red-200',
+                              pendente: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+                            };
+                            const labels: Record<string, string> = {
+                              ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente',
+                            };
+                            return (
+                              <Badge variant="outline" className={styles[s] || ''}>
+                                {labels[s] || s}
+                              </Badge>
+                            );
+                          })()}
+                        </div>
+                      </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
                       {dependente.cpf && (
