@@ -12,7 +12,8 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus, UserCheck } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus, UserCheck, Clock } from 'lucide-react';
+import { useEffect } from 'react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -65,6 +66,19 @@ export default function Dependentes() {
   const [motivoExclusao, setMotivoExclusao] = useState('');
   const [enviandoExcl, setEnviandoExcl] = useState(false);
   const [sucessoExcl, setSucessoExcl] = useState(false);
+
+  const pendingKey = `sbpm:dep-pending:${associado?.matricula || 'anon'}`;
+  const [pendingAcao, setPendingAcao] = useState<Record<string, 'exclusao' | 'reativacao'>>(() => {
+    try {
+      if (typeof window === 'undefined') return {};
+      const raw = window.localStorage.getItem(`sbpm:dep-pending:${associado?.matricula || 'anon'}`);
+      return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+  });
+
+  useEffect(() => {
+    try { window.localStorage.setItem(pendingKey, JSON.stringify(pendingAcao)); } catch {}
+  }, [pendingAcao, pendingKey]);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -207,6 +221,9 @@ export default function Dependentes() {
         throw new Error(details);
       }
       if (!data?.ok) throw new Error(data?.error || 'Falha ao enviar solicitação');
+      if (excluirDep?.id) {
+        setPendingAcao((prev) => ({ ...prev, [excluirDep.id]: acaoDep }));
+      }
       setSucessoExcl(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao enviar solicitação');
@@ -297,7 +314,21 @@ export default function Dependentes() {
 
                   {!isDependente && s !== 'pendente' && (
                     <div className="mt-3 pt-3 border-t">
-                      {s === 'inativo' ? (
+                      {pendingAcao[dependente.id] ? (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2 rounded-md border border-yellow-200 bg-yellow-50 px-2.5 py-2 text-xs text-yellow-800">
+                            <Clock className="h-3.5 w-3.5 shrink-0" />
+                            <span className="font-medium">
+                              {pendingAcao[dependente.id] === 'reativacao'
+                                ? 'Solicitação de reativação iniciada'
+                                : 'Solicitação de exclusão iniciada'}
+                            </span>
+                          </div>
+                          <p className="text-[11px] leading-snug text-muted-foreground px-0.5">
+                            O dependente continuará com acesso aos serviços até que a alteração seja processada pelo setor responsável na próxima sincronização com o sistema da empresa.
+                          </p>
+                        </div>
+                      ) : s === 'inativo' ? (
                         <Button
                           type="button"
                           variant="ghost"
