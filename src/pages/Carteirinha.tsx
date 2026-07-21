@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Download, User, Users, Maximize2 } from 'lucide-react';
+import { Download, User, Users, Maximize2, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -44,7 +44,7 @@ function CarteirinhaCard({
   return (
     <div
       ref={cardRef}
-      className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-lg shadow-xl overflow-hidden"
+      className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-3xl shadow-xl overflow-hidden"
       style={{ fontFamily: 'Arial, sans-serif' }}
     >
       {/* Header com Logo/Foto e Título */}
@@ -201,7 +201,7 @@ export default function Carteirinha() {
               width: 85.6mm;
               height: 53.98mm;
               border: 1px solid #ccc;
-              border-radius: 4mm;
+              border-radius: 6mm;
               overflow: hidden;
               background: white;
             }
@@ -387,7 +387,16 @@ export default function Carteirinha() {
           <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-transparent shadow-none">
             <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
             <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
+            <button
+              type="button"
+              onClick={() => setPreviewOpen(false)}
+              aria-label="Fechar"
+              className="absolute top-3 right-3 z-50 rounded-full bg-black/60 hover:bg-black/80 text-white p-2 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
             <div className="flex items-center justify-center p-4">
+
               <div className="rotate-90 sm:rotate-0 scale-[1.35] sm:scale-125 origin-center">
                 <CarteirinhaCard
                   nome={dependenteLogado.nome}
@@ -499,7 +508,16 @@ export default function Carteirinha() {
         <DialogContent className="max-w-4xl border-0 p-0 overflow-hidden bg-transparent shadow-none">
           <DialogTitle className="sr-only">Carteirinha ampliada</DialogTitle>
           <DialogDescription className="sr-only">Visualização ampliada da carteirinha</DialogDescription>
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(false)}
+            aria-label="Fechar"
+            className="absolute top-3 right-3 z-50 rounded-full bg-black/60 hover:bg-black/80 text-white p-2 transition-colors"
+          >
+            <X className="h-5 w-5" />
+          </button>
           <div className="flex items-center justify-center p-4">
+
             <div className="rotate-90 sm:rotate-0 scale-[1.35] sm:scale-125 origin-center">
               <CarteirinhaCard
                 nome={selectedDependente?.nome || associado.nome}
