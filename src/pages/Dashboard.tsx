@@ -25,7 +25,8 @@ import {
   Instagram,
   Linkedin,
   Award,
-  Calculator
+  Calculator,
+  UserCog,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -43,12 +44,14 @@ const menuItemsTitular = [
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
+  { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
 ];
 
 // Menu restrito para dependentes
 const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
+  { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
 ];
 
 const whatsappContacts = [
