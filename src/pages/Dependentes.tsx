@@ -221,6 +221,9 @@ export default function Dependentes() {
         throw new Error(details);
       }
       if (!data?.ok) throw new Error(data?.error || 'Falha ao enviar solicitação');
+      if (excluirDep?.id) {
+        setPendingAcao((prev) => ({ ...prev, [excluirDep.id]: acaoDep }));
+      }
       setSucessoExcl(true);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao enviar solicitação');
