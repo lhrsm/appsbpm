@@ -8,7 +8,7 @@ export interface Dependente {
   tipo: 'conjuge' | 'filho' | 'pai_mae' | 'outro';
   foto_url: string | null;
   ativo: boolean;
-  status?: 'ativo' | 'inativo' | 'pendente';
+  status?: string;
 }
 
 export interface Limite {
