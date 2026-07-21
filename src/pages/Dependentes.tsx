@@ -12,7 +12,7 @@ import {
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
-import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2 } from 'lucide-react';
+import { Users, User, Calendar, AlertCircle, UserPlus, CheckCircle2, Loader2, Paperclip, X as XIcon, Plus, Trash2, UserMinus } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { supabase } from '@/integrations/supabase/client';
@@ -60,6 +60,10 @@ export default function Dependentes() {
   const [enviando, setEnviando] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [deps, setDeps] = useState<DepForm[]>([emptyDep()]);
+  const [excluirDep, setExcluirDep] = useState<any | null>(null);
+  const [motivoExclusao, setMotivoExclusao] = useState('');
+  const [enviandoExcl, setEnviandoExcl] = useState(false);
+  const [sucessoExcl, setSucessoExcl] = useState(false);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -168,6 +172,47 @@ export default function Dependentes() {
     }
   };
 
+  const handleSubmitExclusao = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!associado || !excluirDep) return;
+    if (motivoExclusao.trim().length < 3) {
+      toast.error('Informe o motivo da exclusão.');
+      return;
+    }
+    setEnviandoExcl(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('send-dependente-exclusao', {
+        body: {
+          titular: {
+            nome: associado.nome,
+            matricula: associado.matricula,
+            email: associado.email || '',
+            telefone: associado.telefone || '',
+          },
+          dependente: {
+            id: excluirDep.id,
+            nome: excluirDep.nome,
+            cpf: excluirDep.cpf || '',
+            parentesco: excluirDep.tipo || '',
+          },
+          motivo: motivoExclusao.trim(),
+        },
+      });
+      if (error) {
+        const ctx: any = (error as any).context;
+        let details = error.message;
+        try { if (ctx?.text) details = await ctx.text(); } catch {}
+        throw new Error(details);
+      }
+      if (!data?.ok) throw new Error(data?.error || 'Falha ao enviar solicitação');
+      setSucessoExcl(true);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erro ao enviar solicitação');
+    } finally {
+      setEnviandoExcl(false);
+    }
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -202,62 +247,70 @@ export default function Dependentes() {
 
       {/* Lista */}
       {dependentes.length > 0 ? (
-        <div className="grid gap-4">
-          {dependentes.map((dependente) => (
-            <Card key={dependente.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center overflow-hidden shrink-0">
-                    {dependente.foto_url ? (
-                      <img src={dependente.foto_url} alt={dependente.nome} className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="h-8 w-8 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-start justify-between gap-2 flex-wrap">
-                      <div>
-                        <h3 className="font-semibold text-lg text-foreground">{dependente.nome}</h3>
-                        <div className="flex gap-2 flex-wrap mt-1">
-                          <Badge className={tipoColor[dependente.tipo]}>{tipoLabel[dependente.tipo]}</Badge>
-                          {(() => {
-                            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
-                            const styles: Record<string, string> = {
-                              ativo: 'bg-green-100 text-green-700 border-green-200',
-                              inativo: 'bg-red-100 text-red-700 border-red-200',
-                              pendente: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-                            };
-                            const labels: Record<string, string> = {
-                              ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente',
-                            };
-                            return (
-                              <Badge variant="outline" className={styles[s] || ''}>
-                                {labels[s] || s}
-                              </Badge>
-                            );
-                          })()}
-                        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {dependentes.map((dependente) => {
+            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
+            const styles: Record<string, string> = {
+              ativo: 'bg-green-100 text-green-700 border-green-200',
+              inativo: 'bg-red-100 text-red-700 border-red-200',
+              pendente: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+            };
+            const labels: Record<string, string> = { ativo: 'Ativo', inativo: 'Inativo', pendente: 'Pendente' };
+            return (
+              <Card key={dependente.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-5 pb-4">
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center overflow-hidden shrink-0">
+                      {dependente.foto_url ? (
+                        <img src={dependente.foto_url} alt={dependente.nome} className="w-full h-full object-cover" />
+                      ) : (
+                        <User className="h-6 w-6 text-muted-foreground" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-foreground truncate" title={dependente.nome}>
+                        {dependente.nome}
+                      </h3>
+                      <div className="flex gap-1.5 flex-wrap mt-1">
+                        <Badge className={`${tipoColor[dependente.tipo]} text-xs`}>{tipoLabel[dependente.tipo]}</Badge>
+                        <Badge variant="outline" className={`${styles[s] || ''} text-xs`}>{labels[s] || s}</Badge>
                       </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
-                      {dependente.cpf && (
-                        <div>
-                          <span className="font-medium">CPF:</span>{' '}
-                          {dependente.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '***.$2.$3-**')}
-                        </div>
-                      )}
-                      {dependente.data_nascimento && (
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{format(new Date(dependente.data_nascimento), 'dd/MM/yyyy', { locale: ptBR })}</span>
-                        </div>
-                      )}
-                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+
+                  <div className="mt-3 space-y-1 text-sm text-muted-foreground">
+                    {dependente.cpf && (
+                      <div className="truncate">
+                        <span className="font-medium">CPF:</span>{' '}
+                        {dependente.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '***.$2.$3-**')}
+                      </div>
+                    )}
+                    {dependente.data_nascimento && (
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5" />
+                        <span>{format(new Date(dependente.data_nascimento), 'dd/MM/yyyy', { locale: ptBR })}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {!isDependente && s !== 'pendente' && (
+                    <div className="mt-3 pt-3 border-t">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 gap-2"
+                        onClick={() => { setExcluirDep(dependente); setMotivoExclusao(''); setSucessoExcl(false); }}
+                      >
+                        <UserMinus className="h-4 w-4" />
+                        Solicitar exclusão
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <Card>
@@ -452,6 +505,60 @@ export default function Dependentes() {
                 </DialogFooter>
               </form>
             </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de solicitação de exclusão */}
+      <Dialog open={!!excluirDep} onOpenChange={(v) => { if (!v) { setExcluirDep(null); setMotivoExclusao(''); setSucessoExcl(false); } }}>
+        <DialogContent className="max-w-md">
+          {sucessoExcl ? (
+            <div className="py-6 text-center space-y-4">
+              <div className="flex justify-center">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <CheckCircle2 className="h-10 w-10 text-green-600" />
+                </div>
+              </div>
+              <DialogHeader>
+                <DialogTitle className="text-center">Solicitação enviada</DialogTitle>
+                <DialogDescription className="text-center pt-1">
+                  A exclusão de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
+                  <strong> pendente de aprovação </strong> pelo setor responsável.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="sm:justify-center">
+                <Button onClick={() => { setExcluirDep(null); setMotivoExclusao(''); setSucessoExcl(false); }}>Fechar</Button>
+              </DialogFooter>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmitExclusao} className="space-y-4">
+              <DialogHeader>
+                <DialogTitle>Solicitar exclusão de dependente</DialogTitle>
+                <DialogDescription>
+                  A exclusão de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
+                </DialogDescription>
+              </DialogHeader>
+              <div>
+                <Label htmlFor="motivo-excl">Motivo da exclusão *</Label>
+                <Textarea
+                  id="motivo-excl"
+                  value={motivoExclusao}
+                  onChange={(e) => setMotivoExclusao(e.target.value)}
+                  rows={4}
+                  maxLength={1000}
+                  required
+                  placeholder="Descreva o motivo da solicitação..."
+                />
+              </div>
+              <DialogFooter className="gap-2">
+                <Button type="button" variant="outline" onClick={() => setExcluirDep(null)} disabled={enviandoExcl}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="destructive" disabled={enviandoExcl}>
+                  {enviandoExcl ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : 'Enviar solicitação'}
+                </Button>
+              </DialogFooter>
+            </form>
           )}
         </DialogContent>
       </Dialog>
