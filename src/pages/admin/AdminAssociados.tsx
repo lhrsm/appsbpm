@@ -44,6 +44,31 @@ const formatCep = (v: string) => {
   const d = onlyDigits(v).slice(0, 8);
   return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
 };
+// Máscara dd/mm/aaaa
+const formatDateBR = (v: string) => {
+  const d = onlyDigits(v).slice(0, 8);
+  if (d.length <= 2) return d;
+  if (d.length <= 4) return `${d.slice(0, 2)}/${d.slice(2)}`;
+  return `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`;
+};
+// Converte ISO (yyyy-mm-dd) -> dd/mm/yyyy
+const isoToBR = (iso?: string | null) => {
+  if (!iso) return "";
+  const s = String(iso).slice(0, 10);
+  const [y, m, d] = s.split("-");
+  if (!y || !m || !d) return "";
+  return `${d}/${m}/${y}`;
+};
+// Converte dd/mm/yyyy -> ISO (yyyy-mm-dd). Retorna null se inválido/vazio.
+const brToISO = (br?: string | null) => {
+  if (!br) return null;
+  const m = String(br).trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!m) return null;
+  const [, d, mo, y] = m;
+  const dt = new Date(`${y}-${mo}-${d}T00:00:00`);
+  if (isNaN(dt.getTime())) return null;
+  return `${y}-${mo}-${d}`;
+};
 
 export default function AdminAssociados() {
   const [rows, setRows] = useState<Associado[]>([]);
