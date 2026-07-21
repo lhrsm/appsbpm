@@ -508,6 +508,60 @@ export default function Dependentes() {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Modal de solicitação de exclusão */}
+      <Dialog open={!!excluirDep} onOpenChange={(v) => { if (!v) { setExcluirDep(null); setMotivoExclusao(''); setSucessoExcl(false); } }}>
+        <DialogContent className="max-w-md">
+          {sucessoExcl ? (
+            <div className="py-6 text-center space-y-4">
+              <div className="flex justify-center">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <CheckCircle2 className="h-10 w-10 text-green-600" />
+                </div>
+              </div>
+              <DialogHeader>
+                <DialogTitle className="text-center">Solicitação enviada</DialogTitle>
+                <DialogDescription className="text-center pt-1">
+                  A exclusão de <strong>{excluirDep?.nome}</strong> foi encaminhada e ficará
+                  <strong> pendente de aprovação </strong> pelo setor responsável.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="sm:justify-center">
+                <Button onClick={() => { setExcluirDep(null); setMotivoExclusao(''); setSucessoExcl(false); }}>Fechar</Button>
+              </DialogFooter>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmitExclusao} className="space-y-4">
+              <DialogHeader>
+                <DialogTitle>Solicitar exclusão de dependente</DialogTitle>
+                <DialogDescription>
+                  A exclusão de <strong>{excluirDep?.nome}</strong> só será efetivada após aprovação da instituição.
+                </DialogDescription>
+              </DialogHeader>
+              <div>
+                <Label htmlFor="motivo-excl">Motivo da exclusão *</Label>
+                <Textarea
+                  id="motivo-excl"
+                  value={motivoExclusao}
+                  onChange={(e) => setMotivoExclusao(e.target.value)}
+                  rows={4}
+                  maxLength={1000}
+                  required
+                  placeholder="Descreva o motivo da solicitação..."
+                />
+              </div>
+              <DialogFooter className="gap-2">
+                <Button type="button" variant="outline" onClick={() => setExcluirDep(null)} disabled={enviandoExcl}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="destructive" disabled={enviandoExcl}>
+                  {enviandoExcl ? (<><Loader2 className="h-4 w-4 mr-2 animate-spin" />Enviando...</>) : 'Enviar solicitação'}
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
