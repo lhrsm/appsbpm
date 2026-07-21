@@ -199,9 +199,9 @@ export default function AssociacaoPremiada() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm leading-relaxed">
           <p><strong>1. Quem pode participar:</strong> Associados titulares da SBPM com cadastro ativo e adimplente.</p>
-          <p><strong>2. Como participar:</strong> Preencha o formulário abaixo. Cada indicação válida gera um número da sorte.</p>
+          <p><strong>2. Como participar:</strong> Preencha o formulário abaixo indicando um novo associado.</p>
           <p><strong>3. Indicação válida:</strong> Quando o indicado efetivar seu cadastro como associado da SBPM.</p>
-          <p><strong>4. Prêmios e sorteios:</strong> Divulgados oficialmente pelos canais da SBPM.</p>
+          <p><strong>4. Premiação:</strong> Após o indicado efetuar <strong>3 pagamentos consecutivos</strong> da mensalidade, o associado que realizou a indicação receberá o <strong>valor integral de uma mensalidade</strong>, correspondente a <strong>5% do soldo</strong>.</p>
           <p><strong>5. LGPD:</strong> Ao enviar, você declara ter autorização do indicado para uso dos dados na campanha.</p>
           <p><strong>Dúvidas:</strong> <a href="mailto:contato@sbpmbahia.com.br" className="text-primary underline">contato@sbpmbahia.com.br</a></p>
         </CardContent>
