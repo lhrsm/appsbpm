@@ -136,6 +136,7 @@ function CarteirinhaCard({
 export default function Carteirinha() {
   const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
   const [selectedDependente, setSelectedDependente] = useState<Dependente | null>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const tipoLabel: Record<string, string> = {
