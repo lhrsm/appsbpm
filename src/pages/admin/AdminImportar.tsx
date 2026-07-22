@@ -235,8 +235,8 @@ export default function AdminImportar() {
   return (
     <div className="space-y-4">
       <div>
-        <h1 className="text-2xl font-bold">Importação em massa (CSV)</h1>
-        <p className="text-sm text-muted-foreground">Suba planilhas para carregar dados em lote</p>
+        <h1 className="text-2xl font-bold">Importações</h1>
+        <p className="text-sm text-muted-foreground">Suba planilhas CSV ou baixe modelos e relatórios em PDF</p>
       </div>
 
       <Card className="p-6 space-y-4">
@@ -301,7 +301,7 @@ export default function AdminImportar() {
             <Download className="w-4 h-4 mr-2" />Baixar modelo CSV
           </Button>
           <Button variant="outline" onClick={downloadPdf} disabled={generatingPdf}>
-            <FileDown className="w-4 h-4 mr-2" />{generatingPdf ? "Gerando PDF..." : "Baixar em PDF"}
+            <FileDown className="w-4 h-4 mr-2" />{generatingPdf ? "Gerando PDF..." : "Baixar modelo PDF"}
           </Button>
           <label className="inline-flex">
             <input type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} />
