@@ -173,15 +173,32 @@ export default function Carteirinha() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from('sistema_config')
-        .select('chave,valor')
-        .in('chave', ['assinatura_presidente_url', 'nome_presidente']);
+      const { data } = await supabase.from('sistema_config').select('chave,valor');
       const map = Object.fromEntries((data || []).map((r: any) => [r.chave, r.valor]));
-      setPresidenteUrl(map.assinatura_presidente_url || null);
-      setPresidenteNome(map.nome_presidente || null);
+      const ativo = map.signatario_ativo || 'presidente';
+      const url =
+        map[`signatario_${ativo}_url`] ||
+        (ativo === 'presidente' ? map.assinatura_presidente_url : null) ||
+        null;
+      const nome =
+        map[`signatario_${ativo}_nome`] ||
+        (ativo === 'presidente' ? map.nome_presidente : null) ||
+        null;
+      const cargo =
+        map[`signatario_${ativo}_cargo`] ||
+        (ativo === 'presidente'
+          ? 'Presidente'
+          : ativo === 'vice_presidente'
+          ? 'Vice-Presidente'
+          : ativo === 'superintendente_saude'
+          ? 'Superintendente de Promoção da Saúde'
+          : 'Presidente');
+      setPresidenteUrl(url);
+      // Rótulo final = "Cargo — Nome" quando ambos existem, senão o que houver
+      setPresidenteNome(nome ? `${cargo} — ${nome}` : cargo);
     })();
   }, []);
+
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',

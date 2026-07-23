@@ -44,15 +44,25 @@ const DEFAULTS: Settings = {
 
 const STORAGE_KEY = "sbpm_admin_settings";
 
+const SIGNATARIOS_DEFAULT: { slug: string; cargoPadrao: string }[] = [
+  { slug: "presidente", cargoPadrao: "Presidente" },
+  { slug: "vice_presidente", cargoPadrao: "Vice-Presidente" },
+  { slug: "superintendente_saude", cargoPadrao: "Superintendente de Promoção da Saúde" },
+];
+
+type Signatario = { slug: string; nome: string; cargo: string; url: string | null };
+
 export default function AdminConfiguracoes() {
   const [settings, setSettings] = useState<Settings>(DEFAULTS);
   const [admins, setAdmins] = useState<any[]>([]);
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [saving, setSaving] = useState(false);
-  const [presidenteUrl, setPresidenteUrl] = useState<string | null>(null);
-  const [presidenteNome, setPresidenteNome] = useState<string>("");
-  const [uploadingSig, setUploadingSig] = useState(false);
-  const [savingSigMeta, setSavingSigMeta] = useState(false);
+  const [signatarios, setSignatarios] = useState<Signatario[]>(
+    SIGNATARIOS_DEFAULT.map((s) => ({ slug: s.slug, nome: "", cargo: s.cargoPadrao, url: null }))
+  );
+  const [signatarioAtivo, setSignatarioAtivo] = useState<string>("presidente");
+  const [uploadingSlug, setUploadingSlug] = useState<string | null>(null);
+  const [savingSlug, setSavingSlug] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -60,72 +70,104 @@ export default function AdminConfiguracoes() {
       try { setSettings({ ...DEFAULTS, ...JSON.parse(saved) }); } catch {}
     }
     loadAdmins();
-    loadPresidente();
+    loadSignatarios();
   }, []);
 
-  const loadPresidente = async () => {
-    const { data } = await supabase
-      .from("sistema_config")
-      .select("chave,valor")
-      .in("chave", ["assinatura_presidente_url", "nome_presidente"]);
+  const loadSignatarios = async () => {
+    const { data } = await supabase.from("sistema_config").select("chave,valor");
     const map = Object.fromEntries((data || []).map((r: any) => [r.chave, r.valor]));
-    setPresidenteUrl(map.assinatura_presidente_url || null);
-    setPresidenteNome(map.nome_presidente || "");
+
+    const legacyUrl = map.assinatura_presidente_url || null;
+    const legacyNome = map.nome_presidente || "";
+
+    setSignatarios(
+      SIGNATARIOS_DEFAULT.map((s) => ({
+        slug: s.slug,
+        nome: map[`signatario_${s.slug}_nome`] || (s.slug === "presidente" ? legacyNome : ""),
+        cargo: map[`signatario_${s.slug}_cargo`] || s.cargoPadrao,
+        url: map[`signatario_${s.slug}_url`] || (s.slug === "presidente" ? legacyUrl : null),
+      }))
+    );
+    setSignatarioAtivo(map.signatario_ativo || "presidente");
   };
 
-  const uploadAssinaturaPresidente = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateSignatarioLocal = (slug: string, patch: Partial<Signatario>) =>
+    setSignatarios((prev) => prev.map((s) => (s.slug === slug ? { ...s, ...patch } : s)));
+
+  const salvarDadosSignatario = async (slug: string) => {
+    const sig = signatarios.find((s) => s.slug === slug);
+    if (!sig) return;
+    setSavingSlug(slug);
+    try {
+      const rows = [
+        { chave: `signatario_${slug}_nome`, valor: sig.nome.trim() || null },
+        { chave: `signatario_${slug}_cargo`, valor: sig.cargo.trim() || null },
+      ];
+      const { error } = await supabase.from("sistema_config").upsert(rows, { onConflict: "chave" });
+      if (error) throw error;
+      if (slug === "presidente") {
+        await supabase
+          .from("sistema_config")
+          .upsert({ chave: "nome_presidente", valor: sig.nome.trim() || null }, { onConflict: "chave" });
+      }
+      toast.success("Dados salvos");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao salvar");
+    } finally {
+      setSavingSlug(null);
+    }
+  };
+
+  const uploadAssinatura = async (slug: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) return toast.error("Selecione uma imagem (PNG/JPG)");
     if (file.size > 2 * 1024 * 1024) return toast.error("Máx. 2MB");
-    setUploadingSig(true);
+    setUploadingSlug(slug);
     try {
       const ext = file.name.split(".").pop() || "png";
-      const path = `assinaturas/presidente.${ext}`;
+      const path = `assinaturas/${slug}.${ext}`;
       const { error: upErr } = await supabase.storage
         .from("profile-photos")
         .upload(path, file, { upsert: true, contentType: file.type });
       if (upErr) throw upErr;
       const { data: { publicUrl } } = supabase.storage.from("profile-photos").getPublicUrl(path);
       const finalUrl = `${publicUrl}?t=${Date.now()}`;
-      const { error } = await supabase
-        .from("sistema_config")
-        .upsert({ chave: "assinatura_presidente_url", valor: finalUrl }, { onConflict: "chave" });
+      const rows = [{ chave: `signatario_${slug}_url`, valor: finalUrl }];
+      if (slug === "presidente") rows.push({ chave: "assinatura_presidente_url", valor: finalUrl });
+      const { error } = await supabase.from("sistema_config").upsert(rows, { onConflict: "chave" });
       if (error) throw error;
-      setPresidenteUrl(finalUrl);
-      toast.success("Assinatura do Presidente atualizada");
+      updateSignatarioLocal(slug, { url: finalUrl });
+      toast.success("Assinatura atualizada");
     } catch (err: any) {
       toast.error(err?.message || "Erro ao enviar");
     } finally {
-      setUploadingSig(false);
+      setUploadingSlug(null);
       (e.target as HTMLInputElement).value = "";
     }
   };
 
-  const salvarNomePresidente = async () => {
-    setSavingSigMeta(true);
-    try {
-      const { error } = await supabase
-        .from("sistema_config")
-        .upsert({ chave: "nome_presidente", valor: presidenteNome.trim() || null }, { onConflict: "chave" });
-      if (error) throw error;
-      toast.success("Nome do Presidente salvo");
-    } catch (err: any) {
-      toast.error(err?.message || "Erro ao salvar");
-    } finally {
-      setSavingSigMeta(false);
-    }
-  };
-
-  const removerAssinaturaPresidente = async () => {
-    if (!confirm("Remover a assinatura do Presidente?")) return;
-    const { error } = await supabase
-      .from("sistema_config")
-      .upsert({ chave: "assinatura_presidente_url", valor: null }, { onConflict: "chave" });
+  const removerAssinatura = async (slug: string) => {
+    if (!confirm("Remover esta assinatura?")) return;
+    const rows = [{ chave: `signatario_${slug}_url`, valor: null }];
+    if (slug === "presidente") rows.push({ chave: "assinatura_presidente_url", valor: null });
+    const { error } = await supabase.from("sistema_config").upsert(rows, { onConflict: "chave" });
     if (error) return toast.error(error.message);
-    setPresidenteUrl(null);
+    updateSignatarioLocal(slug, { url: null });
     toast.success("Assinatura removida");
   };
+
+  const definirAtivo = async (slug: string) => {
+    const sig = signatarios.find((s) => s.slug === slug);
+    if (!sig?.url) return toast.error("Envie uma imagem antes de ativar");
+    const { error } = await supabase
+      .from("sistema_config")
+      .upsert({ chave: "signatario_ativo", valor: slug }, { onConflict: "chave" });
+    if (error) return toast.error(error.message);
+    setSignatarioAtivo(slug);
+    toast.success("Assinatura ativa atualizada — já aparece nas carteirinhas");
+  };
+
 
 
   const loadAdmins = async () => {
@@ -212,65 +254,97 @@ export default function AdminConfiguracoes() {
         <TabsContent value="carteirinha">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinatura do Presidente</CardTitle>
+              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinaturas da Carteirinha</CardTitle>
               <CardDescription>
-                Essa assinatura será exibida em todas as carteirinhas de associados e dependentes.
-                Envie uma imagem PNG com fundo transparente para melhor resultado.
+                Cadastre até 3 signatários (Presidente, Vice-Presidente e Superintendente de Promoção da Saúde)
+                e escolha qual assinatura será exibida nas carteirinhas.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label>Nome do Presidente</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={presidenteNome}
-                    onChange={(e) => setPresidenteNome(e.target.value)}
-                    placeholder="Ex: Cel. PM João da Silva"
-                  />
-                  <Button onClick={salvarNomePresidente} disabled={savingSigMeta}>
-                    {savingSigMeta ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">Aparece abaixo da linha da assinatura na carteirinha.</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Imagem da assinatura</Label>
-                <div className="flex items-end gap-4">
-                  <div className="w-64 h-24 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
-                    {presidenteUrl ? (
-                      <img src={presidenteUrl} alt="Assinatura do presidente" className="max-h-full max-w-full object-contain" />
-                    ) : (
-                      <span className="text-xs text-muted-foreground">Nenhuma assinatura enviada</span>
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="file-assinatura-presidente" className="cursor-pointer">
-                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
-                        {uploadingSig ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                        {uploadingSig ? "Enviando..." : "Enviar imagem"}
+              {signatarios.map((sig) => {
+                const ativo = signatarioAtivo === sig.slug;
+                return (
+                  <div key={sig.slug} className={`rounded-lg border p-4 space-y-4 ${ativo ? "border-primary bg-primary/5" : ""}`}>
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold">{sig.cargo || sig.slug}</span>
+                        {ativo && <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">Ativo na carteirinha</span>}
                       </div>
-                      <input
-                        id="file-assinatura-presidente"
-                        type="file"
-                        accept="image/png,image/jpeg,image/webp"
-                        className="hidden"
-                        onChange={uploadAssinaturaPresidente}
-                        disabled={uploadingSig}
-                      />
-                    </Label>
-                    {presidenteUrl && (
-                      <Button variant="outline" size="sm" onClick={removerAssinaturaPresidente}>
-                        <Trash2 className="w-4 h-4 mr-2" /> Remover
+                      <Button
+                        size="sm"
+                        variant={ativo ? "secondary" : "outline"}
+                        onClick={() => definirAtivo(sig.slug)}
+                        disabled={ativo || !sig.url}
+                      >
+                        {ativo ? "Selecionado" : "Usar esta assinatura"}
                       </Button>
-                    )}
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="space-y-1">
+                        <Label>Nome</Label>
+                        <Input
+                          value={sig.nome}
+                          onChange={(e) => updateSignatarioLocal(sig.slug, { nome: e.target.value })}
+                          placeholder="Nome completo"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label>Cargo (rótulo)</Label>
+                        <Input
+                          value={sig.cargo}
+                          onChange={(e) => updateSignatarioLocal(sig.slug, { cargo: e.target.value })}
+                          placeholder="Ex: Vice-Presidente"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-end gap-4 flex-wrap">
+                      <div className="w-56 h-20 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
+                        {sig.url ? (
+                          <img src={sig.url} alt={`Assinatura ${sig.cargo}`} className="max-h-full max-w-full object-contain" />
+                        ) : (
+                          <span className="text-xs text-muted-foreground">Sem assinatura</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`file-sig-${sig.slug}`} className="cursor-pointer">
+                          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
+                            {uploadingSlug === sig.slug ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                            {uploadingSlug === sig.slug ? "Enviando..." : "Enviar imagem"}
+                          </div>
+                          <input
+                            id={`file-sig-${sig.slug}`}
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            className="hidden"
+                            onChange={(e) => uploadAssinatura(sig.slug, e)}
+                            disabled={uploadingSlug === sig.slug}
+                          />
+                        </Label>
+                        {sig.url && (
+                          <Button variant="outline" size="sm" onClick={() => removerAssinatura(sig.slug)}>
+                            <Trash2 className="w-4 h-4 mr-2" /> Remover
+                          </Button>
+                        )}
+                      </div>
+                      <div className="ml-auto">
+                        <Button size="sm" onClick={() => salvarDadosSignatario(sig.slug)} disabled={savingSlug === sig.slug}>
+                          {savingSlug === sig.slug ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                          Salvar nome/cargo
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.</p>
-              </div>
+                );
+              })}
+              <p className="text-xs text-muted-foreground">
+                PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
+
 
 
 
