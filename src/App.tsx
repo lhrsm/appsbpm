@@ -69,6 +69,7 @@ const App = () => (
         <BrowserRouter>
           <CookieConsent />
           <AccessibilityWidget />
+          <ChatbotWidget />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/privacidade" element={<Privacidade />} />
