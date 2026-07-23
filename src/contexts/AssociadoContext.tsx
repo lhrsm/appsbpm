@@ -8,9 +8,13 @@ export interface Dependente {
   tipo: 'conjuge' | 'filho' | 'pai_mae' | 'outro';
   foto_url: string | null;
   assinatura_url?: string | null;
+  email?: string | null;
+  telefone?: string | null;
+  endereco?: string | null;
   ativo: boolean;
   status?: string;
 }
+
 
 export interface Limite {
   id: string;
