@@ -49,8 +49,14 @@ import AdminSeguranca from "./pages/admin/AdminSeguranca";
 import AdminNotificacoes from "./pages/admin/AdminNotificacoes";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
+import Agenda from "./pages/Agenda";
+import FAQ from "./pages/FAQ";
+import AdminEventos from "./pages/admin/AdminEventos";
+import AdminFAQ from "./pages/admin/AdminFAQ";
+import AdminAvaliacoes from "./pages/admin/AdminAvaliacoes";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const queryClient = new QueryClient();
 
