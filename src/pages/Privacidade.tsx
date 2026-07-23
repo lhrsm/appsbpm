@@ -170,14 +170,26 @@ export default function Privacidade() {
               Para exercer seus direitos ou tirar dúvidas sobre este documento,
               entre em contato com nosso canal de privacidade:
             </p>
-            <p className="mt-3">
-              <a
-                href="mailto:contato@sbpmbahia.com.br?subject=LGPD%20-%20Solicita%C3%A7%C3%A3o%20de%20Titular"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary underline underline-offset-2 hover:opacity-80 sm:text-base"
-              >
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                contato@sbpmbahia.com.br
-              </a>
+            <div className="mt-3 space-y-1 text-sm sm:text-base">
+              <p><strong>DPO:</strong> Encarregado de Proteção de Dados da SBPM</p>
+              <p>
+                <strong>E-mail:</strong>{' '}
+                <a
+                  href="mailto:previdencia@sbpmbahia.com.br?subject=LGPD%20-%20Solicita%C3%A7%C3%A3o%20de%20Titular"
+                  className="inline-flex items-center gap-2 font-medium text-primary underline underline-offset-2 hover:opacity-80"
+                >
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  previdencia@sbpmbahia.com.br
+                </a>
+              </p>
+              <p><strong>Telefone:</strong> (71) 98549-6972</p>
+              <p><strong>Prazo de resposta:</strong> até 15 dias úteis (art. 19, LGPD)</p>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Associados logados podem exercer seus direitos diretamente pelo Portal em{' '}
+              <Link to="/dashboard/minha-privacidade" className="text-primary underline">Central de Privacidade</Link>.
+              Também é possível apresentar reclamação à ANPD em{' '}
+              <a href="https://www.gov.br/anpd" target="_blank" rel="noreferrer" className="text-primary underline">gov.br/anpd</a>.
             </p>
           </section>
         </article>

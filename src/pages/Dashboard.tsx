@@ -29,6 +29,7 @@ import {
   UserCog,
   Handshake,
   ShieldCheck,
+  ShieldAlert,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -49,6 +50,7 @@ const menuItemsTitular = [
   { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
   { path: '/dashboard/peculio', label: 'Pecúlio', icon: ShieldCheck },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
+  { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
 ];
 
 // Menu restrito para dependentes
@@ -56,6 +58,7 @@ const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
+  { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
 ];
 
 const whatsappContacts = [

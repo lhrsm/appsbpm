@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Cookie } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const STORAGE_KEY = 'sbpm.cookie-consent.v1';
+const CONSENT_VERSION = '1.0';
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -16,12 +18,28 @@ export default function CookieConsent() {
     }
   }, []);
 
-  const decide = (value: 'accepted' | 'essential') => {
+  const decide = async (value: 'accepted' | 'essential') => {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ value, at: new Date().toISOString() })
+        JSON.stringify({ value, at: new Date().toISOString(), versao: CONSENT_VERSION })
       );
+    } catch {}
+    // Registro no banco (best-effort, não bloqueia UX)
+    try {
+      const associadoId = (() => {
+        try {
+          const raw = localStorage.getItem('sbpm.associado');
+          return raw ? JSON.parse(raw)?.id ?? null : null;
+        } catch { return null; }
+      })();
+      await supabase.from('consentimentos').insert({
+        associado_id: associadoId,
+        tipo: 'cookies',
+        versao: CONSENT_VERSION,
+        aceito: value === 'accepted',
+        user_agent: navigator.userAgent.slice(0, 500),
+      });
     } catch {}
     setVisible(false);
   };

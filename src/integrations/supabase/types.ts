@@ -257,6 +257,60 @@ export type Database = {
         }
         Relationships: []
       }
+      consentimentos: {
+        Row: {
+          aceito: boolean
+          aceito_em: string
+          associado_id: string | null
+          created_at: string
+          dependente_id: string | null
+          id: string
+          ip: string | null
+          tipo: string
+          user_agent: string | null
+          versao: string
+        }
+        Insert: {
+          aceito?: boolean
+          aceito_em?: string
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          ip?: string | null
+          tipo: string
+          user_agent?: string | null
+          versao?: string
+        }
+        Update: {
+          aceito?: boolean
+          aceito_em?: string
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          ip?: string | null
+          tipo?: string
+          user_agent?: string | null
+          versao?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "consentimentos_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "consentimentos_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dependentes: {
         Row: {
           associado_id: string
@@ -536,6 +590,69 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      solicitacoes_privacidade: {
+        Row: {
+          associado_id: string | null
+          created_at: string
+          dependente_id: string | null
+          descricao: string | null
+          id: string
+          ip: string | null
+          resposta: string | null
+          solicitante_documento: string | null
+          solicitante_email: string | null
+          solicitante_nome: string | null
+          status: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          descricao?: string | null
+          id?: string
+          ip?: string | null
+          resposta?: string | null
+          solicitante_documento?: string | null
+          solicitante_email?: string | null
+          solicitante_nome?: string | null
+          status?: string
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          descricao?: string | null
+          id?: string
+          ip?: string | null
+          resposta?: string | null
+          solicitante_documento?: string | null
+          solicitante_email?: string | null
+          solicitante_nome?: string | null
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solicitacoes_privacidade_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "solicitacoes_privacidade_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sync_logs: {
         Row: {
