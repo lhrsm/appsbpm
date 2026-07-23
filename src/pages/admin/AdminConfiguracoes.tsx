@@ -209,6 +209,71 @@ export default function AdminConfiguracoes() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="carteirinha">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinatura do Presidente</CardTitle>
+              <CardDescription>
+                Essa assinatura será exibida em todas as carteirinhas de associados e dependentes.
+                Envie uma imagem PNG com fundo transparente para melhor resultado.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label>Nome do Presidente</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={presidenteNome}
+                    onChange={(e) => setPresidenteNome(e.target.value)}
+                    placeholder="Ex: Cel. PM João da Silva"
+                  />
+                  <Button onClick={salvarNomePresidente} disabled={savingSigMeta}>
+                    {savingSigMeta ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">Aparece abaixo da linha da assinatura na carteirinha.</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Imagem da assinatura</Label>
+                <div className="flex items-end gap-4">
+                  <div className="w-64 h-24 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
+                    {presidenteUrl ? (
+                      <img src={presidenteUrl} alt="Assinatura do presidente" className="max-h-full max-w-full object-contain" />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Nenhuma assinatura enviada</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="file-assinatura-presidente" className="cursor-pointer">
+                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
+                        {uploadingSig ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                        {uploadingSig ? "Enviando..." : "Enviar imagem"}
+                      </div>
+                      <input
+                        id="file-assinatura-presidente"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        className="hidden"
+                        onChange={uploadAssinaturaPresidente}
+                        disabled={uploadingSig}
+                      />
+                    </Label>
+                    {presidenteUrl && (
+                      <Button variant="outline" size="sm" onClick={removerAssinaturaPresidente}>
+                        <Trash2 className="w-4 h-4 mr-2" /> Remover
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+
+
         <TabsContent value="notificacoes">
           <Card>
             <CardHeader>
