@@ -76,6 +76,7 @@ const App = () => (
               <Route path="peculio" element={<Peculio />} />
               <Route path="perfil" element={<Perfil />} />
               <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
+              <Route path="notificacoes" element={<Notificacoes />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
