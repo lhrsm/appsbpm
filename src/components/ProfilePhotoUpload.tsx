@@ -30,7 +30,7 @@ export default function ProfilePhotoUpload({
   const [photoUrl, setPhotoUrl] = useState(currentPhotoUrl);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const { associado } = useAssociado();
+  const { associado, dependentes } = useAssociado();
 
   useEffect(() => {
     setPhotoUrl(currentPhotoUrl);
@@ -108,15 +108,20 @@ export default function ProfilePhotoUpload({
       if (!associado?.matricula) {
         throw new Error('Sessão inválida: matrícula do titular não encontrada.');
       }
+      const cpfParaEnvio =
+        userType === 'dependente'
+          ? dependentes.find((d) => d.id === userId)?.cpf || undefined
+          : associado.cpf;
       const { data: updData, error: updateError } = await supabase.functions.invoke('update-perfil', {
         body: {
           tipo: userType,
           id: userId,
           matricula_titular: associado.matricula,
-          cpf: associado.cpf,
+          cpf: cpfParaEnvio,
           campos: { foto_url: publicUrl },
         },
       });
+
 
       if (updateError) throw updateError;
       if (updData?.error) throw new Error(updData.error);

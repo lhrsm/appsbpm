@@ -113,17 +113,21 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Dependente: só permitimos alterar foto_url e assinatura_url
+    // Dependente: pode alterar foto, assinatura e dados de contato próprios
     const update: Record<string, unknown> = {};
     if (campos.foto_url !== undefined) update.foto_url = campos.foto_url || null;
     if (campos.assinatura_url !== undefined) update.assinatura_url = campos.assinatura_url || null;
+    if (campos.email !== undefined) update.email = campos.email || null;
+    if (campos.telefone !== undefined) update.telefone = campos.telefone || null;
+    if (campos.endereco !== undefined) update.endereco = campos.endereco || null;
 
     const { data, error } = await supabase
       .from('dependentes')
       .update(update)
       .eq('id', id)
-      .select('id, foto_url, assinatura_url')
+      .select('id, foto_url, assinatura_url, email, telefone, endereco')
       .maybeSingle();
+
 
     if (error) throw error;
     return new Response(
