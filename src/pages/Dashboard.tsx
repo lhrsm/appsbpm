@@ -43,6 +43,7 @@ import { useNotificacoes } from '@/hooks/useNotificacoes';
 // Menu completo para titular
 const menuItemsTitular = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
+  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
@@ -58,6 +59,7 @@ const menuItemsTitular = [
 // Menu restrito para dependentes
 const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
+  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
