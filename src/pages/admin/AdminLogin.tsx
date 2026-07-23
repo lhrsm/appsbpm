@@ -123,26 +123,60 @@ export default function AdminLogin() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div>
-              <Label htmlFor="password">Senha</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
-            </Button>
-            <button
-              type="button"
-              onClick={() => setMode(mode === "login" ? "signup" : "login")}
-              className="w-full text-sm text-muted-foreground hover:text-primary"
-            >
-              {mode === "login" ? "Criar nova conta administrativa" : "Já tenho conta"}
-            </button>
-          </form>
+          {mfaChallengeId ? (
+            <form onSubmit={submitMfa} className="space-y-4">
+              <div>
+                <Label htmlFor="mfa">Código do autenticador</Label>
+                <Input
+                  id="mfa"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  placeholder="000000"
+                  value={mfaCode}
+                  onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ""))}
+                  className="text-center text-lg tracking-widest"
+                  autoFocus
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading || mfaCode.length !== 6}>
+                {loading ? "Verificando..." : "Verificar código"}
+              </Button>
+              <button
+                type="button"
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  setMfaChallengeId(null);
+                  setMfaFactorId(null);
+                  setMfaCode("");
+                }}
+                className="w-full text-sm text-muted-foreground hover:text-primary"
+              >
+                Cancelar e voltar
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="email">E-mail</Label>
+                <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+              </div>
+              <div>
+                <Label htmlFor="password">Senha</Label>
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
+              </Button>
+              <button
+                type="button"
+                onClick={() => setMode(mode === "login" ? "signup" : "login")}
+                className="w-full text-sm text-muted-foreground hover:text-primary"
+              >
+                {mode === "login" ? "Criar nova conta administrativa" : "Já tenho conta"}
+              </button>
+            </form>
+          )}
         </CardContent>
       </Card>
     </div>

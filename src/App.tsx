@@ -38,6 +38,7 @@ import AdminComunicados from "./pages/admin/AdminComunicados";
 import AdminImportar from "./pages/admin/AdminImportar";
 import AdminAuditoria from "./pages/admin/AdminAuditoria";
 import AdminPeculio from "./pages/admin/AdminPeculio";
+import AdminSeguranca from "./pages/admin/AdminSeguranca";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
 import CookieConsent from "./components/CookieConsent";
@@ -92,6 +93,7 @@ const App = () => (
               <Route path="importar" element={<AdminImportar />} />
               <Route path="auditoria" element={<AdminAuditoria />} />
               <Route path="peculio" element={<AdminPeculio />} />
+              <Route path="seguranca" element={<AdminSeguranca />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
