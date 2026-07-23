@@ -744,6 +744,84 @@ export type Database = {
           },
         ]
       }
+      solicitacoes: {
+        Row: {
+          anexos: Json | null
+          associado_id: string
+          assunto: string
+          categoria: string
+          created_at: string
+          dependente_id: string | null
+          descricao: string
+          id: string
+          metadata: Json | null
+          prioridade: string
+          respondido_em: string | null
+          respondido_por: string | null
+          resposta: string | null
+          sla_prazo: string | null
+          solicitante_nome: string
+          solicitante_tipo: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          anexos?: Json | null
+          associado_id: string
+          assunto: string
+          categoria: string
+          created_at?: string
+          dependente_id?: string | null
+          descricao: string
+          id?: string
+          metadata?: Json | null
+          prioridade?: string
+          respondido_em?: string | null
+          respondido_por?: string | null
+          resposta?: string | null
+          sla_prazo?: string | null
+          solicitante_nome: string
+          solicitante_tipo?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          anexos?: Json | null
+          associado_id?: string
+          assunto?: string
+          categoria?: string
+          created_at?: string
+          dependente_id?: string | null
+          descricao?: string
+          id?: string
+          metadata?: Json | null
+          prioridade?: string
+          respondido_em?: string | null
+          respondido_por?: string | null
+          resposta?: string | null
+          sla_prazo?: string | null
+          solicitante_nome?: string
+          solicitante_tipo?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "solicitacoes_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "solicitacoes_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       solicitacoes_privacidade: {
         Row: {
           associado_id: string | null
