@@ -7,6 +7,7 @@ export interface Dependente {
   data_nascimento: string | null;
   tipo: 'conjuge' | 'filho' | 'pai_mae' | 'outro';
   foto_url: string | null;
+  assinatura_url?: string | null;
   ativo: boolean;
   status?: string;
 }
@@ -48,9 +49,11 @@ export interface Associado {
   telefone: string | null;
   endereco: string | null;
   foto_url: string | null;
+  assinatura_url?: string | null;
   data_admissao: string;
   ativo: boolean;
 }
+
 
 interface AssociadoContextType {
   associado: Associado | null;

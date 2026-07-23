@@ -16,8 +16,10 @@ const BodySchema = z.object({
     telefone: optionalStr(30),
     endereco: optionalStr(500),
     foto_url: optionalStr(1000),
+    assinatura_url: optionalStr(1000),
   }),
 });
+
 
 const soNumeros = (v?: string | null) => (v || '').replace(/\D+/g, '');
 
@@ -74,13 +76,15 @@ Deno.serve(async (req) => {
       if (campos.telefone !== undefined) update.telefone = campos.telefone || null;
       if (campos.endereco !== undefined) update.endereco = campos.endereco || null;
       if (campos.foto_url !== undefined) update.foto_url = campos.foto_url || null;
+      if (campos.assinatura_url !== undefined) update.assinatura_url = campos.assinatura_url || null;
 
       const { data, error } = await supabase
         .from('associados')
         .update(update)
         .eq('id', id)
-        .select('id, email, telefone, endereco, foto_url')
+        .select('id, email, telefone, endereco, foto_url, assinatura_url')
         .maybeSingle();
+
       if (error) throw error;
       return new Response(
         JSON.stringify({ ok: true, associado: data }),
@@ -109,16 +113,18 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Dependente: só permitimos alterar foto_url (as demais colunas não existem em `dependentes`)
+    // Dependente: só permitimos alterar foto_url e assinatura_url
     const update: Record<string, unknown> = {};
     if (campos.foto_url !== undefined) update.foto_url = campos.foto_url || null;
+    if (campos.assinatura_url !== undefined) update.assinatura_url = campos.assinatura_url || null;
 
     const { data, error } = await supabase
       .from('dependentes')
       .update(update)
       .eq('id', id)
-      .select('id, foto_url')
+      .select('id, foto_url, assinatura_url')
       .maybeSingle();
+
     if (error) throw error;
     return new Response(
       JSON.stringify({ ok: true, dependente: data }),
