@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import PageSkeleton from '@/components/PageSkeleton';
 
 const CATEGORIA_LABEL: Record<string, { label: string; className: string }> = {
   geral: { label: 'Geral', className: 'bg-muted text-foreground' },
