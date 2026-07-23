@@ -73,6 +73,7 @@ const App = () => (
           <CookieConsent />
           <AccessibilityWidget />
           <ChatbotWidget />
+          <InstallPWAPrompt />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/privacidade" element={<Privacidade />} />
