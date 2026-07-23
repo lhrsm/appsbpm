@@ -260,6 +260,69 @@ export default function SolicitarPeculio() {
         </Card>
 
         <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Paperclip className="h-5 w-5" /> Documentos anexos
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Anexe cópias digitalizadas: Certidão de Óbito, RG e CPF do beneficiário,
+              comprovante de residência e comprovante bancário. Máx. {MAX_FILES} arquivos, 10 MB cada.
+            </p>
+            <input
+              id="peculio-anexos"
+              type="file"
+              multiple
+              accept="image/*,application/pdf"
+              className="hidden"
+              onChange={handleFilesChange}
+              disabled={loading || anexos.length >= MAX_FILES}
+            />
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => document.getElementById('peculio-anexos')?.click()}
+                disabled={loading || anexos.length >= MAX_FILES}
+              >
+                <Upload className="h-4 w-4 mr-2" /> Selecionar arquivos
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                {anexos.length}/{MAX_FILES}
+              </span>
+            </div>
+            {anexos.length > 0 && (
+              <ul className="space-y-1">
+                {anexos.map((f, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center justify-between rounded-md border bg-muted/40 px-3 py-2 text-sm"
+                  >
+                    <span className="truncate mr-2">
+                      {f.name}{' '}
+                      <span className="text-xs text-muted-foreground">
+                        ({(f.size / 1024 / 1024).toFixed(2)} MB)
+                      </span>
+                    </span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      className="h-7 w-7"
+                      onClick={() => removerAnexo(i)}
+                      disabled={loading}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
           <CardHeader><CardTitle className="text-lg">Observações</CardTitle></CardHeader>
           <CardContent>
             <Textarea
