@@ -100,7 +100,7 @@ Deno.serve(async (req) => {
     }
 
     const body = await req.json();
-    const { title, body: message, url, associadoId, dependenteId, all } = body ?? {};
+    const { title, body: message, url, associadoId, dependenteId, all, categoria } = body ?? {};
     if (!title || !message) {
       return new Response(JSON.stringify({ error: 'title e body são obrigatórios' }), {
         status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
     }
 
     // Load target tokens
-    let query = admin.from('push_tokens').select('token');
+    let query = admin.from('push_tokens').select('token, associado_id, dependente_id');
     if (!all) {
       if (associadoId) query = query.eq('associado_id', associadoId);
       else if (dependenteId) query = query.eq('dependente_id', dependenteId);
@@ -122,6 +122,25 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ sent: 0, failed: 0, message: 'Nenhum destinatário' }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
+    }
+
+    // Persist inbox notifications (deduped per associado/dependente)
+    const inboxRows = new Map<string, any>();
+    for (const t of tokens as any[]) {
+      const key = `${t.associado_id ?? ''}|${t.dependente_id ?? ''}`;
+      if (!inboxRows.has(key)) {
+        inboxRows.set(key, {
+          associado_id: t.associado_id ?? null,
+          dependente_id: t.dependente_id ?? null,
+          titulo: title,
+          corpo: message,
+          categoria: categoria || 'geral',
+          url: url || null,
+        });
+      }
+    }
+    if (inboxRows.size) {
+      await admin.from('notificacoes').insert(Array.from(inboxRows.values()));
     }
 
     const sa = JSON.parse(Deno.env.get('FIREBASE_SERVICE_ACCOUNT')!);
