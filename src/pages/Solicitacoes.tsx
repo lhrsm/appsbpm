@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Plus, Ticket, Clock, CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 
 const CATEGORIAS = [
   { value: 'segunda_via_carteirinha', label: '2ª via de carteirinha', sla: 3 },
