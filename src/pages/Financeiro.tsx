@@ -222,7 +222,7 @@ export default function Financeiro() {
         </CardContent>
       </Card>
 
-      {loading ? <p>Carregando...</p> : filtered.length === 0 ? (
+      {loading ? <PageSkeleton rows={5} variant="list" showHeader={false} /> : filtered.length === 0 ? (
         <Card><CardContent className="p-10 text-center text-muted-foreground">Nenhum lançamento encontrado.</CardContent></Card>
       ) : (
         <div className="grid gap-2">
