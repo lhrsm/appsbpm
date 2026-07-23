@@ -352,6 +352,50 @@ export default function Perfil() {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Meus acessos */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <History className="h-5 w-5" /> Meus acessos recentes
+          </CardTitle>
+          <CardDescription>
+            Últimos 10 acessos à sua conta. Se notar algum acesso que não reconheça, entre em contato
+            com a SBPM.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loadingAcessos ? (
+            <p className="text-sm text-muted-foreground">Carregando...</p>
+          ) : acessos.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
+          ) : (
+            <ul className="divide-y">
+              {acessos.map((a) => (
+                <li key={a.id} className="py-2 flex items-center justify-between text-sm">
+                  <div>
+                    <p className="font-medium">
+                      {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {parseDevice(a.user_agent)} · Login por {a.metodo_login === 'cpf' ? 'CPF' : 'Matrícula'}
+                    </p>
+                  </div>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full ${
+                      a.sucesso
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                    }`}
+                  >
+                    {a.sucesso ? 'Sucesso' : 'Falha'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
