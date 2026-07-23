@@ -168,7 +168,11 @@ export default function AdminFinanceiro() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6" /> Financeiro</h1>
           <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e taxas</p>
         </div>
-        <Button onClick={() => abrir()}><Plus className="w-4 h-4 mr-2" /> Novo lançamento</Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" onClick={exportarCSV}><Download className="w-4 h-4 mr-2" /> CSV</Button>
+          <Button variant="outline" onClick={() => setLoteOpen(true)}><Layers className="w-4 h-4 mr-2" /> Gerar lote mensal</Button>
+          <Button onClick={() => abrir()}><Plus className="w-4 h-4 mr-2" /> Novo lançamento</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
