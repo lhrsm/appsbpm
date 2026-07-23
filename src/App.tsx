@@ -20,7 +20,9 @@ import Perfil from "./pages/Perfil";
 import MinhaPrivacidade from "./pages/MinhaPrivacidade";
 import Notificacoes from "./pages/Notificacoes";
 import Solicitacoes from "./pages/Solicitacoes";
+import MeusDocumentos from "./pages/MeusDocumentos";
 import AdminSolicitacoes from "./pages/admin/AdminSolicitacoes";
+import AdminDocumentos from "./pages/admin/AdminDocumentos";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -80,6 +82,7 @@ const App = () => (
               <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
               <Route path="notificacoes" element={<Notificacoes />} />
               <Route path="solicitacoes" element={<Solicitacoes />} />
+              <Route path="documentos" element={<MeusDocumentos />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
@@ -102,6 +105,7 @@ const App = () => (
               <Route path="seguranca" element={<AdminSeguranca />} />
               <Route path="notificacoes" element={<AdminNotificacoes />} />
               <Route path="solicitacoes" element={<AdminSolicitacoes />} />
+              <Route path="documentos" element={<AdminDocumentos />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
