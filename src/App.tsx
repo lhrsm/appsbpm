@@ -89,6 +89,7 @@ const App = () => (
           <ChatbotWidget />
           <InstallPWAPrompt />
           <OfflineBanner />
+          <BackToTop />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Login />} />
