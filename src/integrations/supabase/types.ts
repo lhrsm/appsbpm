@@ -657,6 +657,68 @@ export type Database = {
           },
         ]
       }
+      mensalidades: {
+        Row: {
+          associado_id: string
+          boleto_url: string | null
+          created_at: string
+          descricao: string | null
+          forma_pagamento: string | null
+          id: string
+          linha_digitavel: string | null
+          observacoes: string | null
+          pago_em: string | null
+          referencia: string
+          status: string
+          tipo: string
+          updated_at: string
+          valor: number
+          vencimento: string
+        }
+        Insert: {
+          associado_id: string
+          boleto_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          forma_pagamento?: string | null
+          id?: string
+          linha_digitavel?: string | null
+          observacoes?: string | null
+          pago_em?: string | null
+          referencia: string
+          status?: string
+          tipo?: string
+          updated_at?: string
+          valor: number
+          vencimento: string
+        }
+        Update: {
+          associado_id?: string
+          boleto_url?: string | null
+          created_at?: string
+          descricao?: string | null
+          forma_pagamento?: string | null
+          id?: string
+          linha_digitavel?: string | null
+          observacoes?: string | null
+          pago_em?: string | null
+          referencia?: string
+          status?: string
+          tipo?: string
+          updated_at?: string
+          valor?: number
+          vencimento?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mensalidades_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notificacoes: {
         Row: {
           associado_id: string | null
