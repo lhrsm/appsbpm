@@ -161,6 +161,56 @@ export type Database = {
         }
         Relationships: []
       }
+      avaliacoes_parceiros: {
+        Row: {
+          aprovado: boolean
+          associado_id: string
+          autor_nome: string
+          clinica_id: string
+          comentario: string | null
+          created_at: string
+          id: string
+          moderado_em: string | null
+          moderado_por: string | null
+          nota: number
+          updated_at: string
+        }
+        Insert: {
+          aprovado?: boolean
+          associado_id: string
+          autor_nome: string
+          clinica_id: string
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          moderado_em?: string | null
+          moderado_por?: string | null
+          nota: number
+          updated_at?: string
+        }
+        Update: {
+          aprovado?: boolean
+          associado_id?: string
+          autor_nome?: string
+          clinica_id?: string
+          comentario?: string | null
+          created_at?: string
+          id?: string
+          moderado_em?: string | null
+          moderado_por?: string | null
+          nota?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "avaliacoes_parceiros_clinica_id_fkey"
+            columns: ["clinica_id"]
+            isOneToOne: false
+            referencedRelation: "clinicas_parceiros"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       carencias: {
         Row: {
           associado_id: string
@@ -480,6 +530,140 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      evento_rsvps: {
+        Row: {
+          associado_id: string
+          created_at: string
+          dependente_id: string | null
+          evento_id: string
+          id: string
+          matricula: string | null
+          nome: string
+          observacoes: string | null
+          status: string
+        }
+        Insert: {
+          associado_id: string
+          created_at?: string
+          dependente_id?: string | null
+          evento_id: string
+          id?: string
+          matricula?: string | null
+          nome: string
+          observacoes?: string | null
+          status?: string
+        }
+        Update: {
+          associado_id?: string
+          created_at?: string
+          dependente_id?: string | null
+          evento_id?: string
+          id?: string
+          matricula?: string | null
+          nome?: string
+          observacoes?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evento_rsvps_evento_id_fkey"
+            columns: ["evento_id"]
+            isOneToOne: false
+            referencedRelation: "eventos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      eventos: {
+        Row: {
+          ativo: boolean
+          capacidade: number | null
+          categoria: string
+          created_at: string
+          created_by: string | null
+          data_fim: string | null
+          data_inicio: string
+          descricao: string | null
+          endereco: string | null
+          id: string
+          imagem_url: string | null
+          local: string | null
+          permite_rsvp: boolean
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          capacidade?: number | null
+          categoria?: string
+          created_at?: string
+          created_by?: string | null
+          data_fim?: string | null
+          data_inicio: string
+          descricao?: string | null
+          endereco?: string | null
+          id?: string
+          imagem_url?: string | null
+          local?: string | null
+          permite_rsvp?: boolean
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          capacidade?: number | null
+          categoria?: string
+          created_at?: string
+          created_by?: string | null
+          data_fim?: string | null
+          data_inicio?: string
+          descricao?: string | null
+          endereco?: string | null
+          id?: string
+          imagem_url?: string | null
+          local?: string | null
+          permite_rsvp?: boolean
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      faq_items: {
+        Row: {
+          categoria: string
+          created_at: string
+          id: string
+          ordem: number
+          pergunta: string
+          publicado: boolean
+          resposta: string
+          updated_at: string
+          visualizacoes: number
+        }
+        Insert: {
+          categoria?: string
+          created_at?: string
+          id?: string
+          ordem?: number
+          pergunta: string
+          publicado?: boolean
+          resposta: string
+          updated_at?: string
+          visualizacoes?: number
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          id?: string
+          ordem?: number
+          pergunta?: string
+          publicado?: boolean
+          resposta?: string
+          updated_at?: string
+          visualizacoes?: number
+        }
+        Relationships: []
       }
       historico_limite: {
         Row: {
