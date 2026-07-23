@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import PageSkeleton from '@/components/PageSkeleton';
 
 const CATEGORIA_LABEL: Record<string, { label: string; className: string }> = {
   geral: { label: 'Geral', className: 'bg-muted text-foreground' },
@@ -41,7 +42,7 @@ export default function Notificacoes() {
       </div>
 
       {loading && items.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">Carregando...</div>
+        <PageSkeleton rows={4} variant="list" showHeader={false} />
       ) : items.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center text-muted-foreground flex flex-col items-center gap-3">

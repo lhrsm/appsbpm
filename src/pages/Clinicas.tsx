@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Building2, MapPin, Phone, Mail, Clock, Search, Star, MessageCircle } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 
 interface Clinica {
   id: string;
@@ -149,9 +150,7 @@ export default function Clinicas() {
       </Card>
 
       {loading ? (
-        <div className="text-center py-12">
-          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
-        </div>
+        <PageSkeleton rows={6} variant="cards" showHeader={false} />
       ) : filtered.length === 0 ? (
         <Card><CardContent className="pt-6 text-center py-8">
           <Building2 className="h-12 w-12 text-muted-foreground mx-auto mb-3" />

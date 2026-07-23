@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Plus, Ticket, Clock, CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 
 const CATEGORIAS = [
   { value: 'segunda_via_carteirinha', label: '2ª via de carteirinha', sla: 3 },
@@ -151,7 +152,7 @@ export default function Solicitacoes() {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">Carregando...</p>
+        <PageSkeleton rows={4} variant="list" showHeader={false} />
       ) : items.length === 0 ? (
         <Card><CardContent className="p-10 text-center text-muted-foreground">
           <Ticket className="w-10 h-10 mx-auto mb-2 opacity-40" />
