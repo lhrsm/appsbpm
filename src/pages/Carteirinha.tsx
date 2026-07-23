@@ -325,6 +325,13 @@ export default function Carteirinha() {
               text-align: center;
               width: 35mm;
             }
+            .signature-img {
+              height: 8mm;
+              max-width: 30mm;
+              object-fit: contain;
+              margin: 0 auto 0.5mm;
+              display: block;
+            }
             .signature-line {
               border-top: 0.5px solid #666;
               margin-bottom: 1mm;
@@ -333,6 +340,7 @@ export default function Carteirinha() {
               font-size: 5pt;
               color: #666;
             }
+
             @media print {
               body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             }
@@ -364,14 +372,17 @@ export default function Carteirinha() {
             </div>
             <div class="signatures">
               <div class="signature">
+                ${presidenteUrl ? `<img src="${presidenteUrl}" class="signature-img" crossorigin="anonymous" />` : ''}
                 <div class="signature-line"></div>
-                <div class="signature-label">Presidente</div>
+                <div class="signature-label">${presidenteNome || 'Presidente'}</div>
               </div>
               <div class="signature">
+                ${currentData.assinaturaUrl ? `<img src="${currentData.assinaturaUrl}" class="signature-img" crossorigin="anonymous" />` : ''}
                 <div class="signature-line"></div>
                 <div class="signature-label">Assinatura Associado</div>
               </div>
             </div>
+
           </div>
           <script>
             setTimeout(() => {
