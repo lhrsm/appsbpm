@@ -136,6 +136,19 @@ export default function Login() {
       setIsDependente(isLoginAsDependente);
       setDependenteLogado(dependenteData);
 
+      // Registrar acesso (best-effort, não bloqueia login)
+      try {
+        await supabase.from('acessos_log').insert({
+          associado_id: associadoData.id,
+          dependente_id: dependenteData?.id ?? null,
+          tipo_usuario: isLoginAsDependente ? 'dependente' : 'titular',
+          metodo_login: /^\d{11}$/.test(cleanedCredential) ? 'cpf' : 'matricula',
+          user_agent: navigator.userAgent.slice(0, 500),
+          sucesso: true,
+        });
+      } catch {}
+
+
       const nomeExibir = isLoginAsDependente && dependenteData 
         ? dependenteData.nome.split(' ')[0] 
         : associadoData.nome.split(' ')[0];

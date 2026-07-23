@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Download, ShieldAlert, History, Mail, FileText, Loader2, Trash2, RefreshCw, Edit } from 'lucide-react';
+import { Download, ShieldAlert, History, Mail, FileText, Loader2, Trash2, RefreshCw, Edit, Activity } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -31,6 +31,7 @@ export default function MinhaPrivacidade() {
   const [enviando, setEnviando] = useState(false);
   const [consentimentos, setConsentimentos] = useState<any[]>([]);
   const [solicitacoes, setSolicitacoes] = useState<any[]>([]);
+  const [acessos, setAcessos] = useState<any[]>([]);
 
   useEffect(() => {
     if (!associado) return;
@@ -46,7 +47,14 @@ export default function MinhaPrivacidade() {
       .eq('associado_id', associado.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => setSolicitacoes(data || []));
-  }, [associado]);
+    supabase
+      .rpc('meu_historico_acessos', {
+        _associado_id: associado.id,
+        _dependente_id: isDependente ? dependenteLogado?.id ?? null : null,
+        _limit: 20,
+      })
+      .then(({ data }) => setAcessos(data || []));
+  }, [associado, isDependente, dependenteLogado?.id]);
 
   if (!associado || !alvo) {
     return (
@@ -150,8 +158,9 @@ export default function MinhaPrivacidade() {
       </div>
 
       <Tabs defaultValue="dados" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="dados">Meus dados</TabsTrigger>
+          <TabsTrigger value="acessos">Acessos</TabsTrigger>
           <TabsTrigger value="solicitar">Nova solicitação</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
           <TabsTrigger value="dpo">Encarregado</TabsTrigger>
