@@ -84,6 +84,7 @@ export default function SolicitarPeculio() {
 
     setLoading(true);
     try {
+      const anexosPaths = anexos.length > 0 ? await uploadAnexos(anexos) : [];
       const { error } = await supabase.functions.invoke('send-peculio-solicitacao', {
         body: {
           titular: {
@@ -108,6 +109,7 @@ export default function SolicitarPeculio() {
             pix: pix.trim(),
           },
           observacoes: observacoes.trim(),
+          anexos: anexosPaths,
         },
       });
       if (error) throw error;
