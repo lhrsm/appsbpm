@@ -23,6 +23,7 @@ import AccessibilityWidget from "./components/AccessibilityWidget";
 import ChatbotWidget from "./components/ChatbotWidget";
 import InstallPWAPrompt from "./components/InstallPWAPrompt";
 import OfflineBanner from "./components/OfflineBanner";
+import BackToTop from "./components/BackToTop";
 import PageSkeleton from "./components/PageSkeleton";
 
 // Lazy: páginas menos frequentes do portal do associado
