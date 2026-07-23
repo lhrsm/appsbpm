@@ -143,6 +143,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { naoLidas } = useNotificacoes();
 
   // Usar menu apropriado baseado se é dependente ou titular
   const menuItems = isDependente ? menuItemsDependente : menuItemsTitular;
