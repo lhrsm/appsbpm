@@ -33,6 +33,7 @@ import {
   Bell,
   Ticket,
   FolderOpen,
+  Wallet,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -48,6 +49,7 @@ const menuItemsTitular = [
   { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
   { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
   { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
+  { path: '/dashboard/financeiro', label: 'Financeiro', icon: Wallet },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
