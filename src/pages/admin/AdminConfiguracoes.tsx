@@ -254,65 +254,97 @@ export default function AdminConfiguracoes() {
         <TabsContent value="carteirinha">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinatura do Presidente</CardTitle>
+              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinaturas da Carteirinha</CardTitle>
               <CardDescription>
-                Essa assinatura será exibida em todas as carteirinhas de associados e dependentes.
-                Envie uma imagem PNG com fundo transparente para melhor resultado.
+                Cadastre até 3 signatários (Presidente, Vice-Presidente e Superintendente de Promoção da Saúde)
+                e escolha qual assinatura será exibida nas carteirinhas.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <Label>Nome do Presidente</Label>
-                <div className="flex gap-2">
-                  <Input
-                    value={presidenteNome}
-                    onChange={(e) => setPresidenteNome(e.target.value)}
-                    placeholder="Ex: Cel. PM João da Silva"
-                  />
-                  <Button onClick={salvarNomePresidente} disabled={savingSigMeta}>
-                    {savingSigMeta ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">Aparece abaixo da linha da assinatura na carteirinha.</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Imagem da assinatura</Label>
-                <div className="flex items-end gap-4">
-                  <div className="w-64 h-24 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
-                    {presidenteUrl ? (
-                      <img src={presidenteUrl} alt="Assinatura do presidente" className="max-h-full max-w-full object-contain" />
-                    ) : (
-                      <span className="text-xs text-muted-foreground">Nenhuma assinatura enviada</span>
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="file-assinatura-presidente" className="cursor-pointer">
-                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
-                        {uploadingSig ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                        {uploadingSig ? "Enviando..." : "Enviar imagem"}
+              {signatarios.map((sig) => {
+                const ativo = signatarioAtivo === sig.slug;
+                return (
+                  <div key={sig.slug} className={`rounded-lg border p-4 space-y-4 ${ativo ? "border-primary bg-primary/5" : ""}`}>
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold">{sig.cargo || sig.slug}</span>
+                        {ativo && <span className="text-xs bg-primary text-primary-foreground px-2 py-0.5 rounded-full">Ativo na carteirinha</span>}
                       </div>
-                      <input
-                        id="file-assinatura-presidente"
-                        type="file"
-                        accept="image/png,image/jpeg,image/webp"
-                        className="hidden"
-                        onChange={uploadAssinaturaPresidente}
-                        disabled={uploadingSig}
-                      />
-                    </Label>
-                    {presidenteUrl && (
-                      <Button variant="outline" size="sm" onClick={removerAssinaturaPresidente}>
-                        <Trash2 className="w-4 h-4 mr-2" /> Remover
+                      <Button
+                        size="sm"
+                        variant={ativo ? "secondary" : "outline"}
+                        onClick={() => definirAtivo(sig.slug)}
+                        disabled={ativo || !sig.url}
+                      >
+                        {ativo ? "Selecionado" : "Usar esta assinatura"}
                       </Button>
-                    )}
+                    </div>
+
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="space-y-1">
+                        <Label>Nome</Label>
+                        <Input
+                          value={sig.nome}
+                          onChange={(e) => updateSignatarioLocal(sig.slug, { nome: e.target.value })}
+                          placeholder="Nome completo"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label>Cargo (rótulo)</Label>
+                        <Input
+                          value={sig.cargo}
+                          onChange={(e) => updateSignatarioLocal(sig.slug, { cargo: e.target.value })}
+                          placeholder="Ex: Vice-Presidente"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-end gap-4 flex-wrap">
+                      <div className="w-56 h-20 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
+                        {sig.url ? (
+                          <img src={sig.url} alt={`Assinatura ${sig.cargo}`} className="max-h-full max-w-full object-contain" />
+                        ) : (
+                          <span className="text-xs text-muted-foreground">Sem assinatura</span>
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor={`file-sig-${sig.slug}`} className="cursor-pointer">
+                          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
+                            {uploadingSlug === sig.slug ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                            {uploadingSlug === sig.slug ? "Enviando..." : "Enviar imagem"}
+                          </div>
+                          <input
+                            id={`file-sig-${sig.slug}`}
+                            type="file"
+                            accept="image/png,image/jpeg,image/webp"
+                            className="hidden"
+                            onChange={(e) => uploadAssinatura(sig.slug, e)}
+                            disabled={uploadingSlug === sig.slug}
+                          />
+                        </Label>
+                        {sig.url && (
+                          <Button variant="outline" size="sm" onClick={() => removerAssinatura(sig.slug)}>
+                            <Trash2 className="w-4 h-4 mr-2" /> Remover
+                          </Button>
+                        )}
+                      </div>
+                      <div className="ml-auto">
+                        <Button size="sm" onClick={() => salvarDadosSignatario(sig.slug)} disabled={savingSlug === sig.slug}>
+                          {savingSlug === sig.slug ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                          Salvar nome/cargo
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground">PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.</p>
-              </div>
+                );
+              })}
+              <p className="text-xs text-muted-foreground">
+                PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>
+
 
 
 
