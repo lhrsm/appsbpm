@@ -1059,6 +1059,39 @@ export type Database = {
           },
         ]
       }
+      resposta_templates: {
+        Row: {
+          ativo: boolean
+          categoria: string | null
+          conteudo: string
+          created_at: string
+          created_by: string | null
+          id: string
+          titulo: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          categoria?: string | null
+          conteudo: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          titulo: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          categoria?: string | null
+          conteudo?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          titulo?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       solicitacoes: {
         Row: {
           anexos: Json | null
