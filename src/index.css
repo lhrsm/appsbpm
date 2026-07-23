@@ -117,3 +117,66 @@
     text-wrap: balance;
   }
 }
+
+/* Acessibilidade — alto contraste */
+html.a11y-contrast {
+  --background: 0 0% 0%;
+  --foreground: 60 100% 50%;
+  --card: 0 0% 0%;
+  --card-foreground: 60 100% 50%;
+  --popover: 0 0% 0%;
+  --popover-foreground: 60 100% 50%;
+  --primary: 60 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 60 100% 50%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 60 100% 80%;
+  --accent: 60 100% 50%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 100% 55%;
+  --destructive-foreground: 0 0% 0%;
+  --border: 60 100% 50%;
+  --input: 60 100% 50%;
+  --ring: 60 100% 50%;
+}
+html.a11y-contrast img,
+html.a11y-contrast video {
+  filter: grayscale(20%) contrast(1.1);
+}
+html.a11y-contrast *:focus-visible {
+  outline: 3px solid hsl(60 100% 50%) !important;
+  outline-offset: 2px !important;
+}
+
+/* Acessibilidade — reduzir animações */
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Foco visível global */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0;
+}

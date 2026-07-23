@@ -41,6 +41,7 @@ import AdminPeculio from "./pages/admin/AdminPeculio";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
 import CookieConsent from "./components/CookieConsent";
+import AccessibilityWidget from "./components/AccessibilityWidget";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <CookieConsent />
+          <AccessibilityWidget />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/privacidade" element={<Privacidade />} />
