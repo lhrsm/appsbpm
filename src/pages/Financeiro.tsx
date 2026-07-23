@@ -244,8 +244,12 @@ export default function Financeiro() {
                   </div>
                   <div className="flex items-center gap-3">
                     <p className="font-bold text-lg">{brl(Number(m.valor))}</p>
-                    {m.status !== 'pago' && m.status !== 'cancelado' && (
-                      <Button size="sm" variant="outline" onClick={() => baixarBoleto(m)}>
+                    {m.status === 'pago' ? (
+                      <Button size="sm" variant="outline" onClick={() => gerarComprovante(m)} title="Comprovante">
+                        <Receipt className="w-4 h-4" />
+                      </Button>
+                    ) : m.status !== 'cancelado' && (
+                      <Button size="sm" variant="outline" onClick={() => baixarBoleto(m)} title="2ª via">
                         <Download className="w-4 h-4" />
                       </Button>
                     )}
