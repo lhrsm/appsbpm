@@ -39,6 +39,7 @@ import AdminImportar from "./pages/admin/AdminImportar";
 import AdminAuditoria from "./pages/admin/AdminAuditoria";
 import AdminPeculio from "./pages/admin/AdminPeculio";
 import AdminSeguranca from "./pages/admin/AdminSeguranca";
+import AdminNotificacoes from "./pages/admin/AdminNotificacoes";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
 import CookieConsent from "./components/CookieConsent";
@@ -94,6 +95,7 @@ const App = () => (
               <Route path="auditoria" element={<AdminAuditoria />} />
               <Route path="peculio" element={<AdminPeculio />} />
               <Route path="seguranca" element={<AdminSeguranca />} />
+              <Route path="notificacoes" element={<AdminNotificacoes />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
