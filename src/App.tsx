@@ -54,6 +54,7 @@ import FAQ from "./pages/FAQ";
 import AdminEventos from "./pages/admin/AdminEventos";
 import AdminFAQ from "./pages/admin/AdminFAQ";
 import AdminAvaliacoes from "./pages/admin/AdminAvaliacoes";
+import AdminPrivacidade from "./pages/admin/AdminPrivacidade";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 import ChatbotWidget from "./components/ChatbotWidget";
@@ -122,6 +123,7 @@ const App = () => (
               <Route path="eventos" element={<AdminEventos />} />
               <Route path="faq" element={<AdminFAQ />} />
               <Route path="avaliacoes" element={<AdminAvaliacoes />} />
+              <Route path="privacidade" element={<AdminPrivacidade />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

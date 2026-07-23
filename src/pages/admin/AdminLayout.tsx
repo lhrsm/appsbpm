@@ -37,6 +37,7 @@ const nav = [
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
   { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
   { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
+  { to: "/admin/privacidade", icon: ShieldCheck, label: "Privacidade (LGPD)" },
   { to: "/admin/seguranca", icon: KeyRound, label: "Segurança (2FA)" },
   { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
