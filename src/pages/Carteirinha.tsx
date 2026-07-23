@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import { Download, User, Users, Maximize2, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
+
 
 interface CarteirinhaCardProps {
   nome: string;
@@ -19,21 +21,28 @@ interface CarteirinhaCardProps {
   dataExpedicao: string;
   dataValidade: string;
   nomeTitular?: string;
+  assinaturaUrl?: string | null;
+  presidenteAssinaturaUrl?: string | null;
+  presidenteNome?: string | null;
   cardRef?: React.RefObject<HTMLDivElement>;
 }
 
-function CarteirinhaCard({ 
-  nome, 
-  matricula, 
-  cpf, 
-  tipo, 
+function CarteirinhaCard({
+  nome,
+  matricula,
+  cpf,
+  tipo,
   tipoParentesco,
   fotoUrl,
-  dataExpedicao, 
+  dataExpedicao,
   dataValidade,
   nomeTitular,
-  cardRef 
+  assinaturaUrl,
+  presidenteAssinaturaUrl,
+  presidenteNome,
+  cardRef,
 }: CarteirinhaCardProps) {
+
   const formatCpf = (cpf: string) => {
     if (!cpf) return '';
     const cleaned = cpf.replace(/\D/g, '');
@@ -120,10 +129,30 @@ function CarteirinhaCard({
         {/* Linhas de Assinatura */}
         <div className="flex justify-between items-end pt-4 mt-4 border-t border-gray-200">
           <div className="text-center flex-1">
+            <div className="h-10 flex items-end justify-center">
+              {presidenteAssinaturaUrl && (
+                <img
+                  src={presidenteAssinaturaUrl}
+                  alt="Assinatura do Presidente"
+                  className="max-h-10 object-contain"
+                  crossOrigin="anonymous"
+                />
+              )}
+            </div>
             <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
-            <p className="text-xs text-gray-600">Presidente</p>
+            <p className="text-xs text-gray-600">{presidenteNome || 'Presidente'}</p>
           </div>
           <div className="text-center flex-1">
+            <div className="h-10 flex items-end justify-center">
+              {assinaturaUrl && (
+                <img
+                  src={assinaturaUrl}
+                  alt="Assinatura do Associado"
+                  className="max-h-10 object-contain"
+                  crossOrigin="anonymous"
+                />
+              )}
+            </div>
             <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
             <p className="text-xs text-gray-600">Assinatura Associado</p>
           </div>
@@ -132,6 +161,7 @@ function CarteirinhaCard({
     </div>
   );
 }
+
 
 export default function Carteirinha() {
   const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
