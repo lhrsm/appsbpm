@@ -289,6 +289,37 @@ export default function AdminHome() {
         ))}
       </div>
 
+      {/* Central de Ações Pendentes */}
+      <Card className="border-l-4 border-l-destructive">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Activity className="w-4 h-4 text-destructive" /> Ações pendentes
+          </CardTitle>
+          <CardDescription>Itens que exigem atenção imediata da equipe administrativa</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {[
+              { label: "Chamados abertos", value: pend.solicitacoesAbertas, href: "/admin/solicitacoes", tone: "text-primary" },
+              { label: "LGPD pendentes", value: pend.lgpdPendentes, href: "/admin/privacidade", tone: "text-blue-600" },
+              { label: "LGPD com SLA vencido", value: pend.lgpdVencidas, href: "/admin/privacidade", tone: "text-destructive" },
+              { label: "Mensalidades vencidas", value: pend.mensalidadesVencidas, href: "/admin/financeiro", tone: "text-amber-600" },
+              { label: "Pecúlio a aprovar", value: pend.peculioPendente, href: "/admin/peculio", tone: "text-purple-600" },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="block p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+              >
+                <div className={`text-2xl font-bold ${item.tone}`}>{item.value}</div>
+                <div className="text-xs text-muted-foreground mt-1">{item.label}</div>
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+
       {/* Filtros */}
       <Card>
         <CardHeader>
