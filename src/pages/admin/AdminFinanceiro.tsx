@@ -35,6 +35,9 @@ export default function AdminFinanceiro() {
   const [form, setForm] = useState<any>(emptyForm);
   const [search, setSearch] = useState('');
   const [statusF, setStatusF] = useState('todos');
+  const [loteOpen, setLoteOpen] = useState(false);
+  const [lote, setLote] = useState({ referencia: '', vencimento: '', valor: '', descricao: 'Mensalidade' });
+  const [gerando, setGerando] = useState(false);
 
   const load = async () => {
     setLoading(true);
