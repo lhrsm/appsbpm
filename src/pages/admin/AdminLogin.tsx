@@ -29,6 +29,23 @@ export default function AdminLogin() {
     if (role || prev) navigate("/admin");
   };
 
+  const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
+  const [mfaChallengeId, setMfaChallengeId] = useState<string | null>(null);
+  const [mfaCode, setMfaCode] = useState("");
+
+  const finalizeAdminCheck = async (userId: string) => {
+    const [{ data: role }, { data: prev }] = await Promise.all([
+      supabase.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+      supabase.from("previdencia_admins").select("user_id").eq("user_id", userId).maybeSingle(),
+    ]);
+    if (!role && !prev) {
+      await supabase.auth.signOut();
+      throw new Error("Este usuário não tem permissão de administrador.");
+    }
+    toast.success("Bem-vindo!");
+    navigate("/admin");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -42,25 +59,52 @@ export default function AdminLogin() {
         if (error) throw error;
         toast.success("Conta criada. Um administrador precisa liberar seu acesso.");
         if (data.user && email.toLowerCase() !== "previdencia@sbpmbahia.com.br") {
-          // Try to become the first admin (only works if user_roles is empty via a policy — otherwise stays pending)
           await supabase.from("user_roles").insert({ user_id: data.user.id, role: "admin" as const });
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        const [{ data: role }, { data: prev }] = await Promise.all([
-          supabase.from("user_roles").select("role").eq("user_id", data.user.id).eq("role", "admin").maybeSingle(),
-          supabase.from("previdencia_admins").select("user_id").eq("user_id", data.user.id).maybeSingle(),
-        ]);
-        if (!role && !prev) {
-          await supabase.auth.signOut();
-          throw new Error("Este usuário não tem permissão de administrador.");
+
+        // Verifica se o usuário precisa completar 2FA
+        const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        if (aal?.nextLevel === "aal2" && aal.currentLevel === "aal1") {
+          const { data: factors } = await supabase.auth.mfa.listFactors();
+          const totp = factors?.totp?.find((f) => f.status === "verified");
+          if (totp) {
+            const { data: ch, error: chErr } = await supabase.auth.mfa.challenge({ factorId: totp.id });
+            if (chErr) throw chErr;
+            setMfaFactorId(totp.id);
+            setMfaChallengeId(ch.id);
+            toast.info("Informe o código do seu app autenticador.");
+            setLoading(false);
+            return;
+          }
         }
-        toast.success("Bem-vindo!");
-        navigate("/admin");
+
+        await finalizeAdminCheck(data.user.id);
       }
     } catch (err: any) {
       toast.error(err.message ?? "Erro ao autenticar");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitMfa = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!mfaFactorId || !mfaChallengeId) return;
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.mfa.verify({
+        factorId: mfaFactorId,
+        challengeId: mfaChallengeId,
+        code: mfaCode.trim(),
+      });
+      if (error) throw error;
+      const { data: u } = await supabase.auth.getUser();
+      if (u.user) await finalizeAdminCheck(u.user.id);
+    } catch (err: any) {
+      toast.error(err.message ?? "Código inválido");
     } finally {
       setLoading(false);
     }
