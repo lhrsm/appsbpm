@@ -167,7 +167,7 @@ export default function Clinicas() {
               <CardContent className="p-4 flex flex-col h-full">
                 <div className="flex items-start gap-3">
                   {c.logo_url ? (
-                    <img src={c.logo_url} alt={c.nome} className="w-14 h-14 rounded-lg object-contain bg-white border shrink-0" />
+                    <img src={c.logo_url} alt={c.nome} loading="lazy" decoding="async" className="w-14 h-14 rounded-lg object-contain bg-white border shrink-0" />
                   ) : (
                     <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                       <Building2 className="h-7 w-7 text-primary" />
