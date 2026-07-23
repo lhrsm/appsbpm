@@ -218,6 +218,29 @@ export default function Perfil() {
         </CardContent>
       </Card>
 
+      {/* Assinatura digital */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <PenTool className="h-5 w-5" /> Assinatura digital
+          </CardTitle>
+          <CardDescription>
+            Sua assinatura aparecerá impressa na sua carteirinha. Você pode desenhá-la abaixo com o
+            mouse/dedo ou enviar uma imagem transparente (PNG) da assinatura já escaneada.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <SignaturePad
+            currentSignatureUrl={alvo.assinatura_url}
+            userId={alvo.id}
+            userType={isDependente ? 'dependente' : 'associado'}
+            onSaved={handleSignatureUpdated}
+          />
+        </CardContent>
+      </Card>
+
+
+
       {/* Notificações push */}
       <Card>
         <CardHeader>
