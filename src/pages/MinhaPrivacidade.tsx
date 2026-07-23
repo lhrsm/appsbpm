@@ -220,6 +220,46 @@ export default function MinhaPrivacidade() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="acessos">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Activity className="w-5 h-5" />
+                Histórico de acessos
+              </CardTitle>
+              <CardDescription>
+                Últimos 20 acessos registrados na sua conta. Se notar algum acesso não reconhecido, fale imediatamente com o DPO.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {acessos.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
+              ) : (
+                <ul className="space-y-2">
+                  {acessos.map((a) => (
+                    <li key={a.id} className="flex items-center justify-between gap-3 rounded border bg-muted/40 px-3 py-2 text-sm">
+                      <div className="min-w-0">
+                        <p className="font-medium">
+                          {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {a.tipo_usuario === 'titular' ? 'Titular' : 'Dependente'} · via {a.metodo_login || 'n/d'}
+                          {a.user_agent ? ` · ${a.user_agent.slice(0, 60)}${a.user_agent.length > 60 ? '…' : ''}` : ''}
+                        </p>
+                      </div>
+                      <Badge variant={a.sucesso ? 'default' : 'destructive'}>
+                        {a.sucesso ? 'Sucesso' : 'Falha'}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+
+
         <TabsContent value="solicitar">
           <Card>
             <CardHeader>
