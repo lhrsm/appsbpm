@@ -7,7 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { ShieldCheck, Loader2, CheckCircle2, Info, FileText } from 'lucide-react';
+import { ShieldCheck, Loader2, CheckCircle2, Info, FileText, Paperclip, X, Upload } from 'lucide-react';
+
+const MAX_FILES = 10;
+const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export default function SolicitarPeculio() {
   const { associado, dependenteLogado, isDependente } = useAssociado();
