@@ -26,9 +26,9 @@ export default function Perfil() {
 
   const alvo = isDependente ? dependenteLogado : associado;
 
-  const [email, setEmail] = useState(associado?.email || '');
-  const [telefone, setTelefone] = useState(associado?.telefone || '');
-  const [endereco, setEndereco] = useState(associado?.endereco || '');
+  const [email, setEmail] = useState(alvo?.email || '');
+  const [telefone, setTelefone] = useState(alvo?.telefone || '');
+  const [endereco, setEndereco] = useState(alvo?.endereco || '');
   const [saving, setSaving] = useState(false);
 
   if (!alvo || !associado) {
@@ -64,15 +64,16 @@ export default function Perfil() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isDependente) return; // dependente só edita foto
     setSaving(true);
     try {
+      const cpfEnvio = isDependente ? dependenteLogado?.cpf || undefined : associado.cpf;
+      const idEnvio = isDependente ? dependenteLogado!.id : associado.id;
       const { data, error } = await supabase.functions.invoke('update-perfil', {
         body: {
-          tipo: 'associado',
-          id: associado.id,
+          tipo: isDependente ? 'dependente' : 'associado',
+          id: idEnvio,
           matricula_titular: associado.matricula,
-          cpf: associado.cpf,
+          cpf: cpfEnvio,
           campos: {
             email: email.trim(),
             telefone: telefone.trim(),
@@ -83,12 +84,23 @@ export default function Perfil() {
       if (error) throw new Error(error.message);
       if (!data?.ok) throw new Error(data?.error || 'Falha ao salvar');
 
-      setAssociado({
-        ...associado,
-        email: email.trim() || null,
-        telefone: telefone.trim() || null,
-        endereco: endereco.trim() || null,
-      });
+      if (isDependente && dependenteLogado) {
+        const atualizado = {
+          ...dependenteLogado,
+          email: email.trim() || null,
+          telefone: telefone.trim() || null,
+          endereco: endereco.trim() || null,
+        };
+        setDependenteLogado(atualizado);
+        setDependentes(dependentes.map((d) => (d.id === atualizado.id ? atualizado : d)));
+      } else {
+        setAssociado({
+          ...associado,
+          email: email.trim() || null,
+          telefone: telefone.trim() || null,
+          endereco: endereco.trim() || null,
+        });
+      }
       toast.success('Perfil atualizado com sucesso!');
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao salvar perfil');
@@ -96,6 +108,7 @@ export default function Perfil() {
       setSaving(false);
     }
   };
+
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
