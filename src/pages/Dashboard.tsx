@@ -75,6 +75,8 @@ const menuItemsDependente = [
   { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
   { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
+  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
 ];
