@@ -20,6 +20,9 @@ const nav = [
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   
   { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
+  { to: "/admin/eventos", icon: Calendar, label: "Eventos" },
+  { to: "/admin/faq", icon: HelpCircle, label: "FAQ" },
+  { to: "/admin/avaliacoes", icon: Star, label: "Avaliações" },
   { to: "/admin/notificacoes", icon: Bell, label: "Notificações Push" },
   { to: "/admin/solicitacoes", icon: Ticket, label: "Solicitações" },
   { to: "/admin/documentos", icon: FolderOpen, label: "Documentos" },
