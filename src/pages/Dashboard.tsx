@@ -30,6 +30,7 @@ import {
   Handshake,
   ShieldCheck,
   ShieldAlert,
+  Bell,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -37,10 +38,12 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import ComunicadosBanner from '@/components/ComunicadosBanner';
+import { useNotificacoes } from '@/hooks/useNotificacoes';
 
 // Menu completo para titular
 const menuItemsTitular = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
+  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
@@ -56,6 +59,7 @@ const menuItemsTitular = [
 // Menu restrito para dependentes
 const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
+  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
@@ -139,6 +143,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { naoLidas } = useNotificacoes();
 
   // Usar menu apropriado baseado se é dependente ou titular
   const menuItems = isDependente ? menuItemsDependente : menuItemsTitular;
@@ -192,6 +197,21 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-2">
+            <Link to="/dashboard/notificacoes" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-primary-foreground hover:bg-primary/80"
+                aria-label="Notificações"
+              >
+                <Bell className="h-5 w-5" />
+              </Button>
+              {naoLidas > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-sbpm-red text-white text-[10px] font-bold flex items-center justify-center">
+                  {naoLidas > 99 ? '99+' : naoLidas}
+                </span>
+              )}
+            </Link>
             <Button
               variant="ghost"
               size="icon"

@@ -588,6 +588,60 @@ export type Database = {
           },
         ]
       }
+      notificacoes: {
+        Row: {
+          associado_id: string | null
+          categoria: string
+          corpo: string
+          created_at: string
+          dependente_id: string | null
+          id: string
+          lida: boolean
+          read_at: string | null
+          titulo: string
+          url: string | null
+        }
+        Insert: {
+          associado_id?: string | null
+          categoria?: string
+          corpo: string
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          lida?: boolean
+          read_at?: string | null
+          titulo: string
+          url?: string | null
+        }
+        Update: {
+          associado_id?: string | null
+          categoria?: string
+          corpo?: string
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          lida?: boolean
+          read_at?: string | null
+          titulo?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notificacoes_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notificacoes_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       peculio_solicitacoes: {
         Row: {
           associado_email: string | null

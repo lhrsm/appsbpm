@@ -18,6 +18,7 @@ import IndicarParceiro from "./pages/IndicarParceiro";
 import Peculio from "./pages/Peculio";
 import Perfil from "./pages/Perfil";
 import MinhaPrivacidade from "./pages/MinhaPrivacidade";
+import Notificacoes from "./pages/Notificacoes";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -75,6 +76,7 @@ const App = () => (
               <Route path="peculio" element={<Peculio />} />
               <Route path="perfil" element={<Perfil />} />
               <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
+              <Route path="notificacoes" element={<Notificacoes />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
