@@ -412,6 +412,75 @@ export type Database = {
           },
         ]
       }
+      documentos_associado: {
+        Row: {
+          arquivo_nome: string
+          arquivo_path: string
+          arquivo_tamanho: number | null
+          arquivo_tipo: string | null
+          associado_id: string
+          ativo: boolean
+          categoria: string
+          created_at: string
+          dependente_id: string | null
+          descricao: string | null
+          id: string
+          publicado_em: string
+          titulo: string
+          updated_at: string
+          visibilidade: string
+        }
+        Insert: {
+          arquivo_nome: string
+          arquivo_path: string
+          arquivo_tamanho?: number | null
+          arquivo_tipo?: string | null
+          associado_id: string
+          ativo?: boolean
+          categoria?: string
+          created_at?: string
+          dependente_id?: string | null
+          descricao?: string | null
+          id?: string
+          publicado_em?: string
+          titulo: string
+          updated_at?: string
+          visibilidade?: string
+        }
+        Update: {
+          arquivo_nome?: string
+          arquivo_path?: string
+          arquivo_tamanho?: number | null
+          arquivo_tipo?: string | null
+          associado_id?: string
+          ativo?: boolean
+          categoria?: string
+          created_at?: string
+          dependente_id?: string | null
+          descricao?: string | null
+          id?: string
+          publicado_em?: string
+          titulo?: string
+          updated_at?: string
+          visibilidade?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documentos_associado_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documentos_associado_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       historico_limite: {
         Row: {
           associado_id: string
