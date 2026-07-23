@@ -25,7 +25,10 @@ const BodySchema = z.object({
     pix: z.string().max(140).optional().or(z.literal('')),
   }).optional(),
   observacoes: z.string().max(2000).optional().or(z.literal('')),
+  anexos: z.array(z.string()).max(20).optional(),
 });
+
+const ANEXOS_BUCKET = 'dependentes-anexos';
 
 const DESTINO = 'previdencia@sbpmbahia.com.br';
 
@@ -40,20 +43,29 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
-    const { titular, solicitante, banco, observacoes } = parsed.data;
+    const { titular, solicitante, banco, observacoes, anexos } = parsed.data;
+
+    // Signed URLs para anexos (7 dias)
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const admin = supabaseUrl && serviceKey ? createClient(supabaseUrl, serviceKey) : null;
+    const anexoLinks: { path: string; url: string }[] = [];
+    if (admin && anexos && anexos.length > 0) {
+      for (const p of anexos) {
+        const { data } = await admin.storage.from(ANEXOS_BUCKET).createSignedUrl(p, 60 * 60 * 24 * 7);
+        anexoLinks.push({ path: p, url: data?.signedUrl || '' });
+      }
+    }
 
     // Persistência best-effort na tabela existente
     try {
-      const supabaseUrl = Deno.env.get('SUPABASE_URL');
-      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-      if (supabaseUrl && serviceKey) {
-        const admin = createClient(supabaseUrl, serviceKey);
+      if (admin) {
         await admin.from('peculio_solicitacoes').insert({
           associado_nome: titular.nome,
           associado_matricula: titular.matricula,
           associado_email: solicitante.email || null,
           associado_telefone: solicitante.telefone || null,
-          beneficiarios: [{ solicitante, banco: banco || null, observacoes: observacoes || null, data_falecimento: titular.data_falecimento }],
+          beneficiarios: [{ solicitante, banco: banco || null, observacoes: observacoes || null, data_falecimento: titular.data_falecimento, anexos: anexoLinks }],
           status: 'pagamento_pendente',
           observacoes: `Solicitação de pagamento do pecúlio — falecimento em ${titular.data_falecimento}`,
         });
@@ -99,6 +111,12 @@ Deno.serve(async (req) => {
       </ul>
       <h3>Observações</h3>
       <p>${(observacoes || '-').replace(/\n/g, '<br>')}</p>
+      <h3>Documentos anexados (${anexoLinks.length})</h3>
+      ${
+        anexoLinks.length
+          ? `<ul>${anexoLinks.map((a) => `<li><a href="${a.url}">${a.path.split('/').pop()}</a></li>`).join('')}</ul><p style="font-size:11px;color:#666">Links válidos por 7 dias.</p>`
+          : '<p>Nenhum anexo enviado pelo formulário.</p>'
+      }
       <hr>
       <p style="font-size:12px;color:#666">
         Documentos exigidos (Certidão de Óbito, RG/CPF do beneficiário, comprovante de residência,

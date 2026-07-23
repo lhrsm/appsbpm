@@ -7,7 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
-import { ShieldCheck, Loader2, CheckCircle2, Info, FileText } from 'lucide-react';
+import { ShieldCheck, Loader2, CheckCircle2, Info, FileText, Paperclip, X, Upload } from 'lucide-react';
+
+const MAX_FILES = 10;
+const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export default function SolicitarPeculio() {
   const { associado, dependenteLogado, isDependente } = useAssociado();
@@ -37,6 +40,39 @@ export default function SolicitarPeculio() {
   const [pix, setPix] = useState('');
 
   const [observacoes, setObservacoes] = useState('');
+  const [anexos, setAnexos] = useState<File[]>([]);
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const combined = [...anexos, ...files].slice(0, MAX_FILES);
+    const filtered = combined.filter((f) => {
+      if (f.size > MAX_SIZE) {
+        toast({ title: 'Arquivo muito grande', description: `"${f.name}" excede 10 MB e foi ignorado.`, variant: 'destructive' });
+        return false;
+      }
+      return true;
+    });
+    setAnexos(filtered);
+    e.target.value = '';
+  };
+
+  const removerAnexo = (i: number) => setAnexos((prev) => prev.filter((_, idx) => idx !== i));
+
+  const uploadAnexos = async (files: File[]): Promise<string[]> => {
+    const paths: string[] = [];
+    const folder = `peculio/${associado?.matricula || 'anon'}/${Date.now()}`;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+      const path = `${folder}/${i}-${safeName}`;
+      const { error } = await supabase.storage
+        .from('dependentes-anexos')
+        .upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+      if (error) throw new Error(`Falha ao enviar "${file.name}": ${error.message}`);
+      paths.push(path);
+    }
+    return paths;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +84,7 @@ export default function SolicitarPeculio() {
 
     setLoading(true);
     try {
+      const anexosPaths = anexos.length > 0 ? await uploadAnexos(anexos) : [];
       const { error } = await supabase.functions.invoke('send-peculio-solicitacao', {
         body: {
           titular: {
@@ -72,6 +109,7 @@ export default function SolicitarPeculio() {
             pix: pix.trim(),
           },
           observacoes: observacoes.trim(),
+          anexos: anexosPaths,
         },
       });
       if (error) throw error;
@@ -218,6 +256,69 @@ export default function SolicitarPeculio() {
               <Label>Chave PIX (opcional)</Label>
               <Input value={pix} onChange={(e) => setPix(e.target.value)} maxLength={140} />
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Paperclip className="h-5 w-5" /> Documentos anexos
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Anexe cópias digitalizadas: Certidão de Óbito, RG e CPF do beneficiário,
+              comprovante de residência e comprovante bancário. Máx. {MAX_FILES} arquivos, 10 MB cada.
+            </p>
+            <input
+              id="peculio-anexos"
+              type="file"
+              multiple
+              accept="image/*,application/pdf"
+              className="hidden"
+              onChange={handleFilesChange}
+              disabled={loading || anexos.length >= MAX_FILES}
+            />
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => document.getElementById('peculio-anexos')?.click()}
+                disabled={loading || anexos.length >= MAX_FILES}
+              >
+                <Upload className="h-4 w-4 mr-2" /> Selecionar arquivos
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                {anexos.length}/{MAX_FILES}
+              </span>
+            </div>
+            {anexos.length > 0 && (
+              <ul className="space-y-1">
+                {anexos.map((f, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center justify-between rounded-md border bg-muted/40 px-3 py-2 text-sm"
+                  >
+                    <span className="truncate mr-2">
+                      {f.name}{' '}
+                      <span className="text-xs text-muted-foreground">
+                        ({(f.size / 1024 / 1024).toFixed(2)} MB)
+                      </span>
+                    </span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      className="h-7 w-7"
+                      onClick={() => removerAnexo(i)}
+                      disabled={loading}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
 
