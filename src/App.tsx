@@ -59,6 +59,7 @@ import AdminPrivacidade from "./pages/admin/AdminPrivacidade";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 import ChatbotWidget from "./components/ChatbotWidget";
+import InstallPWAPrompt from "./components/InstallPWAPrompt";
 
 const queryClient = new QueryClient();
 
@@ -72,6 +73,7 @@ const App = () => (
           <CookieConsent />
           <AccessibilityWidget />
           <ChatbotWidget />
+          <InstallPWAPrompt />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/privacidade" element={<Privacidade />} />
