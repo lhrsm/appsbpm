@@ -167,7 +167,21 @@ export default function Carteirinha() {
   const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
   const [selectedDependente, setSelectedDependente] = useState<Dependente | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [presidenteUrl, setPresidenteUrl] = useState<string | null>(null);
+  const [presidenteNome, setPresidenteNome] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from('sistema_config')
+        .select('chave,valor')
+        .in('chave', ['assinatura_presidente_url', 'nome_presidente']);
+      const map = Object.fromEntries((data || []).map((r: any) => [r.chave, r.valor]));
+      setPresidenteUrl(map.assinatura_presidente_url || null);
+      setPresidenteNome(map.nome_presidente || null);
+    })();
+  }, []);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -178,7 +192,7 @@ export default function Carteirinha() {
 
   const hoje = new Date();
   const dataExpedicao = format(hoje, 'dd/MM/yyyy', { locale: ptBR });
-  
+
   // Validade: 1 ano a partir de hoje
   const dataValidade = format(
     new Date(hoje.getFullYear() + 1, hoje.getMonth(), hoje.getDate()),
@@ -190,13 +204,13 @@ export default function Carteirinha() {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
-    // Se é dependente logado, usa os dados do dependente logado
-    // Se é titular, usa os dados do selecionado ou do titular
-    const currentData = isDependente && dependenteLogado 
-      ? { nome: dependenteLogado.nome, cpf: dependenteLogado.cpf, tipo: tipoLabel[dependenteLogado.tipo], isDep: true }
-      : selectedDependente 
-        ? { nome: selectedDependente.nome, cpf: selectedDependente.cpf, tipo: tipoLabel[selectedDependente.tipo], isDep: true }
-        : { nome: associado?.nome || '', cpf: associado?.cpf || '', tipo: 'Associado', isDep: false };
+    const currentData = isDependente && dependenteLogado
+      ? { nome: dependenteLogado.nome, cpf: dependenteLogado.cpf, tipo: tipoLabel[dependenteLogado.tipo], isDep: true, assinaturaUrl: dependenteLogado.assinatura_url || null }
+      : selectedDependente
+        ? { nome: selectedDependente.nome, cpf: selectedDependente.cpf, tipo: tipoLabel[selectedDependente.tipo], isDep: true, assinaturaUrl: selectedDependente.assinatura_url || null }
+        : { nome: associado?.nome || '', cpf: associado?.cpf || '', tipo: 'Associado', isDep: false, assinaturaUrl: associado?.assinatura_url || null };
+
+
 
     const formatCpf = (cpf: string) => {
       if (!cpf) return '';
