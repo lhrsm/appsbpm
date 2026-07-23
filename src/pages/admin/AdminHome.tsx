@@ -29,6 +29,15 @@ type Clinica = { id: string; nome: string; cidade: string; especialidade: string
 type Limite = { id: string; associado_id: string; limite_total: number; limite_utilizado: number };
 type Historico = { id: string; associado_id: string; valor: number; data_utilizacao: string; descricao: string | null };
 
+type Pendencias = {
+  solicitacoesAbertas: number;
+  lgpdPendentes: number;
+  lgpdVencidas: number;
+  mensalidadesVencidas: number;
+  peculioPendente: number;
+  privacidadePendente: number;
+};
+
 export default function AdminHome() {
   const [loading, setLoading] = useState(true);
   const [associados, setAssociados] = useState<Assoc[]>([]);
@@ -36,6 +45,7 @@ export default function AdminHome() {
   const [clinicas, setClinicas] = useState<Clinica[]>([]);
   const [limites, setLimites] = useState<Limite[]>([]);
   const [historico, setHistorico] = useState<Historico[]>([]);
+  const [pend, setPend] = useState<Pendencias>({ solicitacoesAbertas: 0, lgpdPendentes: 0, lgpdVencidas: 0, mensalidadesVencidas: 0, peculioPendente: 0, privacidadePendente: 0 });
 
   // Filtros
   const [dataInicio, setDataInicio] = useState<string>(format(subMonths(new Date(), 11), "yyyy-MM-dd"));
