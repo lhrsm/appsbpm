@@ -102,11 +102,25 @@ export default function AdminLayout() {
   return (
     <div className="min-h-screen flex bg-muted/30">
       <aside className="w-64 bg-card border-r flex flex-col">
-        <div className="p-4 border-b">
-          <h1 className="font-bold text-lg text-primary">SBPM Admin</h1>
-          <p className="text-xs text-muted-foreground">Painel de gestão</p>
+        <div className="p-4 border-b flex items-start justify-between gap-2">
+          <div>
+            <h1 className="font-bold text-lg text-primary">SBPM Admin</h1>
+            <p className="text-xs text-muted-foreground">Painel de gestão</p>
+          </div>
+          <ThemeToggle />
         </div>
-        <nav className="flex-1 p-3 space-y-1">
+        <div className="px-3 pt-3">
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="w-full flex items-center gap-2 h-9 px-3 rounded-md bg-muted hover:bg-muted/70 text-sm text-muted-foreground transition"
+            aria-label="Buscar (Ctrl+K)"
+          >
+            <Search className="h-4 w-4" />
+            <span className="flex-1 text-left">Buscar...</span>
+            <kbd className="text-[10px] font-mono border rounded px-1.5 py-0.5">Ctrl K</kbd>
+          </button>
+        </div>
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {visibleNav.map((item) => (
             <NavLink
               key={item.to}
@@ -132,6 +146,28 @@ export default function AdminLayout() {
       <main className="flex-1 p-6 overflow-auto">
         <Outlet />
       </main>
+
+      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <CommandInput placeholder="Buscar página do admin..." />
+        <CommandList>
+          <CommandEmpty>Nenhum resultado.</CommandEmpty>
+          <CommandGroup heading="Navegação">
+            {visibleNav.map((item) => (
+              <CommandItem
+                key={item.to}
+                value={item.label}
+                onSelect={() => {
+                  setSearchOpen(false);
+                  navigate(item.to);
+                }}
+              >
+                <item.icon className="w-4 h-4 mr-2" />
+                {item.label}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </div>
   );
 }
