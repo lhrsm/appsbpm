@@ -218,6 +218,10 @@ export default function Clinicas() {
                     </a>
                   </div>
                 )}
+
+                <div className="mt-2 pt-2 border-t border-border/40" onClick={(e) => e.stopPropagation()}>
+                  <AvaliacaoParceiro clinicaId={c.id} nome={c.nome} />
+                </div>
               </CardContent>
             </Card>
           ))}
