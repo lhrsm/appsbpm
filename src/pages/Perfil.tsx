@@ -7,8 +7,9 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
-import { Loader2, Save, User as UserIcon, Lock } from 'lucide-react';
+import { Loader2, Save, User as UserIcon, Lock, Bell } from 'lucide-react';
 import { toast } from 'sonner';
+import { PushNotificationToggle } from '@/components/PushNotificationToggle';
 
 export default function Perfil() {
   const {
@@ -201,6 +202,24 @@ export default function Perfil() {
               </div>
             )}
           </form>
+        </CardContent>
+      </Card>
+
+      {/* Notificações push */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bell className="h-5 w-5" /> Notificações push
+          </CardTitle>
+          <CardDescription>
+            Receba avisos importantes da SBPM diretamente neste dispositivo, mesmo com o app fechado.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <PushNotificationToggle
+            associadoId={isDependente ? null : associado.id}
+            dependenteId={isDependente && dependenteLogado ? dependenteLogado.id : null}
+          />
         </CardContent>
       </Card>
     </div>
