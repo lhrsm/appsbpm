@@ -40,6 +40,39 @@ export default function SolicitarPeculio() {
   const [pix, setPix] = useState('');
 
   const [observacoes, setObservacoes] = useState('');
+  const [anexos, setAnexos] = useState<File[]>([]);
+
+  const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const combined = [...anexos, ...files].slice(0, MAX_FILES);
+    const filtered = combined.filter((f) => {
+      if (f.size > MAX_SIZE) {
+        toast({ title: 'Arquivo muito grande', description: `"${f.name}" excede 10 MB e foi ignorado.`, variant: 'destructive' });
+        return false;
+      }
+      return true;
+    });
+    setAnexos(filtered);
+    e.target.value = '';
+  };
+
+  const removerAnexo = (i: number) => setAnexos((prev) => prev.filter((_, idx) => idx !== i));
+
+  const uploadAnexos = async (files: File[]): Promise<string[]> => {
+    const paths: string[] = [];
+    const folder = `peculio/${associado?.matricula || 'anon'}/${Date.now()}`;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const safeName = file.name.replace(/[^\w.\-]+/g, '_');
+      const path = `${folder}/${i}-${safeName}`;
+      const { error } = await supabase.storage
+        .from('dependentes-anexos')
+        .upload(path, file, { contentType: file.type || 'application/octet-stream', upsert: false });
+      if (error) throw new Error(`Falha ao enviar "${file.name}": ${error.message}`);
+      paths.push(path);
+    }
+    return paths;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
