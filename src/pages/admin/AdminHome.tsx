@@ -58,18 +58,33 @@ export default function AdminHome() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const [a, d, c, l, h] = await Promise.all([
+      const hoje = new Date().toISOString();
+      const limite15d = new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString();
+      const [a, d, c, l, h, sol, priv, mens, pec] = await Promise.all([
         supabase.from("associados").select("*").order("created_at", { ascending: false }),
         supabase.from("dependentes").select("*"),
         supabase.from("clinicas_parceiros").select("*"),
         supabase.from("limites").select("*"),
         supabase.from("historico_limite").select("*").order("data_utilizacao", { ascending: false }),
+        supabase.from("solicitacoes").select("id,status", { count: "exact", head: false }).in("status", ["aberto", "em_andamento"]),
+        supabase.from("solicitacoes_privacidade").select("id,status,created_at").eq("status", "pendente"),
+        supabase.from("mensalidades").select("id,status,vencimento").eq("status", "pendente").lt("vencimento", hoje.slice(0, 10)),
+        supabase.from("peculio_solicitacoes").select("id,status").eq("status", "pendente"),
       ]);
       setAssociados((a.data as any) || []);
       setDependentes((d.data as any) || []);
       setClinicas((c.data as any) || []);
       setLimites((l.data as any) || []);
       setHistorico((h.data as any) || []);
+      const privList = (priv.data as any[]) || [];
+      setPend({
+        solicitacoesAbertas: (sol.data as any[])?.length || 0,
+        lgpdPendentes: privList.length,
+        lgpdVencidas: privList.filter((p) => p.created_at < limite15d).length,
+        mensalidadesVencidas: (mens.data as any[])?.length || 0,
+        peculioPendente: (pec.data as any[])?.length || 0,
+        privacidadePendente: privList.length,
+      });
       setLoading(false);
     })();
   }, []);
