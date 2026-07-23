@@ -18,6 +18,7 @@ import IndicarParceiro from "./pages/IndicarParceiro";
 import Peculio from "./pages/Peculio";
 import Perfil from "./pages/Perfil";
 import MinhaPrivacidade from "./pages/MinhaPrivacidade";
+import Notificacoes from "./pages/Notificacoes";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
