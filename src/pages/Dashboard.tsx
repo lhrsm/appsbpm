@@ -197,6 +197,21 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-2">
+            <Link to="/dashboard/notificacoes" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-primary-foreground hover:bg-primary/80"
+                aria-label="Notificações"
+              >
+                <Bell className="h-5 w-5" />
+              </Button>
+              {naoLidas > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-sbpm-red text-white text-[10px] font-bold flex items-center justify-center">
+                  {naoLidas > 99 ? '99+' : naoLidas}
+                </span>
+              )}
+            </Link>
             <Button
               variant="ghost"
               size="icon"
