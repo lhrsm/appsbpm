@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { format, parseISO } from 'date-fns';
-import { Wallet, Plus, Trash2, Edit, CheckCircle2 } from 'lucide-react';
+import { Wallet, Plus, Trash2, Edit, CheckCircle2, Layers, Download } from 'lucide-react';
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
   pago: { label: 'Pago', color: 'bg-green-600' },
@@ -35,6 +35,9 @@ export default function AdminFinanceiro() {
   const [form, setForm] = useState<any>(emptyForm);
   const [search, setSearch] = useState('');
   const [statusF, setStatusF] = useState('todos');
+  const [loteOpen, setLoteOpen] = useState(false);
+  const [lote, setLote] = useState({ referencia: '', vencimento: '', valor: '', descricao: 'Mensalidade' });
+  const [gerando, setGerando] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -102,6 +105,46 @@ export default function AdminFinanceiro() {
     load();
   };
 
+  const gerarLote = async () => {
+    if (!lote.referencia || !lote.vencimento || !lote.valor) return toast.error('Preencha referência, vencimento e valor');
+    setGerando(true);
+    const { data: existentes } = await supabase.from('mensalidades').select('associado_id').eq('referencia', lote.referencia);
+    const jaTem = new Set((existentes || []).map((e: any) => e.associado_id));
+    const novos = associados.filter(a => !jaTem.has(a.id)).map(a => ({
+      associado_id: a.id,
+      referencia: lote.referencia,
+      tipo: 'mensalidade',
+      descricao: lote.descricao || null,
+      valor: Number(lote.valor),
+      vencimento: lote.vencimento,
+      status: 'pendente',
+    }));
+    if (novos.length === 0) { setGerando(false); toast.info('Todos os associados já possuem lançamento nesta referência'); return; }
+    const { error } = await supabase.from('mensalidades').insert(novos);
+    setGerando(false);
+    if (error) return toast.error('Erro ao gerar lote');
+    toast.success(`${novos.length} lançamento(s) gerado(s)`);
+    setLoteOpen(false);
+    setLote({ referencia: '', vencimento: '', valor: '', descricao: 'Mensalidade' });
+    load();
+  };
+
+  const exportarCSV = () => {
+    const rows = [['Matrícula', 'Associado', 'Referência', 'Tipo', 'Valor', 'Vencimento', 'Status', 'Pago em', 'Forma pagamento']];
+    filtered.forEach(m => rows.push([
+      m.associados?.matricula || '', m.associados?.nome || '', m.referencia, m.tipo,
+      String(m.valor), m.vencimento, m.status, m.pago_em || '', m.forma_pagamento || '',
+    ]));
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `financeiro_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = items.filter(m => {
     if (statusF !== 'todos' && m.status !== statusF) return false;
     if (search) {
@@ -125,7 +168,11 @@ export default function AdminFinanceiro() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6" /> Financeiro</h1>
           <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e taxas</p>
         </div>
-        <Button onClick={() => abrir()}><Plus className="w-4 h-4 mr-2" /> Novo lançamento</Button>
+        <div className="flex gap-2 flex-wrap">
+          <Button variant="outline" onClick={exportarCSV}><Download className="w-4 h-4 mr-2" /> CSV</Button>
+          <Button variant="outline" onClick={() => setLoteOpen(true)}><Layers className="w-4 h-4 mr-2" /> Gerar lote mensal</Button>
+          <Button onClick={() => abrir()}><Plus className="w-4 h-4 mr-2" /> Novo lançamento</Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -234,6 +281,27 @@ export default function AdminFinanceiro() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
             <Button onClick={salvar} disabled={saving}>{saving ? 'Salvando...' : 'Salvar'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={loteOpen} onOpenChange={setLoteOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Gerar lote mensal</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Cria um lançamento pendente para todos os {associados.length} associados que ainda não possuem lançamento nesta referência.
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label>Referência *</Label><Input placeholder="Ex: 02/2026" value={lote.referencia} onChange={e => setLote({ ...lote, referencia: e.target.value })} /></div>
+              <div><Label>Vencimento *</Label><Input type="date" value={lote.vencimento} onChange={e => setLote({ ...lote, vencimento: e.target.value })} /></div>
+            </div>
+            <div><Label>Valor *</Label><Input type="number" step="0.01" value={lote.valor} onChange={e => setLote({ ...lote, valor: e.target.value })} /></div>
+            <div><Label>Descrição</Label><Input value={lote.descricao} onChange={e => setLote({ ...lote, descricao: e.target.value })} /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setLoteOpen(false)}>Cancelar</Button>
+            <Button onClick={gerarLote} disabled={gerando}>{gerando ? 'Gerando...' : 'Gerar lote'}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
