@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Save, Shield, Bell, Palette, Building, UserPlus, Trash2 } from "lucide-react";
+import { Save, Shield, Bell, Palette, Building, UserPlus, Trash2, PenTool, Upload, Loader2 } from "lucide-react";
+
 
 type Settings = {
   org_name: string;
@@ -48,6 +49,10 @@ export default function AdminConfiguracoes() {
   const [admins, setAdmins] = useState<any[]>([]);
   const [newAdminEmail, setNewAdminEmail] = useState("");
   const [saving, setSaving] = useState(false);
+  const [presidenteUrl, setPresidenteUrl] = useState<string | null>(null);
+  const [presidenteNome, setPresidenteNome] = useState<string>("");
+  const [uploadingSig, setUploadingSig] = useState(false);
+  const [savingSigMeta, setSavingSigMeta] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -55,7 +60,73 @@ export default function AdminConfiguracoes() {
       try { setSettings({ ...DEFAULTS, ...JSON.parse(saved) }); } catch {}
     }
     loadAdmins();
+    loadPresidente();
   }, []);
+
+  const loadPresidente = async () => {
+    const { data } = await supabase
+      .from("sistema_config")
+      .select("chave,valor")
+      .in("chave", ["assinatura_presidente_url", "nome_presidente"]);
+    const map = Object.fromEntries((data || []).map((r: any) => [r.chave, r.valor]));
+    setPresidenteUrl(map.assinatura_presidente_url || null);
+    setPresidenteNome(map.nome_presidente || "");
+  };
+
+  const uploadAssinaturaPresidente = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) return toast.error("Selecione uma imagem (PNG/JPG)");
+    if (file.size > 2 * 1024 * 1024) return toast.error("Máx. 2MB");
+    setUploadingSig(true);
+    try {
+      const ext = file.name.split(".").pop() || "png";
+      const path = `assinaturas/presidente.${ext}`;
+      const { error: upErr } = await supabase.storage
+        .from("profile-photos")
+        .upload(path, file, { upsert: true, contentType: file.type });
+      if (upErr) throw upErr;
+      const { data: { publicUrl } } = supabase.storage.from("profile-photos").getPublicUrl(path);
+      const finalUrl = `${publicUrl}?t=${Date.now()}`;
+      const { error } = await supabase
+        .from("sistema_config")
+        .upsert({ chave: "assinatura_presidente_url", valor: finalUrl }, { onConflict: "chave" });
+      if (error) throw error;
+      setPresidenteUrl(finalUrl);
+      toast.success("Assinatura do Presidente atualizada");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao enviar");
+    } finally {
+      setUploadingSig(false);
+      (e.target as HTMLInputElement).value = "";
+    }
+  };
+
+  const salvarNomePresidente = async () => {
+    setSavingSigMeta(true);
+    try {
+      const { error } = await supabase
+        .from("sistema_config")
+        .upsert({ chave: "nome_presidente", valor: presidenteNome.trim() || null }, { onConflict: "chave" });
+      if (error) throw error;
+      toast.success("Nome do Presidente salvo");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao salvar");
+    } finally {
+      setSavingSigMeta(false);
+    }
+  };
+
+  const removerAssinaturaPresidente = async () => {
+    if (!confirm("Remover a assinatura do Presidente?")) return;
+    const { error } = await supabase
+      .from("sistema_config")
+      .upsert({ chave: "assinatura_presidente_url", valor: null }, { onConflict: "chave" });
+    if (error) return toast.error(error.message);
+    setPresidenteUrl(null);
+    toast.success("Assinatura removida");
+  };
+
 
   const loadAdmins = async () => {
     const { data } = await supabase.from("user_roles").select("*").eq("role", "admin");
@@ -95,13 +166,15 @@ export default function AdminConfiguracoes() {
       </div>
 
       <Tabs defaultValue="organizacao" className="space-y-4">
-        <TabsList>
+        <TabsList className="flex-wrap">
           <TabsTrigger value="organizacao"><Building className="w-4 h-4 mr-2" />Organização</TabsTrigger>
+          <TabsTrigger value="carteirinha"><PenTool className="w-4 h-4 mr-2" />Carteirinha</TabsTrigger>
           <TabsTrigger value="notificacoes"><Bell className="w-4 h-4 mr-2" />Notificações</TabsTrigger>
           <TabsTrigger value="seguranca"><Shield className="w-4 h-4 mr-2" />Segurança</TabsTrigger>
           <TabsTrigger value="aparencia"><Palette className="w-4 h-4 mr-2" />Aparência</TabsTrigger>
           <TabsTrigger value="admins"><UserPlus className="w-4 h-4 mr-2" />Administradores</TabsTrigger>
         </TabsList>
+
 
         <TabsContent value="organizacao">
           <Card>
@@ -135,6 +208,71 @@ export default function AdminConfiguracoes() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="carteirinha">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2"><PenTool className="w-5 h-5" /> Assinatura do Presidente</CardTitle>
+              <CardDescription>
+                Essa assinatura será exibida em todas as carteirinhas de associados e dependentes.
+                Envie uma imagem PNG com fundo transparente para melhor resultado.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label>Nome do Presidente</Label>
+                <div className="flex gap-2">
+                  <Input
+                    value={presidenteNome}
+                    onChange={(e) => setPresidenteNome(e.target.value)}
+                    placeholder="Ex: Cel. PM João da Silva"
+                  />
+                  <Button onClick={salvarNomePresidente} disabled={savingSigMeta}>
+                    {savingSigMeta ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">Aparece abaixo da linha da assinatura na carteirinha.</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Imagem da assinatura</Label>
+                <div className="flex items-end gap-4">
+                  <div className="w-64 h-24 border rounded-md bg-muted/30 flex items-center justify-center overflow-hidden">
+                    {presidenteUrl ? (
+                      <img src={presidenteUrl} alt="Assinatura do presidente" className="max-h-full max-w-full object-contain" />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">Nenhuma assinatura enviada</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="file-assinatura-presidente" className="cursor-pointer">
+                      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-md border bg-background hover:bg-accent text-sm">
+                        {uploadingSig ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                        {uploadingSig ? "Enviando..." : "Enviar imagem"}
+                      </div>
+                      <input
+                        id="file-assinatura-presidente"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        className="hidden"
+                        onChange={uploadAssinaturaPresidente}
+                        disabled={uploadingSig}
+                      />
+                    </Label>
+                    {presidenteUrl && (
+                      <Button variant="outline" size="sm" onClick={removerAssinaturaPresidente}>
+                        <Trash2 className="w-4 h-4 mr-2" /> Remover
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">PNG/JPG/WebP, até 2MB. Recomendado: 600×200px com fundo transparente.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+
 
         <TabsContent value="notificacoes">
           <Card>

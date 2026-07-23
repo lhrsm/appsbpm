@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,6 +9,7 @@ import { Download, User, Users, Maximize2, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
+
 
 interface CarteirinhaCardProps {
   nome: string;
@@ -19,21 +21,28 @@ interface CarteirinhaCardProps {
   dataExpedicao: string;
   dataValidade: string;
   nomeTitular?: string;
+  assinaturaUrl?: string | null;
+  presidenteAssinaturaUrl?: string | null;
+  presidenteNome?: string | null;
   cardRef?: React.RefObject<HTMLDivElement>;
 }
 
-function CarteirinhaCard({ 
-  nome, 
-  matricula, 
-  cpf, 
-  tipo, 
+function CarteirinhaCard({
+  nome,
+  matricula,
+  cpf,
+  tipo,
   tipoParentesco,
   fotoUrl,
-  dataExpedicao, 
+  dataExpedicao,
   dataValidade,
   nomeTitular,
-  cardRef 
+  assinaturaUrl,
+  presidenteAssinaturaUrl,
+  presidenteNome,
+  cardRef,
 }: CarteirinhaCardProps) {
+
   const formatCpf = (cpf: string) => {
     if (!cpf) return '';
     const cleaned = cpf.replace(/\D/g, '');
@@ -120,10 +129,30 @@ function CarteirinhaCard({
         {/* Linhas de Assinatura */}
         <div className="flex justify-between items-end pt-4 mt-4 border-t border-gray-200">
           <div className="text-center flex-1">
+            <div className="h-10 flex items-end justify-center">
+              {presidenteAssinaturaUrl && (
+                <img
+                  src={presidenteAssinaturaUrl}
+                  alt="Assinatura do Presidente"
+                  className="max-h-10 object-contain"
+                  crossOrigin="anonymous"
+                />
+              )}
+            </div>
             <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
-            <p className="text-xs text-gray-600">Presidente</p>
+            <p className="text-xs text-gray-600">{presidenteNome || 'Presidente'}</p>
           </div>
           <div className="text-center flex-1">
+            <div className="h-10 flex items-end justify-center">
+              {assinaturaUrl && (
+                <img
+                  src={assinaturaUrl}
+                  alt="Assinatura do Associado"
+                  className="max-h-10 object-contain"
+                  crossOrigin="anonymous"
+                />
+              )}
+            </div>
             <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
             <p className="text-xs text-gray-600">Assinatura Associado</p>
           </div>
@@ -133,11 +162,26 @@ function CarteirinhaCard({
   );
 }
 
+
 export default function Carteirinha() {
   const { associado, dependentes, isDependente, dependenteLogado } = useAssociado();
   const [selectedDependente, setSelectedDependente] = useState<Dependente | null>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [presidenteUrl, setPresidenteUrl] = useState<string | null>(null);
+  const [presidenteNome, setPresidenteNome] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase
+        .from('sistema_config')
+        .select('chave,valor')
+        .in('chave', ['assinatura_presidente_url', 'nome_presidente']);
+      const map = Object.fromEntries((data || []).map((r: any) => [r.chave, r.valor]));
+      setPresidenteUrl(map.assinatura_presidente_url || null);
+      setPresidenteNome(map.nome_presidente || null);
+    })();
+  }, []);
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -148,7 +192,7 @@ export default function Carteirinha() {
 
   const hoje = new Date();
   const dataExpedicao = format(hoje, 'dd/MM/yyyy', { locale: ptBR });
-  
+
   // Validade: 1 ano a partir de hoje
   const dataValidade = format(
     new Date(hoje.getFullYear() + 1, hoje.getMonth(), hoje.getDate()),
@@ -160,13 +204,13 @@ export default function Carteirinha() {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
-    // Se é dependente logado, usa os dados do dependente logado
-    // Se é titular, usa os dados do selecionado ou do titular
-    const currentData = isDependente && dependenteLogado 
-      ? { nome: dependenteLogado.nome, cpf: dependenteLogado.cpf, tipo: tipoLabel[dependenteLogado.tipo], isDep: true }
-      : selectedDependente 
-        ? { nome: selectedDependente.nome, cpf: selectedDependente.cpf, tipo: tipoLabel[selectedDependente.tipo], isDep: true }
-        : { nome: associado?.nome || '', cpf: associado?.cpf || '', tipo: 'Associado', isDep: false };
+    const currentData = isDependente && dependenteLogado
+      ? { nome: dependenteLogado.nome, cpf: dependenteLogado.cpf, tipo: tipoLabel[dependenteLogado.tipo], isDep: true, assinaturaUrl: dependenteLogado.assinatura_url || null }
+      : selectedDependente
+        ? { nome: selectedDependente.nome, cpf: selectedDependente.cpf, tipo: tipoLabel[selectedDependente.tipo], isDep: true, assinaturaUrl: selectedDependente.assinatura_url || null }
+        : { nome: associado?.nome || '', cpf: associado?.cpf || '', tipo: 'Associado', isDep: false, assinaturaUrl: associado?.assinatura_url || null };
+
+
 
     const formatCpf = (cpf: string) => {
       if (!cpf) return '';
@@ -281,6 +325,13 @@ export default function Carteirinha() {
               text-align: center;
               width: 35mm;
             }
+            .signature-img {
+              height: 8mm;
+              max-width: 30mm;
+              object-fit: contain;
+              margin: 0 auto 0.5mm;
+              display: block;
+            }
             .signature-line {
               border-top: 0.5px solid #666;
               margin-bottom: 1mm;
@@ -289,6 +340,7 @@ export default function Carteirinha() {
               font-size: 5pt;
               color: #666;
             }
+
             @media print {
               body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             }
@@ -320,14 +372,17 @@ export default function Carteirinha() {
             </div>
             <div class="signatures">
               <div class="signature">
+                ${presidenteUrl ? `<img src="${presidenteUrl}" class="signature-img" crossorigin="anonymous" />` : ''}
                 <div class="signature-line"></div>
-                <div class="signature-label">Presidente</div>
+                <div class="signature-label">${presidenteNome || 'Presidente'}</div>
               </div>
               <div class="signature">
+                ${currentData.assinaturaUrl ? `<img src="${currentData.assinaturaUrl}" class="signature-img" crossorigin="anonymous" />` : ''}
                 <div class="signature-line"></div>
                 <div class="signature-label">Assinatura Associado</div>
               </div>
             </div>
+
           </div>
           <script>
             setTimeout(() => {
@@ -371,7 +426,11 @@ export default function Carteirinha() {
               dataExpedicao={dataExpedicao}
               dataValidade={dataValidade}
               nomeTitular={associado.nome}
+              assinaturaUrl={dependenteLogado.assinatura_url}
+              presidenteAssinaturaUrl={presidenteUrl}
+              presidenteNome={presidenteNome}
             />
+
             <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <Maximize2 className="h-4 w-4" />
             </div>
@@ -407,7 +466,11 @@ export default function Carteirinha() {
                   dataExpedicao={dataExpedicao}
                   dataValidade={dataValidade}
                   nomeTitular={associado.nome}
+                  assinaturaUrl={dependenteLogado.assinatura_url}
+                  presidenteAssinaturaUrl={presidenteUrl}
+                  presidenteNome={presidenteNome}
                 />
+
               </div>
             </div>
           </DialogContent>
@@ -448,7 +511,11 @@ export default function Carteirinha() {
               dataExpedicao={dataExpedicao}
               dataValidade={dataValidade}
               nomeTitular={selectedDependente ? associado.nome : undefined}
+              assinaturaUrl={selectedDependente ? selectedDependente.assinatura_url : associado?.assinatura_url}
+              presidenteAssinaturaUrl={presidenteUrl}
+              presidenteNome={presidenteNome}
             />
+
             <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <Maximize2 className="h-4 w-4" />
             </div>
@@ -527,7 +594,11 @@ export default function Carteirinha() {
                 dataExpedicao={dataExpedicao}
                 dataValidade={dataValidade}
                 nomeTitular={selectedDependente ? associado.nome : undefined}
+                assinaturaUrl={selectedDependente ? selectedDependente.assinatura_url : associado?.assinatura_url}
+                presidenteAssinaturaUrl={presidenteUrl}
+                presidenteNome={presidenteNome}
               />
+
             </div>
           </div>
         </DialogContent>
