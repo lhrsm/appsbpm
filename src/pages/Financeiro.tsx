@@ -8,7 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { format, parseISO, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Wallet, Download, Copy, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import { Wallet, Download, Copy, AlertCircle, CheckCircle2, Clock, FileText, Receipt } from 'lucide-react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const STATUS_META: Record<string, { label: string; color: string; icon: any }> = {
   pago: { label: 'Pago', color: 'bg-green-600', icon: CheckCircle2 },
