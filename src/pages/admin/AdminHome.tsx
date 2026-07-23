@@ -29,6 +29,15 @@ type Clinica = { id: string; nome: string; cidade: string; especialidade: string
 type Limite = { id: string; associado_id: string; limite_total: number; limite_utilizado: number };
 type Historico = { id: string; associado_id: string; valor: number; data_utilizacao: string; descricao: string | null };
 
+type Pendencias = {
+  solicitacoesAbertas: number;
+  lgpdPendentes: number;
+  lgpdVencidas: number;
+  mensalidadesVencidas: number;
+  peculioPendente: number;
+  privacidadePendente: number;
+};
+
 export default function AdminHome() {
   const [loading, setLoading] = useState(true);
   const [associados, setAssociados] = useState<Assoc[]>([]);
@@ -36,6 +45,7 @@ export default function AdminHome() {
   const [clinicas, setClinicas] = useState<Clinica[]>([]);
   const [limites, setLimites] = useState<Limite[]>([]);
   const [historico, setHistorico] = useState<Historico[]>([]);
+  const [pend, setPend] = useState<Pendencias>({ solicitacoesAbertas: 0, lgpdPendentes: 0, lgpdVencidas: 0, mensalidadesVencidas: 0, peculioPendente: 0, privacidadePendente: 0 });
 
   // Filtros
   const [dataInicio, setDataInicio] = useState<string>(format(subMonths(new Date(), 11), "yyyy-MM-dd"));
@@ -48,18 +58,33 @@ export default function AdminHome() {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const [a, d, c, l, h] = await Promise.all([
+      const hoje = new Date().toISOString();
+      const limite15d = new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString();
+      const [a, d, c, l, h, sol, priv, mens, pec] = await Promise.all([
         supabase.from("associados").select("*").order("created_at", { ascending: false }),
         supabase.from("dependentes").select("*"),
         supabase.from("clinicas_parceiros").select("*"),
         supabase.from("limites").select("*"),
         supabase.from("historico_limite").select("*").order("data_utilizacao", { ascending: false }),
+        supabase.from("solicitacoes").select("id,status", { count: "exact", head: false }).in("status", ["aberto", "em_andamento"]),
+        supabase.from("solicitacoes_privacidade").select("id,status,created_at").eq("status", "pendente"),
+        supabase.from("mensalidades").select("id,status,vencimento").eq("status", "pendente").lt("vencimento", hoje.slice(0, 10)),
+        supabase.from("peculio_solicitacoes").select("id,status").eq("status", "pendente"),
       ]);
       setAssociados((a.data as any) || []);
       setDependentes((d.data as any) || []);
       setClinicas((c.data as any) || []);
       setLimites((l.data as any) || []);
       setHistorico((h.data as any) || []);
+      const privList = (priv.data as any[]) || [];
+      setPend({
+        solicitacoesAbertas: (sol.data as any[])?.length || 0,
+        lgpdPendentes: privList.length,
+        lgpdVencidas: privList.filter((p) => p.created_at < limite15d).length,
+        mensalidadesVencidas: (mens.data as any[])?.length || 0,
+        peculioPendente: (pec.data as any[])?.length || 0,
+        privacidadePendente: privList.length,
+      });
       setLoading(false);
     })();
   }, []);
@@ -263,6 +288,37 @@ export default function AdminHome() {
           </Card>
         ))}
       </div>
+
+      {/* Central de Ações Pendentes */}
+      <Card className="border-l-4 border-l-destructive">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Activity className="w-4 h-4 text-destructive" /> Ações pendentes
+          </CardTitle>
+          <CardDescription>Itens que exigem atenção imediata da equipe administrativa</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {[
+              { label: "Chamados abertos", value: pend.solicitacoesAbertas, href: "/admin/solicitacoes", tone: "text-primary" },
+              { label: "LGPD pendentes", value: pend.lgpdPendentes, href: "/admin/privacidade", tone: "text-blue-600" },
+              { label: "LGPD com SLA vencido", value: pend.lgpdVencidas, href: "/admin/privacidade", tone: "text-destructive" },
+              { label: "Mensalidades vencidas", value: pend.mensalidadesVencidas, href: "/admin/financeiro", tone: "text-amber-600" },
+              { label: "Pecúlio a aprovar", value: pend.peculioPendente, href: "/admin/peculio", tone: "text-purple-600" },
+            ].map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                className="block p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+              >
+                <div className={`text-2xl font-bold ${item.tone}`}>{item.value}</div>
+                <div className="text-xs text-muted-foreground mt-1">{item.label}</div>
+              </a>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
 
       {/* Filtros */}
       <Card>
