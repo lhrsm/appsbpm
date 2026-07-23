@@ -42,6 +42,8 @@ import { ptBR } from 'date-fns/locale';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import ComunicadosBanner from '@/components/ComunicadosBanner';
 import { useNotificacoes } from '@/hooks/useNotificacoes';
+import ThemeToggle from '@/components/ThemeToggle';
+import GlobalSearch from '@/components/GlobalSearch';
 
 // Menu completo para titular
 const menuItemsTitular = [
@@ -205,6 +207,11 @@ export default function Dashboard() {
           </div>
           
           <div className="flex items-center gap-2">
+            <GlobalSearch variant="bar" />
+            <div className="md:hidden">
+              <GlobalSearch variant="icon" />
+            </div>
+            <ThemeToggle className="text-primary-foreground hover:bg-primary/80" />
             <Link to="/dashboard/notificacoes" className="relative">
               <Button
                 variant="ghost"

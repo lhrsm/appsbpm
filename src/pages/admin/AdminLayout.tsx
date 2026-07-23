@@ -2,8 +2,17 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search } from "lucide-react";
 import { toast } from "sonner";
+import ThemeToggle from "@/components/ThemeToggle";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
 const nav = [
   { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
@@ -45,6 +54,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
   const [isPrevidencia, setIsPrevidencia] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const check = async () => {
@@ -66,7 +76,17 @@ export default function AdminLayout() {
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, session) => {
       if (!session) navigate("/admin/login");
     });
-    return () => sub.subscription.unsubscribe();
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen((o) => !o);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      sub.subscription.unsubscribe();
+      document.removeEventListener("keydown", onKey);
+    };
   }, [navigate]);
 
   const logout = async () => {
