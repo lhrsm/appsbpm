@@ -1,0 +1,1 @@
+ALTER TABLE public.informes_rendimentos ADD COLUMN IF NOT EXISTS dependente_id UUID REFERENCES public.dependentes(id) ON DELETE CASCADE;

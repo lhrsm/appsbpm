@@ -409,6 +409,7 @@ export type Database = {
           arquivo_url: string | null
           associado_id: string
           created_at: string
+          dependente_id: string | null
           id: string
         }
         Insert: {
@@ -416,6 +417,7 @@ export type Database = {
           arquivo_url?: string | null
           associado_id: string
           created_at?: string
+          dependente_id?: string | null
           id?: string
         }
         Update: {
@@ -423,6 +425,7 @@ export type Database = {
           arquivo_url?: string | null
           associado_id?: string
           created_at?: string
+          dependente_id?: string | null
           id?: string
         }
         Relationships: [
@@ -431,6 +434,13 @@ export type Database = {
             columns: ["associado_id"]
             isOneToOne: false
             referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "informes_rendimentos_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
             referencedColumns: ["id"]
           },
         ]
