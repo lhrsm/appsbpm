@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound } from "lucide-react";
 import { toast } from "sonner";
 
 const nav = [
@@ -21,6 +21,7 @@ const nav = [
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
   { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
   { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
+  { to: "/admin/seguranca", icon: KeyRound, label: "Segurança (2FA)" },
   { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
 
@@ -30,6 +31,7 @@ const PREVIDENCIA_ALLOWED = new Set([
   "/admin/dependentes",
   "/admin/peculio",
   "/admin/informes",
+  "/admin/seguranca",
 ]);
 
 export default function AdminLayout() {
