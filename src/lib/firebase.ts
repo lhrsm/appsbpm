@@ -37,24 +37,33 @@ export async function getMessagingIfSupported() {
   }
 }
 
-export async function requestFcmToken(): Promise<string | null> {
+export async function requestFcmToken(): Promise<{ token: string | null; reason?: string }> {
   const ctx = await getMessagingIfSupported();
-  if (!ctx) return null;
+  if (!ctx) return { token: null, reason: "unsupported" };
+  if (!ctx.vapidKey) return { token: null, reason: "missing-vapid" };
 
-  const permission = await Notification.requestPermission();
-  if (permission !== "granted") return null;
+  let permission = Notification.permission;
+  if (permission === "default") {
+    permission = await Notification.requestPermission();
+  }
+  if (permission !== "granted") return { token: null, reason: "permission-denied" };
 
-  const swReg = await navigator.serviceWorker.register(
-    "/firebase-messaging-sw.js",
-    { scope: "/firebase-cloud-messaging-push-scope" }
-  );
+  try {
+    // Register at default scope ("/"). Custom scopes require a
+    // Service-Worker-Allowed response header and cause silent failures.
+    const swReg = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+    await navigator.serviceWorker.ready;
 
-  const token = await getToken(ctx.messaging, {
-    vapidKey: ctx.vapidKey,
-    serviceWorkerRegistration: swReg,
-  });
-
-  return token || null;
+    const token = await getToken(ctx.messaging, {
+      vapidKey: ctx.vapidKey,
+      serviceWorkerRegistration: swReg,
+    });
+    if (!token) return { token: null, reason: "no-token" };
+    return { token };
+  } catch (e: any) {
+    console.error("[fcm] getToken failed", e);
+    return { token: null, reason: e?.message || "error" };
+  }
 }
 
 export async function onForegroundMessage(cb: (payload: any) => void) {

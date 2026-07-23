@@ -23,9 +23,23 @@ export function PushNotificationToggle({ associadoId, dependenteId }: Props) {
         toast.error("Seu navegador não suporta notificações push.");
         return;
       }
-      const token = await requestFcmToken();
+      if (!window.isSecureContext) {
+        toast.error("Ative as notificações no site publicado (HTTPS).");
+        return;
+      }
+      if (window.top !== window.self) {
+        toast.warning("Abra o app em uma aba própria (fora do preview) para ativar as notificações.");
+        return;
+      }
+      const { token, reason } = await requestFcmToken();
       if (!token) {
-        toast.error("Permissão negada ou token indisponível.");
+        const msgs: Record<string, string> = {
+          "unsupported": "Navegador sem suporte a push (tente Chrome/Edge/Firefox).",
+          "missing-vapid": "Configuração de push indisponível. Contate o suporte.",
+          "permission-denied": "Permissão de notificações negada. Habilite nas configurações do navegador para este site.",
+          "no-token": "Não foi possível gerar o token. Verifique o bloqueio de notificações do site.",
+        };
+        toast.error(msgs[reason ?? ""] ?? `Falha ao ativar: ${reason ?? "erro desconhecido"}`);
         return;
       }
       const { error } = await supabase.from("push_tokens").upsert(
