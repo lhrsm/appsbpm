@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { format, parseISO } from 'date-fns';
-import { Wallet, Plus, Trash2, Edit, CheckCircle2 } from 'lucide-react';
+import { Wallet, Plus, Trash2, Edit, CheckCircle2, Layers, Download } from 'lucide-react';
 
 const STATUS_META: Record<string, { label: string; color: string }> = {
   pago: { label: 'Pago', color: 'bg-green-600' },
