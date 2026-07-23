@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { FileText, Download, Search, FolderOpen } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 
 const CATEGORIA_LABEL: Record<string, string> = {
   contratual: 'Contratual',
