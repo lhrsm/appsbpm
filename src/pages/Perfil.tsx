@@ -294,6 +294,24 @@ export default function Perfil() {
           />
         </CardContent>
       </Card>
+
+      {/* Portabilidade de dados (LGPD) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Download className="h-5 w-5" /> Exportar meus dados
+          </CardTitle>
+          <CardDescription>
+            Direito de portabilidade (LGPD, art. 18). Baixe uma cópia dos seus dados cadastrais
+            disponíveis neste portal em formato JSON.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline" onClick={handleExportData} className="gap-2">
+            <Download className="h-4 w-4" /> Baixar meus dados (JSON)
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
