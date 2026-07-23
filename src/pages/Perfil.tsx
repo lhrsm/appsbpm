@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,9 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import SignaturePad from '@/components/SignaturePad';
-import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download } from 'lucide-react';
+import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download, History } from 'lucide-react';
 import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+interface AcessoRegistro {
+  id: string;
+  created_at: string;
+  metodo_login: string | null;
+  user_agent: string | null;
+  sucesso: boolean;
+}
 
 
 export default function Perfil() {
