@@ -8,7 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner';
 import { format, parseISO, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Wallet, Download, Copy, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import { Wallet, Download, Copy, AlertCircle, CheckCircle2, Clock, FileText, Receipt } from 'lucide-react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const STATUS_META: Record<string, { label: string; color: string; icon: any }> = {
   pago: { label: 'Pago', color: 'bg-green-600', icon: CheckCircle2 },
@@ -78,15 +80,77 @@ export default function Financeiro() {
     else toast.info('Boleto não disponível. Fale com o setor Financeiro.');
   };
 
+  const gerarComprovante = (m: any) => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text('COMPROVANTE DE PAGAMENTO', 105, 20, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text('SBPM - Sociedade Beneficente da Polícia Militar', 105, 28, { align: 'center' });
+    doc.setLineWidth(0.3); doc.line(15, 33, 195, 33);
+    const rows: [string, string][] = [
+      ['Associado', associado?.nome || '-'],
+      ['Matrícula', associado?.matricula || '-'],
+      ['Referência', m.referencia],
+      ['Tipo', TIPO_LABEL[m.tipo] || m.tipo],
+      ['Descrição', m.descricao || '-'],
+      ['Valor pago', brl(Number(m.valor))],
+      ['Vencimento', format(parseISO(m.vencimento), 'dd/MM/yyyy')],
+      ['Pago em', m.pago_em ? format(parseISO(m.pago_em), 'dd/MM/yyyy') : '-'],
+      ['Forma de pagamento', m.forma_pagamento || '-'],
+      ['Autenticação', m.id],
+    ];
+    autoTable(doc, { startY: 40, body: rows, theme: 'grid', styles: { fontSize: 10 }, columnStyles: { 0: { fontStyle: 'bold', cellWidth: 55 } } });
+    doc.setFontSize(8);
+    doc.text(`Emitido em ${format(new Date(), 'dd/MM/yyyy HH:mm')}`, 15, 285);
+    doc.save(`comprovante-${m.referencia}.pdf`);
+  };
+
+  const gerarRelatorioAnual = () => {
+    const anoAlvo = ano !== 'todos' ? ano : String(new Date().getFullYear());
+    const doAno = items.filter(i => i.vencimento.startsWith(anoAlvo));
+    if (doAno.length === 0) return toast.info(`Sem lançamentos em ${anoAlvo}`);
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text(`RELATÓRIO ANUAL — ${anoAlvo}`, 105, 20, { align: 'center' });
+    doc.setFontSize(10);
+    doc.text(`${associado?.nome} — Matr. ${associado?.matricula}`, 105, 28, { align: 'center' });
+    const totalPago = doAno.filter(i => i.status === 'pago').reduce((a, b) => a + Number(b.valor), 0);
+    const totalPend = doAno.filter(i => i.status !== 'pago' && i.status !== 'cancelado').reduce((a, b) => a + Number(b.valor), 0);
+    autoTable(doc, {
+      startY: 35,
+      head: [['Referência', 'Tipo', 'Vencimento', 'Status', 'Pago em', 'Valor']],
+      body: doAno.sort((a, b) => a.vencimento.localeCompare(b.vencimento)).map(m => [
+        m.referencia,
+        TIPO_LABEL[m.tipo] || m.tipo,
+        format(parseISO(m.vencimento), 'dd/MM/yyyy'),
+        STATUS_META[m.status]?.label || m.status,
+        m.pago_em ? format(parseISO(m.pago_em), 'dd/MM/yyyy') : '-',
+        brl(Number(m.valor)),
+      ]),
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [16, 122, 62] },
+    });
+    const finalY = (doc as any).lastAutoTable.finalY + 8;
+    doc.setFontSize(11);
+    doc.text(`Total pago: ${brl(totalPago)}`, 15, finalY);
+    doc.text(`Total pendente: ${brl(totalPend)}`, 15, finalY + 6);
+    doc.save(`relatorio-${anoAlvo}.pdf`);
+  };
+
   if (isDependente) {
     return <Card><CardContent className="p-8 text-center text-muted-foreground">Área disponível apenas para o titular.</CardContent></Card>;
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6 text-primary" /> Financeiro</h1>
-        <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e histórico de pagamentos</p>
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6 text-primary" /> Financeiro</h1>
+          <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e histórico de pagamentos</p>
+        </div>
+        <Button variant="outline" onClick={gerarRelatorioAnual}>
+          <FileText className="w-4 h-4 mr-2" /> Relatório anual
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -180,8 +244,12 @@ export default function Financeiro() {
                   </div>
                   <div className="flex items-center gap-3">
                     <p className="font-bold text-lg">{brl(Number(m.valor))}</p>
-                    {m.status !== 'pago' && m.status !== 'cancelado' && (
-                      <Button size="sm" variant="outline" onClick={() => baixarBoleto(m)}>
+                    {m.status === 'pago' ? (
+                      <Button size="sm" variant="outline" onClick={() => gerarComprovante(m)} title="Comprovante">
+                        <Receipt className="w-4 h-4" />
+                      </Button>
+                    ) : m.status !== 'cancelado' && (
+                      <Button size="sm" variant="outline" onClick={() => baixarBoleto(m)} title="2ª via">
                         <Download className="w-4 h-4" />
                       </Button>
                     )}
