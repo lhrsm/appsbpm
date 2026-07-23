@@ -77,6 +77,7 @@ const menuItemsDependente = [
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
   { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
+  { path: '/dashboard/solicitar-peculio', label: 'Solicitar Pecúlio', icon: ShieldCheck },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
 ];
