@@ -426,7 +426,11 @@ export default function Carteirinha() {
               dataExpedicao={dataExpedicao}
               dataValidade={dataValidade}
               nomeTitular={associado.nome}
+              assinaturaUrl={dependenteLogado.assinatura_url}
+              presidenteAssinaturaUrl={presidenteUrl}
+              presidenteNome={presidenteNome}
             />
+
             <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <Maximize2 className="h-4 w-4" />
             </div>
@@ -462,7 +466,11 @@ export default function Carteirinha() {
                   dataExpedicao={dataExpedicao}
                   dataValidade={dataValidade}
                   nomeTitular={associado.nome}
+                  assinaturaUrl={dependenteLogado.assinatura_url}
+                  presidenteAssinaturaUrl={presidenteUrl}
+                  presidenteNome={presidenteNome}
                 />
+
               </div>
             </div>
           </DialogContent>
@@ -503,7 +511,11 @@ export default function Carteirinha() {
               dataExpedicao={dataExpedicao}
               dataValidade={dataValidade}
               nomeTitular={selectedDependente ? associado.nome : undefined}
+              assinaturaUrl={selectedDependente ? selectedDependente.assinatura_url : associado?.assinatura_url}
+              presidenteAssinaturaUrl={presidenteUrl}
+              presidenteNome={presidenteNome}
             />
+
             <div className="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <Maximize2 className="h-4 w-4" />
             </div>
@@ -582,7 +594,11 @@ export default function Carteirinha() {
                 dataExpedicao={dataExpedicao}
                 dataValidade={dataValidade}
                 nomeTitular={selectedDependente ? associado.nome : undefined}
+                assinaturaUrl={selectedDependente ? selectedDependente.assinatura_url : associado?.assinatura_url}
+                presidenteAssinaturaUrl={presidenteUrl}
+                presidenteNome={presidenteNome}
               />
+
             </div>
           </div>
         </DialogContent>
