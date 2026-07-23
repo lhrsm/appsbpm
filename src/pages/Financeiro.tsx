@@ -143,9 +143,14 @@ export default function Financeiro() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6 text-primary" /> Financeiro</h1>
-        <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e histórico de pagamentos</p>
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6 text-primary" /> Financeiro</h1>
+          <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e histórico de pagamentos</p>
+        </div>
+        <Button variant="outline" onClick={gerarRelatorioAnual}>
+          <FileText className="w-4 h-4 mr-2" /> Relatório anual
+        </Button>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
