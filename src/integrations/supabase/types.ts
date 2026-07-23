@@ -642,6 +642,54 @@ export type Database = {
         }
         Relationships: []
       }
+      push_tokens: {
+        Row: {
+          associado_id: string | null
+          created_at: string
+          dependente_id: string | null
+          id: string
+          token: string
+          updated_at: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          token: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          token?: string
+          updated_at?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "push_tokens_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "push_tokens_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       solicitacoes_privacidade: {
         Row: {
           associado_id: string | null
