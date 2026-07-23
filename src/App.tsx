@@ -92,6 +92,8 @@ const App = () => (
               <Route path="solicitacoes" element={<Solicitacoes />} />
               <Route path="documentos" element={<MeusDocumentos />} />
               <Route path="financeiro" element={<Financeiro />} />
+              <Route path="agenda" element={<Agenda />} />
+              <Route path="faq" element={<FAQ />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
