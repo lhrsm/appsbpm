@@ -123,6 +123,7 @@ const App = () => (
               <Route path="eventos" element={<AdminEventos />} />
               <Route path="faq" element={<AdminFAQ />} />
               <Route path="avaliacoes" element={<AdminAvaliacoes />} />
+              <Route path="privacidade" element={<AdminPrivacidade />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
