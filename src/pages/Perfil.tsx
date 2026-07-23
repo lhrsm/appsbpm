@@ -7,9 +7,11 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
-import { Loader2, Save, User as UserIcon, Lock, Bell } from 'lucide-react';
+import SignaturePad from '@/components/SignaturePad';
+import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool } from 'lucide-react';
 import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
+
 
 export default function Perfil() {
   const {
@@ -48,6 +50,17 @@ export default function Perfil() {
       setAssociado({ ...associado, foto_url: newUrl });
     }
   };
+
+  const handleSignatureUpdated = (newUrl: string) => {
+    if (isDependente && dependenteLogado) {
+      const atualizado = { ...dependenteLogado, assinatura_url: newUrl };
+      setDependenteLogado(atualizado);
+      setDependentes(dependentes.map((d) => (d.id === atualizado.id ? atualizado : d)));
+    } else if (associado) {
+      setAssociado({ ...associado, assinatura_url: newUrl });
+    }
+  };
+
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
