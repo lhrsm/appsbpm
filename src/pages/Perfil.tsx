@@ -137,7 +137,9 @@ export default function Perfil() {
     toast.success('Seus dados foram exportados.');
   };
 
+  return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+
       <div>
         <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <UserIcon className="h-8 w-8 text-primary" />
