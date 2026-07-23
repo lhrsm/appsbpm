@@ -25,7 +25,7 @@ export default function SignaturePad({
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentSignatureUrl || null);
   const fileRef = useRef<HTMLInputElement>(null);
-  const { associado } = useAssociado();
+  const { associado, dependentes } = useAssociado();
 
   useEffect(() => setPreview(currentSignatureUrl || null), [currentSignatureUrl]);
 
@@ -93,15 +93,20 @@ export default function SignaturePad({
     if (upErr) throw upErr;
     const { data: { publicUrl } } = supabase.storage.from('profile-photos').getPublicUrl(path);
 
+    const cpfParaEnvio =
+      userType === 'dependente'
+        ? dependentes.find((d) => d.id === userId)?.cpf || undefined
+        : associado.cpf;
     const { data, error } = await supabase.functions.invoke('update-perfil', {
       body: {
         tipo: userType,
         id: userId,
         matricula_titular: associado.matricula,
-        cpf: associado.cpf,
+        cpf: cpfParaEnvio,
         campos: { assinatura_url: publicUrl },
       },
     });
+
     if (error) throw error;
     if (data?.error) throw new Error(data.error);
 
