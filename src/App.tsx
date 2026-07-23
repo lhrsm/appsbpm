@@ -19,6 +19,8 @@ import Peculio from "./pages/Peculio";
 import Perfil from "./pages/Perfil";
 import MinhaPrivacidade from "./pages/MinhaPrivacidade";
 import Notificacoes from "./pages/Notificacoes";
+import Solicitacoes from "./pages/Solicitacoes";
+import AdminSolicitacoes from "./pages/admin/AdminSolicitacoes";
 import OAuthConsent from "./pages/OAuthConsent";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -77,6 +79,7 @@ const App = () => (
               <Route path="perfil" element={<Perfil />} />
               <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
               <Route path="notificacoes" element={<Notificacoes />} />
+              <Route path="solicitacoes" element={<Solicitacoes />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
@@ -98,6 +101,7 @@ const App = () => (
               <Route path="peculio" element={<AdminPeculio />} />
               <Route path="seguranca" element={<AdminSeguranca />} />
               <Route path="notificacoes" element={<AdminNotificacoes />} />
+              <Route path="solicitacoes" element={<AdminSolicitacoes />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

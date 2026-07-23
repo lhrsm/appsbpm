@@ -31,6 +31,7 @@ import {
   ShieldCheck,
   ShieldAlert,
   Bell,
+  Ticket,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -44,6 +45,7 @@ import { useNotificacoes } from '@/hooks/useNotificacoes';
 const menuItemsTitular = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
+  { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
   { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
@@ -60,6 +62,7 @@ const menuItemsTitular = [
 const menuItemsDependente = [
   { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
   { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
+  { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
