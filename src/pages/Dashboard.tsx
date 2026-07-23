@@ -34,6 +34,8 @@ import {
   Ticket,
   FolderOpen,
   Wallet,
+  Calendar,
+  HelpCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -56,6 +58,8 @@ const menuItemsTitular = [
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
+  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
   { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
@@ -71,6 +75,8 @@ const menuItemsDependente = [
   { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
   { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
+  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
 ];

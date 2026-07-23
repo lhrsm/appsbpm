@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent } from '@/components/ui/card';
+import AvaliacaoParceiro from '@/components/AvaliacaoParceiro';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -218,6 +219,10 @@ export default function Clinicas() {
                     </a>
                   </div>
                 )}
+
+                <div className="mt-2 pt-2 border-t border-border/40" onClick={(e) => e.stopPropagation()}>
+                  <AvaliacaoParceiro clinicaId={c.id} nome={c.nome} />
+                </div>
               </CardContent>
             </Card>
           ))}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import {
@@ -20,6 +20,9 @@ const nav = [
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   
   { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
+  { to: "/admin/eventos", icon: Calendar, label: "Eventos" },
+  { to: "/admin/faq", icon: HelpCircle, label: "FAQ" },
+  { to: "/admin/avaliacoes", icon: Star, label: "Avaliações" },
   { to: "/admin/notificacoes", icon: Bell, label: "Notificações Push" },
   { to: "/admin/solicitacoes", icon: Ticket, label: "Solicitações" },
   { to: "/admin/documentos", icon: FolderOpen, label: "Documentos" },

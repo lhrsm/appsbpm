@@ -49,8 +49,14 @@ import AdminSeguranca from "./pages/admin/AdminSeguranca";
 import AdminNotificacoes from "./pages/admin/AdminNotificacoes";
 import Privacidade from "./pages/Privacidade";
 import Acessibilidade from "./pages/Acessibilidade";
+import Agenda from "./pages/Agenda";
+import FAQ from "./pages/FAQ";
+import AdminEventos from "./pages/admin/AdminEventos";
+import AdminFAQ from "./pages/admin/AdminFAQ";
+import AdminAvaliacoes from "./pages/admin/AdminAvaliacoes";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +69,7 @@ const App = () => (
         <BrowserRouter>
           <CookieConsent />
           <AccessibilityWidget />
+          <ChatbotWidget />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/privacidade" element={<Privacidade />} />
@@ -86,6 +93,8 @@ const App = () => (
               <Route path="solicitacoes" element={<Solicitacoes />} />
               <Route path="documentos" element={<MeusDocumentos />} />
               <Route path="financeiro" element={<Financeiro />} />
+              <Route path="agenda" element={<Agenda />} />
+              <Route path="faq" element={<FAQ />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminLayout />}>
@@ -110,6 +119,9 @@ const App = () => (
               <Route path="solicitacoes" element={<AdminSolicitacoes />} />
               <Route path="documentos" element={<AdminDocumentos />} />
               <Route path="financeiro" element={<AdminFinanceiro />} />
+              <Route path="eventos" element={<AdminEventos />} />
+              <Route path="faq" element={<AdminFAQ />} />
+              <Route path="avaliacoes" element={<AdminAvaliacoes />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
