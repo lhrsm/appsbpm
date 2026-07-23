@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Download, ShieldAlert, History, Mail, FileText, Loader2, Trash2, RefreshCw, Edit } from 'lucide-react';
+import { Download, ShieldAlert, History, Mail, FileText, Loader2, Trash2, RefreshCw, Edit, Activity } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -31,6 +31,7 @@ export default function MinhaPrivacidade() {
   const [enviando, setEnviando] = useState(false);
   const [consentimentos, setConsentimentos] = useState<any[]>([]);
   const [solicitacoes, setSolicitacoes] = useState<any[]>([]);
+  const [acessos, setAcessos] = useState<any[]>([]);
 
   useEffect(() => {
     if (!associado) return;
@@ -46,7 +47,14 @@ export default function MinhaPrivacidade() {
       .eq('associado_id', associado.id)
       .order('created_at', { ascending: false })
       .then(({ data }) => setSolicitacoes(data || []));
-  }, [associado]);
+    supabase
+      .rpc('meu_historico_acessos', {
+        _associado_id: associado.id,
+        _dependente_id: isDependente ? dependenteLogado?.id ?? null : null,
+        _limit: 20,
+      })
+      .then(({ data }) => setAcessos(data || []));
+  }, [associado, isDependente, dependenteLogado?.id]);
 
   if (!associado || !alvo) {
     return (
@@ -150,8 +158,9 @@ export default function MinhaPrivacidade() {
       </div>
 
       <Tabs defaultValue="dados" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="dados">Meus dados</TabsTrigger>
+          <TabsTrigger value="acessos">Acessos</TabsTrigger>
           <TabsTrigger value="solicitar">Nova solicitação</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
           <TabsTrigger value="dpo">Encarregado</TabsTrigger>
@@ -210,6 +219,46 @@ export default function MinhaPrivacidade() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="acessos">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Activity className="w-5 h-5" />
+                Histórico de acessos
+              </CardTitle>
+              <CardDescription>
+                Últimos 20 acessos registrados na sua conta. Se notar algum acesso não reconhecido, fale imediatamente com o DPO.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {acessos.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
+              ) : (
+                <ul className="space-y-2">
+                  {acessos.map((a) => (
+                    <li key={a.id} className="flex items-center justify-between gap-3 rounded border bg-muted/40 px-3 py-2 text-sm">
+                      <div className="min-w-0">
+                        <p className="font-medium">
+                          {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {a.tipo_usuario === 'titular' ? 'Titular' : 'Dependente'} · via {a.metodo_login || 'n/d'}
+                          {a.user_agent ? ` · ${a.user_agent.slice(0, 60)}${a.user_agent.length > 60 ? '…' : ''}` : ''}
+                        </p>
+                      </div>
+                      <Badge variant={a.sucesso ? 'default' : 'destructive'}>
+                        {a.sucesso ? 'Sucesso' : 'Falha'}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+
 
         <TabsContent value="solicitar">
           <Card>

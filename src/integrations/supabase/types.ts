@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      acessos_log: {
+        Row: {
+          associado_id: string | null
+          created_at: string
+          dependente_id: string | null
+          id: string
+          ip: string | null
+          metodo_login: string | null
+          sucesso: boolean
+          tipo_usuario: string
+          user_agent: string | null
+        }
+        Insert: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          ip?: string | null
+          metodo_login?: string | null
+          sucesso?: boolean
+          tipo_usuario: string
+          user_agent?: string | null
+        }
+        Update: {
+          associado_id?: string | null
+          created_at?: string
+          dependente_id?: string | null
+          id?: string
+          ip?: string | null
+          metodo_login?: string | null
+          sucesso?: boolean
+          tipo_usuario?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "acessos_log_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acessos_log_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       associados: {
         Row: {
           ativo: boolean
@@ -837,6 +888,22 @@ export type Database = {
         Returns: boolean
       }
       is_previdencia_admin: { Args: { _user_id: string }; Returns: boolean }
+      meu_historico_acessos: {
+        Args: {
+          _associado_id: string
+          _dependente_id?: string
+          _limit?: number
+        }
+        Returns: {
+          created_at: string
+          id: string
+          ip: string
+          metodo_login: string
+          sucesso: boolean
+          tipo_usuario: string
+          user_agent: string
+        }[]
+      }
     }
     Enums: {
       app_role: "admin"
