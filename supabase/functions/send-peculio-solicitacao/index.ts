@@ -43,7 +43,19 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
       );
     }
-    const { titular, solicitante, banco, observacoes } = parsed.data;
+    const { titular, solicitante, banco, observacoes, anexos } = parsed.data;
+
+    // Signed URLs para anexos (7 dias)
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    const admin = supabaseUrl && serviceKey ? createClient(supabaseUrl, serviceKey) : null;
+    const anexoLinks: { path: string; url: string }[] = [];
+    if (admin && anexos && anexos.length > 0) {
+      for (const p of anexos) {
+        const { data } = await admin.storage.from(ANEXOS_BUCKET).createSignedUrl(p, 60 * 60 * 24 * 7);
+        anexoLinks.push({ path: p, url: data?.signedUrl || '' });
+      }
+    }
 
     // Persistência best-effort na tabela existente
     try {
