@@ -42,7 +42,7 @@ export default function Notificacoes() {
       </div>
 
       {loading && items.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">Carregando...</div>
+        <PageSkeleton rows={4} variant="list" showHeader={false} />
       ) : items.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center text-muted-foreground flex flex-col items-center gap-3">
