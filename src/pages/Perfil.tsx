@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,9 +8,19 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import SignaturePad from '@/components/SignaturePad';
-import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download } from 'lucide-react';
+import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download, History } from 'lucide-react';
 import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+interface AcessoRegistro {
+  id: string;
+  created_at: string;
+  metodo_login: string | null;
+  user_agent: string | null;
+  sucesso: boolean;
+}
 
 
 export default function Perfil() {
@@ -30,6 +40,26 @@ export default function Perfil() {
   const [telefone, setTelefone] = useState(alvo?.telefone || '');
   const [endereco, setEndereco] = useState(alvo?.endereco || '');
   const [saving, setSaving] = useState(false);
+  const [acessos, setAcessos] = useState<AcessoRegistro[]>([]);
+  const [loadingAcessos, setLoadingAcessos] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      if (!alvo) return;
+      setLoadingAcessos(true);
+      const query = supabase
+        .from('acessos_log')
+        .select('id, created_at, metodo_login, user_agent, sucesso')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      const { data } = isDependente && dependenteLogado
+        ? await query.eq('dependente_id', dependenteLogado.id)
+        : await query.eq('associado_id', associado?.id ?? '').is('dependente_id', null);
+      setAcessos(data || []);
+      setLoadingAcessos(false);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alvo?.id]);
 
   if (!alvo || !associado) {
     return (
@@ -40,6 +70,16 @@ export default function Perfil() {
       </Card>
     );
   }
+
+  const parseDevice = (ua: string | null) => {
+    if (!ua) return 'Dispositivo desconhecido';
+    if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS';
+    if (/Android/i.test(ua)) return 'Android';
+    if (/Windows/i.test(ua)) return 'Windows';
+    if (/Macintosh|Mac OS/i.test(ua)) return 'macOS';
+    if (/Linux/i.test(ua)) return 'Linux';
+    return 'Outro';
+  };
 
   const handlePhotoUpdated = (newUrl: string) => {
     if (isDependente && dependenteLogado) {
@@ -310,6 +350,50 @@ export default function Perfil() {
           <Button variant="outline" onClick={handleExportData} className="gap-2">
             <Download className="h-4 w-4" /> Baixar meus dados (JSON)
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* Meus acessos */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <History className="h-5 w-5" /> Meus acessos recentes
+          </CardTitle>
+          <CardDescription>
+            Últimos 10 acessos à sua conta. Se notar algum acesso que não reconheça, entre em contato
+            com a SBPM.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {loadingAcessos ? (
+            <p className="text-sm text-muted-foreground">Carregando...</p>
+          ) : acessos.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
+          ) : (
+            <ul className="divide-y">
+              {acessos.map((a) => (
+                <li key={a.id} className="py-2 flex items-center justify-between text-sm">
+                  <div>
+                    <p className="font-medium">
+                      {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {parseDevice(a.user_agent)} · Login por {a.metodo_login === 'cpf' ? 'CPF' : 'Matrícula'}
+                    </p>
+                  </div>
+                  <span
+                    className={`text-xs px-2 py-0.5 rounded-full ${
+                      a.sucesso
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
+                        : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
+                    }`}
+                  >
+                    {a.sucesso ? 'Sucesso' : 'Falha'}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </CardContent>
       </Card>
     </div>
