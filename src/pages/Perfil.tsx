@@ -40,6 +40,26 @@ export default function Perfil() {
   const [telefone, setTelefone] = useState(alvo?.telefone || '');
   const [endereco, setEndereco] = useState(alvo?.endereco || '');
   const [saving, setSaving] = useState(false);
+  const [acessos, setAcessos] = useState<AcessoRegistro[]>([]);
+  const [loadingAcessos, setLoadingAcessos] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      if (!alvo) return;
+      setLoadingAcessos(true);
+      const query = supabase
+        .from('acessos_log')
+        .select('id, created_at, metodo_login, user_agent, sucesso')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      const { data } = isDependente && dependenteLogado
+        ? await query.eq('dependente_id', dependenteLogado.id)
+        : await query.eq('associado_id', associado?.id ?? '').is('dependente_id', null);
+      setAcessos(data || []);
+      setLoadingAcessos(false);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alvo?.id]);
 
   if (!alvo || !associado) {
     return (
@@ -50,6 +70,16 @@ export default function Perfil() {
       </Card>
     );
   }
+
+  const parseDevice = (ua: string | null) => {
+    if (!ua) return 'Dispositivo desconhecido';
+    if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS';
+    if (/Android/i.test(ua)) return 'Android';
+    if (/Windows/i.test(ua)) return 'Windows';
+    if (/Macintosh|Mac OS/i.test(ua)) return 'macOS';
+    if (/Linux/i.test(ua)) return 'Linux';
+    return 'Outro';
+  };
 
   const handlePhotoUpdated = (newUrl: string) => {
     if (isDependente && dependenteLogado) {
