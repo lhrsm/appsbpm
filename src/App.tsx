@@ -54,6 +54,7 @@ import FAQ from "./pages/FAQ";
 import AdminEventos from "./pages/admin/AdminEventos";
 import AdminFAQ from "./pages/admin/AdminFAQ";
 import AdminAvaliacoes from "./pages/admin/AdminAvaliacoes";
+import AdminPrivacidade from "./pages/admin/AdminPrivacidade";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
 import ChatbotWidget from "./components/ChatbotWidget";
