@@ -59,16 +59,13 @@ Deno.serve(async (req) => {
 
     // Persistência best-effort na tabela existente
     try {
-      const supabaseUrl = Deno.env.get('SUPABASE_URL');
-      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
-      if (supabaseUrl && serviceKey) {
-        const admin = createClient(supabaseUrl, serviceKey);
+      if (admin) {
         await admin.from('peculio_solicitacoes').insert({
           associado_nome: titular.nome,
           associado_matricula: titular.matricula,
           associado_email: solicitante.email || null,
           associado_telefone: solicitante.telefone || null,
-          beneficiarios: [{ solicitante, banco: banco || null, observacoes: observacoes || null, data_falecimento: titular.data_falecimento }],
+          beneficiarios: [{ solicitante, banco: banco || null, observacoes: observacoes || null, data_falecimento: titular.data_falecimento, anexos: anexoLinks }],
           status: 'pagamento_pendente',
           observacoes: `Solicitação de pagamento do pecúlio — falecimento em ${titular.data_falecimento}`,
         });
