@@ -34,6 +34,8 @@ import {
   Ticket,
   FolderOpen,
   Wallet,
+  Calendar,
+  HelpCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
