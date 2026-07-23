@@ -47,6 +47,7 @@ import ComunicadosBanner from '@/components/ComunicadosBanner';
 import { useNotificacoes } from '@/hooks/useNotificacoes';
 import ThemeToggle from '@/components/ThemeToggle';
 import GlobalSearch from '@/components/GlobalSearch';
+import WelcomeTour from '@/components/WelcomeTour';
 
 // Menu completo para titular
 const menuItemsTitular = [
