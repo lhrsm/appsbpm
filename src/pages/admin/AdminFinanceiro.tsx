@@ -284,6 +284,27 @@ export default function AdminFinanceiro() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={loteOpen} onOpenChange={setLoteOpen}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Gerar lote mensal</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground">
+              Cria um lançamento pendente para todos os {associados.length} associados que ainda não possuem lançamento nesta referência.
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <div><Label>Referência *</Label><Input placeholder="Ex: 02/2026" value={lote.referencia} onChange={e => setLote({ ...lote, referencia: e.target.value })} /></div>
+              <div><Label>Vencimento *</Label><Input type="date" value={lote.vencimento} onChange={e => setLote({ ...lote, vencimento: e.target.value })} /></div>
+            </div>
+            <div><Label>Valor *</Label><Input type="number" step="0.01" value={lote.valor} onChange={e => setLote({ ...lote, valor: e.target.value })} /></div>
+            <div><Label>Descrição</Label><Input value={lote.descricao} onChange={e => setLote({ ...lote, descricao: e.target.value })} /></div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setLoteOpen(false)}>Cancelar</Button>
+            <Button onClick={gerarLote} disabled={gerando}>{gerando ? 'Gerando...' : 'Gerar lote'}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
