@@ -152,7 +152,7 @@ export default function Solicitacoes() {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">Carregando...</p>
+        <PageSkeleton rows={4} variant="list" showHeader={false} />
       ) : items.length === 0 ? (
         <Card><CardContent className="p-10 text-center text-muted-foreground">
           <Ticket className="w-10 h-10 mx-auto mb-2 opacity-40" />
