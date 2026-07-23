@@ -111,6 +111,12 @@ Deno.serve(async (req) => {
       </ul>
       <h3>Observações</h3>
       <p>${(observacoes || '-').replace(/\n/g, '<br>')}</p>
+      <h3>Documentos anexados (${anexoLinks.length})</h3>
+      ${
+        anexoLinks.length
+          ? `<ul>${anexoLinks.map((a) => `<li><a href="${a.url}">${a.path.split('/').pop()}</a></li>`).join('')}</ul><p style="font-size:11px;color:#666">Links válidos por 7 dias.</p>`
+          : '<p>Nenhum anexo enviado pelo formulário.</p>'
+      }
       <hr>
       <p style="font-size:12px;color:#666">
         Documentos exigidos (Certidão de Óbito, RG/CPF do beneficiário, comprovante de residência,
