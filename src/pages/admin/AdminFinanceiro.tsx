@@ -105,6 +105,46 @@ export default function AdminFinanceiro() {
     load();
   };
 
+  const gerarLote = async () => {
+    if (!lote.referencia || !lote.vencimento || !lote.valor) return toast.error('Preencha referência, vencimento e valor');
+    setGerando(true);
+    const { data: existentes } = await supabase.from('mensalidades').select('associado_id').eq('referencia', lote.referencia);
+    const jaTem = new Set((existentes || []).map((e: any) => e.associado_id));
+    const novos = associados.filter(a => !jaTem.has(a.id)).map(a => ({
+      associado_id: a.id,
+      referencia: lote.referencia,
+      tipo: 'mensalidade',
+      descricao: lote.descricao || null,
+      valor: Number(lote.valor),
+      vencimento: lote.vencimento,
+      status: 'pendente',
+    }));
+    if (novos.length === 0) { setGerando(false); toast.info('Todos os associados já possuem lançamento nesta referência'); return; }
+    const { error } = await supabase.from('mensalidades').insert(novos);
+    setGerando(false);
+    if (error) return toast.error('Erro ao gerar lote');
+    toast.success(`${novos.length} lançamento(s) gerado(s)`);
+    setLoteOpen(false);
+    setLote({ referencia: '', vencimento: '', valor: '', descricao: 'Mensalidade' });
+    load();
+  };
+
+  const exportarCSV = () => {
+    const rows = [['Matrícula', 'Associado', 'Referência', 'Tipo', 'Valor', 'Vencimento', 'Status', 'Pago em', 'Forma pagamento']];
+    filtered.forEach(m => rows.push([
+      m.associados?.matricula || '', m.associados?.nome || '', m.referencia, m.tipo,
+      String(m.valor), m.vencimento, m.status, m.pago_em || '', m.forma_pagamento || '',
+    ]));
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `financeiro_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = items.filter(m => {
     if (statusF !== 'todos' && m.status !== statusF) return false;
     if (search) {
