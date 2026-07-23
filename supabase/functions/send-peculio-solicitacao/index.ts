@@ -25,7 +25,10 @@ const BodySchema = z.object({
     pix: z.string().max(140).optional().or(z.literal('')),
   }).optional(),
   observacoes: z.string().max(2000).optional().or(z.literal('')),
+  anexos: z.array(z.string()).max(20).optional(),
 });
+
+const ANEXOS_BUCKET = 'dependentes-anexos';
 
 const DESTINO = 'previdencia@sbpmbahia.com.br';
 
