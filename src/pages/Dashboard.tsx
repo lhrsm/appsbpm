@@ -58,6 +58,8 @@ const menuItemsTitular = [
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
+  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
   { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
