@@ -423,10 +423,13 @@ export type Database = {
           cpf: string | null
           created_at: string
           data_nascimento: string | null
+          email: string | null
+          endereco: string | null
           foto_url: string | null
           id: string
           nome: string
           status: string
+          telefone: string | null
           tipo: Database["public"]["Enums"]["tipo_dependente"]
           updated_at: string
         }
@@ -437,10 +440,13 @@ export type Database = {
           cpf?: string | null
           created_at?: string
           data_nascimento?: string | null
+          email?: string | null
+          endereco?: string | null
           foto_url?: string | null
           id?: string
           nome: string
           status?: string
+          telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
         }
@@ -451,10 +457,13 @@ export type Database = {
           cpf?: string | null
           created_at?: string
           data_nascimento?: string | null
+          email?: string | null
+          endereco?: string | null
           foto_url?: string | null
           id?: string
           nome?: string
           status?: string
+          telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
         }
