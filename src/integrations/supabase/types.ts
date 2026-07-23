@@ -115,6 +115,7 @@ export type Database = {
           associado_id: string
           created_at: string
           data_liberacao: string | null
+          dependente_id: string | null
           id: string
           procedimento: string
           status: Database["public"]["Enums"]["status_carencia"]
@@ -124,6 +125,7 @@ export type Database = {
           associado_id: string
           created_at?: string
           data_liberacao?: string | null
+          dependente_id?: string | null
           id?: string
           procedimento: string
           status?: Database["public"]["Enums"]["status_carencia"]
@@ -133,6 +135,7 @@ export type Database = {
           associado_id?: string
           created_at?: string
           data_liberacao?: string | null
+          dependente_id?: string | null
           id?: string
           procedimento?: string
           status?: Database["public"]["Enums"]["status_carencia"]
@@ -144,6 +147,13 @@ export type Database = {
             columns: ["associado_id"]
             isOneToOne: false
             referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "carencias_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
             referencedColumns: ["id"]
           },
         ]
