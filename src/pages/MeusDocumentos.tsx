@@ -88,7 +88,7 @@ export default function MeusDocumentos() {
         </Select>
       </CardContent></Card>
 
-      {loading ? <p className="text-muted-foreground">Carregando...</p> : filtered.length === 0 ? (
+      {loading ? <PageSkeleton rows={4} variant="cards" showHeader={false} /> : filtered.length === 0 ? (
         <Card><CardContent className="p-10 text-center text-muted-foreground">
           <FileText className="w-10 h-10 mx-auto mb-2 opacity-40" />
           Nenhum documento disponível ainda.
