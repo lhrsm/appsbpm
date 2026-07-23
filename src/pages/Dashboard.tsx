@@ -186,6 +186,8 @@ export default function Dashboard() {
     navigate('/');
   };
 
+  useInactivityLock(!!associado, handleLogout);
+
   if (!associado) return null;
 
   // Nome a exibir - do dependente ou do titular
