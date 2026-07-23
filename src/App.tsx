@@ -16,6 +16,7 @@ import AssociacaoPremiada from "./pages/AssociacaoPremiada";
 import Simulador from "./pages/Simulador";
 import IndicarParceiro from "./pages/IndicarParceiro";
 import Peculio from "./pages/Peculio";
+import SolicitarPeculio from "./pages/SolicitarPeculio";
 import Perfil from "./pages/Perfil";
 import MinhaPrivacidade from "./pages/MinhaPrivacidade";
 import Notificacoes from "./pages/Notificacoes";
@@ -88,6 +89,7 @@ const App = () => (
               <Route path="simulador" element={<Simulador />} />
               <Route path="indicar-parceiro" element={<IndicarParceiro />} />
               <Route path="peculio" element={<Peculio />} />
+              <Route path="solicitar-peculio" element={<SolicitarPeculio />} />
               <Route path="perfil" element={<Perfil />} />
               <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
               <Route path="notificacoes" element={<Notificacoes />} />
