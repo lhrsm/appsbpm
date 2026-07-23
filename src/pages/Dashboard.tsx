@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAssociado } from '@/contexts/AssociadoContext';
+import { useInactivityLock } from '@/hooks/useInactivityLock';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -185,6 +186,8 @@ export default function Dashboard() {
     logout();
     navigate('/');
   };
+
+  useInactivityLock(!!associado, handleLogout);
 
   if (!associado) return null;
 

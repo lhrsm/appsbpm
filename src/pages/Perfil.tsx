@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import SignaturePad from '@/components/SignaturePad';
-import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool } from 'lucide-react';
+import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
 
@@ -109,9 +109,37 @@ export default function Perfil() {
     }
   };
 
+  const handleExportData = () => {
+    const payload = {
+      exportado_em: new Date().toISOString(),
+      tipo: isDependente ? 'dependente' : 'titular',
+      titular: {
+        nome: associado.nome,
+        matricula: associado.matricula,
+        cpf: associado.cpf,
+        email: associado.email,
+        telefone: associado.telefone,
+        endereco: associado.endereco,
+        data_admissao: associado.data_admissao,
+      },
+      dependente_logado: isDependente ? dependenteLogado : null,
+      dependentes: isDependente ? [] : dependentes,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `meus-dados-sbpm-${alvo.nome.replace(/\s+/g, '_')}-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Seus dados foram exportados.');
+  };
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+
       <div>
         <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
           <UserIcon className="h-8 w-8 text-primary" />
@@ -264,6 +292,24 @@ export default function Perfil() {
             associadoId={isDependente ? null : associado.id}
             dependenteId={isDependente && dependenteLogado ? dependenteLogado.id : null}
           />
+        </CardContent>
+      </Card>
+
+      {/* Portabilidade de dados (LGPD) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Download className="h-5 w-5" /> Exportar meus dados
+          </CardTitle>
+          <CardDescription>
+            Direito de portabilidade (LGPD, art. 18). Baixe uma cópia dos seus dados cadastrais
+            disponíveis neste portal em formato JSON.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button variant="outline" onClick={handleExportData} className="gap-2">
+            <Download className="h-4 w-4" /> Baixar meus dados (JSON)
+          </Button>
         </CardContent>
       </Card>
     </div>
