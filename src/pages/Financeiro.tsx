@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { format, parseISO, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Wallet, Download, Copy, AlertCircle, CheckCircle2, Clock, FileText, Receipt } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
