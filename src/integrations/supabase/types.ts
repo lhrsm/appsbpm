@@ -67,6 +67,7 @@ export type Database = {
       }
       associados: {
         Row: {
+          assinatura_url: string | null
           ativo: boolean
           cep: string | null
           cidade: string | null
@@ -85,6 +86,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assinatura_url?: string | null
           ativo?: boolean
           cep?: string | null
           cidade?: string | null
@@ -103,6 +105,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assinatura_url?: string | null
           ativo?: boolean
           cep?: string | null
           cidade?: string | null
@@ -414,6 +417,7 @@ export type Database = {
       }
       dependentes: {
         Row: {
+          assinatura_url: string | null
           associado_id: string
           ativo: boolean
           cpf: string | null
@@ -427,6 +431,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          assinatura_url?: string | null
           associado_id: string
           ativo?: boolean
           cpf?: string | null
@@ -440,6 +445,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          assinatura_url?: string | null
           associado_id?: string
           ativo?: boolean
           cpf?: string | null
