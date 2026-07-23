@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Building2, MapPin, Phone, Mail, Clock, Search, Star, MessageCircle } from 'lucide-react';
+import PageSkeleton from '@/components/PageSkeleton';
 
 interface Clinica {
   id: string;
