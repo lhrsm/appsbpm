@@ -26,13 +26,12 @@ export default function AdminNotificationsBell() {
     const hoje = new Date().toISOString().slice(0, 10);
     const limite15d = new Date(Date.now() - 15 * 24 * 3600 * 1000).toISOString();
 
-    const [sol, priv, privVenc, mens, pec, dep] = await Promise.all([
+    const [sol, priv, privVenc, mens, pec] = await Promise.all([
       supabase.from("solicitacoes").select("id", { count: "exact", head: true }).in("status", ["aberto", "em_andamento"]),
       supabase.from("solicitacoes_privacidade").select("id", { count: "exact", head: true }).eq("status", "pendente"),
       supabase.from("solicitacoes_privacidade").select("id", { count: "exact", head: true }).eq("status", "pendente").lt("created_at", limite15d),
       supabase.from("mensalidades").select("id", { count: "exact", head: true }).eq("status", "pendente").lt("vencimento", hoje),
       supabase.from("peculio_solicitacoes").select("id", { count: "exact", head: true }).eq("status", "pendente"),
-      supabase.from("dependentes_solicitacoes" as any).select("id", { count: "exact", head: true }).eq("status", "pendente"),
     ]);
 
     setItems([
@@ -41,7 +40,6 @@ export default function AdminNotificationsBell() {
       { key: "privVenc", label: "LGPD com SLA vencido", count: privVenc.count ?? 0, href: "/admin/privacidade", tone: "text-destructive" },
       { key: "mens", label: "Mensalidades vencidas", count: mens.count ?? 0, href: "/admin/financeiro", tone: "text-amber-600" },
       { key: "pec", label: "Pecúlio a aprovar", count: pec.count ?? 0, href: "/admin/peculio", tone: "text-purple-600" },
-      { key: "dep", label: "Solicitações de dependentes", count: dep.count ?? 0, href: "/admin/dependentes", tone: "text-blue-600" },
     ]);
   };
 
