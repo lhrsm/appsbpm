@@ -566,10 +566,16 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
-            <Download className="h-4 w-4 mr-2" />
-            Baixar Carteirinha (PDF)
-          </Button>
+          <div className="flex gap-2 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="flex-1">
+              <Download className="h-4 w-4 mr-2" />
+              Baixar (PDF)
+            </Button>
+            <Button onClick={handleShare} variant="outline" className="flex-1">
+              <Share2 className="h-4 w-4 mr-2" />
+              Compartilhar
+            </Button>
+          </div>
         </div>
 
         {/* Seletor de Pessoa */}
