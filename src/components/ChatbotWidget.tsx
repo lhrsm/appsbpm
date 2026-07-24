@@ -215,6 +215,12 @@ export default function ChatbotWidget() {
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </Button>
           </div>
+          <div className="px-3 pb-2 flex items-center justify-center gap-3 text-[11px] text-muted-foreground">
+            <span>Precisa de humano?</span>
+            <a className="text-primary hover:underline" href="https://wa.me/5571985496972" target="_blank" rel="noreferrer">Previdência</a>
+            <span>·</span>
+            <a className="text-primary hover:underline" href="https://wa.me/5571987943414" target="_blank" rel="noreferrer">Saúde</a>
+          </div>
         </div>
       )}
     </>
