@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { maskCPF } from '@/lib/format';
 
 interface AcessoRegistro {
   id: string;
@@ -233,7 +234,7 @@ export default function Perfil() {
               </div>
               <div className="space-y-2">
                 <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> CPF</Label>
-                <Input value={('cpf' in alvo && alvo.cpf) || ''} disabled />
+                <Input value={maskCPF(('cpf' in alvo && alvo.cpf) || '')} disabled />
               </div>
 
               {!isDependente && (

@@ -48,6 +48,7 @@ import { useNotificacoes } from '@/hooks/useNotificacoes';
 import ThemeToggle from '@/components/ThemeToggle';
 import GlobalSearch from '@/components/GlobalSearch';
 import WelcomeTour from '@/components/WelcomeTour';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 // Menu completo para titular
 const menuItemsTitular = [
@@ -364,6 +365,7 @@ export default function Dashboard() {
         {/* Main Content */}
         <main className="flex-1 p-4 md:p-6 space-y-4">
           <ComunicadosBanner />
+          <Breadcrumbs />
           {location.pathname === '/dashboard' ? (
             <DashboardHome />
           ) : (
