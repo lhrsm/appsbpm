@@ -241,6 +241,13 @@ export default function AdminClinicas() {
     setEditing({ ...editing, especialidades: Array.from(cur) });
   };
 
+  const setCat = (cat: string, checked: boolean) => {
+    if (!editing) return;
+    const cur = new Set(editing.categorias ?? []);
+    if (checked) cur.add(cat); else cur.delete(cat);
+    setEditing({ ...editing, categorias: Array.from(cur) });
+  };
+
   const setHor = (dia: string, campo: string, valor: any) => {
     if (!editing) return;
     const h = { ...(editing.horarios ?? {}) };
