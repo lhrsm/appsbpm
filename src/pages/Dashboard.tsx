@@ -226,6 +226,7 @@ export default function Dashboard() {
               <GlobalSearch variant="icon" />
             </div>
             <ThemeToggle className="text-primary-foreground hover:bg-primary/80" />
+            <KeyboardShortcutsHelp className="hidden md:inline-flex text-primary-foreground hover:bg-primary/80" />
             <Link to="/dashboard/notificacoes" className="relative">
               <Button
                 variant="ghost"
