@@ -37,6 +37,8 @@ import {
   Wallet,
   Calendar,
   HelpCircle,
+  History,
+  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -63,7 +65,10 @@ const menuItemsTitular = [
   { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
   { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
   { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/beneficios', label: 'Benefícios e Cupons', icon: Ticket },
+  { path: '/dashboard/avaliar', label: 'Avaliar Parceiros', icon: Star },
   { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
+  { path: '/dashboard/historico', label: 'Histórico de Acessos', icon: History },
   { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
   { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
   { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
@@ -80,7 +85,10 @@ const menuItemsDependente = [
   { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
   { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
   { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
+  { path: '/dashboard/beneficios', label: 'Benefícios e Cupons', icon: Ticket },
+  { path: '/dashboard/avaliar', label: 'Avaliar Parceiros', icon: Star },
   { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
+  { path: '/dashboard/historico', label: 'Histórico de Acessos', icon: History },
   { path: '/dashboard/solicitar-peculio', label: 'Solicitar Pecúlio', icon: ShieldCheck },
   { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
   { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
