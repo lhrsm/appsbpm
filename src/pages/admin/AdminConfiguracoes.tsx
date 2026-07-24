@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Save, Shield, Bell, Palette, Building, UserPlus, Trash2, PenTool, Upload, Loader2 } from "lucide-react";
+import DrawSignatureCanvas from "@/components/DrawSignatureCanvas";
 
 
 type Settings = {
@@ -118,6 +119,22 @@ export default function AdminConfiguracoes() {
     }
   };
 
+  const persistirAssinaturaBlob = async (slug: string, blob: Blob, ext = "png", contentType = "image/png") => {
+    const path = `assinaturas/${slug}.${ext}`;
+    const { error: upErr } = await supabase.storage
+      .from("profile-photos")
+      .upload(path, blob, { upsert: true, contentType });
+    if (upErr) throw upErr;
+    const { data: { publicUrl } } = supabase.storage.from("profile-photos").getPublicUrl(path);
+    const finalUrl = `${publicUrl}?t=${Date.now()}`;
+    const rows = [{ chave: `signatario_${slug}_url`, valor: finalUrl }];
+    if (slug === "presidente") rows.push({ chave: "assinatura_presidente_url", valor: finalUrl });
+    const { error } = await supabase.from("sistema_config").upsert(rows, { onConflict: "chave" });
+    if (error) throw error;
+    updateSignatarioLocal(slug, { url: finalUrl });
+    return finalUrl;
+  };
+
   const uploadAssinatura = async (slug: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -126,24 +143,25 @@ export default function AdminConfiguracoes() {
     setUploadingSlug(slug);
     try {
       const ext = file.name.split(".").pop() || "png";
-      const path = `assinaturas/${slug}.${ext}`;
-      const { error: upErr } = await supabase.storage
-        .from("profile-photos")
-        .upload(path, file, { upsert: true, contentType: file.type });
-      if (upErr) throw upErr;
-      const { data: { publicUrl } } = supabase.storage.from("profile-photos").getPublicUrl(path);
-      const finalUrl = `${publicUrl}?t=${Date.now()}`;
-      const rows = [{ chave: `signatario_${slug}_url`, valor: finalUrl }];
-      if (slug === "presidente") rows.push({ chave: "assinatura_presidente_url", valor: finalUrl });
-      const { error } = await supabase.from("sistema_config").upsert(rows, { onConflict: "chave" });
-      if (error) throw error;
-      updateSignatarioLocal(slug, { url: finalUrl });
+      await persistirAssinaturaBlob(slug, file, ext, file.type);
       toast.success("Assinatura atualizada");
     } catch (err: any) {
       toast.error(err?.message || "Erro ao enviar");
     } finally {
       setUploadingSlug(null);
       (e.target as HTMLInputElement).value = "";
+    }
+  };
+
+  const salvarAssinaturaDesenhada = async (slug: string, blob: Blob) => {
+    setUploadingSlug(slug);
+    try {
+      await persistirAssinaturaBlob(slug, blob);
+      toast.success("Assinatura desenhada salva");
+    } catch (err: any) {
+      toast.error(err?.message || "Erro ao salvar assinatura");
+    } finally {
+      setUploadingSlug(null);
     }
   };
 
@@ -334,6 +352,14 @@ export default function AdminConfiguracoes() {
                           Salvar nome/cargo
                         </Button>
                       </div>
+                    </div>
+
+                    <div className="border-t pt-4">
+                      <DrawSignatureCanvas
+                        saving={uploadingSlug === sig.slug}
+                        label={`Ou desenhe a assinatura de ${sig.cargo || sig.slug} abaixo`}
+                        onSave={(blob) => salvarAssinaturaDesenhada(sig.slug, blob)}
+                      />
                     </div>
                   </div>
                 );
