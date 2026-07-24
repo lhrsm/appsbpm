@@ -142,14 +142,51 @@ export default function AdminAuditoria() {
                 <div><span className="text-muted-foreground">Entidade:</span> {detail.entity}</div>
                 <div className="col-span-2"><span className="text-muted-foreground">ID:</span> <span className="font-mono text-xs">{detail.entity_id ?? "—"}</span></div>
               </div>
-              <div>
-                <div className="text-muted-foreground mb-1">Payload:</div>
-                <pre className="bg-muted p-3 rounded text-xs overflow-auto max-h-[400px]">{JSON.stringify(detail.details, null, 2)}</pre>
-              </div>
+              {detail.details?.before || detail.details?.after ? (
+                <DiffView before={detail.details?.before} after={detail.details?.after} />
+              ) : (
+                <div>
+                  <div className="text-muted-foreground mb-1">Payload:</div>
+                  <pre className="bg-muted p-3 rounded text-xs overflow-auto max-h-[400px]">{JSON.stringify(detail.details, null, 2)}</pre>
+                </div>
+              )}
             </div>
           )}
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function DiffView({ before, after }: { before: any; after: any }) {
+  const b = before ?? {};
+  const a = after ?? {};
+  const keys = Array.from(new Set([...Object.keys(b), ...Object.keys(a)])).sort();
+  return (
+    <div>
+      <div className="text-muted-foreground mb-2">Alterações:</div>
+      <div className="rounded border divide-y text-xs">
+        {keys.map((k) => {
+          const bv = JSON.stringify(b[k]);
+          const av = JSON.stringify(a[k]);
+          const changed = bv !== av;
+          return (
+            <div key={k} className={`grid grid-cols-[140px_1fr_1fr] gap-2 p-2 ${changed ? "bg-accent/10" : ""}`}>
+              <div className="font-mono font-semibold">{k}</div>
+              <div className={`font-mono break-all ${changed ? "text-destructive line-through" : "text-muted-foreground"}`}>
+                {bv ?? "—"}
+              </div>
+              <div className={`font-mono break-all ${changed ? "text-primary font-semibold" : "text-muted-foreground"}`}>
+                {av ?? "—"}
+              </div>
+            </div>
+          );
+        })}
+        {keys.length === 0 && <div className="p-3 text-center text-muted-foreground">Nenhum campo alterado</div>}
+      </div>
+      <div className="grid grid-cols-[140px_1fr_1fr] gap-2 mt-1 text-[10px] uppercase text-muted-foreground px-2">
+        <div>Campo</div><div>Antes</div><div>Depois</div>
+      </div>
     </div>
   );
 }
