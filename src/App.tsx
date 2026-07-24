@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Carteirinha from "./pages/Carteirinha";
 import Limite from "./pages/Limite";
-import Carencias from "./pages/Carencias";
+
 import Clinicas from "./pages/Clinicas";
 import Informes from "./pages/Informes";
 import Dependentes from "./pages/Dependentes";
@@ -100,7 +100,7 @@ const App = () => (
                 <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
                 <Route path="carteirinha" element={<Carteirinha />} />
                 <Route path="limite" element={<Limite />} />
-                <Route path="carencias" element={<Carencias />} />
+                
                 <Route path="clinicas" element={<Clinicas />} />
                 <Route path="informes" element={<Informes />} />
                 <Route path="dependentes" element={<Dependentes />} />
