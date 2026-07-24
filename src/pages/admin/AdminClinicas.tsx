@@ -364,8 +364,9 @@ export default function AdminClinicas() {
           {editing && (
             <ScrollArea className="flex-1 pr-4">
               <Tabs defaultValue="dados" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="dados">Dados</TabsTrigger>
+                  <TabsTrigger value="cat">Categorias</TabsTrigger>
                   <TabsTrigger value="esp">Especialidades</TabsTrigger>
                   <TabsTrigger value="hor">Horários</TabsTrigger>
                   <TabsTrigger value="end">Endereço</TabsTrigger>
