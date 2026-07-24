@@ -364,6 +364,7 @@ export default function Dashboard() {
         {/* Main Content */}
         <main className="flex-1 p-4 md:p-6 space-y-4">
           <ComunicadosBanner />
+          <Breadcrumbs />
           {location.pathname === '/dashboard' ? (
             <DashboardHome />
           ) : (

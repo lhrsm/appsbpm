@@ -233,7 +233,7 @@ export default function Perfil() {
               </div>
               <div className="space-y-2">
                 <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> CPF</Label>
-                <Input value={('cpf' in alvo && alvo.cpf) || ''} disabled />
+                <Input value={maskCPF(('cpf' in alvo && alvo.cpf) || '')} disabled />
               </div>
 
               {!isDependente && (
