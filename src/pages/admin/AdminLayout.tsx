@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
@@ -17,6 +17,7 @@ import {
 
 const nav = [
   { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
+  { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   
