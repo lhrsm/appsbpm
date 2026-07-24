@@ -152,6 +152,7 @@ const App = () => (
                 <Route path="faq" element={<AdminFAQ />} />
                 <Route path="avaliacoes" element={<AdminAvaliacoes />} />
                 <Route path="privacidade" element={<AdminPrivacidade />} />
+                <Route path="relatorios" element={<AdminRelatorios />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
