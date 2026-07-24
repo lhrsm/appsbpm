@@ -411,6 +411,21 @@ export default function AdminClinicas() {
                   </div>
                 </TabsContent>
 
+                <TabsContent value="cat" className="mt-4">
+                  <p className="text-sm text-muted-foreground mb-3">Selecione uma ou mais categorias para classificar este parceiro.</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {CATEGORIAS.map((cat) => {
+                      const checked = editing.categorias?.includes(cat) ?? false;
+                      return (
+                        <label key={cat} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox checked={checked} onCheckedChange={(v) => setCat(cat, !!v)} />
+                          {cat}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </TabsContent>
+
                 <TabsContent value="esp" className="mt-4">
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {ESPECIALIDADES.map((esp) => {
