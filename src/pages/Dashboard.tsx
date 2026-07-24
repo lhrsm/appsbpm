@@ -52,6 +52,7 @@ import GlobalSearch from '@/components/GlobalSearch';
 import WelcomeTour from '@/components/WelcomeTour';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import KeyboardShortcutsHelp from '@/components/KeyboardShortcutsHelp';
+import { usePageviewTracker } from '@/hooks/useAnalytics';
 
 // Menu completo para titular
 const menuItemsTitular = [
@@ -169,6 +170,7 @@ const socialLinks = [
 
 export default function Dashboard() {
   const { associado, logout, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
+  usePageviewTracker(associado?.id);
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

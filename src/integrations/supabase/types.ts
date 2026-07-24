@@ -65,6 +65,36 @@ export type Database = {
           },
         ]
       }
+      analytics_events: {
+        Row: {
+          associado_id: string | null
+          created_at: string
+          event: string
+          id: string
+          meta: Json | null
+          path: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          associado_id?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          meta?: Json | null
+          path?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          associado_id?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          meta?: Json | null
+          path?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       associados: {
         Row: {
           assinatura_url: string | null

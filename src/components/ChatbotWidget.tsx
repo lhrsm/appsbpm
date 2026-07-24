@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import ReactMarkdown from "react-markdown";
@@ -142,13 +142,25 @@ export default function ChatbotWidget() {
               <p className="font-semibold text-sm leading-tight">Assistente SBPM</p>
               <p className="text-xs opacity-80">Tire dúvidas sobre o portal</p>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Fechar assistente"
-              className="rounded-full p-1 hover:bg-primary-foreground/20"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            <div className="flex items-center gap-1">
+              <a
+                href="https://wa.me/5571985496972?text=Ol%C3%A1%2C%20preciso%20de%20atendimento%20humano"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Falar com atendente humano no WhatsApp"
+                title="Falar com atendente humano"
+                className="rounded-full p-1.5 hover:bg-primary-foreground/20"
+              >
+                <Phone className="h-4 w-4" />
+              </a>
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Fechar assistente"
+                className="rounded-full p-1 hover:bg-primary-foreground/20"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
           </div>
 
           <div ref={bodyRef} className="flex-1 overflow-y-auto p-3 space-y-3">
@@ -202,6 +214,12 @@ export default function ChatbotWidget() {
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </Button>
+          </div>
+          <div className="px-3 pb-2 flex items-center justify-center gap-3 text-[11px] text-muted-foreground">
+            <span>Precisa de humano?</span>
+            <a className="text-primary hover:underline" href="https://wa.me/5571985496972" target="_blank" rel="noreferrer">Previdência</a>
+            <span>·</span>
+            <a className="text-primary hover:underline" href="https://wa.me/5571987943414" target="_blank" rel="noreferrer">Saúde</a>
           </div>
         </div>
       )}
