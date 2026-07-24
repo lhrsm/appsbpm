@@ -47,6 +47,7 @@ interface Clinica {
   nome: string;
   especialidade: string | null;
   especialidades: string[] | null;
+  categorias: string[] | null;
   estado: string | null;
   cidade: string;
   endereco: string | null;
@@ -60,7 +61,7 @@ interface Clinica {
 }
 
 const emptyClinica = (): Partial<Clinica> => ({
-  nome: "", especialidade: "", especialidades: [], estado: "", cidade: "",
+  nome: "", especialidade: "", especialidades: [], categorias: [], estado: "", cidade: "",
   endereco: "", telefone: "", whatsapp: "", email: "",
   horario_funcionamento: "", horarios: {}, logo_url: "", ativo: true,
 });
