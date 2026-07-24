@@ -413,6 +413,27 @@ export default function Carteirinha() {
     printWindow.document.close();
   };
 
+  const handleShare = async () => {
+    const currentData = isDependente && dependenteLogado
+      ? { nome: dependenteLogado.nome, tipo: tipoLabel[dependenteLogado.tipo] }
+      : selectedDependente
+        ? { nome: selectedDependente.nome, tipo: tipoLabel[selectedDependente.tipo] }
+        : { nome: associado?.nome || '', tipo: 'Associado' };
+
+    const text = `Carteirinha SBPM\n${currentData.nome} — ${currentData.tipo}\nMatrícula: ${associado?.matricula}\nValidade: ${dataValidade}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Carteirinha SBPM', text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        toast({ title: 'Dados copiados', description: 'As informações foram copiadas para a área de transferência.' });
+      }
+    } catch (err) {
+      // usuário cancelou o share — ignora
+    }
+  };
+
   if (!associado) return null;
 
   // Se é dependente logado, mostra apenas a carteirinha dele
