@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Download, User, Users, Maximize2, X } from 'lucide-react';
+import { Download, User, Users, Maximize2, X, Share2 } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
@@ -412,6 +413,27 @@ export default function Carteirinha() {
     printWindow.document.close();
   };
 
+  const handleShare = async () => {
+    const currentData = isDependente && dependenteLogado
+      ? { nome: dependenteLogado.nome, tipo: tipoLabel[dependenteLogado.tipo] }
+      : selectedDependente
+        ? { nome: selectedDependente.nome, tipo: tipoLabel[selectedDependente.tipo] }
+        : { nome: associado?.nome || '', tipo: 'Associado' };
+
+    const text = `Carteirinha SBPM\n${currentData.nome} — ${currentData.tipo}\nMatrícula: ${associado?.matricula}\nValidade: ${dataValidade}`;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Carteirinha SBPM', text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        toast({ title: 'Dados copiados', description: 'As informações foram copiadas para a área de transferência.' });
+      }
+    } catch (err) {
+      // usuário cancelou o share — ignora
+    }
+  };
+
   if (!associado) return null;
 
   // Se é dependente logado, mostra apenas a carteirinha dele
@@ -453,10 +475,16 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
-            <Download className="h-4 w-4 mr-2" />
-            Baixar Carteirinha (PDF)
-          </Button>
+          <div className="flex gap-2 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="flex-1">
+              <Download className="h-4 w-4 mr-2" />
+              Baixar (PDF)
+            </Button>
+            <Button onClick={handleShare} variant="outline" className="flex-1">
+              <Share2 className="h-4 w-4 mr-2" />
+              Compartilhar
+            </Button>
+          </div>
         </div>
 
         <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
@@ -538,10 +566,16 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <Button onClick={handleDownloadPDF} className="w-full max-w-lg">
-            <Download className="h-4 w-4 mr-2" />
-            Baixar Carteirinha (PDF)
-          </Button>
+          <div className="flex gap-2 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="flex-1">
+              <Download className="h-4 w-4 mr-2" />
+              Baixar (PDF)
+            </Button>
+            <Button onClick={handleShare} variant="outline" className="flex-1">
+              <Share2 className="h-4 w-4 mr-2" />
+              Compartilhar
+            </Button>
+          </div>
         </div>
 
         {/* Seletor de Pessoa */}
