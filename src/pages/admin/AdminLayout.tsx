@@ -112,7 +112,10 @@ export default function AdminLayout() {
             <h1 className="font-bold text-lg text-primary">SBPM Admin</h1>
             <p className="text-xs text-muted-foreground">Painel de gestão</p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-1">
+            <AdminNotificationsBell />
+            <ThemeToggle />
+          </div>
         </div>
         <div className="px-3 pt-3">
           <button
