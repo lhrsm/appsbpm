@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Star, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 
-type Clinica = { id: string; nome: string; categoria: string | null };
+type Clinica = { id: string; nome: string; especialidade: string | null };
 type Avaliacao = { id: string; clinica_id: string; nota: number; comentario: string | null; created_at: string };
 
 function Stars({ value, onChange, size = 20 }: { value: number; onChange?: (n: number) => void; size?: number }) {
@@ -44,11 +44,11 @@ export default function AvaliarClinicas() {
 
   const load = async () => {
     const [{ data: cs }, { data: mine }, { data: all }] = await Promise.all([
-      supabase.from('clinicas_parceiros').select('id,nome,categoria').eq('ativo', true).order('nome'),
+      supabase.from('clinicas_parceiros').select('id,nome,especialidade').eq('ativo', true).order('nome'),
       associado?.id
         ? supabase.from('avaliacoes_parceiros').select('*').eq('associado_id', associado.id)
         : Promise.resolve({ data: [] as Avaliacao[] }),
-      supabase.from('avaliacoes_parceiros').select('clinica_id,nota').eq('aprovada', true),
+      supabase.from('avaliacoes_parceiros').select('clinica_id,nota').eq('aprovado', true),
     ]);
     setClinicas((cs as Clinica[]) ?? []);
     setMinhas((mine as Avaliacao[]) ?? []);
@@ -78,16 +78,16 @@ export default function AvaliarClinicas() {
   const enviar = async () => {
     if (!associado?.id || !openId) return;
     const existente = minhas.find((m) => m.clinica_id === openId);
-    const payload = {
+    const base = {
       associado_id: associado.id,
       clinica_id: openId,
       nota,
       comentario: coment || null,
-      aprovada: false,
+      aprovado: false,
     };
     const { error } = existente
-      ? await supabase.from('avaliacoes_parceiros').update(payload).eq('id', existente.id)
-      : await supabase.from('avaliacoes_parceiros').insert(payload);
+      ? await supabase.from('avaliacoes_parceiros').update(base).eq('id', existente.id)
+      : await supabase.from('avaliacoes_parceiros').insert({ ...base, autor_nome: associado.nome ?? 'Associado' });
     if (error) return toast.error('Erro ao enviar avaliação.');
     toast.success('Avaliação enviada! Será exibida após moderação.');
     setOpenId(null);
@@ -111,7 +111,7 @@ export default function AvaliarClinicas() {
             <Card key={c.id}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-base">{c.nome}</CardTitle>
-                {c.categoria && <p className="text-xs text-muted-foreground">{c.categoria}</p>}
+                {c.especialidade && <p className="text-xs text-muted-foreground">{c.especialidade}</p>}
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center gap-2">
