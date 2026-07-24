@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature } from "lucide-react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature, Menu } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
@@ -64,6 +65,7 @@ export default function AdminLayout() {
   const [ready, setReady] = useState(false);
   const [isPrevidencia, setIsPrevidencia] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const check = async () => {
@@ -108,56 +110,86 @@ export default function AdminLayout() {
 
   const visibleNav = isPrevidencia ? nav.filter((n) => PREVIDENCIA_ALLOWED.has(n.to)) : nav;
 
+  const SidebarInner = ({ onNavigate }: { onNavigate?: () => void }) => (
+    <>
+      <div className="p-4 border-b flex items-start justify-between gap-2">
+        <div>
+          <h1 className="font-bold text-lg text-primary">SBPM Admin</h1>
+          <p className="text-xs text-muted-foreground">Painel de gestão</p>
+        </div>
+        <div className="flex items-center gap-1">
+          <AdminNotificationsBell />
+          <ThemeToggle />
+        </div>
+      </div>
+      <div className="px-3 pt-3">
+        <button
+          onClick={() => { setSearchOpen(true); onNavigate?.(); }}
+          className="w-full flex items-center gap-2 h-9 px-3 rounded-md bg-muted hover:bg-muted/70 text-sm text-muted-foreground transition"
+          aria-label="Buscar (Ctrl+K)"
+        >
+          <Search className="h-4 w-4" />
+          <span className="flex-1 text-left">Buscar...</span>
+          <kbd className="text-[10px] font-mono border rounded px-1.5 py-0.5">Ctrl K</kbd>
+        </button>
+      </div>
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        {visibleNav.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            onClick={onNavigate}
+            className={({ isActive }) =>
+              `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+              }`
+            }
+          >
+            <item.icon className="w-4 h-4" />
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+      <div className="p-3 border-t">
+        <Button variant="outline" size="sm" className="w-full" onClick={logout}>
+          <LogOut className="w-4 h-4 mr-2" /> Sair
+        </Button>
+      </div>
+    </>
+  );
+
   return (
-    <div className="min-h-screen flex bg-muted/30">
-      <aside className="w-64 bg-card border-r flex flex-col">
-        <div className="p-4 border-b flex items-start justify-between gap-2">
-          <div>
-            <h1 className="font-bold text-lg text-primary">SBPM Admin</h1>
-            <p className="text-xs text-muted-foreground">Painel de gestão</p>
-          </div>
+    <div className="min-h-screen flex bg-muted/30 w-full">
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-64 bg-card border-r flex-col shrink-0">
+        <SidebarInner />
+      </aside>
+
+      {/* Mobile sidebar (Sheet) */}
+      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+        <SheetContent side="left" className="p-0 w-72 flex flex-col">
+          <SidebarInner onNavigate={() => setMobileOpen(false)} />
+        </SheetContent>
+      </Sheet>
+
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Mobile header */}
+        <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between gap-2 h-14 px-3 border-b bg-card">
+          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
+            <Menu className="h-5 w-5" />
+          </Button>
+          <span className="font-bold text-primary">SBPM Admin</span>
           <div className="flex items-center gap-1">
             <AdminNotificationsBell />
             <ThemeToggle />
           </div>
-        </div>
-        <div className="px-3 pt-3">
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="w-full flex items-center gap-2 h-9 px-3 rounded-md bg-muted hover:bg-muted/70 text-sm text-muted-foreground transition"
-            aria-label="Buscar (Ctrl+K)"
-          >
-            <Search className="h-4 w-4" />
-            <span className="flex-1 text-left">Buscar...</span>
-            <kbd className="text-[10px] font-mono border rounded px-1.5 py-0.5">Ctrl K</kbd>
-          </button>
-        </div>
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {visibleNav.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-                  isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
-                }`
-              }
-            >
-              <item.icon className="w-4 h-4" />
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="p-3 border-t">
-          <Button variant="outline" size="sm" className="w-full" onClick={logout}>
-            <LogOut className="w-4 h-4 mr-2" /> Sair
-          </Button>
-        </div>
-      </aside>
-      <main className="flex-1 p-6 overflow-auto">
-        <Outlet />
-      </main>
+        </header>
+
+        <main className="flex-1 p-4 md:p-6 overflow-auto">
+          <Outlet />
+        </main>
+      </div>
 
       <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
         <CommandInput placeholder="Buscar página do admin..." />
