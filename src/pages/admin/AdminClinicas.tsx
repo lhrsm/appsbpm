@@ -266,7 +266,7 @@ export default function AdminClinicas() {
           <h2 className="text-2xl font-bold">Clínicas e Parceiros</h2>
           <p className="text-sm text-muted-foreground">Gerencie a rede credenciada</p>
         </div>
-        <Button onClick={openNew}><Plus className="h-4 w-4 mr-2" /> Nova clínica</Button>
+        <Button onClick={openNew}><Plus className="h-4 w-4 mr-2" /> Novo parceiro</Button>
       </div>
 
       {/* Filtros hierárquicos */}
