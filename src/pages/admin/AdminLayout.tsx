@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
+import AdminNotificationsBell from "@/components/AdminNotificationsBell";
 import {
   CommandDialog,
   CommandEmpty,
