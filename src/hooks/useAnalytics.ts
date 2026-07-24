@@ -27,7 +27,7 @@ export async function trackEvent(event: string, meta?: Record<string, unknown>, 
       event,
       path: window.location.pathname,
       associado_id: associadoId ?? null,
-      meta: meta ?? null,
+      meta: (meta ?? null) as any,
       user_agent: navigator.userAgent.slice(0, 240),
     });
   } catch {
