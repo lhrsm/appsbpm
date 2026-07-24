@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { Save, Shield, Bell, Palette, Building, UserPlus, Trash2, PenTool, Upload, Loader2 } from "lucide-react";
+import DrawSignatureCanvas from "@/components/DrawSignatureCanvas";
 
 
 type Settings = {
