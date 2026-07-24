@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3 } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
@@ -18,6 +18,7 @@ import {
 const nav = [
   { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
   { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
+  { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   
@@ -41,6 +42,8 @@ const nav = [
   { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
   { to: "/admin/privacidade", icon: ShieldCheck, label: "Privacidade (LGPD)" },
   { to: "/admin/seguranca", icon: KeyRound, label: "Segurança (2FA)" },
+  { to: "/admin/assinatura-icp", icon: FileSignature, label: "Assinatura ICP-Brasil" },
+  { to: "/admin/componentes", icon: Palette, label: "Componentes (UI)" },
   { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
 
