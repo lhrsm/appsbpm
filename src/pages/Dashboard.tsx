@@ -49,6 +49,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import GlobalSearch from '@/components/GlobalSearch';
 import WelcomeTour from '@/components/WelcomeTour';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import KeyboardShortcutsHelp from '@/components/KeyboardShortcutsHelp';
 
 // Menu completo para titular
 const menuItemsTitular = [
