@@ -23,6 +23,13 @@ const ESPECIALIDADES = [
   "Fonoaudiologia", "Terapia Ocupacional", "Educação Física", "Farmácia", "Ótica",
 ];
 
+const CATEGORIAS = [
+  "Academia", "Restaurante", "Farmácia", "Ótica", "Clínica Médica",
+  "Laboratório", "Odontologia", "Hospital", "Educação", "Beleza e Estética",
+  "Pet Shop", "Automotivo", "Vestuário", "Turismo e Lazer", "Supermercado",
+  "Tecnologia", "Serviços", "Outro",
+];
+
 const DIAS = [
   { key: "seg", label: "Segunda" },
   { key: "ter", label: "Terça" },
@@ -40,6 +47,7 @@ interface Clinica {
   nome: string;
   especialidade: string | null;
   especialidades: string[] | null;
+  categorias: string[] | null;
   estado: string | null;
   cidade: string;
   endereco: string | null;
@@ -53,7 +61,7 @@ interface Clinica {
 }
 
 const emptyClinica = (): Partial<Clinica> => ({
-  nome: "", especialidade: "", especialidades: [], estado: "", cidade: "",
+  nome: "", especialidade: "", especialidades: [], categorias: [], estado: "", cidade: "",
   endereco: "", telefone: "", whatsapp: "", email: "",
   horario_funcionamento: "", horarios: {}, logo_url: "", ativo: true,
 });
@@ -165,7 +173,7 @@ export default function AdminClinicas() {
 
   const openNew = () => { setEditing(emptyClinica()); setFormCidades([]); setOpen(true); };
   const openEdit = async (r: Clinica) => {
-    setEditing({ ...r, especialidades: r.especialidades ?? [], horarios: r.horarios ?? {} });
+    setEditing({ ...r, especialidades: r.especialidades ?? [], categorias: r.categorias ?? [], horarios: r.horarios ?? {} });
     if (r.estado) setFormCidades(await loadMunicipios(r.estado));
     setOpen(true);
   };
@@ -233,6 +241,13 @@ export default function AdminClinicas() {
     setEditing({ ...editing, especialidades: Array.from(cur) });
   };
 
+  const setCat = (cat: string, checked: boolean) => {
+    if (!editing) return;
+    const cur = new Set(editing.categorias ?? []);
+    if (checked) cur.add(cat); else cur.delete(cat);
+    setEditing({ ...editing, categorias: Array.from(cur) });
+  };
+
   const setHor = (dia: string, campo: string, valor: any) => {
     if (!editing) return;
     const h = { ...(editing.horarios ?? {}) };
@@ -251,7 +266,7 @@ export default function AdminClinicas() {
           <h2 className="text-2xl font-bold">Clínicas e Parceiros</h2>
           <p className="text-sm text-muted-foreground">Gerencie a rede credenciada</p>
         </div>
-        <Button onClick={openNew}><Plus className="h-4 w-4 mr-2" /> Nova clínica</Button>
+        <Button onClick={openNew}><Plus className="h-4 w-4 mr-2" /> Novo parceiro</Button>
       </div>
 
       {/* Filtros hierárquicos */}
@@ -349,8 +364,9 @@ export default function AdminClinicas() {
           {editing && (
             <ScrollArea className="flex-1 pr-4">
               <Tabs defaultValue="dados" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="dados">Dados</TabsTrigger>
+                  <TabsTrigger value="cat">Categorias</TabsTrigger>
                   <TabsTrigger value="esp">Especialidades</TabsTrigger>
                   <TabsTrigger value="hor">Horários</TabsTrigger>
                   <TabsTrigger value="end">Endereço</TabsTrigger>
@@ -392,6 +408,21 @@ export default function AdminClinicas() {
                   <div className="flex items-center gap-3">
                     <Switch checked={!!editing.ativo} onCheckedChange={(v) => setEditing({ ...editing, ativo: v })} />
                     <Label>{editing.ativo ? "Ativo" : "Inativo"}</Label>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="cat" className="mt-4">
+                  <p className="text-sm text-muted-foreground mb-3">Selecione uma ou mais categorias para classificar este parceiro.</p>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    {CATEGORIAS.map((cat) => {
+                      const checked = editing.categorias?.includes(cat) ?? false;
+                      return (
+                        <label key={cat} className="flex items-center gap-2 text-sm cursor-pointer">
+                          <Checkbox checked={checked} onCheckedChange={(v) => setCat(cat, !!v)} />
+                          {cat}
+                        </label>
+                      );
+                    })}
                   </div>
                 </TabsContent>
 
