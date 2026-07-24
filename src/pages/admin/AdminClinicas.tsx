@@ -23,6 +23,13 @@ const ESPECIALIDADES = [
   "Fonoaudiologia", "Terapia Ocupacional", "Educação Física", "Farmácia", "Ótica",
 ];
 
+const CATEGORIAS = [
+  "Academia", "Restaurante", "Farmácia", "Ótica", "Clínica Médica",
+  "Laboratório", "Odontologia", "Hospital", "Educação", "Beleza e Estética",
+  "Pet Shop", "Automotivo", "Vestuário", "Turismo e Lazer", "Supermercado",
+  "Tecnologia", "Serviços", "Outro",
+];
+
 const DIAS = [
   { key: "seg", label: "Segunda" },
   { key: "ter", label: "Terça" },
