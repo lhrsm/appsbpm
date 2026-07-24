@@ -145,14 +145,51 @@ export default function AdminInformes() {
     </li>
   );
 
+  const anosDisponiveis = Array.from(new Set(informes.map((i) => i.ano))).sort((a, b) => b - a);
+  const [anoLote, setAnoLote] = useState<number | "">(anosDisponiveis[0] ?? "");
+
+  const baixarLote = async () => {
+    const ano = Number(anoLote);
+    if (!ano) return toast.error("Escolha o ano");
+    const alvo = informes.filter((i) => i.ano === ano && i.arquivo_url);
+    if (!alvo.length) return toast.error("Nenhum informe com arquivo neste ano");
+    toast.info(`Iniciando download de ${alvo.length} arquivos…`);
+    for (const inf of alvo) {
+      const nomeAssoc = assocMap[inf.associado_id]?.nome?.replace(/[^\w\-]+/g, "_") ?? inf.associado_id;
+      const link = document.createElement("a");
+      link.href = inf.arquivo_url!;
+      link.download = `informe_${ano}_${nomeAssoc}.pdf`;
+      link.target = "_blank";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    toast.success("Downloads iniciados");
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-2">
         <h1 className="text-2xl font-bold">Informes de Rendimentos</h1>
-        <Button onClick={() => openNew()}>
-          <Plus className="w-4 h-4 mr-2" />
-          Novo
-        </Button>
+        <div className="flex items-center gap-2">
+          <select
+            className="h-9 rounded-md border bg-background px-2 text-sm"
+            value={anoLote}
+            onChange={(e) => setAnoLote(e.target.value ? Number(e.target.value) : "")}
+          >
+            <option value="">Ano p/ lote</option>
+            {anosDisponiveis.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+          <Button variant="outline" onClick={baixarLote}>
+            <FileText className="w-4 h-4 mr-2" /> Baixar tudo do ano
+          </Button>
+          <Button onClick={() => openNew()}>
+            <Plus className="w-4 h-4 mr-2" />
+            Novo
+          </Button>
+        </div>
       </div>
 
       <div className="relative max-w-sm">
