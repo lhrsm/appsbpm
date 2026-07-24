@@ -42,7 +42,11 @@ const HistoricoAcessos = lazy(() => import("./pages/HistoricoAcessos"));
 const Beneficios = lazy(() => import("./pages/Beneficios"));
 const AvaliarClinicas = lazy(() => import("./pages/AvaliarClinicas"));
 const AdminRelatorios = lazy(() => import("./pages/admin/AdminRelatorios"));
+const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
+const AdminComponentes = lazy(() => import("./pages/admin/AdminComponentes"));
+const AdminAssinaturaICP = lazy(() => import("./pages/admin/AdminAssinaturaICP"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+const Quiosque = lazy(() => import("./pages/Quiosque"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -97,6 +101,7 @@ const App = () => (
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<Login />} />
+              <Route path="/quiosque" element={<Quiosque />} />
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="/acessibilidade" element={<Acessibilidade />} />
               <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
@@ -153,6 +158,9 @@ const App = () => (
                 <Route path="avaliacoes" element={<AdminAvaliacoes />} />
                 <Route path="privacidade" element={<AdminPrivacidade />} />
                 <Route path="relatorios" element={<AdminRelatorios />} />
+                <Route path="analytics" element={<AdminAnalytics />} />
+                <Route path="componentes" element={<AdminComponentes />} />
+                <Route path="assinatura-icp" element={<AdminAssinaturaICP />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
