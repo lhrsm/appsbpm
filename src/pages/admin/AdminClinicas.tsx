@@ -173,7 +173,7 @@ export default function AdminClinicas() {
 
   const openNew = () => { setEditing(emptyClinica()); setFormCidades([]); setOpen(true); };
   const openEdit = async (r: Clinica) => {
-    setEditing({ ...r, especialidades: r.especialidades ?? [], horarios: r.horarios ?? {} });
+    setEditing({ ...r, especialidades: r.especialidades ?? [], categorias: r.categorias ?? [], horarios: r.horarios ?? {} });
     if (r.estado) setFormCidades(await loadMunicipios(r.estado));
     setOpen(true);
   };
