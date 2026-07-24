@@ -295,6 +295,7 @@ export type Database = {
       clinicas_parceiros: {
         Row: {
           ativo: boolean
+          categorias: string[]
           cidade: string
           created_at: string
           email: string | null
@@ -313,6 +314,7 @@ export type Database = {
         }
         Insert: {
           ativo?: boolean
+          categorias?: string[]
           cidade: string
           created_at?: string
           email?: string | null
@@ -331,6 +333,7 @@ export type Database = {
         }
         Update: {
           ativo?: boolean
+          categorias?: string[]
           cidade?: string
           created_at?: string
           email?: string | null

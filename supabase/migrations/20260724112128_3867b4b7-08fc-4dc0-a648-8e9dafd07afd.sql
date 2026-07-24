@@ -1,0 +1,1 @@
+ALTER TABLE public.clinicas_parceiros ADD COLUMN IF NOT EXISTS categorias text[] NOT NULL DEFAULT '{}';
