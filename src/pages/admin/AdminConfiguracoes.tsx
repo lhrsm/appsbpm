@@ -353,6 +353,14 @@ export default function AdminConfiguracoes() {
                         </Button>
                       </div>
                     </div>
+
+                    <div className="border-t pt-4">
+                      <DrawSignatureCanvas
+                        saving={uploadingSlug === sig.slug}
+                        label={`Ou desenhe a assinatura de ${sig.cargo || sig.slug} abaixo`}
+                        onSave={(blob) => salvarAssinaturaDesenhada(sig.slug, blob)}
+                      />
+                    </div>
                   </div>
                 );
               })}
