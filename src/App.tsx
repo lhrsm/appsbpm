@@ -159,10 +159,18 @@ const App = () => (
                 <Route path="beneficios" element={<Beneficios />} />
                 <Route path="avaliar" element={<AvaliarClinicas />} />
               </Route>
+              {/* Alias do portal externo */}
+              <Route path="/portal/*" element={<PortalAlias />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminHome />} />
+                {/* Hubs dos módulos institucionais */}
+                <Route path="previdencia" element={<AdminPrevidencia />} />
+                <Route path="saude" element={<AdminSaude />} />
+                <Route path="patrimonio" element={<AdminPatrimonio />} />
+                <Route path="contabilidade" element={<AdminContabilidade />} />
                 <Route path="associados" element={<AdminAssociados />} />
+
                 <Route path="dependentes" element={<AdminDependentes />} />
                 <Route path="limites" element={<AdminLimites />} />
                 <Route path="carencias" element={<AdminCarencias />} />
