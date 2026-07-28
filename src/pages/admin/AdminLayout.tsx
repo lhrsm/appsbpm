@@ -55,6 +55,8 @@ const nav = [
 
 const PREVIDENCIA_ALLOWED = new Set([
   "/admin",
+  "/admin/previdencia",
+
   "/admin/associados",
   "/admin/dependentes",
   "/admin/peculio",
