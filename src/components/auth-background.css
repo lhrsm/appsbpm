@@ -34,10 +34,31 @@
   pointer-events: none;
   background: linear-gradient(
     90deg,
-    rgba(9, 25, 45, 0.1) 0%,
-    rgba(255, 255, 255, 0.3) 42%,
-    rgba(255, 255, 255, 0.72) 100%
+    rgba(9, 25, 45, 0.32) 0%,
+    rgba(9, 25, 45, 0.24) 50%,
+    rgba(9, 25, 45, 0.28) 100%
   );
+}
+
+/* Links institucionais legíveis sobre a imagem */
+.auth-links .auth-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  background: rgba(9, 25, 45, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.auth-links .auth-link:hover {
+  background: rgba(9, 25, 45, 0.68);
+  border-color: rgba(255, 255, 255, 0.9);
 }
 
 .auth-content {
@@ -163,9 +184,8 @@
   .auth-overlay {
     background: linear-gradient(
       180deg,
-      rgba(10, 25, 42, 0.05) 0%,
-      rgba(255, 255, 255, 0.32) 38%,
-      rgba(255, 255, 255, 0.72) 100%
+      rgba(10, 25, 42, 0.22) 0%,
+      rgba(10, 25, 42, 0.28) 100%
     );
   }
 }
