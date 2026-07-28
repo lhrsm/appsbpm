@@ -271,7 +271,44 @@ export default function Login() {
                   'Acessar'
                 )}
               </Button>
+
+              <button
+                type="button"
+                onClick={() => setForgotOpen(true)}
+                className="w-full text-sm font-medium text-primary hover:underline"
+              >
+                Esqueci minha senha
+              </button>
             </form>
+
+            <Dialog open={forgotOpen} onOpenChange={setForgotOpen}>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Esqueci minha senha</DialogTitle>
+                  <DialogDescription>
+                    O acesso ao Portal do Associado é feito com a sua matrícula ou CPF, sem senha.
+                    Se não conseguir entrar, fale com a Previdência da SBPM para conferir o seu cadastro.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-2">
+                  <Button asChild className="w-full">
+                    <a
+                      href="https://wa.me/5571985496972?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20para%20acessar%20o%20Portal%20do%20Associado."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Falar com a Previdência no WhatsApp
+                    </a>
+                  </Button>
+                  <Button asChild variant="outline" className="w-full">
+                    <a href="mailto:previdencia@sbpmbahia.com.br?subject=Ajuda%20para%20acessar%20o%20Portal%20do%20Associado">
+                      Enviar e-mail para a Previdência
+                    </a>
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
           </CardContent>
         </Card>
 
