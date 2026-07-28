@@ -1,0 +1,178 @@
+/* Backgrounds responsivos das telas de acesso (decorativos) */
+
+.auth-page {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: #dfe6eb;
+}
+
+.auth-background {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background-color: #dfe6eb;
+  background-image: url('/images/auth/background-desktop.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  transform: translateZ(0);
+  pointer-events: none;
+}
+
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(9, 25, 45, 0.1) 0%,
+    rgba(255, 255, 255, 0.3) 42%,
+    rgba(255, 255, 255, 0.72) 100%
+  );
+}
+
+.auth-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card translúcido */
+.auth-page .auth-card {
+  width: min(100%, 440px);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 24px 70px rgba(9, 25, 45, 0.16), 0 8px 24px rgba(9, 25, 45, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .auth-page .auth-card {
+    background: rgba(255, 255, 255, 0.97);
+  }
+}
+
+.dark .auth-page .auth-card {
+  background: hsl(var(--card) / 0.9);
+  border-color: hsl(var(--border) / 0.6);
+}
+
+/* Mobile / PWA */
+@media (max-width: 767px) {
+  .auth-page {
+    align-items: flex-start;
+    min-height: 100dvh;
+    padding: calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
+      calc(24px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+  }
+
+  .auth-background {
+    background-image: url('/images/auth/background-mobile.webp');
+    background-position: center top;
+  }
+
+  .auth-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 18, 32, 0.08) 0%,
+      rgba(255, 255, 255, 0.42) 30%,
+      rgba(255, 255, 255, 0.8) 68%,
+      rgba(255, 255, 255, 0.92) 100%
+    );
+  }
+
+  .auth-content {
+    min-height: calc(100dvh - 44px);
+    align-items: center;
+  }
+
+  .auth-page .auth-card {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.93);
+    backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .auth-background {
+    background-image: url('/images/auth/background-tablet.webp');
+  }
+
+  .auth-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 25, 42, 0.05) 0%,
+      rgba(255, 255, 255, 0.32) 38%,
+      rgba(255, 255, 255, 0.72) 100%
+    );
+  }
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+  .auth-background {
+    background-image: url('/images/auth/background-desktop.webp');
+  }
+
+  .auth-content:not(.auth-content--center) {
+    justify-content: flex-end;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-right: clamp(40px, 8vw, 140px);
+  }
+}
+
+/* Ultrawide */
+@media (min-width: 2560px), (min-aspect-ratio: 21/9) {
+  .auth-background {
+    background-image: url('/images/auth/background-ultrawide.webp');
+  }
+
+  .auth-content:not(.auth-content--center) {
+    max-width: 1800px;
+    padding-right: clamp(80px, 10vw, 220px);
+  }
+}
+
+/* Mobile em paisagem */
+@media (max-width: 932px) and (orientation: landscape) {
+  .auth-background {
+    background-image: url('/images/auth/background-tablet.webp');
+    background-position: center center;
+  }
+
+  .auth-page {
+    align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .auth-content {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-background,
+  .auth-page .auth-card {
+    animation: none !important;
+    transition: none !important;
+  }
+}
