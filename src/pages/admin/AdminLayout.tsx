@@ -18,10 +18,15 @@ import {
 
 const nav = [
   { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
+  { to: "/admin/previdencia", icon: ShieldCheck, label: "Previdência" },
+  { to: "/admin/saude", icon: HeartHandshake, label: "Assistência à Saúde" },
+  { to: "/admin/patrimonio", icon: Building2, label: "Patrimonial" },
+  { to: "/admin/contabilidade", icon: FileSignature, label: "Contábil" },
   { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
   { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
+
   
   { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
   { to: "/admin/eventos", icon: Calendar, label: "Eventos" },
@@ -50,6 +55,8 @@ const nav = [
 
 const PREVIDENCIA_ALLOWED = new Set([
   "/admin",
+  "/admin/previdencia",
+
   "/admin/associados",
   "/admin/dependentes",
   "/admin/peculio",

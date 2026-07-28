@@ -78,6 +78,12 @@ const AdminFAQ = lazy(() => import("./pages/admin/AdminFAQ"));
 const AdminAvaliacoes = lazy(() => import("./pages/admin/AdminAvaliacoes"));
 const AdminPrivacidade = lazy(() => import("./pages/admin/AdminPrivacidade"));
 
+// Lazy: hubs dos módulos institucionais (área administrativa interna)
+const AdminPrevidencia = lazy(() => import("./pages/admin/AdminPrevidencia"));
+const AdminSaude = lazy(() => import("./pages/admin/AdminSaude"));
+const AdminPatrimonio = lazy(() => import("./pages/admin/AdminPatrimonio"));
+const AdminContabilidade = lazy(() => import("./pages/admin/AdminContabilidade"));
+
 const queryClient = new QueryClient();
 
 const RouteFallback = () => (
@@ -93,6 +99,17 @@ const ChatbotGate = () => {
   if (HIDDEN_CHAT_ROUTES.includes(pathname)) return null;
   return <ChatbotWidget />;
 };
+
+/**
+ * Alias do portal externo: /portal/* -> /dashboard/*
+ * Mantém as rotas antigas funcionando enquanto a nomenclatura nova é adotada.
+ */
+const PortalAlias = () => {
+  const { pathname, search, hash } = useLocation();
+  const target = pathname.replace(/^\/portal/, "/dashboard") || "/dashboard";
+  return <Navigate to={`${target}${search}${hash}`} replace />;
+};
+
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -142,10 +159,18 @@ const App = () => (
                 <Route path="beneficios" element={<Beneficios />} />
                 <Route path="avaliar" element={<AvaliarClinicas />} />
               </Route>
+              {/* Alias do portal externo */}
+              <Route path="/portal/*" element={<PortalAlias />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminHome />} />
+                {/* Hubs dos módulos institucionais */}
+                <Route path="previdencia" element={<AdminPrevidencia />} />
+                <Route path="saude" element={<AdminSaude />} />
+                <Route path="patrimonio" element={<AdminPatrimonio />} />
+                <Route path="contabilidade" element={<AdminContabilidade />} />
                 <Route path="associados" element={<AdminAssociados />} />
+
                 <Route path="dependentes" element={<AdminDependentes />} />
                 <Route path="limites" element={<AdminLimites />} />
                 <Route path="carencias" element={<AdminCarencias />} />
