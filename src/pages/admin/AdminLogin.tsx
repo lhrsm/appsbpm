@@ -92,7 +92,27 @@ export default function AdminLogin() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast.error("Informe seu e-mail para receber o link de redefinição.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/redefinir-senha`,
+      });
+      if (error) throw error;
+      toast.success("Enviamos um link de redefinição para o seu e-mail.");
+    } catch (err: any) {
+      toast.error(err.message ?? "Não foi possível enviar o e-mail de redefinição.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const submitMfa = async (e: React.FormEvent) => {
+
     e.preventDefault();
     if (!mfaFactorId || !mfaChallengeId) return;
     setLoading(true);
@@ -173,6 +193,16 @@ export default function AdminLogin() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
               </Button>
+              {mode === "login" && (
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={loading}
+                  className="w-full text-sm font-medium text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setMode(mode === "login" ? "signup" : "login")}
@@ -180,6 +210,7 @@ export default function AdminLogin() {
               >
                 {mode === "login" ? "Criar nova conta administrativa" : "Já tenho conta"}
               </button>
+
             </form>
           )}
         </CardContent>

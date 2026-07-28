@@ -47,6 +47,7 @@ const AdminComponentes = lazy(() => import("./pages/admin/AdminComponentes"));
 const AdminAssinaturaICP = lazy(() => import("./pages/admin/AdminAssinaturaICP"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
+const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -85,7 +86,7 @@ const RouteFallback = () => (
   </div>
 );
 
-const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque"];
+const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque", "/redefinir-senha"];
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
@@ -111,6 +112,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
+              <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="/acessibilidade" element={<Acessibilidade />} />
               <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
