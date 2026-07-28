@@ -47,6 +47,7 @@ const AdminComponentes = lazy(() => import("./pages/admin/AdminComponentes"));
 const AdminAssinaturaICP = lazy(() => import("./pages/admin/AdminAssinaturaICP"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
+const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
