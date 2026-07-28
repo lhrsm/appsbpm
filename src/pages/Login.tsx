@@ -294,6 +294,7 @@ export default function Login() {
           </a>
         </nav>
       </main>
-    </div>
+    </AuthBackgroundLayout>
+
   );
 }
