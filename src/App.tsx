@@ -85,6 +85,14 @@ const RouteFallback = () => (
   </div>
 );
 
+const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque"];
+
+const ChatbotGate = () => {
+  const { pathname } = useLocation();
+  if (HIDDEN_CHAT_ROUTES.includes(pathname)) return null;
+  return <ChatbotWidget />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -94,7 +102,8 @@ const App = () => (
         <BrowserRouter>
           <CookieConsent />
           <AccessibilityWidget />
-          <ChatbotWidget />
+          <ChatbotGate />
+
           <InstallPWAPrompt />
           <OfflineBanner />
           <BackToTop />
