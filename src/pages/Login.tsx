@@ -31,6 +31,18 @@ export default function Login() {
   // Remove formatting from CPF for comparison
   const cleanCpf = (cpf: string) => cpf.replace(/\D/g, '');
 
+  // Aplica máscara de CPF (000.000.000-00) quando o valor passa de 8 dígitos
+  // (matrícula tem no máximo 8 dígitos, então continua sem formatação)
+  const applyMask = (value: string) => {
+    const d = value.replace(/\D/g, '').slice(0, 11);
+    if (d.length <= 8) return d;
+    return d
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
+  };
+
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -209,7 +221,9 @@ export default function Login() {
                   autoComplete="username"
                   placeholder="Digite sua matrícula ou CPF"
                   value={credential}
-                  onChange={(e) => setCredential(e.target.value)}
+                  onChange={(e) => setCredential(applyMask(e.target.value))}
+                  maxLength={14}
+
                   className="h-12 text-lg"
                   disabled={loading}
                   aria-required="true"
