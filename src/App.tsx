@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AssociadoProvider } from "@/contexts/AssociadoContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -85,6 +85,14 @@ const RouteFallback = () => (
   </div>
 );
 
+const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque"];
+
+const ChatbotGate = () => {
+  const { pathname } = useLocation();
+  if (HIDDEN_CHAT_ROUTES.includes(pathname)) return null;
+  return <ChatbotWidget />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -94,7 +102,8 @@ const App = () => (
         <BrowserRouter>
           <CookieConsent />
           <AccessibilityWidget />
-          <ChatbotWidget />
+          <ChatbotGate />
+
           <InstallPWAPrompt />
           <OfflineBanner />
           <BackToTop />
