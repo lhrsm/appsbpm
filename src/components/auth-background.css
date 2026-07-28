@@ -182,6 +182,11 @@
     margin: 0 auto;
     padding-right: clamp(40px, 8vw, 140px);
   }
+
+  /* Desloca o card um pouco à direita do centro */
+  .auth-content--center {
+    transform: translateX(clamp(60px, 10vw, 180px));
+  }
 }
 
 /* Ultrawide */
@@ -193,6 +198,10 @@
   .auth-content:not(.auth-content--center) {
     max-width: 1800px;
     padding-right: clamp(80px, 10vw, 220px);
+  }
+
+  .auth-content--center {
+    transform: translateX(clamp(120px, 12vw, 320px));
   }
 }
 
