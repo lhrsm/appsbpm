@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import sbpmLogo from "@/assets/sbpm-logo.jpeg";
+import sbpmLogo from "@/assets/sbpm-logo.png";
 import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
 
 
@@ -113,7 +113,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <AuthBackgroundLayout>
+    <AuthBackgroundLayout align="center">
       <Card className="auth-card w-full max-w-md">
 
         <CardHeader className="text-center">
