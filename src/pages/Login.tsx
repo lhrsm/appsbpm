@@ -19,6 +19,7 @@ export default function Login() {
   const [credential, setCredential] = useState('');
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const { 
