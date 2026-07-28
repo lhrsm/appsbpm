@@ -85,7 +85,7 @@ const RouteFallback = () => (
   </div>
 );
 
-const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque"];
+const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque", "/redefinir-senha"];
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
