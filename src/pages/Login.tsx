@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import sbpmLogo from '@/assets/sbpm-logo.jpeg';
+import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 
 
@@ -187,7 +187,7 @@ export default function Login() {
   };
 
   return (
-    <AuthBackgroundLayout>
+    <AuthBackgroundLayout align="center">
       <a
         href="#main-login"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
@@ -203,7 +203,7 @@ export default function Login() {
               <img
                 src={sbpmLogo}
                 alt="SBPM - Sociedade Beneficente da Polícia Militar"
-                className="h-32 w-auto object-contain mix-blend-multiply"
+                className="h-28 w-auto object-contain"
               />
             </div>
             <CardTitle className="text-2xl font-bold text-primary">

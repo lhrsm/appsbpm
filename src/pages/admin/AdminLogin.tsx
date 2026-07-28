@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import sbpmLogo from "@/assets/sbpm-logo.jpeg";
+import sbpmLogo from "@/assets/sbpm-logo.png";
 import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
 
 
@@ -113,14 +113,14 @@ export default function AdminLogin() {
   };
 
   return (
-    <AuthBackgroundLayout>
+    <AuthBackgroundLayout align="center">
       <Card className="auth-card w-full max-w-md">
 
         <CardHeader className="text-center">
           <img
             src={sbpmLogo}
             alt="SBPM - Sociedade Beneficente da Polícia Militar"
-            className="mx-auto h-24 w-auto object-contain mix-blend-multiply mb-2"
+            className="mx-auto h-24 w-auto object-contain mb-2"
           />
           <CardTitle>Painel Administrativo SBPM</CardTitle>
           <CardDescription>
