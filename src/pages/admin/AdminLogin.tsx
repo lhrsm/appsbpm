@@ -92,7 +92,27 @@ export default function AdminLogin() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast.error("Informe seu e-mail para receber o link de redefinição.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/redefinir-senha`,
+      });
+      if (error) throw error;
+      toast.success("Enviamos um link de redefinição para o seu e-mail.");
+    } catch (err: any) {
+      toast.error(err.message ?? "Não foi possível enviar o e-mail de redefinição.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const submitMfa = async (e: React.FormEvent) => {
+
     e.preventDefault();
     if (!mfaFactorId || !mfaChallengeId) return;
     setLoading(true);
