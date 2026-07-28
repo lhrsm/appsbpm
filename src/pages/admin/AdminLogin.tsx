@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Shield } from "lucide-react";
 import sbpmLogo from "@/assets/sbpm-logo.jpeg";
 
 export default function AdminLogin() {
@@ -120,9 +119,6 @@ export default function AdminLogin() {
             alt="SBPM - Sociedade Beneficente da Polícia Militar"
             className="mx-auto h-24 w-auto object-contain mix-blend-multiply mb-2"
           />
-          <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-            <Shield className="w-6 h-6 text-primary" />
-          </div>
           <CardTitle>Painel Administrativo SBPM</CardTitle>
           <CardDescription>
             {mode === "login" ? "Acesse com seu e-mail e senha" : "Criar nova conta administrativa"}
