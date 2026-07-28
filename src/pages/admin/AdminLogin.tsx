@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { Shield } from "lucide-react";
+import sbpmLogo from "@/assets/sbpm-logo.jpeg";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -114,6 +115,11 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <img
+            src={sbpmLogo}
+            alt="SBPM - Sociedade Beneficente da Polícia Militar"
+            className="mx-auto h-24 w-auto object-contain mix-blend-multiply mb-2"
+          />
           <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
             <Shield className="w-6 h-6 text-primary" />
           </div>
