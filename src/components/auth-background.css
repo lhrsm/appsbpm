@@ -99,7 +99,7 @@
   .auth-content {
     min-height: 0;
     /* empurra o card para baixo, revelando ~30% do background no topo */
-    margin-top: 28dvh;
+    margin-top: 16dvh;
     align-items: flex-end;
   }
 
