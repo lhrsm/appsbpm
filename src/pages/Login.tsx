@@ -10,6 +10,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
+import loginBg from '@/assets/login-bg.png.asset.json';
+
 
 export default function Login() {
   const [credential, setCredential] = useState('');
