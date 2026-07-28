@@ -277,23 +277,22 @@ export default function Login() {
 
         <nav
           aria-label="Links institucionais"
-          className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground"
+          className="auth-links mt-6 flex flex-wrap items-center justify-center gap-2 text-xs"
         >
-          <Link to="/privacidade" className="underline underline-offset-2 hover:text-foreground">
+          <Link to="/privacidade" className="auth-link">
             Política de Privacidade
           </Link>
-          <span aria-hidden="true">·</span>
-          <Link to="/acessibilidade" className="underline underline-offset-2 hover:text-foreground">
+          <Link to="/acessibilidade" className="auth-link">
             Acessibilidade
           </Link>
-          <span aria-hidden="true">·</span>
           <a
             href="mailto:contato@sbpmbahia.com.br?subject=LGPD%20-%20Solicita%C3%A7%C3%A3o%20de%20Titular"
-            className="underline underline-offset-2 hover:text-foreground"
+            className="auth-link"
           >
             Meus dados (LGPD)
           </a>
         </nav>
+
       </main>
     </AuthBackgroundLayout>
 
