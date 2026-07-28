@@ -184,14 +184,19 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
+    <div
+      className="relative min-h-dvh flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat p-4"
+      style={{ backgroundImage: `url(${loginBg.url})` }}
+    >
+      <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" aria-hidden="true" />
       <a
         href="#main-login"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
       >
         Pular para o formulário de acesso
       </a>
-      <main id="main-login" className="w-full max-w-md">
+      <main id="main-login" className="relative z-10 w-full max-w-md">
+
         <Card className="w-full shadow-xl border-0 animate-fade-in">
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
