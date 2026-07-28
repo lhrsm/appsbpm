@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import sbpmLogo from "@/assets/sbpm-logo.jpeg";
-import sbpmLogo from "@/assets/sbpm-logo.jpeg";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
