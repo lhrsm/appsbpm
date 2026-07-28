@@ -10,7 +10,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
-import loginBg from '@/assets/login-bg.png.asset.json';
+import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
+
 
 
 export default function Login() {
@@ -186,20 +187,17 @@ export default function Login() {
   };
 
   return (
-    <div
-      className="relative min-h-dvh flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat p-4"
-      style={{ backgroundImage: `url(${loginBg.url})` }}
-    >
-      <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" aria-hidden="true" />
+    <AuthBackgroundLayout>
       <a
         href="#main-login"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
       >
         Pular para o formulário de acesso
       </a>
-      <main id="main-login" className="relative z-10 w-full max-w-md">
+      <main id="main-login" className="w-full max-w-md">
 
-        <Card className="w-full shadow-xl border-0 animate-fade-in">
+        <Card className="auth-card w-full border-0 animate-fade-in">
+
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
               <img
@@ -297,6 +295,7 @@ export default function Login() {
           </a>
         </nav>
       </main>
-    </div>
+    </AuthBackgroundLayout>
+
   );
 }

@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import sbpmLogo from "@/assets/sbpm-logo.jpeg";
+import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
+
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -111,8 +113,9 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
-      <Card className="w-full max-w-md">
+    <AuthBackgroundLayout>
+      <Card className="auth-card w-full max-w-md">
+
         <CardHeader className="text-center">
           <img
             src={sbpmLogo}
@@ -181,6 +184,7 @@ export default function AdminLogin() {
           )}
         </CardContent>
       </Card>
-    </div>
+    </AuthBackgroundLayout>
+
   );
 }

@@ -180,3 +180,17 @@ html.a11y-reduce-motion *::after {
 .skip-link:focus {
   left: 0;
 }
+
+@layer base {
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
