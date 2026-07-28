@@ -173,6 +173,16 @@ export default function AdminLogin() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Aguarde..." : mode === "login" ? "Entrar" : "Criar conta"}
               </Button>
+              {mode === "login" && (
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={loading}
+                  className="w-full text-sm font-medium text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => setMode(mode === "login" ? "signup" : "login")}
@@ -180,6 +190,7 @@ export default function AdminLogin() {
               >
                 {mode === "login" ? "Criar nova conta administrativa" : "Já tenho conta"}
               </button>
+
             </form>
           )}
         </CardContent>
