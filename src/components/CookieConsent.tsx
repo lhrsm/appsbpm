@@ -52,26 +52,26 @@ export default function CookieConsent() {
       aria-live="polite"
       aria-labelledby="cookie-consent-title"
       aria-describedby="cookie-consent-desc"
-      className="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6"
+      className="fixed inset-x-0 bottom-0 z-50 p-3 sm:p-4 lg:left-0 lg:right-auto lg:max-w-md"
     >
-      <div className="mx-auto max-w-3xl rounded-lg border bg-card p-4 shadow-2xl sm:p-5">
+      <div className="mx-auto w-full max-w-lg rounded-lg border bg-card/95 p-3 shadow-2xl backdrop-blur sm:p-4 lg:mx-0">
         <div className="flex items-start gap-3">
           <div
             aria-hidden="true"
-            className="mt-0.5 flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
+            className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
           >
-            <Cookie className="h-5 w-5" />
+            <Cookie className="h-4 w-4" />
           </div>
           <div className="flex-1">
             <h2
               id="cookie-consent-title"
-              className="text-sm font-semibold text-foreground sm:text-base"
+              className="text-sm font-semibold text-foreground"
             >
               Sua privacidade importa
             </h2>
             <p
               id="cookie-consent-desc"
-              className="mt-1 text-xs text-muted-foreground sm:text-sm"
+              className="mt-1 text-xs text-muted-foreground"
             >
               Usamos cookies e armazenamento local estritamente necessários para
               manter sua sessão e preferências no Portal do Associado, em
