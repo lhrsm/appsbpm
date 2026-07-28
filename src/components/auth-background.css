@@ -73,7 +73,7 @@
 /* Mobile / PWA */
 @media (max-width: 767px) {
   .auth-page {
-    align-items: flex-start;
+    align-items: flex-end;
     min-height: 100dvh;
     padding: calc(20px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
       calc(24px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
@@ -84,30 +84,36 @@
     background-position: center top;
   }
 
+  /* Deixa o topo da imagem bem visível e escurece apenas atrás do formulário */
   .auth-overlay {
     background: linear-gradient(
       180deg,
-      rgba(8, 18, 32, 0.08) 0%,
-      rgba(255, 255, 255, 0.42) 30%,
-      rgba(255, 255, 255, 0.8) 68%,
-      rgba(255, 255, 255, 0.92) 100%
+      rgba(8, 18, 32, 0) 0%,
+      rgba(8, 18, 32, 0) 26%,
+      rgba(255, 255, 255, 0.12) 42%,
+      rgba(255, 255, 255, 0.45) 62%,
+      rgba(255, 255, 255, 0.72) 100%
     );
   }
 
   .auth-content {
-    min-height: calc(100dvh - 44px);
-    align-items: center;
+    min-height: 0;
+    /* empurra o card para baixo, revelando ~30% do background no topo */
+    margin-top: 16dvh;
+    align-items: flex-end;
   }
 
   .auth-page .auth-card {
     width: 100%;
     max-width: 420px;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.93);
-    backdrop-filter: blur(9px);
-    -webkit-backdrop-filter: blur(9px);
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
   }
 }
+
 
 /* Tablet */
 @media (min-width: 768px) and (max-width: 1199px) {
