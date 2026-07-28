@@ -120,7 +120,7 @@ export default function AdminLogin() {
           <img
             src={sbpmLogo}
             alt="SBPM - Sociedade Beneficente da Polícia Militar"
-            className="mx-auto h-24 w-auto object-contain mix-blend-multiply mb-2"
+            className="mx-auto h-24 w-auto object-contain mb-2"
           />
           <CardTitle>Painel Administrativo SBPM</CardTitle>
           <CardDescription>
