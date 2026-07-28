@@ -221,7 +221,9 @@ export default function Login() {
                   autoComplete="username"
                   placeholder="Digite sua matrícula ou CPF"
                   value={credential}
-                  onChange={(e) => setCredential(e.target.value)}
+                  onChange={(e) => setCredential(applyMask(e.target.value))}
+                  maxLength={14}
+
                   className="h-12 text-lg"
                   disabled={loading}
                   aria-required="true"
