@@ -48,15 +48,9 @@ export default function Perfil() {
     (async () => {
       if (!alvo) return;
       setLoadingAcessos(true);
-      const query = supabase
-        .from('acessos_log')
-        .select('id, created_at, metodo_login, user_agent, sucesso')
-        .order('created_at', { ascending: false })
-        .limit(10);
-      const { data } = isDependente && dependenteLogado
-        ? await query.eq('dependente_id', dependenteLogado.id)
-        : await query.eq('associado_id', associado?.id ?? '').is('dependente_id', null);
-      setAcessos(data || []);
+      const { itens } = await portalCall<{ itens: AcessoRegistro[] }>('acessos').catch(() => ({ itens: [] }));
+      setAcessos((itens || []).slice(0, 10));
+
       setLoadingAcessos(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
