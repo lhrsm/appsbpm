@@ -81,6 +81,11 @@ const BodySchema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('perfil'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('mensalidades'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('documentos'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('documento_url'),
+    token: z.string().min(1).max(2000),
+    documento_id: z.string().uuid(),
+  }),
   z.object({ action: z.literal('acessos'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('solicitacoes_listar'), token: z.string().min(1).max(2000) }),
   z.object({
@@ -259,6 +264,25 @@ Deno.serve(async (req) => {
       if (sessao.did) q = q.or(`visibilidade.eq.todos,dependente_id.eq.${sessao.did}`);
       const { data } = await q.order('publicado_em', { ascending: false });
       return json({ itens: data || [] });
+    }
+
+    if (body.action === 'documento_url') {
+      const { data: doc } = await admin
+        .from('documentos_associado')
+        .select('id, associado_id, dependente_id, visibilidade, arquivo_path, ativo')
+        .eq('id', body.documento_id)
+        .maybeSingle();
+      if (!doc || !doc.ativo || doc.associado_id !== sessao.aid) {
+        return json({ error: 'Documento não disponível' }, 403);
+      }
+      if (sessao.did && doc.visibilidade !== 'todos' && doc.dependente_id !== sessao.did) {
+        return json({ error: 'Documento não disponível' }, 403);
+      }
+      const { data: signed, error } = await admin.storage
+        .from('documentos')
+        .createSignedUrl(doc.arquivo_path, 60);
+      if (error || !signed) return json({ error: 'Não foi possível gerar o link' }, 400);
+      return json({ url: signed.signedUrl });
     }
 
     if (body.action === 'acessos') {
