@@ -162,12 +162,13 @@ export default function MensalidadesTab() {
   }), [items]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2"><Wallet className="w-6 h-6" /> Financeiro</h1>
-          <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e taxas</p>
+          <h2 className="text-lg font-semibold flex items-center gap-2"><Wallet className="w-5 h-5" /> Mensalidades dos associados</h2>
+          <p className="text-muted-foreground text-sm">Mensalidades, coparticipações e taxas cobradas do quadro associativo</p>
         </div>
+
         <div className="flex gap-2 flex-wrap">
           <Button variant="outline" onClick={exportarCSV}><Download className="w-4 h-4 mr-2" /> CSV</Button>
           <Button variant="outline" onClick={() => setLoteOpen(true)}><Layers className="w-4 h-4 mr-2" /> Gerar lote mensal</Button>
