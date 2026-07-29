@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bell, BellOff, Loader2 } from "lucide-react";
+import { portalCall } from "@/lib/portal";
 import { toast } from "sonner";
 import { requestFcmToken } from "@/lib/firebase";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   associadoId?: string | null;
@@ -42,17 +42,10 @@ export function PushNotificationToggle({ associadoId, dependenteId }: Props) {
         toast.error(msgs[reason ?? ""] ?? `Falha ao ativar: ${reason ?? "erro desconhecido"}`);
         return;
       }
-      const { error } = await supabase.from("push_tokens").upsert(
-        {
-          token,
-          associado_id: associadoId ?? null,
-          dependente_id: dependenteId ?? null,
-          user_agent: navigator.userAgent,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "token" }
-      );
-      if (error) throw error;
+      await portalCall("push_registrar", {
+        fcm_token: token,
+        user_agent: navigator.userAgent,
+      });
       setEnabled(true);
       toast.success("Notificações ativadas neste dispositivo!");
     } catch (e: any) {
