@@ -475,6 +475,50 @@ export type Database = {
           },
         ]
       }
+      data_conflict_decisoes: {
+        Row: {
+          acao: string
+          ator_email: string | null
+          ator_user_id: string | null
+          conflict_id: string
+          created_at: string
+          detalhes: Json
+          id: string
+          observacao: string | null
+          valor_escolhido: string | null
+        }
+        Insert: {
+          acao: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          conflict_id: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          observacao?: string | null
+          valor_escolhido?: string | null
+        }
+        Update: {
+          acao?: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          conflict_id?: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          observacao?: string | null
+          valor_escolhido?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_conflict_decisoes_conflict_id_fkey"
+            columns: ["conflict_id"]
+            isOneToOne: false
+            referencedRelation: "data_conflicts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_conflicts: {
         Row: {
           batch_id: string | null
@@ -482,13 +526,23 @@ export type Database = {
           chave: string | null
           connector_id: string | null
           created_at: string
+          detalhes: Json
           entidade: string
           id: string
+          ignorar_ate: string | null
+          observacao: string | null
+          origem_sistema: string | null
+          registro_id_a: string | null
+          registro_id_b: string | null
           resolvido_em: string | null
           resolvido_por: string | null
           row_id: string | null
+          severidade: string
           status: string
+          tipo: string
+          updated_at: string
           valor_atual: string | null
+          valor_escolhido: string | null
           valor_novo: string | null
         }
         Insert: {
@@ -497,13 +551,23 @@ export type Database = {
           chave?: string | null
           connector_id?: string | null
           created_at?: string
+          detalhes?: Json
           entidade: string
           id?: string
+          ignorar_ate?: string | null
+          observacao?: string | null
+          origem_sistema?: string | null
+          registro_id_a?: string | null
+          registro_id_b?: string | null
           resolvido_em?: string | null
           resolvido_por?: string | null
           row_id?: string | null
+          severidade?: string
           status?: string
+          tipo?: string
+          updated_at?: string
           valor_atual?: string | null
+          valor_escolhido?: string | null
           valor_novo?: string | null
         }
         Update: {
@@ -512,13 +576,23 @@ export type Database = {
           chave?: string | null
           connector_id?: string | null
           created_at?: string
+          detalhes?: Json
           entidade?: string
           id?: string
+          ignorar_ate?: string | null
+          observacao?: string | null
+          origem_sistema?: string | null
+          registro_id_a?: string | null
+          registro_id_b?: string | null
           resolvido_em?: string | null
           resolvido_por?: string | null
           row_id?: string | null
+          severidade?: string
           status?: string
+          tipo?: string
+          updated_at?: string
           valor_atual?: string | null
+          valor_escolhido?: string | null
           valor_novo?: string | null
         }
         Relationships: [
@@ -1622,6 +1696,92 @@ export type Database = {
           },
         ]
       }
+      registro_identidades: {
+        Row: {
+          alterado_manualmente: boolean
+          alterado_manualmente_em: string | null
+          codigo_associado: string | null
+          codigo_externo: string | null
+          connector_id: string | null
+          cpf: string | null
+          created_at: string
+          divergencia_pendente: boolean
+          entidade: string
+          id: string
+          identificador_institucional: string | null
+          matricula: string | null
+          observacao: string | null
+          origem: string
+          registro_id: string | null
+          situacao_sync: string
+          titular_identificador: string | null
+          titular_registro_id: string | null
+          ultima_sincronizacao: string | null
+          updated_at: string
+          validado: boolean
+          validado_em: string | null
+          validado_por: string | null
+        }
+        Insert: {
+          alterado_manualmente?: boolean
+          alterado_manualmente_em?: string | null
+          codigo_associado?: string | null
+          codigo_externo?: string | null
+          connector_id?: string | null
+          cpf?: string | null
+          created_at?: string
+          divergencia_pendente?: boolean
+          entidade: string
+          id?: string
+          identificador_institucional?: string | null
+          matricula?: string | null
+          observacao?: string | null
+          origem?: string
+          registro_id?: string | null
+          situacao_sync?: string
+          titular_identificador?: string | null
+          titular_registro_id?: string | null
+          ultima_sincronizacao?: string | null
+          updated_at?: string
+          validado?: boolean
+          validado_em?: string | null
+          validado_por?: string | null
+        }
+        Update: {
+          alterado_manualmente?: boolean
+          alterado_manualmente_em?: string | null
+          codigo_associado?: string | null
+          codigo_externo?: string | null
+          connector_id?: string | null
+          cpf?: string | null
+          created_at?: string
+          divergencia_pendente?: boolean
+          entidade?: string
+          id?: string
+          identificador_institucional?: string | null
+          matricula?: string | null
+          observacao?: string | null
+          origem?: string
+          registro_id?: string | null
+          situacao_sync?: string
+          titular_identificador?: string | null
+          titular_registro_id?: string | null
+          ultima_sincronizacao?: string | null
+          updated_at?: string
+          validado?: boolean
+          validado_em?: string | null
+          validado_por?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registro_identidades_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       resposta_templates: {
         Row: {
           ativo: boolean
@@ -2146,6 +2306,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      detectar_inconsistencias: {
+        Args: never
+        Returns: {
+          criadas: number
+          tipo: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

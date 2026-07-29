@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plug } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import ConectoresTab from "./integracoes/ConectoresTab";
 import ImportacaoTab from "./integracoes/ImportacaoTab";
 import HistoricoTab from "./integracoes/HistoricoTab";
 import ServicosExternosTab from "./integracoes/ServicosExternosTab";
+import InconsistenciasTab from "./integracoes/InconsistenciasTab";
 
 export default function AdminIntegracoes() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const inicial = pathname.endsWith("/inconsistencias") ? "inconsistencias" : "conectores";
 
   return (
     <div className="space-y-6">
@@ -17,14 +22,22 @@ export default function AdminIntegracoes() {
         </h1>
         <p className="text-muted-foreground text-sm">
           Ponto único de entrada de dados institucionais: conectores abstratos por sistema de origem, importação
-          manual validada em área de staging e histórico auditável de cada lote.
+          manual validada em área de staging, conciliação de inconsistências e histórico auditável de cada lote.
         </p>
       </div>
 
-      <Tabs defaultValue="conectores">
+      <Tabs
+        defaultValue={inicial}
+        onValueChange={(v) =>
+          navigate(v === "inconsistencias" ? "/admin/integracoes/inconsistencias" : "/admin/integracoes", {
+            replace: true,
+          })
+        }
+      >
         <TabsList className="flex flex-wrap h-auto">
           <TabsTrigger value="conectores">Conectores</TabsTrigger>
           <TabsTrigger value="importacao">Importação manual</TabsTrigger>
+          <TabsTrigger value="inconsistencias">Inconsistências</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
           <TabsTrigger value="servicos">Serviços externos</TabsTrigger>
         </TabsList>
@@ -34,6 +47,9 @@ export default function AdminIntegracoes() {
         </TabsContent>
         <TabsContent value="importacao" className="mt-4">
           <ImportacaoTab onConcluir={() => setRefreshKey((k) => k + 1)} />
+        </TabsContent>
+        <TabsContent value="inconsistencias" className="mt-4">
+          <InconsistenciasTab />
         </TabsContent>
         <TabsContent value="historico" className="mt-4">
           <HistoricoTab refreshKey={refreshKey} />
@@ -45,3 +61,4 @@ export default function AdminIntegracoes() {
     </div>
   );
 }
+
