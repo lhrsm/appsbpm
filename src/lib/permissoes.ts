@@ -84,6 +84,7 @@ export const ROTA_MODULO: Record<string, string> = {
   "/admin/assinatura-icp": "configuracoes",
   "/admin/componentes": "configuracoes",
   "/admin/aniversariantes": "associados",
+  "/admin/sobre": "*",
 };
 
 export const rotaParaModulo = (pathname: string): string => {

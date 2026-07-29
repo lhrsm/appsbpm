@@ -80,6 +80,7 @@ const AdminEventos = lazy(() => import("./pages/admin/AdminEventos"));
 const AdminFAQ = lazy(() => import("./pages/admin/AdminFAQ"));
 const AdminAvaliacoes = lazy(() => import("./pages/admin/AdminAvaliacoes"));
 const AdminPrivacidade = lazy(() => import("./pages/admin/AdminPrivacidade"));
+const AdminSobre = lazy(() => import("./pages/admin/AdminSobre"));
 
 // Lazy: hubs dos módulos institucionais (área administrativa interna)
 const AdminPrevidencia = lazy(() => import("./pages/admin/AdminPrevidencia"));
@@ -206,6 +207,7 @@ const App = () => (
                 <Route path="analytics" element={<AdminAnalytics />} />
                 <Route path="componentes" element={<AdminComponentes />} />
                 <Route path="assinatura-icp" element={<AdminAssinaturaICP />} />
+                <Route path="sobre" element={<AdminSobre />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
