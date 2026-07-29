@@ -186,38 +186,62 @@ export type Database = {
         Row: {
           action: string
           created_at: string
+          criticidade: string
           details: Json | null
           entity: string
           entity_id: string | null
           id: string
           ip_address: string | null
+          justificativa: string | null
+          modulo: string | null
+          operacao_id: string | null
+          origem: string
+          perfil: string | null
           user_agent: string | null
           user_email: string | null
           user_id: string | null
+          valor_anterior: Json | null
+          valor_posterior: Json | null
         }
         Insert: {
           action: string
           created_at?: string
+          criticidade?: string
           details?: Json | null
           entity: string
           entity_id?: string | null
           id?: string
           ip_address?: string | null
+          justificativa?: string | null
+          modulo?: string | null
+          operacao_id?: string | null
+          origem?: string
+          perfil?: string | null
           user_agent?: string | null
           user_email?: string | null
           user_id?: string | null
+          valor_anterior?: Json | null
+          valor_posterior?: Json | null
         }
         Update: {
           action?: string
           created_at?: string
+          criticidade?: string
           details?: Json | null
           entity?: string
           entity_id?: string | null
           id?: string
           ip_address?: string | null
+          justificativa?: string | null
+          modulo?: string | null
+          operacao_id?: string | null
+          origem?: string
+          perfil?: string | null
           user_agent?: string | null
           user_email?: string | null
           user_id?: string | null
+          valor_anterior?: Json | null
+          valor_posterior?: Json | null
         }
         Relationships: []
       }

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import sbpmLogo from "@/assets/sbpm-logo.png";
 import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
+import { logAudit } from "@/lib/audit";
 
 
 export default function AdminLogin() {
@@ -41,9 +42,15 @@ export default function AdminLogin() {
       supabase.from("previdencia_admins").select("user_id").eq("user_id", userId).maybeSingle(),
     ]);
     if (!role && !prev) {
+      await logAudit("acesso_negado", "admin_login", userId, {
+        modulo: "acesso",
+        criticidade: "alta",
+        detalhes: { motivo: "usuario_sem_perfil_administrativo" },
+      });
       await supabase.auth.signOut();
       throw new Error("Este usuário não tem permissão de administrador.");
     }
+    await logAudit("login", "admin_login", userId, { modulo: "acesso", criticidade: "baixa" });
     toast.success("Bem-vindo!");
     navigate("/admin");
   };
@@ -86,6 +93,13 @@ export default function AdminLogin() {
         await finalizeAdminCheck(data.user.id);
       }
     } catch (err: any) {
+      if (mode === "login") {
+        await logAudit("acesso_negado", "admin_login", null, {
+          modulo: "acesso",
+          criticidade: "alta",
+          detalhes: { email, motivo: err?.message ?? "falha_autenticacao" },
+        });
+      }
       toast.error(err.message ?? "Erro ao autenticar");
     } finally {
       setLoading(false);
