@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
 
 export interface Notificacao {
@@ -26,20 +26,12 @@ export function useNotificacoes() {
   const load = useCallback(async () => {
     if (!targetAssociadoId && !targetDependenteId) return;
     setLoading(true);
-    let query = supabase
-      .from('notificacoes')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100);
-
-    if (isDependente && targetDependenteId) {
-      query = query.eq('dependente_id', targetDependenteId);
-    } else if (targetAssociadoId) {
-      query = query.eq('associado_id', targetAssociadoId).is('dependente_id', null);
+    try {
+      const res = await portalCall<{ itens: Notificacao[] }>('notificacoes_listar');
+      setItems(res?.itens ?? []);
+    } catch {
+      setItems([]);
     }
-
-    const { data } = await query;
-    setItems((data as Notificacao[]) ?? []);
     setLoading(false);
   }, [targetAssociadoId, targetDependenteId, isDependente]);
 
@@ -50,20 +42,22 @@ export function useNotificacoes() {
   }, [load]);
 
   const marcarLida = async (id: string) => {
-    await supabase
-      .from('notificacoes')
-      .update({ lida: true, read_at: new Date().toISOString() })
-      .eq('id', id);
+    try {
+      await portalCall('notificacoes_marcar', { ids: [id] });
+    } catch {
+      /* silencioso */
+    }
     setItems((prev) => prev.map((n) => (n.id === id ? { ...n, lida: true } : n)));
   };
 
   const marcarTodasLidas = async () => {
     const ids = items.filter((n) => !n.lida).map((n) => n.id);
     if (!ids.length) return;
-    await supabase
-      .from('notificacoes')
-      .update({ lida: true, read_at: new Date().toISOString() })
-      .in('id', ids);
+    try {
+      await portalCall('notificacoes_marcar', { ids });
+    } catch {
+      /* silencioso */
+    }
     setItems((prev) => prev.map((n) => ({ ...n, lida: true })));
   };
 
