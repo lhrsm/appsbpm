@@ -41,16 +41,9 @@ export default function MeusDocumentos() {
     if (!associado) return;
     (async () => {
       setLoading(true);
-      let q = supabase
-        .from('documentos_associado')
-        .select('*')
-        .eq('associado_id', associado.id)
-        .eq('ativo', true);
-      if (isDependente && dependenteLogado) {
-        q = q.or(`visibilidade.eq.todos,dependente_id.eq.${dependenteLogado.id}`);
-      }
-      const { data } = await q.order('publicado_em', { ascending: false });
-      setItems(data || []);
+      const { itens } = await portalCall<{ itens: any[] }>('documentos').catch(() => ({ itens: [] }));
+      setItems(itens || []);
+
       setLoading(false);
     })();
   }, [associado?.id]);
