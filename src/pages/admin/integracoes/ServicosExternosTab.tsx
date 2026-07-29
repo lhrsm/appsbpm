@@ -93,7 +93,7 @@ const integracoes: IntegracaoDef[] = [
 
 const mask = (v: string) => (v ? v.replace(/.(?=.{4})/g, "•") : "");
 
-export default function AdminIntegracoes() {
+export default function ServicosExternosTab() {
   const [state, setState] = useState<State>({});
   const [inputs, setInputs] = useState<Record<string, Record<string, string>>>({});
 
