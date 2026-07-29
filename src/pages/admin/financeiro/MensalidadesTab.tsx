@@ -26,7 +26,7 @@ const emptyForm = {
   pago_em: '', forma_pagamento: '', boleto_url: '', linha_digitavel: '',
 };
 
-export default function AdminFinanceiro() {
+export default function MensalidadesTab() {
   const [items, setItems] = useState<any[]>([]);
   const [associados, setAssociados] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
