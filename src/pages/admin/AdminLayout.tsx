@@ -235,7 +235,7 @@ export default function AdminLayout() {
         <CommandList>
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
           <CommandGroup heading="Navegação">
-            {visibleNav.map((item) => (
+            {allNav.map((item) => (
               <CommandItem
                 key={item.to}
                 value={item.label}
