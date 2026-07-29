@@ -65,6 +65,33 @@ export type Database = {
           },
         ]
       }
+      acessos_permissoes_log: {
+        Row: {
+          acao: string
+          alvo_user_id: string | null
+          ator_user_id: string | null
+          created_at: string
+          detalhes: Json | null
+          id: string
+        }
+        Insert: {
+          acao: string
+          alvo_user_id?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json | null
+          id?: string
+        }
+        Update: {
+          acao?: string
+          alvo_user_id?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json | null
+          id?: string
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           associado_id: string | null
@@ -1044,6 +1071,77 @@ export type Database = {
         }
         Relationships: []
       }
+      perfil_permissoes: {
+        Row: {
+          acao: Database["public"]["Enums"]["perm_acao"]
+          created_at: string
+          id: string
+          modulo: string
+          pagina: string
+          perfil_codigo: string
+        }
+        Insert: {
+          acao: Database["public"]["Enums"]["perm_acao"]
+          created_at?: string
+          id?: string
+          modulo: string
+          pagina?: string
+          perfil_codigo: string
+        }
+        Update: {
+          acao?: Database["public"]["Enums"]["perm_acao"]
+          created_at?: string
+          id?: string
+          modulo?: string
+          pagina?: string
+          perfil_codigo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "perfil_permissoes_perfil_codigo_fkey"
+            columns: ["perfil_codigo"]
+            isOneToOne: false
+            referencedRelation: "perfis"
+            referencedColumns: ["codigo"]
+          },
+        ]
+      }
+      perfis: {
+        Row: {
+          codigo: string
+          created_at: string
+          descricao: string | null
+          gerencia_usuarios: boolean
+          interno: boolean
+          nivel: number
+          nome: string
+          somente_leitura: boolean
+          updated_at: string
+        }
+        Insert: {
+          codigo: string
+          created_at?: string
+          descricao?: string | null
+          gerencia_usuarios?: boolean
+          interno?: boolean
+          nivel?: number
+          nome: string
+          somente_leitura?: boolean
+          updated_at?: string
+        }
+        Update: {
+          codigo?: string
+          created_at?: string
+          descricao?: string | null
+          gerencia_usuarios?: boolean
+          interno?: boolean
+          nivel?: number
+          nome?: string
+          somente_leitura?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       previdencia_admins: {
         Row: {
           created_at: string
@@ -1430,6 +1528,97 @@ export type Database = {
         }
         Relationships: []
       }
+      usuario_permissoes: {
+        Row: {
+          acao: Database["public"]["Enums"]["perm_acao"]
+          concedido: boolean
+          concedido_por: string | null
+          created_at: string
+          id: string
+          modulo: string
+          pagina: string
+          user_id: string
+        }
+        Insert: {
+          acao: Database["public"]["Enums"]["perm_acao"]
+          concedido?: boolean
+          concedido_por?: string | null
+          created_at?: string
+          id?: string
+          modulo: string
+          pagina?: string
+          user_id: string
+        }
+        Update: {
+          acao?: Database["public"]["Enums"]["perm_acao"]
+          concedido?: boolean
+          concedido_por?: string | null
+          created_at?: string
+          id?: string
+          modulo?: string
+          pagina?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usuario_permissoes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "usuarios_internos"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      usuarios_internos: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          created_by: string | null
+          email: string
+          nome: string
+          observacoes: string | null
+          perfil_codigo: string
+          setor: string | null
+          ultimo_acesso: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          created_by?: string | null
+          email: string
+          nome: string
+          observacoes?: string | null
+          perfil_codigo: string
+          setor?: string | null
+          ultimo_acesso?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          nome?: string
+          observacoes?: string | null
+          perfil_codigo?: string
+          setor?: string | null
+          ultimo_acesso?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "usuarios_internos_perfil_codigo_fkey"
+            columns: ["perfil_codigo"]
+            isOneToOne: false
+            referencedRelation: "perfis"
+            referencedColumns: ["codigo"]
+          },
+        ]
+      }
       webhook_endpoints: {
         Row: {
           ativo: boolean
@@ -1481,6 +1670,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_interno: { Args: { _user_id: string }; Returns: boolean }
       is_previdencia_admin: { Args: { _user_id: string }; Returns: boolean }
       meu_historico_acessos: {
         Args: {
@@ -1498,9 +1688,28 @@ export type Database = {
           user_agent: string
         }[]
       }
+      perfil_ativo: { Args: { _user_id: string }; Returns: string }
+      pode_gerenciar_usuarios: { Args: { _user_id: string }; Returns: boolean }
+      tem_permissao: {
+        Args: {
+          _acao: Database["public"]["Enums"]["perm_acao"]
+          _modulo: string
+          _pagina?: string
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin"
+      perm_acao:
+        | "visualizar"
+        | "criar"
+        | "editar"
+        | "excluir"
+        | "aprovar"
+        | "exportar"
+        | "configurar"
       status_carencia: "liberado" | "em_carencia"
       tipo_dependente: "conjuge" | "filho" | "pai_mae" | "outro"
     }
@@ -1631,6 +1840,15 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      perm_acao: [
+        "visualizar",
+        "criar",
+        "editar",
+        "excluir",
+        "aprovar",
+        "exportar",
+        "configurar",
+      ],
       status_carencia: ["liberado", "em_carencia"],
       tipo_dependente: ["conjuge", "filho", "pai_mae", "outro"],
     },
