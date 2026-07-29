@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
