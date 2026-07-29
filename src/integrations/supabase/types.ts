@@ -475,6 +475,567 @@ export type Database = {
           },
         ]
       }
+      ctb_conciliacoes: {
+        Row: {
+          conciliado_em: string | null
+          conciliado_por: string | null
+          conta_id: string | null
+          created_at: string
+          diferenca: number
+          id: string
+          observacoes: string | null
+          periodo_id: string | null
+          referencia: string | null
+          saldo_contabil: number
+          saldo_externo: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          conciliado_em?: string | null
+          conciliado_por?: string | null
+          conta_id?: string | null
+          created_at?: string
+          diferenca?: number
+          id?: string
+          observacoes?: string | null
+          periodo_id?: string | null
+          referencia?: string | null
+          saldo_contabil?: number
+          saldo_externo?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          conciliado_em?: string | null
+          conciliado_por?: string | null
+          conta_id?: string | null
+          created_at?: string
+          diferenca?: number
+          id?: string
+          observacoes?: string | null
+          periodo_id?: string | null
+          referencia?: string | null
+          saldo_contabil?: number
+          saldo_externo?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_conciliacoes_conta_id_fkey"
+            columns: ["conta_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_conciliacoes_periodo_id_fkey"
+            columns: ["periodo_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_periodos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_config: {
+        Row: {
+          chave: string
+          updated_at: string
+          valor: string | null
+        }
+        Insert: {
+          chave: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Update: {
+          chave?: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Relationships: []
+      }
+      ctb_exercicios: {
+        Row: {
+          ano: number
+          created_at: string
+          data_fim: string
+          data_inicio: string
+          id: string
+          observacoes: string | null
+          situacao: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at: string
+        }
+        Insert: {
+          ano: number
+          created_at?: string
+          data_fim: string
+          data_inicio: string
+          id?: string
+          observacoes?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at?: string
+        }
+        Update: {
+          ano?: number
+          created_at?: string
+          data_fim?: string
+          data_inicio?: string
+          id?: string
+          observacoes?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ctb_fechamentos: {
+        Row: {
+          created_at: string
+          fechado_em: string | null
+          id: string
+          observacoes: string | null
+          periodo_id: string
+          reaberto_em: string | null
+          reaberto_justificativa: string | null
+          responsavel_email: string | null
+          responsavel_user_id: string | null
+          situacao: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          fechado_em?: string | null
+          id?: string
+          observacoes?: string | null
+          periodo_id: string
+          reaberto_em?: string | null
+          reaberto_justificativa?: string | null
+          responsavel_email?: string | null
+          responsavel_user_id?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          tipo?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          fechado_em?: string | null
+          id?: string
+          observacoes?: string | null
+          periodo_id?: string
+          reaberto_em?: string | null
+          reaberto_justificativa?: string | null
+          responsavel_email?: string | null
+          responsavel_user_id?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_fechamentos_periodo_id_fkey"
+            columns: ["periodo_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_periodos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_integracao_mapeamentos: {
+        Row: {
+          ativo: boolean
+          condicoes: Json
+          conta_credito_id: string | null
+          conta_debito_id: string | null
+          created_at: string
+          descricao: string
+          evento: Database["public"]["Enums"]["ctb_origem"]
+          historico_padrao: string | null
+          id: string
+          updated_at: string
+          validado: boolean
+          validado_em: string | null
+          validado_por: string | null
+        }
+        Insert: {
+          ativo?: boolean
+          condicoes?: Json
+          conta_credito_id?: string | null
+          conta_debito_id?: string | null
+          created_at?: string
+          descricao: string
+          evento: Database["public"]["Enums"]["ctb_origem"]
+          historico_padrao?: string | null
+          id?: string
+          updated_at?: string
+          validado?: boolean
+          validado_em?: string | null
+          validado_por?: string | null
+        }
+        Update: {
+          ativo?: boolean
+          condicoes?: Json
+          conta_credito_id?: string | null
+          conta_debito_id?: string | null
+          created_at?: string
+          descricao?: string
+          evento?: Database["public"]["Enums"]["ctb_origem"]
+          historico_padrao?: string | null
+          id?: string
+          updated_at?: string
+          validado?: boolean
+          validado_em?: string | null
+          validado_por?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_integracao_mapeamentos_conta_credito_id_fkey"
+            columns: ["conta_credito_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_integracao_mapeamentos_conta_debito_id_fkey"
+            columns: ["conta_debito_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_lancamento_historico: {
+        Row: {
+          acao: string
+          ator_email: string | null
+          ator_user_id: string | null
+          created_at: string
+          detalhes: Json
+          id: string
+          justificativa: string | null
+          lancamento_id: string
+          status_anterior: Database["public"]["Enums"]["ctb_lanc_status"] | null
+          status_novo: Database["public"]["Enums"]["ctb_lanc_status"] | null
+          valor_anterior: number | null
+          valor_novo: number | null
+        }
+        Insert: {
+          acao: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          justificativa?: string | null
+          lancamento_id: string
+          status_anterior?:
+            | Database["public"]["Enums"]["ctb_lanc_status"]
+            | null
+          status_novo?: Database["public"]["Enums"]["ctb_lanc_status"] | null
+          valor_anterior?: number | null
+          valor_novo?: number | null
+        }
+        Update: {
+          acao?: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          justificativa?: string | null
+          lancamento_id?: string
+          status_anterior?:
+            | Database["public"]["Enums"]["ctb_lanc_status"]
+            | null
+          status_novo?: Database["public"]["Enums"]["ctb_lanc_status"] | null
+          valor_anterior?: number | null
+          valor_novo?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_lancamento_historico_lancamento_id_fkey"
+            columns: ["lancamento_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_lancamentos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_lancamentos: {
+        Row: {
+          centro_custo_id: string | null
+          competencia: string
+          conta_credito_id: string | null
+          conta_debito_id: string | null
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          data: string
+          documento: string | null
+          estorno_de: string | null
+          historico: string
+          id: string
+          justificativa: string | null
+          lote_id: string | null
+          origem: Database["public"]["Enums"]["ctb_origem"]
+          origem_referencia: string | null
+          periodo_id: string | null
+          simulacao: boolean
+          status: Database["public"]["Enums"]["ctb_lanc_status"]
+          updated_at: string
+          valor: number
+        }
+        Insert: {
+          centro_custo_id?: string | null
+          competencia: string
+          conta_credito_id?: string | null
+          conta_debito_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data?: string
+          documento?: string | null
+          estorno_de?: string | null
+          historico: string
+          id?: string
+          justificativa?: string | null
+          lote_id?: string | null
+          origem?: Database["public"]["Enums"]["ctb_origem"]
+          origem_referencia?: string | null
+          periodo_id?: string | null
+          simulacao?: boolean
+          status?: Database["public"]["Enums"]["ctb_lanc_status"]
+          updated_at?: string
+          valor?: number
+        }
+        Update: {
+          centro_custo_id?: string | null
+          competencia?: string
+          conta_credito_id?: string | null
+          conta_debito_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data?: string
+          documento?: string | null
+          estorno_de?: string | null
+          historico?: string
+          id?: string
+          justificativa?: string | null
+          lote_id?: string | null
+          origem?: Database["public"]["Enums"]["ctb_origem"]
+          origem_referencia?: string | null
+          periodo_id?: string | null
+          simulacao?: boolean
+          status?: Database["public"]["Enums"]["ctb_lanc_status"]
+          updated_at?: string
+          valor?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_lancamentos_centro_custo_id_fkey"
+            columns: ["centro_custo_id"]
+            isOneToOne: false
+            referencedRelation: "fin_centros_custo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_lancamentos_conta_credito_id_fkey"
+            columns: ["conta_credito_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_lancamentos_conta_debito_id_fkey"
+            columns: ["conta_debito_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_lancamentos_estorno_de_fkey"
+            columns: ["estorno_de"]
+            isOneToOne: false
+            referencedRelation: "ctb_lancamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_lancamentos_lote_id_fkey"
+            columns: ["lote_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_lotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ctb_lancamentos_periodo_id_fkey"
+            columns: ["periodo_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_periodos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_lotes: {
+        Row: {
+          competencia: string
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          descricao: string
+          id: string
+          numero: string | null
+          observacoes: string | null
+          origem: Database["public"]["Enums"]["ctb_origem"]
+          periodo_id: string | null
+          simulacao: boolean
+          status: Database["public"]["Enums"]["ctb_lote_status"]
+          updated_at: string
+        }
+        Insert: {
+          competencia: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          descricao: string
+          id?: string
+          numero?: string | null
+          observacoes?: string | null
+          origem?: Database["public"]["Enums"]["ctb_origem"]
+          periodo_id?: string | null
+          simulacao?: boolean
+          status?: Database["public"]["Enums"]["ctb_lote_status"]
+          updated_at?: string
+        }
+        Update: {
+          competencia?: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          descricao?: string
+          id?: string
+          numero?: string | null
+          observacoes?: string | null
+          origem?: Database["public"]["Enums"]["ctb_origem"]
+          periodo_id?: string | null
+          simulacao?: boolean
+          status?: Database["public"]["Enums"]["ctb_lote_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_lotes_periodo_id_fkey"
+            columns: ["periodo_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_periodos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_periodos: {
+        Row: {
+          competencia: string
+          created_at: string
+          data_fim: string
+          data_inicio: string
+          exercicio_id: string
+          id: string
+          observacoes: string | null
+          situacao: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at: string
+        }
+        Insert: {
+          competencia: string
+          created_at?: string
+          data_fim: string
+          data_inicio: string
+          exercicio_id: string
+          id?: string
+          observacoes?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at?: string
+        }
+        Update: {
+          competencia?: string
+          created_at?: string
+          data_fim?: string
+          data_inicio?: string
+          exercicio_id?: string
+          id?: string
+          observacoes?: string | null
+          situacao?: Database["public"]["Enums"]["ctb_situacao_periodo"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_periodos_exercicio_id_fkey"
+            columns: ["exercicio_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_exercicios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ctb_plano_contas: {
+        Row: {
+          aceita_lancamento: boolean
+          ativa: boolean
+          codigo: string
+          created_at: string
+          id: string
+          natureza: Database["public"]["Enums"]["ctb_natureza"]
+          nivel: number
+          nome: string
+          observacoes: string | null
+          parent_id: string | null
+          tipo: Database["public"]["Enums"]["ctb_conta_tipo"]
+          updated_at: string
+          vigencia_fim: string | null
+          vigencia_inicio: string | null
+        }
+        Insert: {
+          aceita_lancamento?: boolean
+          ativa?: boolean
+          codigo: string
+          created_at?: string
+          id?: string
+          natureza: Database["public"]["Enums"]["ctb_natureza"]
+          nivel?: number
+          nome: string
+          observacoes?: string | null
+          parent_id?: string | null
+          tipo: Database["public"]["Enums"]["ctb_conta_tipo"]
+          updated_at?: string
+          vigencia_fim?: string | null
+          vigencia_inicio?: string | null
+        }
+        Update: {
+          aceita_lancamento?: boolean
+          ativa?: boolean
+          codigo?: string
+          created_at?: string
+          id?: string
+          natureza?: Database["public"]["Enums"]["ctb_natureza"]
+          nivel?: number
+          nome?: string
+          observacoes?: string | null
+          parent_id?: string | null
+          tipo?: Database["public"]["Enums"]["ctb_conta_tipo"]
+          updated_at?: string
+          vigencia_fim?: string | null
+          vigencia_inicio?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ctb_plano_contas_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "ctb_plano_contas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       data_conflict_decisoes: {
         Row: {
           acao: string
@@ -3637,6 +4198,39 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      ctb_conta_tipo:
+        | "ativo"
+        | "passivo"
+        | "patrimonio_liquido"
+        | "receita"
+        | "despesa"
+        | "resultado"
+        | "compensacao"
+      ctb_lanc_status:
+        | "rascunho"
+        | "simulado"
+        | "efetivado"
+        | "estornado"
+        | "cancelado"
+      ctb_lote_status:
+        | "rascunho"
+        | "simulado"
+        | "conferido"
+        | "efetivado"
+        | "cancelado"
+      ctb_natureza: "devedora" | "credora"
+      ctb_origem:
+        | "manual"
+        | "financeiro_receita"
+        | "financeiro_despesa"
+        | "financeiro_pagamento"
+        | "financeiro_recebimento"
+        | "patrimonio_aquisicao"
+        | "patrimonio_depreciacao"
+        | "patrimonio_baixa"
+        | "importacao"
+        | "integracao"
+      ctb_situacao_periodo: "aberto" | "em_fechamento" | "fechado" | "reaberto"
       fin_conta_tipo: "corrente" | "poupanca" | "investimento" | "aplicacao"
       fin_natureza: "receita" | "despesa"
       fin_status:
@@ -3849,6 +4443,43 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      ctb_conta_tipo: [
+        "ativo",
+        "passivo",
+        "patrimonio_liquido",
+        "receita",
+        "despesa",
+        "resultado",
+        "compensacao",
+      ],
+      ctb_lanc_status: [
+        "rascunho",
+        "simulado",
+        "efetivado",
+        "estornado",
+        "cancelado",
+      ],
+      ctb_lote_status: [
+        "rascunho",
+        "simulado",
+        "conferido",
+        "efetivado",
+        "cancelado",
+      ],
+      ctb_natureza: ["devedora", "credora"],
+      ctb_origem: [
+        "manual",
+        "financeiro_receita",
+        "financeiro_despesa",
+        "financeiro_pagamento",
+        "financeiro_recebimento",
+        "patrimonio_aquisicao",
+        "patrimonio_depreciacao",
+        "patrimonio_baixa",
+        "importacao",
+        "integracao",
+      ],
+      ctb_situacao_periodo: ["aberto", "em_fechamento", "fechado", "reaberto"],
       fin_conta_tipo: ["corrente", "poupanca", "investimento", "aplicacao"],
       fin_natureza: ["receita", "despesa"],
       fin_status: [
