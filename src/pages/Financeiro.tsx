@@ -40,11 +40,8 @@ export default function Financeiro() {
     if (!associado || isDependente) return;
     (async () => {
       setLoading(true);
-      const { data } = await supabase
-        .from('mensalidades')
-        .select('*')
-        .eq('associado_id', associado.id)
-        .order('vencimento', { ascending: false });
+      const { itens: data } = await portalCall<{ itens: any[] }>('mensalidades').catch(() => ({ itens: [] }));
+
       const now = new Date();
       const upd = (data || []).map((m: any) => {
         if (m.status === 'pendente' && new Date(m.vencimento) < now) return { ...m, status: 'atrasado' };
