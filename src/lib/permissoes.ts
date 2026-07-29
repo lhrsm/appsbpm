@@ -23,6 +23,8 @@ export const MODULOS: { value: string; label: string }[] = [
   { value: "financeiro", label: "Financeiro" },
   { value: "patrimonio", label: "Patrimônio" },
   { value: "contabilidade", label: "Contabilidade" },
+  { value: "rh", label: "Recursos Humanos" },
+  { value: "rh_sensivel", label: "RH — salários e dados bancários" },
   { value: "associados", label: "Associados" },
   { value: "dependentes", label: "Dependentes" },
   { value: "peculio", label: "Pecúlio" },
