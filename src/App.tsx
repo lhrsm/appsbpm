@@ -131,6 +131,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
+              <Route path="/bem/:token" element={<BemQR />} />
               <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
               <Route path="/privacidade" element={<Privacidade />} />
