@@ -211,6 +211,7 @@ const App = () => (
                 <Route path="componentes" element={<AdminComponentes />} />
                 <Route path="assinatura-icp" element={<AdminAssinaturaICP />} />
                 <Route path="sobre" element={<AdminSobre />} />
+                <Route path="tutoriais" element={<AdminTutoriais />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

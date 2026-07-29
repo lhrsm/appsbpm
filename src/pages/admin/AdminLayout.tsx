@@ -34,6 +34,7 @@ const nav = [
   { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
   { to: "/admin/usuarios", icon: KeyRound, label: "Usuários e Permissões" },
   { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
+  { to: "/admin/tutoriais", icon: BookOpen, label: "Tutoriais e Ajuda" },
   { to: "/admin/sobre", icon: Info, label: "Sobre o Portal" },
 ];
 
