@@ -1690,6 +1690,7 @@ export type Database = {
       }
       perfil_ativo: { Args: { _user_id: string }; Returns: string }
       pode_gerenciar_usuarios: { Args: { _user_id: string }; Returns: boolean }
+      registrar_acesso_interno: { Args: never; Returns: undefined }
       tem_permissao: {
         Args: {
           _acao: Database["public"]["Enums"]["perm_acao"]
