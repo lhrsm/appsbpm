@@ -3652,6 +3652,474 @@ export type Database = {
         }
         Relationships: []
       }
+      rh_cargos: {
+        Row: {
+          ativo: boolean
+          cbo: string | null
+          codigo: string | null
+          created_at: string
+          descricao: string | null
+          faixa_salarial_max: number | null
+          faixa_salarial_min: number | null
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cbo?: string | null
+          codigo?: string | null
+          created_at?: string
+          descricao?: string | null
+          faixa_salarial_max?: number | null
+          faixa_salarial_min?: number | null
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cbo?: string | null
+          codigo?: string | null
+          created_at?: string
+          descricao?: string | null
+          faixa_salarial_max?: number | null
+          faixa_salarial_min?: number | null
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rh_colaboradores: {
+        Row: {
+          bairro: string | null
+          cep: string | null
+          cidade: string | null
+          complemento: string | null
+          cpf: string | null
+          created_at: string
+          data_nascimento: string | null
+          email: string | null
+          estado_civil: string | null
+          foto_url: string | null
+          id: string
+          logradouro: string | null
+          matricula_funcional: string
+          nome: string
+          nome_social: string | null
+          numero: string | null
+          observacoes: string | null
+          rg: string | null
+          sexo: string | null
+          situacao: Database["public"]["Enums"]["rh_situacao_colaborador"]
+          telefone: string | null
+          uf: string | null
+          updated_at: string
+        }
+        Insert: {
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          cpf?: string | null
+          created_at?: string
+          data_nascimento?: string | null
+          email?: string | null
+          estado_civil?: string | null
+          foto_url?: string | null
+          id?: string
+          logradouro?: string | null
+          matricula_funcional: string
+          nome: string
+          nome_social?: string | null
+          numero?: string | null
+          observacoes?: string | null
+          rg?: string | null
+          sexo?: string | null
+          situacao?: Database["public"]["Enums"]["rh_situacao_colaborador"]
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bairro?: string | null
+          cep?: string | null
+          cidade?: string | null
+          complemento?: string | null
+          cpf?: string | null
+          created_at?: string
+          data_nascimento?: string | null
+          email?: string | null
+          estado_civil?: string | null
+          foto_url?: string | null
+          id?: string
+          logradouro?: string | null
+          matricula_funcional?: string
+          nome?: string
+          nome_social?: string | null
+          numero?: string | null
+          observacoes?: string | null
+          rg?: string | null
+          sexo?: string | null
+          situacao?: Database["public"]["Enums"]["rh_situacao_colaborador"]
+          telefone?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rh_dados_bancarios: {
+        Row: {
+          agencia: string | null
+          banco: string | null
+          chave_pix: string | null
+          colaborador_id: string
+          conta: string | null
+          created_at: string
+          id: string
+          tipo_conta: string | null
+          titular: string | null
+          updated_at: string
+        }
+        Insert: {
+          agencia?: string | null
+          banco?: string | null
+          chave_pix?: string | null
+          colaborador_id: string
+          conta?: string | null
+          created_at?: string
+          id?: string
+          tipo_conta?: string | null
+          titular?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agencia?: string | null
+          banco?: string | null
+          chave_pix?: string | null
+          colaborador_id?: string
+          conta?: string | null
+          created_at?: string
+          id?: string
+          tipo_conta?: string | null
+          titular?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_dados_bancarios_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_documentos: {
+        Row: {
+          arquivo_path: string
+          colaborador_id: string
+          created_at: string
+          created_by: string | null
+          descricao: string | null
+          id: string
+          tipo: string
+          updated_at: string
+          validade: string | null
+        }
+        Insert: {
+          arquivo_path: string
+          colaborador_id: string
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          tipo: string
+          updated_at?: string
+          validade?: string | null
+        }
+        Update: {
+          arquivo_path?: string
+          colaborador_id?: string
+          created_at?: string
+          created_by?: string | null
+          descricao?: string | null
+          id?: string
+          tipo?: string
+          updated_at?: string
+          validade?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_documentos_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_historico: {
+        Row: {
+          created_at: string
+          id: string
+          operacao: string
+          registro_id: string | null
+          tabela: string
+          user_id: string | null
+          valor_anterior: Json | null
+          valor_novo: Json | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          operacao: string
+          registro_id?: string | null
+          tabela: string
+          user_id?: string | null
+          valor_anterior?: Json | null
+          valor_novo?: Json | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          operacao?: string
+          registro_id?: string | null
+          tabela?: string
+          user_id?: string | null
+          valor_anterior?: Json | null
+          valor_novo?: Json | null
+        }
+        Relationships: []
+      }
+      rh_remuneracoes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          motivo: string | null
+          salario_base: number
+          updated_at: string
+          vigencia_fim: string | null
+          vigencia_inicio: string
+          vinculo_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          motivo?: string | null
+          salario_base: number
+          updated_at?: string
+          vigencia_fim?: string | null
+          vigencia_inicio: string
+          vinculo_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          motivo?: string | null
+          salario_base?: number
+          updated_at?: string
+          vigencia_fim?: string | null
+          vigencia_inicio?: string
+          vinculo_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_remuneracoes_vinculo_id_fkey"
+            columns: ["vinculo_id"]
+            isOneToOne: false
+            referencedRelation: "rh_vinculos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_setores: {
+        Row: {
+          ativo: boolean
+          codigo: string | null
+          created_at: string
+          descricao: string | null
+          id: string
+          nome: string
+          setor_pai_id: string | null
+          unidade_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          codigo?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome: string
+          setor_pai_id?: string | null
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          codigo?: string | null
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome?: string
+          setor_pai_id?: string | null
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_setores_setor_pai_id_fkey"
+            columns: ["setor_pai_id"]
+            isOneToOne: false
+            referencedRelation: "rh_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_setores_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "rh_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_unidades: {
+        Row: {
+          ativo: boolean
+          cidade: string | null
+          cnpj: string | null
+          codigo: string | null
+          created_at: string
+          endereco: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          uf: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cidade?: string | null
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          endereco?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cidade?: string | null
+          cnpj?: string | null
+          codigo?: string | null
+          created_at?: string
+          endereco?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          uf?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rh_vinculos: {
+        Row: {
+          ativo: boolean
+          cargo_id: string | null
+          colaborador_id: string
+          created_at: string
+          data_admissao: string
+          data_desligamento: string | null
+          gestor_id: string | null
+          id: string
+          jornada_semanal: number | null
+          motivo_desligamento: string | null
+          observacoes: string | null
+          setor_id: string | null
+          tipo: Database["public"]["Enums"]["rh_tipo_vinculo"]
+          unidade_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cargo_id?: string | null
+          colaborador_id: string
+          created_at?: string
+          data_admissao: string
+          data_desligamento?: string | null
+          gestor_id?: string | null
+          id?: string
+          jornada_semanal?: number | null
+          motivo_desligamento?: string | null
+          observacoes?: string | null
+          setor_id?: string | null
+          tipo?: Database["public"]["Enums"]["rh_tipo_vinculo"]
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cargo_id?: string | null
+          colaborador_id?: string
+          created_at?: string
+          data_admissao?: string
+          data_desligamento?: string | null
+          gestor_id?: string | null
+          id?: string
+          jornada_semanal?: number | null
+          motivo_desligamento?: string | null
+          observacoes?: string | null
+          setor_id?: string | null
+          tipo?: Database["public"]["Enums"]["rh_tipo_vinculo"]
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_vinculos_cargo_id_fkey"
+            columns: ["cargo_id"]
+            isOneToOne: false
+            referencedRelation: "rh_cargos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_vinculos_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_vinculos_gestor_id_fkey"
+            columns: ["gestor_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_vinculos_setor_id_fkey"
+            columns: ["setor_id"]
+            isOneToOne: false
+            referencedRelation: "rh_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_vinculos_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "rh_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       sistema_config: {
         Row: {
           chave: string
@@ -4337,6 +4805,21 @@ export type Database = {
         | "aprovar"
         | "exportar"
         | "configurar"
+      rh_situacao_colaborador:
+        | "ativo"
+        | "afastado"
+        | "ferias"
+        | "desligado"
+        | "suspenso"
+      rh_tipo_vinculo:
+        | "clt"
+        | "estagio"
+        | "aprendiz"
+        | "temporario"
+        | "terceirizado"
+        | "prestador"
+        | "estatutario"
+        | "cedido"
       status_carencia: "liberado" | "em_carencia"
       tipo_dependente: "conjuge" | "filho" | "pai_mae" | "outro"
     }
@@ -4595,6 +5078,23 @@ export const Constants = {
         "aprovar",
         "exportar",
         "configurar",
+      ],
+      rh_situacao_colaborador: [
+        "ativo",
+        "afastado",
+        "ferias",
+        "desligado",
+        "suspenso",
+      ],
+      rh_tipo_vinculo: [
+        "clt",
+        "estagio",
+        "aprendiz",
+        "temporario",
+        "terceirizado",
+        "prestador",
+        "estatutario",
+        "cedido",
       ],
       status_carencia: ["liberado", "em_carencia"],
       tipo_dependente: ["conjuge", "filho", "pai_mae", "outro"],
