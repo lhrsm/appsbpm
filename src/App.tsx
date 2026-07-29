@@ -47,6 +47,7 @@ const AdminComponentes = lazy(() => import("./pages/admin/AdminComponentes"));
 const AdminAssinaturaICP = lazy(() => import("./pages/admin/AdminAssinaturaICP"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
+const BemQR = lazy(() => import("./pages/BemQR"));
 const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
@@ -98,7 +99,7 @@ const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque", "/redefinir-senha"
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
-  if (HIDDEN_CHAT_ROUTES.includes(pathname)) return null;
+  if (HIDDEN_CHAT_ROUTES.includes(pathname) || pathname.startsWith("/bem/")) return null;
   return <ChatbotWidget />;
 };
 
@@ -131,6 +132,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
+              <Route path="/bem/:token" element={<BemQR />} />
               <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
               <Route path="/privacidade" element={<Privacidade />} />

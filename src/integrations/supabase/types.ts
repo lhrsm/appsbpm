@@ -1928,6 +1928,853 @@ export type Database = {
           },
         ]
       }
+      pat_baixas: {
+        Row: {
+          aprovacao: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em: string | null
+          aprovado_por: string | null
+          bem_id: string
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          data_baixa: string
+          documentos: Json
+          id: string
+          justificativa: string
+          motivo: string
+          updated_at: string
+          valor_residual: number
+        }
+        Insert: {
+          aprovacao?: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          bem_id: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_baixa?: string
+          documentos?: Json
+          id?: string
+          justificativa: string
+          motivo: string
+          updated_at?: string
+          valor_residual?: number
+        }
+        Update: {
+          aprovacao?: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          bem_id?: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_baixa?: string
+          documentos?: Json
+          id?: string
+          justificativa?: string
+          motivo?: string
+          updated_at?: string
+          valor_residual?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_baixas_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_bem_historico: {
+        Row: {
+          acao: string
+          ator_user_id: string | null
+          bem_id: string
+          created_at: string
+          detalhes: Json
+          id: string
+          status_anterior: Database["public"]["Enums"]["pat_status"] | null
+          status_novo: Database["public"]["Enums"]["pat_status"] | null
+        }
+        Insert: {
+          acao: string
+          ator_user_id?: string | null
+          bem_id: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          status_anterior?: Database["public"]["Enums"]["pat_status"] | null
+          status_novo?: Database["public"]["Enums"]["pat_status"] | null
+        }
+        Update: {
+          acao?: string
+          ator_user_id?: string | null
+          bem_id?: string
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          status_anterior?: Database["public"]["Enums"]["pat_status"] | null
+          status_novo?: Database["public"]["Enums"]["pat_status"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_bem_historico_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_bens: {
+        Row: {
+          categoria_id: string | null
+          codigo_interno: string | null
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          data_aquisicao: string | null
+          demo: boolean
+          descricao: string
+          documentos: Json
+          estado_conservacao: Database["public"]["Enums"]["pat_conservacao"]
+          fornecedor_id: string | null
+          fornecedor_nome: string | null
+          fotos: Json
+          id: string
+          localizacao: string | null
+          marca: string | null
+          modelo: string | null
+          nota_fiscal: string | null
+          numero_patrimonial: string
+          numero_serie: string | null
+          observacoes: string | null
+          qr_token: string
+          responsavel_id: string | null
+          setor_id: string | null
+          status: Database["public"]["Enums"]["pat_status"]
+          taxa_depreciacao: number
+          unidade_id: string | null
+          updated_at: string
+          valor: number
+          vida_util_meses: number | null
+        }
+        Insert: {
+          categoria_id?: string | null
+          codigo_interno?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_aquisicao?: string | null
+          demo?: boolean
+          descricao: string
+          documentos?: Json
+          estado_conservacao?: Database["public"]["Enums"]["pat_conservacao"]
+          fornecedor_id?: string | null
+          fornecedor_nome?: string | null
+          fotos?: Json
+          id?: string
+          localizacao?: string | null
+          marca?: string | null
+          modelo?: string | null
+          nota_fiscal?: string | null
+          numero_patrimonial: string
+          numero_serie?: string | null
+          observacoes?: string | null
+          qr_token?: string
+          responsavel_id?: string | null
+          setor_id?: string | null
+          status?: Database["public"]["Enums"]["pat_status"]
+          taxa_depreciacao?: number
+          unidade_id?: string | null
+          updated_at?: string
+          valor?: number
+          vida_util_meses?: number | null
+        }
+        Update: {
+          categoria_id?: string | null
+          codigo_interno?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_aquisicao?: string | null
+          demo?: boolean
+          descricao?: string
+          documentos?: Json
+          estado_conservacao?: Database["public"]["Enums"]["pat_conservacao"]
+          fornecedor_id?: string | null
+          fornecedor_nome?: string | null
+          fotos?: Json
+          id?: string
+          localizacao?: string | null
+          marca?: string | null
+          modelo?: string | null
+          nota_fiscal?: string | null
+          numero_patrimonial?: string
+          numero_serie?: string | null
+          observacoes?: string | null
+          qr_token?: string
+          responsavel_id?: string | null
+          setor_id?: string | null
+          status?: Database["public"]["Enums"]["pat_status"]
+          taxa_depreciacao?: number
+          unidade_id?: string | null
+          updated_at?: string
+          valor?: number
+          vida_util_meses?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_bens_categoria_id_fkey"
+            columns: ["categoria_id"]
+            isOneToOne: false
+            referencedRelation: "pat_categorias"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_bens_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fin_fornecedores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_bens_responsavel_id_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "pat_responsaveis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_bens_setor_id_fkey"
+            columns: ["setor_id"]
+            isOneToOne: false
+            referencedRelation: "pat_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_bens_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_categorias: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          descricao: string | null
+          id: string
+          nome: string
+          taxa_depreciacao: number
+          updated_at: string
+          vida_util_meses: number | null
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome: string
+          taxa_depreciacao?: number
+          updated_at?: string
+          vida_util_meses?: number | null
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          nome?: string
+          taxa_depreciacao?: number
+          updated_at?: string
+          vida_util_meses?: number | null
+        }
+        Relationships: []
+      }
+      pat_config: {
+        Row: {
+          chave: string
+          updated_at: string
+          valor: string | null
+        }
+        Insert: {
+          chave: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Update: {
+          chave?: string
+          updated_at?: string
+          valor?: string | null
+        }
+        Relationships: []
+      }
+      pat_inventario_itens: {
+        Row: {
+          bem_id: string | null
+          conferido_em: string | null
+          conferido_por: string | null
+          created_at: string
+          descricao_avulsa: string | null
+          divergencia: string | null
+          id: string
+          inventario_id: string
+          numero_avulso: string | null
+          observacoes: string | null
+          status: Database["public"]["Enums"]["pat_item_status"]
+        }
+        Insert: {
+          bem_id?: string | null
+          conferido_em?: string | null
+          conferido_por?: string | null
+          created_at?: string
+          descricao_avulsa?: string | null
+          divergencia?: string | null
+          id?: string
+          inventario_id: string
+          numero_avulso?: string | null
+          observacoes?: string | null
+          status?: Database["public"]["Enums"]["pat_item_status"]
+        }
+        Update: {
+          bem_id?: string | null
+          conferido_em?: string | null
+          conferido_por?: string | null
+          created_at?: string
+          descricao_avulsa?: string | null
+          divergencia?: string | null
+          id?: string
+          inventario_id?: string
+          numero_avulso?: string | null
+          observacoes?: string | null
+          status?: Database["public"]["Enums"]["pat_item_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_inventario_itens_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_inventario_itens_inventario_id_fkey"
+            columns: ["inventario_id"]
+            isOneToOne: false
+            referencedRelation: "pat_inventarios"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_inventarios: {
+        Row: {
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          data_fim: string | null
+          data_inicio: string
+          id: string
+          observacoes: string | null
+          setor_id: string | null
+          status: Database["public"]["Enums"]["pat_inv_status"]
+          titulo: string
+          unidade_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          observacoes?: string | null
+          setor_id?: string | null
+          status?: Database["public"]["Enums"]["pat_inv_status"]
+          titulo: string
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          observacoes?: string | null
+          setor_id?: string | null
+          status?: Database["public"]["Enums"]["pat_inv_status"]
+          titulo?: string
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_inventarios_setor_id_fkey"
+            columns: ["setor_id"]
+            isOneToOne: false
+            referencedRelation: "pat_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_inventarios_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_manutencoes: {
+        Row: {
+          anexos: Json
+          bem_id: string
+          created_at: string
+          criado_por: string | null
+          custo: number
+          data_abertura: string
+          data_conclusao: string | null
+          data_prevista: string | null
+          descricao: string
+          fornecedor_nome: string | null
+          id: string
+          observacoes: string | null
+          status: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          anexos?: Json
+          bem_id: string
+          created_at?: string
+          criado_por?: string | null
+          custo?: number
+          data_abertura?: string
+          data_conclusao?: string | null
+          data_prevista?: string | null
+          descricao: string
+          fornecedor_nome?: string | null
+          id?: string
+          observacoes?: string | null
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Update: {
+          anexos?: Json
+          bem_id?: string
+          created_at?: string
+          criado_por?: string | null
+          custo?: number
+          data_abertura?: string
+          data_conclusao?: string | null
+          data_prevista?: string | null
+          descricao?: string
+          fornecedor_nome?: string | null
+          id?: string
+          observacoes?: string | null
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_manutencoes_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_movimentacoes: {
+        Row: {
+          aprovacao: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em: string | null
+          aprovado_por: string | null
+          bem_id: string
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          data_movimentacao: string
+          destino_local: string | null
+          destino_setor_id: string | null
+          destino_unidade_id: string | null
+          evidencias: Json
+          id: string
+          motivo: string
+          observacoes: string | null
+          origem_local: string | null
+          origem_setor_id: string | null
+          origem_unidade_id: string | null
+          responsavel_anterior_id: string | null
+          responsavel_novo_id: string | null
+          termo_gerado: boolean
+          termo_path: string | null
+          tipo: Database["public"]["Enums"]["pat_mov_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          aprovacao?: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          bem_id: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_movimentacao?: string
+          destino_local?: string | null
+          destino_setor_id?: string | null
+          destino_unidade_id?: string | null
+          evidencias?: Json
+          id?: string
+          motivo: string
+          observacoes?: string | null
+          origem_local?: string | null
+          origem_setor_id?: string | null
+          origem_unidade_id?: string | null
+          responsavel_anterior_id?: string | null
+          responsavel_novo_id?: string | null
+          termo_gerado?: boolean
+          termo_path?: string | null
+          tipo?: Database["public"]["Enums"]["pat_mov_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          aprovacao?: Database["public"]["Enums"]["pat_aprovacao"]
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          bem_id?: string
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          data_movimentacao?: string
+          destino_local?: string | null
+          destino_setor_id?: string | null
+          destino_unidade_id?: string | null
+          evidencias?: Json
+          id?: string
+          motivo?: string
+          observacoes?: string | null
+          origem_local?: string | null
+          origem_setor_id?: string | null
+          origem_unidade_id?: string | null
+          responsavel_anterior_id?: string | null
+          responsavel_novo_id?: string | null
+          termo_gerado?: boolean
+          termo_path?: string | null
+          tipo?: Database["public"]["Enums"]["pat_mov_tipo"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_movimentacoes_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_destino_setor_id_fkey"
+            columns: ["destino_setor_id"]
+            isOneToOne: false
+            referencedRelation: "pat_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_destino_unidade_id_fkey"
+            columns: ["destino_unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_origem_setor_id_fkey"
+            columns: ["origem_setor_id"]
+            isOneToOne: false
+            referencedRelation: "pat_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_origem_unidade_id_fkey"
+            columns: ["origem_unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_responsavel_anterior_id_fkey"
+            columns: ["responsavel_anterior_id"]
+            isOneToOne: false
+            referencedRelation: "pat_responsaveis"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_movimentacoes_responsavel_novo_id_fkey"
+            columns: ["responsavel_novo_id"]
+            isOneToOne: false
+            referencedRelation: "pat_responsaveis"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_ocorrencias: {
+        Row: {
+          bem_id: string
+          created_at: string
+          descricao: string
+          id: string
+          informante_contato: string | null
+          informante_nome: string | null
+          origem: string
+          resposta: string | null
+          status: string
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          bem_id: string
+          created_at?: string
+          descricao: string
+          id?: string
+          informante_contato?: string | null
+          informante_nome?: string | null
+          origem?: string
+          resposta?: string | null
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Update: {
+          bem_id?: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          informante_contato?: string | null
+          informante_nome?: string | null
+          origem?: string
+          resposta?: string | null
+          status?: string
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_ocorrencias_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_responsaveis: {
+        Row: {
+          ativo: boolean
+          cargo: string | null
+          created_at: string
+          email: string | null
+          id: string
+          matricula: string | null
+          nome: string
+          setor_id: string | null
+          telefone: string | null
+          unidade_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cargo?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          matricula?: string | null
+          nome: string
+          setor_id?: string | null
+          telefone?: string | null
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cargo?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          matricula?: string | null
+          nome?: string
+          setor_id?: string | null
+          telefone?: string | null
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_responsaveis_setor_id_fkey"
+            columns: ["setor_id"]
+            isOneToOne: false
+            referencedRelation: "pat_setores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_responsaveis_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_setores: {
+        Row: {
+          ativo: boolean
+          codigo: string | null
+          created_at: string
+          id: string
+          nome: string
+          unidade_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          codigo?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          unidade_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_setores_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "pat_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_termos: {
+        Row: {
+          arquivo_path: string | null
+          assinado: boolean
+          assinado_em: string | null
+          bem_id: string | null
+          conteudo: string | null
+          created_at: string
+          criado_por: string | null
+          id: string
+          movimentacao_id: string | null
+          numero: string | null
+          responsavel_id: string | null
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          arquivo_path?: string | null
+          assinado?: boolean
+          assinado_em?: string | null
+          bem_id?: string | null
+          conteudo?: string | null
+          created_at?: string
+          criado_por?: string | null
+          id?: string
+          movimentacao_id?: string | null
+          numero?: string | null
+          responsavel_id?: string | null
+          tipo?: string
+          updated_at?: string
+        }
+        Update: {
+          arquivo_path?: string | null
+          assinado?: boolean
+          assinado_em?: string | null
+          bem_id?: string | null
+          conteudo?: string | null
+          created_at?: string
+          criado_por?: string | null
+          id?: string
+          movimentacao_id?: string | null
+          numero?: string | null
+          responsavel_id?: string | null
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pat_termos_bem_id_fkey"
+            columns: ["bem_id"]
+            isOneToOne: false
+            referencedRelation: "pat_bens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_termos_movimentacao_id_fkey"
+            columns: ["movimentacao_id"]
+            isOneToOne: false
+            referencedRelation: "pat_movimentacoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pat_termos_responsavel_id_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "pat_responsaveis"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pat_unidades: {
+        Row: {
+          ativo: boolean
+          cidade: string | null
+          codigo: string | null
+          created_at: string
+          endereco: string | null
+          estado: string | null
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cidade?: string | null
+          codigo?: string | null
+          created_at?: string
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cidade?: string | null
+          codigo?: string | null
+          created_at?: string
+          endereco?: string | null
+          estado?: string | null
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       peculio_solicitacoes: {
         Row: {
           associado_email: string | null
@@ -2743,6 +3590,38 @@ export type Database = {
           user_agent: string
         }[]
       }
+      pat_consulta_qr: {
+        Args: { _token: string }
+        Returns: {
+          categoria: string
+          descricao: string
+          estado_conservacao: Database["public"]["Enums"]["pat_conservacao"]
+          historico: Json
+          localizacao: string
+          marca: string
+          modelo: string
+          numero_patrimonial: string
+          permite_ocorrencia: boolean
+          responsavel: string
+          setor: string
+          status: Database["public"]["Enums"]["pat_status"]
+          unidade: string
+        }[]
+      }
+      pat_gerar_lista_inventario: {
+        Args: { _inventario_id: string }
+        Returns: number
+      }
+      pat_registrar_ocorrencia: {
+        Args: {
+          _contato?: string
+          _descricao: string
+          _nome?: string
+          _tipo?: string
+          _token: string
+        }
+        Returns: string
+      }
       perfil_ativo: { Args: { _user_id: string }; Returns: string }
       pode_gerenciar_usuarios: { Args: { _user_id: string }; Returns: boolean }
       registrar_acesso_interno: { Args: never; Returns: undefined }
@@ -2800,6 +3679,38 @@ export type Database = {
         | "sincronizando"
         | "com_erro"
         | "pausado"
+      pat_aprovacao: "pendente" | "aprovado" | "reprovado"
+      pat_conservacao:
+        | "novo"
+        | "otimo"
+        | "bom"
+        | "regular"
+        | "ruim"
+        | "inservivel"
+      pat_inv_status: "planejado" | "em_andamento" | "encerrado" | "cancelado"
+      pat_item_status:
+        | "esperado"
+        | "localizado"
+        | "nao_localizado"
+        | "divergente"
+        | "nao_cadastrado"
+      pat_mov_tipo:
+        | "transferencia"
+        | "emprestimo"
+        | "devolucao"
+        | "cessao"
+        | "manutencao"
+        | "retorno_manutencao"
+        | "outro"
+      pat_status:
+        | "em_uso"
+        | "disponivel"
+        | "em_manutencao"
+        | "emprestado"
+        | "em_transferencia"
+        | "inservivel"
+        | "baixado"
+        | "extraviado"
       perm_acao:
         | "visualizar"
         | "criar"
@@ -2984,6 +3895,42 @@ export const Constants = {
         "sincronizando",
         "com_erro",
         "pausado",
+      ],
+      pat_aprovacao: ["pendente", "aprovado", "reprovado"],
+      pat_conservacao: [
+        "novo",
+        "otimo",
+        "bom",
+        "regular",
+        "ruim",
+        "inservivel",
+      ],
+      pat_inv_status: ["planejado", "em_andamento", "encerrado", "cancelado"],
+      pat_item_status: [
+        "esperado",
+        "localizado",
+        "nao_localizado",
+        "divergente",
+        "nao_cadastrado",
+      ],
+      pat_mov_tipo: [
+        "transferencia",
+        "emprestimo",
+        "devolucao",
+        "cessao",
+        "manutencao",
+        "retorno_manutencao",
+        "outro",
+      ],
+      pat_status: [
+        "em_uso",
+        "disponivel",
+        "em_manutencao",
+        "emprestado",
+        "em_transferencia",
+        "inservivel",
+        "baixado",
+        "extraviado",
       ],
       perm_acao: [
         "visualizar",
