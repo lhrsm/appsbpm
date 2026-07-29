@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { Plus, Pencil, Loader2, Search, Briefcase } from 'lucide-react';
-import { maskCPF, maskTelefone } from '@/lib/format';
+import { maskCPF, formatPhone } from '@/lib/format';
 
 const SITUACOES = [
   { value: 'ativo', label: 'Ativo' },
@@ -270,7 +270,7 @@ export default function ColaboradoresTab() {
                       {[cargo, setor].filter(Boolean).join(' • ') || 'Sem vínculo ativo registrado'}
                     </p>
                     {c.telefone && (
-                      <p className="text-xs text-muted-foreground">{maskTelefone(c.telefone)}</p>
+                      <p className="text-xs text-muted-foreground">{formatPhone(c.telefone)}</p>
                     )}
                   </div>
                   <div className="flex shrink-0 gap-1">
