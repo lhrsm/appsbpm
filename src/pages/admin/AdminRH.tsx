@@ -9,6 +9,7 @@ import FeriasTab from './rh/FeriasTab';
 import AfastamentosTab from './rh/AfastamentosTab';
 import BeneficiosTab from './rh/BeneficiosTab';
 import SolicitacoesTab from './rh/SolicitacoesTab';
+import FolhaTab from './rh/FolhaTab';
 import HistoricoTab from './rh/HistoricoTab';
 
 export default function AdminRH() {
