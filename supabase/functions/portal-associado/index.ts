@@ -87,6 +87,12 @@ const BodySchema = z.discriminatedUnion('action', [
     documento_id: z.string().uuid(),
   }),
   z.object({ action: z.literal('acessos'), token: z.string().min(1).max(2000) }),
+  z.object({ action: z.literal('notificacoes_listar'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('notificacoes_marcar'),
+    token: z.string().min(1).max(2000),
+    ids: z.array(z.string().uuid()).min(1).max(200),
+  }),
   z.object({ action: z.literal('privacidade'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('solicitacoes_listar'), token: z.string().min(1).max(2000) }),
   z.object({
@@ -297,6 +303,32 @@ Deno.serve(async (req) => {
         : q.eq('associado_id', sessao.aid).is('dependente_id', null);
       const { data } = await q;
       return json({ itens: data || [] });
+    }
+
+    if (body.action === 'notificacoes_listar') {
+      let q = admin
+        .from('notificacoes')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      q = sessao.did
+        ? q.eq('dependente_id', sessao.did)
+        : q.eq('associado_id', sessao.aid).is('dependente_id', null);
+      const { data } = await q;
+      return json({ itens: data || [] });
+    }
+
+    if (body.action === 'notificacoes_marcar') {
+      let q = admin
+        .from('notificacoes')
+        .update({ lida: true, read_at: new Date().toISOString() })
+        .in('id', body.ids);
+      q = sessao.did
+        ? q.eq('dependente_id', sessao.did)
+        : q.eq('associado_id', sessao.aid).is('dependente_id', null);
+      const { error } = await q;
+      if (error) throw error;
+      return json({ ok: true });
     }
 
     if (body.action === 'privacidade') {
