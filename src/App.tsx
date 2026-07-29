@@ -182,6 +182,8 @@ const App = () => (
                 <Route path="informes" element={<AdminInformes />} />
                 <Route path="automacoes" element={<AdminAutomacoes />} />
                 <Route path="integracoes" element={<AdminIntegracoes />} />
+                <Route path="integracoes/inconsistencias" element={<AdminIntegracoes />} />
+
                 <Route path="sincronizacao" element={<AdminSincronizacao />} />
                 <Route path="configuracoes" element={<AdminConfiguracoes />} />
                 <Route path="aniversariantes" element={<AdminAniversariantes />} />
