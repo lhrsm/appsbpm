@@ -51,10 +51,14 @@ export default function MeusDocumentos() {
   }, [associado?.id]);
 
   const download = async (doc: any) => {
-    const { data, error } = await supabase.storage.from('documentos').createSignedUrl(doc.arquivo_path, 60);
-    if (error || !data) return toast.error('Não foi possível baixar');
-    window.open(data.signedUrl, '_blank');
+    try {
+      const { url } = await portalCall<{ url: string }>('documento_url', { documento_id: doc.id });
+      window.open(url, '_blank');
+    } catch {
+      toast.error('Não foi possível baixar');
+    }
   };
+
 
   const filtered = items.filter(d => {
     if (cat !== 'todos' && d.categoria !== cat) return false;
