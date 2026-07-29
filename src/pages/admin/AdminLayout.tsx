@@ -17,17 +17,24 @@ import {
 } from "@/components/ui/command";
 
 const nav = [
-  { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
+  { to: "/admin", icon: LayoutDashboard, label: "Visão Geral", end: true },
   { to: "/admin/previdencia", icon: ShieldCheck, label: "Previdência" },
   { to: "/admin/saude", icon: HeartHandshake, label: "Assistência à Saúde" },
-  { to: "/admin/patrimonio", icon: Building2, label: "Patrimonial" },
-  { to: "/admin/contabilidade", icon: FileSignature, label: "Contábil" },
-  { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
-  { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
+  { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
+  { to: "/admin/patrimonio", icon: Building2, label: "Patrimônio" },
+  { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
+  { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
+  { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
+  { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
+  { to: "/admin/usuarios", icon: KeyRound, label: "Usuários e Permissões" },
+  { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
+];
 
-  
+const navOperacional = [
+  { to: "/admin/painel", icon: TrendingUp, label: "Painel analítico" },
+  { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
   { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
   { to: "/admin/eventos", icon: Calendar, label: "Eventos" },
   { to: "/admin/faq", icon: HelpCircle, label: "FAQ" },
@@ -35,7 +42,6 @@ const nav = [
   { to: "/admin/notificacoes", icon: Bell, label: "Notificações Push" },
   { to: "/admin/solicitacoes", icon: Ticket, label: "Solicitações" },
   { to: "/admin/documentos", icon: FolderOpen, label: "Documentos" },
-  { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
   { to: "/admin/limites", icon: Wallet, label: "Limites" },
   { to: "/admin/carencias", icon: Clock, label: "Carências" },
   { to: "/admin/clinicas", icon: Building2, label: "Clínicas & Parceiros" },
@@ -44,13 +50,10 @@ const nav = [
   { to: "/admin/importar", icon: Upload, label: "Importações" },
   { to: "/admin/sincronizacao", icon: RefreshCw, label: "Sincronização" },
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
-  { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
-  { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
   { to: "/admin/privacidade", icon: ShieldCheck, label: "Privacidade (LGPD)" },
   { to: "/admin/seguranca", icon: KeyRound, label: "Segurança (2FA)" },
   { to: "/admin/assinatura-icp", icon: FileSignature, label: "Assinatura ICP-Brasil" },
   { to: "/admin/componentes", icon: Palette, label: "Componentes (UI)" },
-  { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
 
 const PREVIDENCIA_ALLOWED = new Set([
