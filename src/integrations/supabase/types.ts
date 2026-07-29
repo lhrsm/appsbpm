@@ -928,6 +928,411 @@ export type Database = {
           },
         ]
       }
+      fin_caixas: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          demo: boolean
+          id: string
+          nome: string
+          observacoes: string | null
+          responsavel: string | null
+          saldo_inicial: number
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nome: string
+          observacoes?: string | null
+          responsavel?: string | null
+          saldo_inicial?: number
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          responsavel?: string | null
+          saldo_inicial?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      fin_categorias: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          demo: boolean
+          id: string
+          natureza: Database["public"]["Enums"]["fin_natureza"]
+          nome: string
+          parent_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          demo?: boolean
+          id?: string
+          natureza: Database["public"]["Enums"]["fin_natureza"]
+          nome: string
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          demo?: boolean
+          id?: string
+          natureza?: Database["public"]["Enums"]["fin_natureza"]
+          nome?: string
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fin_categorias_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "fin_categorias"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fin_centros_custo: {
+        Row: {
+          ativo: boolean
+          codigo: string
+          created_at: string
+          demo: boolean
+          descricao: string | null
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          codigo: string
+          created_at?: string
+          demo?: boolean
+          descricao?: string | null
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          codigo?: string
+          created_at?: string
+          demo?: boolean
+          descricao?: string | null
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      fin_contas_bancarias: {
+        Row: {
+          agencia: string | null
+          ativo: boolean
+          banco: string | null
+          conta: string | null
+          created_at: string
+          demo: boolean
+          id: string
+          nome: string
+          observacoes: string | null
+          saldo_inicial: number
+          tipo: Database["public"]["Enums"]["fin_conta_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          conta?: string | null
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nome: string
+          observacoes?: string | null
+          saldo_inicial?: number
+          tipo?: Database["public"]["Enums"]["fin_conta_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          conta?: string | null
+          created_at?: string
+          demo?: boolean
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          saldo_inicial?: number
+          tipo?: Database["public"]["Enums"]["fin_conta_tipo"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      fin_fornecedores: {
+        Row: {
+          agencia: string | null
+          ativo: boolean
+          banco: string | null
+          chave_pix: string | null
+          conta: string | null
+          created_at: string
+          demo: boolean
+          documento: string | null
+          email: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          telefone: string | null
+          updated_at: string
+        }
+        Insert: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          chave_pix?: string | null
+          conta?: string | null
+          created_at?: string
+          demo?: boolean
+          documento?: string | null
+          email?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agencia?: string | null
+          ativo?: boolean
+          banco?: string | null
+          chave_pix?: string | null
+          conta?: string | null
+          created_at?: string
+          demo?: boolean
+          documento?: string | null
+          email?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          telefone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      fin_lancamento_historico: {
+        Row: {
+          acao: string
+          ator_email: string | null
+          ator_user_id: string | null
+          created_at: string
+          detalhes: Json
+          id: string
+          justificativa: string | null
+          lancamento_id: string
+          status_anterior: Database["public"]["Enums"]["fin_status"] | null
+          status_novo: Database["public"]["Enums"]["fin_status"] | null
+          valor_anterior: number | null
+          valor_novo: number | null
+        }
+        Insert: {
+          acao: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          justificativa?: string | null
+          lancamento_id: string
+          status_anterior?: Database["public"]["Enums"]["fin_status"] | null
+          status_novo?: Database["public"]["Enums"]["fin_status"] | null
+          valor_anterior?: number | null
+          valor_novo?: number | null
+        }
+        Update: {
+          acao?: string
+          ator_email?: string | null
+          ator_user_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          id?: string
+          justificativa?: string | null
+          lancamento_id?: string
+          status_anterior?: Database["public"]["Enums"]["fin_status"] | null
+          status_novo?: Database["public"]["Enums"]["fin_status"] | null
+          valor_anterior?: number | null
+          valor_novo?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fin_lancamento_historico_lancamento_id_fkey"
+            columns: ["lancamento_id"]
+            isOneToOne: false
+            referencedRelation: "fin_lancamentos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fin_lancamentos: {
+        Row: {
+          anexos: Json
+          aprovado_em: string | null
+          aprovado_por: string | null
+          associado_id: string | null
+          caixa_id: string | null
+          categoria_id: string | null
+          centro_custo_id: string | null
+          competencia: string
+          conta_id: string | null
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          demo: boolean
+          descricao: string
+          documento: string | null
+          estorno_de: string | null
+          forma_pagamento: string | null
+          fornecedor_id: string | null
+          id: string
+          justificativa: string | null
+          natureza: Database["public"]["Enums"]["fin_natureza"]
+          observacoes: string | null
+          pago_em: string | null
+          recorrencia_grupo: string | null
+          recorrente: boolean
+          status: Database["public"]["Enums"]["fin_status"]
+          updated_at: string
+          valor: number
+          vencimento: string
+        }
+        Insert: {
+          anexos?: Json
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          associado_id?: string | null
+          caixa_id?: string | null
+          categoria_id?: string | null
+          centro_custo_id?: string | null
+          competencia?: string
+          conta_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          demo?: boolean
+          descricao: string
+          documento?: string | null
+          estorno_de?: string | null
+          forma_pagamento?: string | null
+          fornecedor_id?: string | null
+          id?: string
+          justificativa?: string | null
+          natureza: Database["public"]["Enums"]["fin_natureza"]
+          observacoes?: string | null
+          pago_em?: string | null
+          recorrencia_grupo?: string | null
+          recorrente?: boolean
+          status?: Database["public"]["Enums"]["fin_status"]
+          updated_at?: string
+          valor: number
+          vencimento: string
+        }
+        Update: {
+          anexos?: Json
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          associado_id?: string | null
+          caixa_id?: string | null
+          categoria_id?: string | null
+          centro_custo_id?: string | null
+          competencia?: string
+          conta_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          demo?: boolean
+          descricao?: string
+          documento?: string | null
+          estorno_de?: string | null
+          forma_pagamento?: string | null
+          fornecedor_id?: string | null
+          id?: string
+          justificativa?: string | null
+          natureza?: Database["public"]["Enums"]["fin_natureza"]
+          observacoes?: string | null
+          pago_em?: string | null
+          recorrencia_grupo?: string | null
+          recorrente?: boolean
+          status?: Database["public"]["Enums"]["fin_status"]
+          updated_at?: string
+          valor?: number
+          vencimento?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fin_lancamentos_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_caixa_id_fkey"
+            columns: ["caixa_id"]
+            isOneToOne: false
+            referencedRelation: "fin_caixas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_categoria_id_fkey"
+            columns: ["categoria_id"]
+            isOneToOne: false
+            referencedRelation: "fin_categorias"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_centro_custo_id_fkey"
+            columns: ["centro_custo_id"]
+            isOneToOne: false
+            referencedRelation: "fin_centros_custo"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_conta_id_fkey"
+            columns: ["conta_id"]
+            isOneToOne: false
+            referencedRelation: "fin_contas_bancarias"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_estorno_de_fkey"
+            columns: ["estorno_de"]
+            isOneToOne: false
+            referencedRelation: "fin_lancamentos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fin_lancamentos_fornecedor_id_fkey"
+            columns: ["fornecedor_id"]
+            isOneToOne: false
+            referencedRelation: "fin_fornecedores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       historico_limite: {
         Row: {
           associado_id: string
@@ -2353,6 +2758,15 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      fin_conta_tipo: "corrente" | "poupanca" | "investimento" | "aplicacao"
+      fin_natureza: "receita" | "despesa"
+      fin_status:
+        | "rascunho"
+        | "pendente"
+        | "aprovado"
+        | "pago"
+        | "cancelado"
+        | "estornado"
       import_batch_status:
         | "rascunho"
         | "validando"
@@ -2524,6 +2938,16 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      fin_conta_tipo: ["corrente", "poupanca", "investimento", "aplicacao"],
+      fin_natureza: ["receita", "despesa"],
+      fin_status: [
+        "rascunho",
+        "pendente",
+        "aprovado",
+        "pago",
+        "cancelado",
+        "estornado",
+      ],
       import_batch_status: [
         "rascunho",
         "validando",
