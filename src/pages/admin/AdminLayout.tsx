@@ -119,6 +119,10 @@ export default function AdminLayout() {
   if (!ready) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
 
   const visibleNav = isPrevidencia ? nav.filter((n) => PREVIDENCIA_ALLOWED.has(n.to)) : nav;
+  const visibleOperacional = isPrevidencia
+    ? navOperacional.filter((n) => PREVIDENCIA_ALLOWED.has(n.to))
+    : navOperacional;
+  const allNav = [...visibleNav, ...visibleOperacional];
 
   const SidebarInner = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
