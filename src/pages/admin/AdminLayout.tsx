@@ -147,12 +147,15 @@ export default function AdminLayout() {
           <kbd className="text-[10px] font-mono border rounded px-1.5 py-0.5">Ctrl K</kbd>
         </button>
       </div>
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto" aria-label="Navegação administrativa">
+        <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Institucional
+        </p>
         {visibleNav.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
-            end={item.end}
+            end={(item as { end?: boolean }).end}
             onClick={onNavigate}
             className={({ isActive }) =>
               `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
@@ -164,6 +167,28 @@ export default function AdminLayout() {
             {item.label}
           </NavLink>
         ))}
+        {visibleOperacional.length > 0 && (
+          <>
+            <p className="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Operacional
+            </p>
+            {visibleOperacional.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={onNavigate}
+                className={({ isActive }) =>
+                  `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                    isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                  }`
+                }
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </NavLink>
+            ))}
+          </>
+        )}
       </nav>
       <div className="p-3 border-t">
         <Button variant="outline" size="sm" className="w-full" onClick={logout}>
