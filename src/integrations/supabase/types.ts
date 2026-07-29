@@ -3652,6 +3652,158 @@ export type Database = {
         }
         Relationships: []
       }
+      rh_afastamentos: {
+        Row: {
+          aprovado_em: string | null
+          aprovado_por: string | null
+          colaborador_id: string
+          created_at: string
+          data_fim: string | null
+          data_inicio: string
+          dias: number | null
+          documento_path: string | null
+          id: string
+          observacoes: string | null
+          possui_atestado: boolean
+          registrado_por: string | null
+          status: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo: Database["public"]["Enums"]["rh_tipo_afastamento"]
+          updated_at: string
+        }
+        Insert: {
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          colaborador_id: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio: string
+          dias?: number | null
+          documento_path?: string | null
+          id?: string
+          observacoes?: string | null
+          possui_atestado?: boolean
+          registrado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo?: Database["public"]["Enums"]["rh_tipo_afastamento"]
+          updated_at?: string
+        }
+        Update: {
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          colaborador_id?: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          dias?: number | null
+          documento_path?: string | null
+          id?: string
+          observacoes?: string | null
+          possui_atestado?: boolean
+          registrado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo?: Database["public"]["Enums"]["rh_tipo_afastamento"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_afastamentos_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_beneficio_concessoes: {
+        Row: {
+          ativo: boolean
+          beneficio_id: string
+          colaborador_id: string
+          created_at: string
+          data_fim: string | null
+          data_inicio: string
+          id: string
+          observacoes: string | null
+          updated_at: string
+          valor: number | null
+        }
+        Insert: {
+          ativo?: boolean
+          beneficio_id: string
+          colaborador_id: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          observacoes?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Update: {
+          ativo?: boolean
+          beneficio_id?: string
+          colaborador_id?: string
+          created_at?: string
+          data_fim?: string | null
+          data_inicio?: string
+          id?: string
+          observacoes?: string | null
+          updated_at?: string
+          valor?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_beneficio_concessoes_beneficio_id_fkey"
+            columns: ["beneficio_id"]
+            isOneToOne: false
+            referencedRelation: "rh_beneficios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_beneficio_concessoes_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_beneficios: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          desconto_colaborador: number | null
+          descricao: string | null
+          id: string
+          nome: string
+          tipo: string | null
+          updated_at: string
+          valor_padrao: number | null
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          desconto_colaborador?: number | null
+          descricao?: string | null
+          id?: string
+          nome: string
+          tipo?: string | null
+          updated_at?: string
+          valor_padrao?: number | null
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          desconto_colaborador?: number | null
+          descricao?: string | null
+          id?: string
+          nome?: string
+          tipo?: string | null
+          updated_at?: string
+          valor_padrao?: number | null
+        }
+        Relationships: []
+      }
       rh_cargos: {
         Row: {
           ativo: boolean
@@ -3716,6 +3868,7 @@ export type Database = {
           telefone: string | null
           uf: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           bairro?: string | null
@@ -3741,6 +3894,7 @@ export type Database = {
           telefone?: string | null
           uf?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           bairro?: string | null
@@ -3766,6 +3920,7 @@ export type Database = {
           telefone?: string | null
           uf?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -3860,6 +4015,127 @@ export type Database = {
           },
         ]
       }
+      rh_ferias: {
+        Row: {
+          abono_pecuniario: boolean
+          aprovado_em: string | null
+          aprovado_por: string | null
+          colaborador_id: string
+          created_at: string
+          data_fim: string
+          data_inicio: string
+          dias: number | null
+          dias_abono: number | null
+          id: string
+          justificativa: string | null
+          observacoes: string | null
+          periodo_aquisitivo_fim: string | null
+          periodo_aquisitivo_inicio: string | null
+          solicitado_por: string | null
+          status: Database["public"]["Enums"]["rh_status_solicitacao"]
+          updated_at: string
+        }
+        Insert: {
+          abono_pecuniario?: boolean
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          colaborador_id: string
+          created_at?: string
+          data_fim: string
+          data_inicio: string
+          dias?: number | null
+          dias_abono?: number | null
+          id?: string
+          justificativa?: string | null
+          observacoes?: string | null
+          periodo_aquisitivo_fim?: string | null
+          periodo_aquisitivo_inicio?: string | null
+          solicitado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          updated_at?: string
+        }
+        Update: {
+          abono_pecuniario?: boolean
+          aprovado_em?: string | null
+          aprovado_por?: string | null
+          colaborador_id?: string
+          created_at?: string
+          data_fim?: string
+          data_inicio?: string
+          dias?: number | null
+          dias_abono?: number | null
+          id?: string
+          justificativa?: string | null
+          observacoes?: string | null
+          periodo_aquisitivo_fim?: string | null
+          periodo_aquisitivo_inicio?: string | null
+          solicitado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_ferias_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_frequencia: {
+        Row: {
+          abonado: boolean
+          colaborador_id: string
+          created_at: string
+          data: string
+          hora_entrada: string | null
+          hora_saida: string | null
+          horas_trabalhadas: number | null
+          id: string
+          justificativa: string | null
+          registrado_por: string | null
+          tipo: Database["public"]["Enums"]["rh_tipo_frequencia"]
+          updated_at: string
+        }
+        Insert: {
+          abonado?: boolean
+          colaborador_id: string
+          created_at?: string
+          data: string
+          hora_entrada?: string | null
+          hora_saida?: string | null
+          horas_trabalhadas?: number | null
+          id?: string
+          justificativa?: string | null
+          registrado_por?: string | null
+          tipo?: Database["public"]["Enums"]["rh_tipo_frequencia"]
+          updated_at?: string
+        }
+        Update: {
+          abonado?: boolean
+          colaborador_id?: string
+          created_at?: string
+          data?: string
+          hora_entrada?: string | null
+          hora_saida?: string | null
+          horas_trabalhadas?: number | null
+          id?: string
+          justificativa?: string | null
+          registrado_por?: string | null
+          tipo?: Database["public"]["Enums"]["rh_tipo_frequencia"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_frequencia_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rh_historico: {
         Row: {
           created_at: string
@@ -3890,6 +4166,48 @@ export type Database = {
           user_id?: string | null
           valor_anterior?: Json | null
           valor_novo?: Json | null
+        }
+        Relationships: []
+      }
+      rh_jornadas: {
+        Row: {
+          ativo: boolean
+          carga_semanal: number | null
+          created_at: string
+          dias_semana: number[]
+          hora_entrada: string | null
+          hora_saida: string | null
+          id: string
+          intervalo_minutos: number | null
+          nome: string
+          observacoes: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          carga_semanal?: number | null
+          created_at?: string
+          dias_semana?: number[]
+          hora_entrada?: string | null
+          hora_saida?: string | null
+          id?: string
+          intervalo_minutos?: number | null
+          nome: string
+          observacoes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          carga_semanal?: number | null
+          created_at?: string
+          dias_semana?: number[]
+          hora_entrada?: string | null
+          hora_saida?: string | null
+          id?: string
+          intervalo_minutos?: number | null
+          nome?: string
+          observacoes?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -3984,6 +4302,56 @@ export type Database = {
             columns: ["unidade_id"]
             isOneToOne: false
             referencedRelation: "rh_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_solicitacoes: {
+        Row: {
+          colaborador_id: string
+          created_at: string
+          descricao: string | null
+          id: string
+          respondido_em: string | null
+          respondido_por: string | null
+          resposta: string | null
+          solicitado_por: string | null
+          status: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo: string
+          updated_at: string
+        }
+        Insert: {
+          colaborador_id: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          respondido_em?: string | null
+          respondido_por?: string | null
+          resposta?: string | null
+          solicitado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo: string
+          updated_at?: string
+        }
+        Update: {
+          colaborador_id?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          respondido_em?: string | null
+          respondido_por?: string | null
+          resposta?: string | null
+          solicitado_por?: string | null
+          status?: Database["public"]["Enums"]["rh_status_solicitacao"]
+          tipo?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_solicitacoes_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
             referencedColumns: ["id"]
           },
         ]
@@ -4811,6 +5179,29 @@ export type Database = {
         | "ferias"
         | "desligado"
         | "suspenso"
+      rh_status_solicitacao:
+        | "solicitado"
+        | "aprovado"
+        | "reprovado"
+        | "cancelado"
+        | "concluido"
+      rh_tipo_afastamento:
+        | "atestado_medico"
+        | "licenca_maternidade"
+        | "licenca_paternidade"
+        | "acidente_trabalho"
+        | "licenca_nao_remunerada"
+        | "suspensao"
+        | "outro"
+      rh_tipo_frequencia:
+        | "normal"
+        | "falta"
+        | "falta_abonada"
+        | "ferias"
+        | "afastamento"
+        | "feriado"
+        | "folga"
+        | "hora_extra"
       rh_tipo_vinculo:
         | "clt"
         | "estagio"
@@ -5085,6 +5476,32 @@ export const Constants = {
         "ferias",
         "desligado",
         "suspenso",
+      ],
+      rh_status_solicitacao: [
+        "solicitado",
+        "aprovado",
+        "reprovado",
+        "cancelado",
+        "concluido",
+      ],
+      rh_tipo_afastamento: [
+        "atestado_medico",
+        "licenca_maternidade",
+        "licenca_paternidade",
+        "acidente_trabalho",
+        "licenca_nao_remunerada",
+        "suspensao",
+        "outro",
+      ],
+      rh_tipo_frequencia: [
+        "normal",
+        "falta",
+        "falta_abonada",
+        "ferias",
+        "afastamento",
+        "feriado",
+        "folga",
+        "hora_extra",
       ],
       rh_tipo_vinculo: [
         "clt",

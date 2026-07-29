@@ -4,6 +4,11 @@ import { Users } from 'lucide-react';
 import DashboardTab from './rh/DashboardTab';
 import ColaboradoresTab from './rh/ColaboradoresTab';
 import EstruturaTab from './rh/EstruturaTab';
+import FrequenciaTab from './rh/FrequenciaTab';
+import FeriasTab from './rh/FeriasTab';
+import AfastamentosTab from './rh/AfastamentosTab';
+import BeneficiosTab from './rh/BeneficiosTab';
+import SolicitacoesTab from './rh/SolicitacoesTab';
 import HistoricoTab from './rh/HistoricoTab';
 
 export default function AdminRH() {
@@ -26,6 +31,11 @@ export default function AdminRH() {
           <TabsTrigger value="painel">Painel</TabsTrigger>
           <TabsTrigger value="colaboradores">Colaboradores</TabsTrigger>
           <TabsTrigger value="estrutura">Estrutura organizacional</TabsTrigger>
+          <TabsTrigger value="frequencia">Jornada e frequência</TabsTrigger>
+          <TabsTrigger value="ferias">Férias</TabsTrigger>
+          <TabsTrigger value="afastamentos">Afastamentos</TabsTrigger>
+          <TabsTrigger value="beneficios">Benefícios</TabsTrigger>
+          <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
         </TabsList>
 
@@ -37,6 +47,21 @@ export default function AdminRH() {
         </TabsContent>
         <TabsContent value="estrutura" className="mt-4">
           <EstruturaTab />
+        </TabsContent>
+        <TabsContent value="frequencia" className="mt-4">
+          <FrequenciaTab />
+        </TabsContent>
+        <TabsContent value="ferias" className="mt-4">
+          <FeriasTab />
+        </TabsContent>
+        <TabsContent value="afastamentos" className="mt-4">
+          <AfastamentosTab />
+        </TabsContent>
+        <TabsContent value="beneficios" className="mt-4">
+          <BeneficiosTab />
+        </TabsContent>
+        <TabsContent value="solicitacoes" className="mt-4">
+          <SolicitacoesTab />
         </TabsContent>
         <TabsContent value="historico" className="mt-4">
           <HistoricoTab />
