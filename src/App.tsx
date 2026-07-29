@@ -163,7 +163,9 @@ const App = () => (
               <Route path="/portal/*" element={<PortalAlias />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminHome />} />
+                <Route index element={<AdminVisaoGeral />} />
+                <Route path="painel" element={<AdminHome />} />
+                <Route path="usuarios" element={<AdminUsuarios />} />
                 {/* Hubs dos módulos institucionais */}
                 <Route path="previdencia" element={<AdminPrevidencia />} />
                 <Route path="saude" element={<AdminSaude />} />
