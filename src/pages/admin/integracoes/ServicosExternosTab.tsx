@@ -137,14 +137,11 @@ export default function ServicosExternosTab() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Plug className="w-6 h-6 text-primary" /> Integrações
-        </h1>
-        <p className="text-muted-foreground">
-          Conecte serviços externos para expandir os recursos do portal SBPM.
-        </p>
-      </div>
+      <p className="text-sm text-muted-foreground">
+        Serviços externos de apoio (mensageria, e-mail e automações). As integrações institucionais
+        de dados ficam na aba <strong>Conectores</strong>.
+      </p>
+
 
       <div className="grid md:grid-cols-2 gap-4">
         {integracoes.map((integ) => {
