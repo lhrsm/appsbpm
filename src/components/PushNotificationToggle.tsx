@@ -4,7 +4,6 @@ import { Bell, BellOff, Loader2 } from "lucide-react";
 import { portalCall } from "@/lib/portal";
 import { toast } from "sonner";
 import { requestFcmToken } from "@/lib/firebase";
-import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   associadoId?: string | null;
