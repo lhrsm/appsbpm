@@ -87,6 +87,7 @@ const BodySchema = z.discriminatedUnion('action', [
     documento_id: z.string().uuid(),
   }),
   z.object({ action: z.literal('acessos'), token: z.string().min(1).max(2000) }),
+  z.object({ action: z.literal('privacidade'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('solicitacoes_listar'), token: z.string().min(1).max(2000) }),
   z.object({
     action: z.literal('solicitacoes_criar'),
@@ -296,6 +297,37 @@ Deno.serve(async (req) => {
         : q.eq('associado_id', sessao.aid).is('dependente_id', null);
       const { data } = await q;
       return json({ itens: data || [] });
+    }
+
+    if (body.action === 'privacidade') {
+      let acessosQ = admin
+        .from('acessos_log')
+        .select('id, created_at, tipo_usuario, metodo_login, ip, user_agent, sucesso')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      acessosQ = sessao.did
+        ? acessosQ.eq('dependente_id', sessao.did)
+        : acessosQ.eq('associado_id', sessao.aid).is('dependente_id', null);
+
+      const [consentimentos, solicitacoes, acessos] = await Promise.all([
+        admin
+          .from('consentimentos')
+          .select('*')
+          .eq('associado_id', sessao.aid)
+          .order('aceito_em', { ascending: false }),
+        admin
+          .from('solicitacoes_privacidade')
+          .select('*')
+          .eq('associado_id', sessao.aid)
+          .order('created_at', { ascending: false }),
+        acessosQ,
+      ]);
+
+      return json({
+        consentimentos: consentimentos.data || [],
+        solicitacoes: solicitacoes.data || [],
+        acessos: acessos.data || [],
+      });
     }
 
     if (body.action === 'solicitacoes_listar') {
