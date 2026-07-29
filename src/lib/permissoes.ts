@@ -88,6 +88,7 @@ export const ROTA_MODULO: Record<string, string> = {
   "/admin/componentes": "configuracoes",
   "/admin/aniversariantes": "associados",
   "/admin/sobre": "*",
+  "/admin/tutoriais": "*",
 };
 
 export const rotaParaModulo = (pathname: string): string => {
