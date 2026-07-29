@@ -81,6 +81,7 @@ const AdminFAQ = lazy(() => import("./pages/admin/AdminFAQ"));
 const AdminAvaliacoes = lazy(() => import("./pages/admin/AdminAvaliacoes"));
 const AdminPrivacidade = lazy(() => import("./pages/admin/AdminPrivacidade"));
 const AdminSobre = lazy(() => import("./pages/admin/AdminSobre"));
+const AdminTutoriais = lazy(() => import("./pages/admin/AdminTutoriais"));
 
 // Lazy: hubs dos módulos institucionais (área administrativa interna)
 const AdminPrevidencia = lazy(() => import("./pages/admin/AdminPrevidencia"));
