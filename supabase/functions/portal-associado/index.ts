@@ -87,6 +87,12 @@ const BodySchema = z.discriminatedUnion('action', [
     documento_id: z.string().uuid(),
   }),
   z.object({ action: z.literal('acessos'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('push_registrar'),
+    token: z.string().min(1).max(2000),
+    fcm_token: z.string().min(10).max(500),
+    user_agent: z.string().max(500).optional(),
+  }),
   z.object({ action: z.literal('notificacoes_listar'), token: z.string().min(1).max(2000) }),
   z.object({
     action: z.literal('notificacoes_marcar'),
@@ -303,6 +309,21 @@ Deno.serve(async (req) => {
         : q.eq('associado_id', sessao.aid).is('dependente_id', null);
       const { data } = await q;
       return json({ itens: data || [] });
+    }
+
+    if (body.action === 'push_registrar') {
+      const { error } = await admin.from('push_tokens').upsert(
+        {
+          token: body.fcm_token,
+          associado_id: sessao.did ? null : sessao.aid,
+          dependente_id: sessao.did ?? null,
+          user_agent: body.user_agent ?? null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'token' },
+      );
+      if (error) throw error;
+      return json({ ok: true });
     }
 
     if (body.action === 'notificacoes_listar') {
