@@ -9,6 +9,7 @@ import FeriasTab from './rh/FeriasTab';
 import AfastamentosTab from './rh/AfastamentosTab';
 import BeneficiosTab from './rh/BeneficiosTab';
 import SolicitacoesTab from './rh/SolicitacoesTab';
+import FolhaTab from './rh/FolhaTab';
 import HistoricoTab from './rh/HistoricoTab';
 
 export default function AdminRH() {
@@ -36,6 +37,8 @@ export default function AdminRH() {
           <TabsTrigger value="afastamentos">Afastamentos</TabsTrigger>
           <TabsTrigger value="beneficios">Benefícios</TabsTrigger>
           <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+          <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+          <TabsTrigger value="folha">Folha de pagamento</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
         </TabsList>
 
@@ -62,6 +65,9 @@ export default function AdminRH() {
         </TabsContent>
         <TabsContent value="solicitacoes" className="mt-4">
           <SolicitacoesTab />
+        </TabsContent>
+        <TabsContent value="folha" className="mt-4">
+          <FolhaTab />
         </TabsContent>
         <TabsContent value="historico" className="mt-4">
           <HistoricoTab />

@@ -4083,6 +4083,193 @@ export type Database = {
           },
         ]
       }
+      rh_folha_itens: {
+        Row: {
+          base_fgts: number
+          base_inss: number
+          base_irrf: number
+          colaborador_id: string
+          created_at: string
+          folha_id: string
+          id: string
+          observacoes: string | null
+          salario_base: number
+          total_descontos: number
+          total_liquido: number
+          total_proventos: number
+          updated_at: string
+          vinculo_id: string | null
+        }
+        Insert: {
+          base_fgts?: number
+          base_inss?: number
+          base_irrf?: number
+          colaborador_id: string
+          created_at?: string
+          folha_id: string
+          id?: string
+          observacoes?: string | null
+          salario_base?: number
+          total_descontos?: number
+          total_liquido?: number
+          total_proventos?: number
+          updated_at?: string
+          vinculo_id?: string | null
+        }
+        Update: {
+          base_fgts?: number
+          base_inss?: number
+          base_irrf?: number
+          colaborador_id?: string
+          created_at?: string
+          folha_id?: string
+          id?: string
+          observacoes?: string | null
+          salario_base?: number
+          total_descontos?: number
+          total_liquido?: number
+          total_proventos?: number
+          updated_at?: string
+          vinculo_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_folha_itens_colaborador_id_fkey"
+            columns: ["colaborador_id"]
+            isOneToOne: false
+            referencedRelation: "rh_colaboradores"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_folha_itens_folha_id_fkey"
+            columns: ["folha_id"]
+            isOneToOne: false
+            referencedRelation: "rh_folhas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_folha_itens_vinculo_id_fkey"
+            columns: ["vinculo_id"]
+            isOneToOne: false
+            referencedRelation: "rh_vinculos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_folha_lancamentos: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          item_id: string
+          observacoes: string | null
+          origem: string
+          referencia: string | null
+          updated_at: string
+          valor: number
+          verba_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          item_id: string
+          observacoes?: string | null
+          origem?: string
+          referencia?: string | null
+          updated_at?: string
+          valor?: number
+          verba_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          item_id?: string
+          observacoes?: string | null
+          origem?: string
+          referencia?: string | null
+          updated_at?: string
+          valor?: number
+          verba_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rh_folha_lancamentos_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "rh_folha_itens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rh_folha_lancamentos_verba_id_fkey"
+            columns: ["verba_id"]
+            isOneToOne: false
+            referencedRelation: "rh_verbas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rh_folhas: {
+        Row: {
+          competencia: string
+          created_at: string
+          created_by: string | null
+          data_pagamento: string | null
+          descricao: string | null
+          fechada_em: string | null
+          fechada_por: string | null
+          id: string
+          observacoes: string | null
+          periodo_fim: string | null
+          periodo_inicio: string | null
+          status: Database["public"]["Enums"]["rh_folha_status"]
+          tipo: Database["public"]["Enums"]["rh_folha_tipo"]
+          total_descontos: number
+          total_liquido: number
+          total_proventos: number
+          updated_at: string
+        }
+        Insert: {
+          competencia: string
+          created_at?: string
+          created_by?: string | null
+          data_pagamento?: string | null
+          descricao?: string | null
+          fechada_em?: string | null
+          fechada_por?: string | null
+          id?: string
+          observacoes?: string | null
+          periodo_fim?: string | null
+          periodo_inicio?: string | null
+          status?: Database["public"]["Enums"]["rh_folha_status"]
+          tipo?: Database["public"]["Enums"]["rh_folha_tipo"]
+          total_descontos?: number
+          total_liquido?: number
+          total_proventos?: number
+          updated_at?: string
+        }
+        Update: {
+          competencia?: string
+          created_at?: string
+          created_by?: string | null
+          data_pagamento?: string | null
+          descricao?: string | null
+          fechada_em?: string | null
+          fechada_por?: string | null
+          id?: string
+          observacoes?: string | null
+          periodo_fim?: string | null
+          periodo_inicio?: string | null
+          status?: Database["public"]["Enums"]["rh_folha_status"]
+          tipo?: Database["public"]["Enums"]["rh_folha_tipo"]
+          total_descontos?: number
+          total_liquido?: number
+          total_proventos?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       rh_frequencia: {
         Row: {
           abonado: boolean
@@ -4394,6 +4581,51 @@ export type Database = {
           nome?: string
           observacoes?: string | null
           uf?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rh_verbas: {
+        Row: {
+          ativo: boolean
+          automatica: boolean
+          codigo: string
+          created_at: string
+          descricao: string | null
+          id: string
+          incide_fgts: boolean
+          incide_inss: boolean
+          incide_irrf: boolean
+          nome: string
+          tipo: Database["public"]["Enums"]["rh_verba_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          automatica?: boolean
+          codigo: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          incide_fgts?: boolean
+          incide_inss?: boolean
+          incide_irrf?: boolean
+          nome: string
+          tipo?: Database["public"]["Enums"]["rh_verba_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          automatica?: boolean
+          codigo?: string
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          incide_fgts?: boolean
+          incide_inss?: boolean
+          incide_irrf?: boolean
+          nome?: string
+          tipo?: Database["public"]["Enums"]["rh_verba_tipo"]
           updated_at?: string
         }
         Relationships: []
@@ -5173,6 +5405,19 @@ export type Database = {
         | "aprovar"
         | "exportar"
         | "configurar"
+      rh_folha_status:
+        | "rascunho"
+        | "em_calculo"
+        | "conferida"
+        | "fechada"
+        | "paga"
+        | "cancelada"
+      rh_folha_tipo:
+        | "mensal"
+        | "decimo_terceiro"
+        | "ferias"
+        | "rescisao"
+        | "complementar"
       rh_situacao_colaborador:
         | "ativo"
         | "afastado"
@@ -5211,6 +5456,7 @@ export type Database = {
         | "prestador"
         | "estatutario"
         | "cedido"
+      rh_verba_tipo: "provento" | "desconto" | "informativa"
       status_carencia: "liberado" | "em_carencia"
       tipo_dependente: "conjuge" | "filho" | "pai_mae" | "outro"
     }
@@ -5470,6 +5716,21 @@ export const Constants = {
         "exportar",
         "configurar",
       ],
+      rh_folha_status: [
+        "rascunho",
+        "em_calculo",
+        "conferida",
+        "fechada",
+        "paga",
+        "cancelada",
+      ],
+      rh_folha_tipo: [
+        "mensal",
+        "decimo_terceiro",
+        "ferias",
+        "rescisao",
+        "complementar",
+      ],
       rh_situacao_colaborador: [
         "ativo",
         "afastado",
@@ -5513,6 +5774,7 @@ export const Constants = {
         "estatutario",
         "cedido",
       ],
+      rh_verba_tipo: ["provento", "desconto", "informativa"],
       status_carencia: ["liberado", "em_carencia"],
       tipo_dependente: ["conjuge", "filho", "pai_mae", "outro"],
     },
