@@ -62,11 +62,10 @@ export default function Solicitacoes() {
   const load = async () => {
     if (!associado) return;
     setLoading(true);
-    let q = supabase.from('solicitacoes').select('*').eq('associado_id', associado.id);
-    if (isDependente && dependenteLogado) q = q.eq('dependente_id', dependenteLogado.id);
-    const { data } = await q.order('created_at', { ascending: false });
-    setItems((data as any) || []);
+    const { itens } = await portalCall<{ itens: any[] }>('solicitacoes_listar').catch(() => ({ itens: [] }));
+    setItems((itens as any) || []);
     setLoading(false);
+
   };
 
   useEffect(() => { load(); }, [associado?.id]);
