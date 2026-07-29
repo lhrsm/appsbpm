@@ -475,6 +475,76 @@ export type Database = {
           },
         ]
       }
+      data_conflicts: {
+        Row: {
+          batch_id: string | null
+          campo: string
+          chave: string | null
+          connector_id: string | null
+          created_at: string
+          entidade: string
+          id: string
+          resolvido_em: string | null
+          resolvido_por: string | null
+          row_id: string | null
+          status: string
+          valor_atual: string | null
+          valor_novo: string | null
+        }
+        Insert: {
+          batch_id?: string | null
+          campo: string
+          chave?: string | null
+          connector_id?: string | null
+          created_at?: string
+          entidade: string
+          id?: string
+          resolvido_em?: string | null
+          resolvido_por?: string | null
+          row_id?: string | null
+          status?: string
+          valor_atual?: string | null
+          valor_novo?: string | null
+        }
+        Update: {
+          batch_id?: string | null
+          campo?: string
+          chave?: string | null
+          connector_id?: string | null
+          created_at?: string
+          entidade?: string
+          id?: string
+          resolvido_em?: string | null
+          resolvido_por?: string | null
+          row_id?: string | null
+          status?: string
+          valor_atual?: string | null
+          valor_novo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_conflicts_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "import_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_conflicts_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_conflicts_row_id_fkey"
+            columns: ["row_id"]
+            isOneToOne: false
+            referencedRelation: "import_rows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dependentes: {
         Row: {
           assinatura_url: string | null
@@ -740,6 +810,50 @@ export type Database = {
         }
         Relationships: []
       }
+      field_mappings: {
+        Row: {
+          connector_id: string | null
+          created_at: string
+          created_by: string | null
+          entidade: string
+          id: string
+          mapeamento: Json
+          nome: string
+          padrao: boolean
+          updated_at: string
+        }
+        Insert: {
+          connector_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          entidade: string
+          id?: string
+          mapeamento?: Json
+          nome: string
+          padrao?: boolean
+          updated_at?: string
+        }
+        Update: {
+          connector_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          entidade?: string
+          id?: string
+          mapeamento?: Json
+          nome?: string
+          padrao?: boolean
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "field_mappings_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       historico_limite: {
         Row: {
           associado_id: string
@@ -781,6 +895,199 @@ export type Database = {
             columns: ["dependente_id"]
             isOneToOne: false
             referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      import_batches: {
+        Row: {
+          arquivo_nome: string
+          arquivo_path: string | null
+          arquivo_tamanho: number | null
+          arquivo_tipo: string | null
+          connector_id: string | null
+          created_at: string
+          criado_por: string | null
+          criado_por_email: string | null
+          entidade: string
+          id: string
+          mapeamento: Json
+          observacoes: string | null
+          origem: string
+          pode_desfazer: boolean
+          revertido_em: string | null
+          revertido_por: string | null
+          status: Database["public"]["Enums"]["import_batch_status"]
+          tempo_processamento_ms: number | null
+          total_duplicados: number
+          total_erros: number
+          total_ignorados: number
+          total_importados: number
+          total_recebidos: number
+          total_validos: number
+          updated_at: string
+        }
+        Insert: {
+          arquivo_nome: string
+          arquivo_path?: string | null
+          arquivo_tamanho?: number | null
+          arquivo_tipo?: string | null
+          connector_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          entidade: string
+          id?: string
+          mapeamento?: Json
+          observacoes?: string | null
+          origem?: string
+          pode_desfazer?: boolean
+          revertido_em?: string | null
+          revertido_por?: string | null
+          status?: Database["public"]["Enums"]["import_batch_status"]
+          tempo_processamento_ms?: number | null
+          total_duplicados?: number
+          total_erros?: number
+          total_ignorados?: number
+          total_importados?: number
+          total_recebidos?: number
+          total_validos?: number
+          updated_at?: string
+        }
+        Update: {
+          arquivo_nome?: string
+          arquivo_path?: string | null
+          arquivo_tamanho?: number | null
+          arquivo_tipo?: string | null
+          connector_id?: string | null
+          created_at?: string
+          criado_por?: string | null
+          criado_por_email?: string | null
+          entidade?: string
+          id?: string
+          mapeamento?: Json
+          observacoes?: string | null
+          origem?: string
+          pode_desfazer?: boolean
+          revertido_em?: string | null
+          revertido_por?: string | null
+          status?: Database["public"]["Enums"]["import_batch_status"]
+          tempo_processamento_ms?: number | null
+          total_duplicados?: number
+          total_erros?: number
+          total_ignorados?: number
+          total_importados?: number
+          total_recebidos?: number
+          total_validos?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_batches_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      import_errors: {
+        Row: {
+          batch_id: string
+          campo: string | null
+          codigo: string
+          created_at: string
+          id: string
+          linha: number | null
+          mensagem: string
+          row_id: string | null
+          severidade: string
+        }
+        Insert: {
+          batch_id: string
+          campo?: string | null
+          codigo?: string
+          created_at?: string
+          id?: string
+          linha?: number | null
+          mensagem: string
+          row_id?: string | null
+          severidade?: string
+        }
+        Update: {
+          batch_id?: string
+          campo?: string | null
+          codigo?: string
+          created_at?: string
+          id?: string
+          linha?: number | null
+          mensagem?: string
+          row_id?: string | null
+          severidade?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_errors_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "import_batches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "import_errors_row_id_fkey"
+            columns: ["row_id"]
+            isOneToOne: false
+            referencedRelation: "import_rows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      import_rows: {
+        Row: {
+          acao: string | null
+          batch_id: string
+          chave: string | null
+          created_at: string
+          dados_normalizados: Json
+          dados_originais: Json
+          id: string
+          linha: number
+          mensagem: string | null
+          registro_id: string | null
+          status: Database["public"]["Enums"]["import_row_status"]
+        }
+        Insert: {
+          acao?: string | null
+          batch_id: string
+          chave?: string | null
+          created_at?: string
+          dados_normalizados?: Json
+          dados_originais?: Json
+          id?: string
+          linha: number
+          mensagem?: string | null
+          registro_id?: string | null
+          status?: Database["public"]["Enums"]["import_row_status"]
+        }
+        Update: {
+          acao?: string | null
+          batch_id?: string
+          chave?: string | null
+          created_at?: string
+          dados_normalizados?: Json
+          dados_originais?: Json
+          id?: string
+          linha?: number
+          mensagem?: string | null
+          registro_id?: string | null
+          status?: Database["public"]["Enums"]["import_row_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_rows_batch_id_fkey"
+            columns: ["batch_id"]
+            isOneToOne: false
+            referencedRelation: "import_batches"
             referencedColumns: ["id"]
           },
         ]
@@ -874,6 +1181,116 @@ export type Database = {
             columns: ["dependente_id"]
             isOneToOne: false
             referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_connectors: {
+        Row: {
+          ativo: boolean
+          codigo: string
+          config: Json
+          created_at: string
+          descricao: string | null
+          entidades: string[]
+          id: string
+          modulo: string
+          nome: string
+          secret_refs: string[]
+          sistema: string
+          status: Database["public"]["Enums"]["integration_status"]
+          tipo_fonte: Database["public"]["Enums"]["integration_source_type"]
+          ultima_sincronizacao: string | null
+          ultimo_erro: string | null
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          codigo: string
+          config?: Json
+          created_at?: string
+          descricao?: string | null
+          entidades?: string[]
+          id?: string
+          modulo?: string
+          nome: string
+          secret_refs?: string[]
+          sistema: string
+          status?: Database["public"]["Enums"]["integration_status"]
+          tipo_fonte?: Database["public"]["Enums"]["integration_source_type"]
+          ultima_sincronizacao?: string | null
+          ultimo_erro?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          codigo?: string
+          config?: Json
+          created_at?: string
+          descricao?: string | null
+          entidades?: string[]
+          id?: string
+          modulo?: string
+          nome?: string
+          secret_refs?: string[]
+          sistema?: string
+          status?: Database["public"]["Enums"]["integration_status"]
+          tipo_fonte?: Database["public"]["Enums"]["integration_source_type"]
+          ultima_sincronizacao?: string | null
+          ultimo_erro?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      integration_runs: {
+        Row: {
+          connector_id: string | null
+          created_at: string
+          detalhes: Json
+          duracao_ms: number | null
+          executado_por: string | null
+          executado_por_email: string | null
+          finalizado_em: string | null
+          id: string
+          iniciado_em: string
+          mensagem: string | null
+          status: string
+          tipo: string
+        }
+        Insert: {
+          connector_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          duracao_ms?: number | null
+          executado_por?: string | null
+          executado_por_email?: string | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          status?: string
+          tipo?: string
+        }
+        Update: {
+          connector_id?: string | null
+          created_at?: string
+          detalhes?: Json
+          duracao_ms?: number | null
+          executado_por?: string | null
+          executado_por_email?: string | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          status?: string
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_runs_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
             referencedColumns: ["id"]
           },
         ]
@@ -1507,6 +1924,72 @@ export type Database = {
         }
         Relationships: []
       }
+      synchronization_logs: {
+        Row: {
+          connector_id: string | null
+          detalhes: Json
+          entidade: string | null
+          finalizado_em: string | null
+          id: string
+          iniciado_em: string
+          mensagem: string | null
+          registros_atualizados: number
+          registros_ignorados: number
+          registros_inseridos: number
+          registros_processados: number
+          registros_recebidos: number
+          run_id: string | null
+          status: string
+        }
+        Insert: {
+          connector_id?: string | null
+          detalhes?: Json
+          entidade?: string | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          registros_atualizados?: number
+          registros_ignorados?: number
+          registros_inseridos?: number
+          registros_processados?: number
+          registros_recebidos?: number
+          run_id?: string | null
+          status?: string
+        }
+        Update: {
+          connector_id?: string | null
+          detalhes?: Json
+          entidade?: string | null
+          finalizado_em?: string | null
+          id?: string
+          iniciado_em?: string
+          mensagem?: string | null
+          registros_atualizados?: number
+          registros_ignorados?: number
+          registros_inseridos?: number
+          registros_processados?: number
+          registros_recebidos?: number
+          run_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "synchronization_logs_connector_id_fkey"
+            columns: ["connector_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connectors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "synchronization_logs_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "integration_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1703,6 +2186,39 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      import_batch_status:
+        | "rascunho"
+        | "validando"
+        | "validado"
+        | "importando"
+        | "concluido"
+        | "erro"
+        | "revertido"
+        | "cancelado"
+      import_row_status:
+        | "pendente"
+        | "valido"
+        | "duplicado"
+        | "erro"
+        | "importado"
+        | "ignorado"
+        | "revertido"
+      integration_source_type:
+        | "api"
+        | "banco"
+        | "planilha"
+        | "csv"
+        | "arquivo"
+        | "exportacao_manual"
+        | "intermediaria"
+        | "indefinido"
+      integration_status:
+        | "nao_configurado"
+        | "em_configuracao"
+        | "conectado"
+        | "sincronizando"
+        | "com_erro"
+        | "pausado"
       perm_acao:
         | "visualizar"
         | "criar"
@@ -1841,6 +2357,43 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      import_batch_status: [
+        "rascunho",
+        "validando",
+        "validado",
+        "importando",
+        "concluido",
+        "erro",
+        "revertido",
+        "cancelado",
+      ],
+      import_row_status: [
+        "pendente",
+        "valido",
+        "duplicado",
+        "erro",
+        "importado",
+        "ignorado",
+        "revertido",
+      ],
+      integration_source_type: [
+        "api",
+        "banco",
+        "planilha",
+        "csv",
+        "arquivo",
+        "exportacao_manual",
+        "intermediaria",
+        "indefinido",
+      ],
+      integration_status: [
+        "nao_configurado",
+        "em_configuracao",
+        "conectado",
+        "sincronizando",
+        "com_erro",
+        "pausado",
+      ],
       perm_acao: [
         "visualizar",
         "criar",
