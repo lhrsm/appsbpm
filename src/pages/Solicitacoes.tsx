@@ -79,19 +79,20 @@ export default function Solicitacoes() {
     const cat = CATEGORIAS.find(c => c.value === categoria)!;
     const sla = new Date();
     sla.setDate(sla.getDate() + cat.sla);
-    const { error } = await supabase.from('solicitacoes').insert({
-      associado_id: associado.id,
-      dependente_id: isDependente && dependenteLogado ? dependenteLogado.id : null,
-      solicitante_nome: isDependente && dependenteLogado ? dependenteLogado.nome : associado.nome,
-      solicitante_tipo: isDependente ? 'dependente' : 'titular',
-      categoria,
-      assunto: assunto.trim(),
-      descricao: descricao.trim(),
-      prioridade,
-      sla_prazo: sla.toISOString(),
-    });
+    try {
+      await portalCall('solicitacoes_criar', {
+        categoria,
+        assunto: assunto.trim(),
+        descricao: descricao.trim(),
+        prioridade,
+        sla_prazo: sla.toISOString(),
+      });
+    } catch {
+      setSaving(false);
+      return toast.error('Erro ao abrir solicitação');
+    }
     setSaving(false);
-    if (error) return toast.error('Erro ao abrir solicitação');
+
     toast.success('Solicitação enviada com sucesso!');
     setOpen(false);
     setAssunto(''); setDescricao(''); setCategoria('duvida'); setPrioridade('normal');
