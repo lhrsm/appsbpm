@@ -98,7 +98,10 @@ export default function AdminUsuarios() {
     setSalvando(true);
     try {
       if (editando) {
-        const patch: Record<string, unknown> = { nome: form.nome.trim(), setor: form.setor.trim() || null };
+        const patch: { nome: string; setor: string | null; perfil_codigo?: string } = {
+          nome: form.nome.trim(),
+          setor: form.setor.trim() || null,
+        };
         if (editando.user_id !== userId) patch.perfil_codigo = form.perfil_codigo;
         const { error } = await supabase.from("usuarios_internos").update(patch).eq("user_id", editando.user_id);
         if (error) throw error;
