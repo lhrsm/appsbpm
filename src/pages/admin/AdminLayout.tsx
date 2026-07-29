@@ -7,6 +7,9 @@ import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDash
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
+import { PermissoesProvider, usePermissoes } from "@/hooks/usePermissoes";
+import PermissionGuard from "@/components/admin/PermissionGuard";
+import { rotaParaModulo } from "@/lib/permissoes";
 import {
   CommandDialog,
   CommandEmpty,
@@ -216,7 +219,9 @@ function AdminLayoutInner() {
         </header>
 
         <main className="flex-1 p-4 md:p-6 overflow-auto">
-          <Outlet />
+          <PermissionGuard>
+            <Outlet />
+          </PermissionGuard>
         </main>
       </div>
 
@@ -242,5 +247,13 @@ function AdminLayoutInner() {
         </CommandList>
       </CommandDialog>
     </div>
+  );
+}
+
+export default function AdminLayout() {
+  return (
+    <PermissoesProvider>
+      <AdminLayoutInner />
+    </PermissoesProvider>
   );
 }
