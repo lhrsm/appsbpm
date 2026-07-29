@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { supabase } from '@/integrations/supabase/client';
+import { portalCall } from '@/lib/portal';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,25 +43,22 @@ export default function MeusDocumentos() {
     if (!associado) return;
     (async () => {
       setLoading(true);
-      let q = supabase
-        .from('documentos_associado')
-        .select('*')
-        .eq('associado_id', associado.id)
-        .eq('ativo', true);
-      if (isDependente && dependenteLogado) {
-        q = q.or(`visibilidade.eq.todos,dependente_id.eq.${dependenteLogado.id}`);
-      }
-      const { data } = await q.order('publicado_em', { ascending: false });
-      setItems(data || []);
+      const { itens } = await portalCall<{ itens: any[] }>('documentos').catch(() => ({ itens: [] }));
+      setItems(itens || []);
+
       setLoading(false);
     })();
   }, [associado?.id]);
 
   const download = async (doc: any) => {
-    const { data, error } = await supabase.storage.from('documentos').createSignedUrl(doc.arquivo_path, 60);
-    if (error || !data) return toast.error('Não foi possível baixar');
-    window.open(data.signedUrl, '_blank');
+    try {
+      const { url } = await portalCall<{ url: string }>('documento_url', { documento_id: doc.id });
+      window.open(url, '_blank');
+    } catch {
+      toast.error('Não foi possível baixar');
+    }
   };
+
 
   const filtered = items.filter(d => {
     if (cat !== 'todos' && d.categoria !== cat) return false;

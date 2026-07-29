@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { clearPortalToken } from '@/lib/portal';
 
 export interface Dependente {
   id: string;
@@ -92,6 +93,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [dependenteLogado, setDependenteLogado] = useState<Dependente | null>(null);
 
   const logout = () => {
+    clearPortalToken();
     setAssociado(null);
     setDependentes([]);
     setLimite(null);

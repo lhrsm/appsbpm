@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,12 +27,8 @@ export default function HistoricoAcessos() {
     if (!associado?.id) return;
     (async () => {
       setLoading(true);
-      const { data } = await supabase.rpc('meu_historico_acessos', {
-        _associado_id: associado.id,
-        _dependente_id: isDependente ? dependenteLogado?.id ?? null : null,
-        _limit: 50,
-      });
-      setRows((data as Row[]) ?? []);
+      const { acessos } = await portalCall<{ acessos: Row[] }>('privacidade').catch(() => ({ acessos: [] }));
+      setRows(acessos ?? []);
       setLoading(false);
     })();
   }, [associado?.id, dependenteLogado?.id, isDependente]);

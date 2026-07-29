@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { supabase } from '@/integrations/supabase/client';
+import { portalCall } from '@/lib/portal';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -35,25 +36,13 @@ export default function MinhaPrivacidade() {
 
   useEffect(() => {
     if (!associado) return;
-    supabase
-      .from('consentimentos')
-      .select('*')
-      .eq('associado_id', associado.id)
-      .order('aceito_em', { ascending: false })
-      .then(({ data }) => setConsentimentos(data || []));
-    supabase
-      .from('solicitacoes_privacidade')
-      .select('*')
-      .eq('associado_id', associado.id)
-      .order('created_at', { ascending: false })
-      .then(({ data }) => setSolicitacoes(data || []));
-    supabase
-      .rpc('meu_historico_acessos', {
-        _associado_id: associado.id,
-        _dependente_id: isDependente ? dependenteLogado?.id ?? null : null,
-        _limit: 20,
+    portalCall<any>('privacidade')
+      .then((res) => {
+        setConsentimentos(res.consentimentos || []);
+        setSolicitacoes(res.solicitacoes || []);
+        setAcessos(res.acessos || []);
       })
-      .then(({ data }) => setAcessos(data || []));
+      .catch(() => {});
   }, [associado, isDependente, dependenteLogado?.id]);
 
   if (!associado || !alvo) {
@@ -122,12 +111,8 @@ export default function MinhaPrivacidade() {
       toast.success('Solicitação enviada. O DPO responderá em até 15 dias úteis.');
       setDescricao('');
       // recarrega histórico
-      const { data: novas } = await supabase
-        .from('solicitacoes_privacidade')
-        .select('*')
-        .eq('associado_id', associado.id)
-        .order('created_at', { ascending: false });
-      setSolicitacoes(novas || []);
+      const atualizado = await portalCall<any>('privacidade').catch(() => null);
+      if (atualizado) setSolicitacoes(atualizado.solicitacoes || []);
     } catch (err: any) {
       toast.error(err?.message || 'Falha ao enviar solicitação.');
     } finally {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { useInactivityLock } from '@/hooks/useInactivityLock';
 import { Button } from '@/components/ui/button';
@@ -417,28 +418,17 @@ function DashboardHome() {
   useEffect(() => {
     const loadPhoto = async () => {
       if (!associado?.id) return;
-
-      if (isDependente && dependenteLogado?.id) {
-        const { data } = await supabase
-          .from('dependentes')
-          .select('foto_url')
-          .eq('id', dependenteLogado.id)
-          .maybeSingle();
-
-        if (data?.foto_url) {
-          setDependenteLogado({ ...dependenteLogado, foto_url: data.foto_url });
+      try {
+        const res = await portalCall<any>('perfil');
+        if (isDependente && dependenteLogado?.id && res?.dependente?.foto_url) {
+          setDependenteLogado({ ...dependenteLogado, foto_url: res.dependente.foto_url });
+          return;
         }
-        return;
-      }
-
-      const { data } = await supabase
-        .from('associados')
-        .select('foto_url')
-        .eq('id', associado.id)
-        .maybeSingle();
-
-      if (data?.foto_url) {
-        setAssociado({ ...associado, foto_url: data.foto_url });
+        if (res?.associado?.foto_url) {
+          setAssociado({ ...associado, foto_url: res.associado.foto_url });
+        }
+      } catch {
+        /* sessão expirada: mantém o estado atual */
       }
     };
 

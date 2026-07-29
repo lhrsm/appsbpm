@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,59 +73,13 @@ export default function Login() {
 
     try {
       const cleanedCredential = cleanCpf(credential.trim());
-      
-      // Buscar associado pela matrícula ou CPF
-      let associadoData = null;
-      let dependenteData: Dependente | null = null;
-      let isLoginAsDependente = false;
-      
-      // First try by matricula
-      const { data: byMatricula } = await supabase
-        .from('associados')
-        .select('*')
-        .eq('matricula', credential.trim())
-        .eq('ativo', true)
-        .maybeSingle();
-      
-      if (byMatricula) {
-        associadoData = byMatricula;
-      } else {
-        // Try by CPF in associados table
-        const { data: allAssociados } = await supabase
-          .from('associados')
-          .select('*')
-          .eq('ativo', true);
-        
-        associadoData = allAssociados?.find(a => cleanCpf(a.cpf) === cleanedCredential) || null;
-        
-        // If not found in associados, try in dependentes table
-        if (!associadoData) {
-          const { data: allDependentes } = await supabase
-            .from('dependentes')
-            .select('*')
-            .eq('ativo', true);
-          
-          const foundDependente = allDependentes?.find(d => d.cpf && cleanCpf(d.cpf) === cleanedCredential);
-          
-          if (foundDependente) {
-            // Found a dependente, now get the associated associado
-            const { data: associadoDoDepData } = await supabase
-              .from('associados')
-              .select('*')
-              .eq('id', foundDependente.associado_id)
-              .eq('ativo', true)
-              .maybeSingle();
-            
-            if (associadoDoDepData) {
-              associadoData = associadoDoDepData;
-              dependenteData = foundDependente as Dependente;
-              isLoginAsDependente = true;
-            }
-          }
-        }
-      }
 
-      if (!associadoData) {
+      const res = await portalCall<any>('login', {
+        credential: /^\d{11}$/.test(cleanedCredential) ? cleanedCredential : credential.trim(),
+        user_agent: navigator.userAgent.slice(0, 500),
+      });
+
+      if (!res?.token || !res?.associado) {
         toast({
           title: 'Credencial não encontrada',
           description: 'Verifique sua matrícula ou CPF e tente novamente.',
@@ -135,40 +89,23 @@ export default function Login() {
         return;
       }
 
-      // Carregar dados relacionados em paralelo
-      const [dependentesRes, limiteRes, historicoRes, carenciasRes, informesRes] = await Promise.all([
-        supabase.from('dependentes').select('*').eq('associado_id', associadoData.id).eq('ativo', true),
-        supabase.from('limites').select('*').eq('associado_id', associadoData.id).maybeSingle(),
-        supabase.from('historico_limite').select('*').eq('associado_id', associadoData.id).order('data_utilizacao', { ascending: false }),
-        supabase.from('carencias').select('*').eq('associado_id', associadoData.id),
-        supabase.from('informes_rendimentos').select('*').eq('associado_id', associadoData.id).order('ano', { ascending: false }),
-      ]);
+      setPortalToken(res.token);
 
-      setAssociado(associadoData);
-      setDependentes(dependentesRes.data || []);
-      setLimite(limiteRes.data || null);
-      setHistoricoLimite(historicoRes.data || []);
-      setCarencias(carenciasRes.data || []);
-      setInformes(informesRes.data || []);
+      const dependenteData: Dependente | null = res.dependente ?? null;
+      const isLoginAsDependente = Boolean(dependenteData);
+
+      setAssociado(res.associado);
+      setDependentes(res.dependentes || []);
+      setLimite(res.limite || null);
+      setHistoricoLimite(res.historico || []);
+      setCarencias([]);
+      setInformes(res.informes || []);
       setIsDependente(isLoginAsDependente);
       setDependenteLogado(dependenteData);
 
-      // Registrar acesso (best-effort, não bloqueia login)
-      try {
-        await supabase.from('acessos_log').insert({
-          associado_id: associadoData.id,
-          dependente_id: dependenteData?.id ?? null,
-          tipo_usuario: isLoginAsDependente ? 'dependente' : 'titular',
-          metodo_login: /^\d{11}$/.test(cleanedCredential) ? 'cpf' : 'matricula',
-          user_agent: navigator.userAgent.slice(0, 500),
-          sucesso: true,
-        });
-      } catch {}
-
-
-      const nomeExibir = isLoginAsDependente && dependenteData 
-        ? dependenteData.nome.split(' ')[0] 
-        : associadoData.nome.split(' ')[0];
+      const nomeExibir = isLoginAsDependente && dependenteData
+        ? dependenteData.nome.split(' ')[0]
+        : res.associado.nome.split(' ')[0];
 
       toast({
         title: 'Bem-vindo!',
@@ -176,6 +113,7 @@ export default function Login() {
       });
 
       navigate('/dashboard');
+
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       toast({
