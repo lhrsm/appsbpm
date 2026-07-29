@@ -98,7 +98,7 @@ const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque", "/redefinir-senha"
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
-  if (HIDDEN_CHAT_ROUTES.includes(pathname)) return null;
+  if (HIDDEN_CHAT_ROUTES.includes(pathname) || pathname.startsWith("/bem/")) return null;
   return <ChatbotWidget />;
 };
 
