@@ -3868,6 +3868,7 @@ export type Database = {
           telefone: string | null
           uf: string | null
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           bairro?: string | null
@@ -3893,6 +3894,7 @@ export type Database = {
           telefone?: string | null
           uf?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           bairro?: string | null
@@ -3918,6 +3920,7 @@ export type Database = {
           telefone?: string | null
           uf?: string | null
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }

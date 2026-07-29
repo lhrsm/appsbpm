@@ -1,0 +1,2 @@
+ALTER TABLE public.rh_colaboradores ADD COLUMN IF NOT EXISTS user_id uuid;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_rh_colaboradores_user_id ON public.rh_colaboradores (user_id) WHERE user_id IS NOT NULL;
