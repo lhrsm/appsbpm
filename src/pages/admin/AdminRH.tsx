@@ -37,6 +37,8 @@ export default function AdminRH() {
           <TabsTrigger value="afastamentos">Afastamentos</TabsTrigger>
           <TabsTrigger value="beneficios">Benefícios</TabsTrigger>
           <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+          <TabsTrigger value="solicitacoes">Solicitações</TabsTrigger>
+          <TabsTrigger value="folha">Folha de pagamento</TabsTrigger>
           <TabsTrigger value="historico">Histórico</TabsTrigger>
         </TabsList>
 
