@@ -53,6 +53,8 @@ const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminHome = lazy(() => import("./pages/admin/AdminHome"));
+const AdminVisaoGeral = lazy(() => import("./pages/admin/AdminVisaoGeral"));
+const AdminUsuarios = lazy(() => import("./pages/admin/AdminUsuarios"));
 const AdminAssociados = lazy(() => import("./pages/admin/AdminAssociados"));
 const AdminDependentes = lazy(() => import("./pages/admin/AdminDependentes"));
 const AdminLimites = lazy(() => import("./pages/admin/AdminLimites"));
@@ -163,7 +165,9 @@ const App = () => (
               <Route path="/portal/*" element={<PortalAlias />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminHome />} />
+                <Route index element={<AdminVisaoGeral />} />
+                <Route path="painel" element={<AdminHome />} />
+                <Route path="usuarios" element={<AdminUsuarios />} />
                 {/* Hubs dos módulos institucionais */}
                 <Route path="previdencia" element={<AdminPrevidencia />} />
                 <Route path="saude" element={<AdminSaude />} />

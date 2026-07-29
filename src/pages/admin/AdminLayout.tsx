@@ -17,17 +17,24 @@ import {
 } from "@/components/ui/command";
 
 const nav = [
-  { to: "/admin", icon: LayoutDashboard, label: "Início", end: true },
+  { to: "/admin", icon: LayoutDashboard, label: "Visão Geral", end: true },
   { to: "/admin/previdencia", icon: ShieldCheck, label: "Previdência" },
   { to: "/admin/saude", icon: HeartHandshake, label: "Assistência à Saúde" },
-  { to: "/admin/patrimonio", icon: Building2, label: "Patrimonial" },
-  { to: "/admin/contabilidade", icon: FileSignature, label: "Contábil" },
-  { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
-  { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
+  { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
+  { to: "/admin/patrimonio", icon: Building2, label: "Patrimônio" },
+  { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
+  { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
+  { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },
+  { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
+  { to: "/admin/usuarios", icon: KeyRound, label: "Usuários e Permissões" },
+  { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
+];
 
-  
+const navOperacional = [
+  { to: "/admin/painel", icon: TrendingUp, label: "Painel analítico" },
+  { to: "/admin/analytics", icon: TrendingUp, label: "Analytics" },
   { to: "/admin/comunicados", icon: Megaphone, label: "Comunicados" },
   { to: "/admin/eventos", icon: Calendar, label: "Eventos" },
   { to: "/admin/faq", icon: HelpCircle, label: "FAQ" },
@@ -35,7 +42,6 @@ const nav = [
   { to: "/admin/notificacoes", icon: Bell, label: "Notificações Push" },
   { to: "/admin/solicitacoes", icon: Ticket, label: "Solicitações" },
   { to: "/admin/documentos", icon: FolderOpen, label: "Documentos" },
-  { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
   { to: "/admin/limites", icon: Wallet, label: "Limites" },
   { to: "/admin/carencias", icon: Clock, label: "Carências" },
   { to: "/admin/clinicas", icon: Building2, label: "Clínicas & Parceiros" },
@@ -44,13 +50,10 @@ const nav = [
   { to: "/admin/importar", icon: Upload, label: "Importações" },
   { to: "/admin/sincronizacao", icon: RefreshCw, label: "Sincronização" },
   { to: "/admin/automacoes", icon: Zap, label: "Automações" },
-  { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
-  { to: "/admin/auditoria", icon: ShieldCheck, label: "Auditoria" },
   { to: "/admin/privacidade", icon: ShieldCheck, label: "Privacidade (LGPD)" },
   { to: "/admin/seguranca", icon: KeyRound, label: "Segurança (2FA)" },
   { to: "/admin/assinatura-icp", icon: FileSignature, label: "Assinatura ICP-Brasil" },
   { to: "/admin/componentes", icon: Palette, label: "Componentes (UI)" },
-  { to: "/admin/configuracoes", icon: Settings, label: "Configurações" },
 ];
 
 const PREVIDENCIA_ALLOWED = new Set([
@@ -116,6 +119,10 @@ export default function AdminLayout() {
   if (!ready) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
 
   const visibleNav = isPrevidencia ? nav.filter((n) => PREVIDENCIA_ALLOWED.has(n.to)) : nav;
+  const visibleOperacional = isPrevidencia
+    ? navOperacional.filter((n) => PREVIDENCIA_ALLOWED.has(n.to))
+    : navOperacional;
+  const allNav = [...visibleNav, ...visibleOperacional];
 
   const SidebarInner = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -140,12 +147,15 @@ export default function AdminLayout() {
           <kbd className="text-[10px] font-mono border rounded px-1.5 py-0.5">Ctrl K</kbd>
         </button>
       </div>
-      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto" aria-label="Navegação administrativa">
+        <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Institucional
+        </p>
         {visibleNav.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
-            end={item.end}
+            end={(item as { end?: boolean }).end}
             onClick={onNavigate}
             className={({ isActive }) =>
               `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
@@ -157,6 +167,28 @@ export default function AdminLayout() {
             {item.label}
           </NavLink>
         ))}
+        {visibleOperacional.length > 0 && (
+          <>
+            <p className="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Operacional
+            </p>
+            {visibleOperacional.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={onNavigate}
+                className={({ isActive }) =>
+                  `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                    isActive ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                  }`
+                }
+              >
+                <item.icon className="w-4 h-4" />
+                {item.label}
+              </NavLink>
+            ))}
+          </>
+        )}
       </nav>
       <div className="p-3 border-t">
         <Button variant="outline" size="sm" className="w-full" onClick={logout}>
@@ -203,7 +235,7 @@ export default function AdminLayout() {
         <CommandList>
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
           <CommandGroup heading="Navegação">
-            {visibleNav.map((item) => (
+            {allNav.map((item) => (
               <CommandItem
                 key={item.to}
                 value={item.label}
