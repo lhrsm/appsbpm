@@ -283,6 +283,8 @@ export default function AdminAssociados() {
           <DialogHeader>
             <DialogTitle>{editing?.id ? "Editar" : "Novo"} — Associado</DialogTitle>
           </DialogHeader>
+          {editing?.id && <OrigemDadoBadge entidade="associado" registroId={editing.id} className="pb-1" />}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
             <div>
               <Label>Matrícula *</Label>
