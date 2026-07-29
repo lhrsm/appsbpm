@@ -7,6 +7,9 @@ import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDash
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
+import { PermissoesProvider, usePermissoes } from "@/hooks/usePermissoes";
+import PermissionGuard from "@/components/admin/PermissionGuard";
+import { rotaParaModulo } from "@/lib/permissoes";
 import {
   CommandDialog,
   CommandEmpty,
@@ -56,41 +59,17 @@ const navOperacional = [
   { to: "/admin/componentes", icon: Palette, label: "Componentes (UI)" },
 ];
 
-const PREVIDENCIA_ALLOWED = new Set([
-  "/admin",
-  "/admin/previdencia",
-
-  "/admin/associados",
-  "/admin/dependentes",
-  "/admin/peculio",
-  "/admin/informes",
-  "/admin/seguranca",
-  "/admin/solicitacoes",
-  "/admin/documentos",
-  "/admin/financeiro",
-]);
-
-export default function AdminLayout() {
+function AdminLayoutInner() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
-  const [isPrevidencia, setIsPrevidencia] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { loading: permsLoading, perfil, pode } = usePermissoes();
 
   useEffect(() => {
     const check = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) return navigate("/admin/login");
-      const uid = data.session.user.id;
-      const [{ data: role }, { data: prev }] = await Promise.all([
-        supabase.from("user_roles").select("role").eq("user_id", uid).eq("role", "admin").maybeSingle(),
-        supabase.from("previdencia_admins").select("user_id").eq("user_id", uid).maybeSingle(),
-      ]);
-      if (!role && !prev) {
-        await supabase.auth.signOut();
-        return navigate("/admin/login");
-      }
-      setIsPrevidencia(!role && !!prev);
       setReady(true);
     };
     check();
@@ -110,19 +89,33 @@ export default function AdminLayout() {
     };
   }, [navigate]);
 
+  // Perfil interno é obrigatório para permanecer na área administrativa
+  useEffect(() => {
+    if (permsLoading) return;
+    if (!perfil || !perfil.interno) {
+      supabase.auth.signOut().then(() => navigate("/admin/login"));
+    }
+  }, [permsLoading, perfil, navigate]);
+
   const logout = async () => {
     await supabase.auth.signOut();
     toast.success("Sessão encerrada");
     navigate("/admin/login");
   };
 
-  if (!ready) return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+  if (!ready || permsLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
+  }
 
-  const visibleNav = isPrevidencia ? nav.filter((n) => PREVIDENCIA_ALLOWED.has(n.to)) : nav;
-  const visibleOperacional = isPrevidencia
-    ? navOperacional.filter((n) => PREVIDENCIA_ALLOWED.has(n.to))
-    : navOperacional;
+  const permitido = (to: string) => {
+    const modulo = rotaParaModulo(to);
+    return modulo === "*" ? !!perfil?.interno : pode(modulo, "visualizar");
+  };
+
+  const visibleNav = nav.filter((n) => permitido(n.to));
+  const visibleOperacional = navOperacional.filter((n) => permitido(n.to));
   const allNav = [...visibleNav, ...visibleOperacional];
+
 
   const SidebarInner = ({ onNavigate }: { onNavigate?: () => void }) => (
     <>
@@ -226,7 +219,9 @@ export default function AdminLayout() {
         </header>
 
         <main className="flex-1 p-4 md:p-6 overflow-auto">
-          <Outlet />
+          <PermissionGuard>
+            <Outlet />
+          </PermissionGuard>
         </main>
       </div>
 
@@ -252,5 +247,13 @@ export default function AdminLayout() {
         </CommandList>
       </CommandDialog>
     </div>
+  );
+}
+
+export default function AdminLayout() {
+  return (
+    <PermissoesProvider>
+      <AdminLayoutInner />
+    </PermissoesProvider>
   );
 }
