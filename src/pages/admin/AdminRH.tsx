@@ -66,6 +66,9 @@ export default function AdminRH() {
         <TabsContent value="solicitacoes" className="mt-4">
           <SolicitacoesTab />
         </TabsContent>
+        <TabsContent value="folha" className="mt-4">
+          <FolhaTab />
+        </TabsContent>
         <TabsContent value="historico" className="mt-4">
           <HistoricoTab />
         </TabsContent>
