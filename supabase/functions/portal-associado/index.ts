@@ -95,7 +95,7 @@ const BodySchema = z.discriminatedUnion('action', [
 ]);
 
 const CAMPOS_ASSOCIADO =
-  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, ativo, patente';
+  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, ativo, patente, cep, cidade';
 
 const CAMPOS_DEPENDENTE =
   'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, ativo, status';
