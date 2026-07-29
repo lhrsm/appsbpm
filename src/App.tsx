@@ -87,6 +87,7 @@ const AdminPrevidencia = lazy(() => import("./pages/admin/AdminPrevidencia"));
 const AdminSaude = lazy(() => import("./pages/admin/AdminSaude"));
 const AdminPatrimonio = lazy(() => import("./pages/admin/AdminPatrimonio"));
 const AdminContabilidade = lazy(() => import("./pages/admin/AdminContabilidade"));
+const AdminRH = lazy(() => import("./pages/admin/AdminRH"));
 
 const queryClient = new QueryClient();
 
@@ -176,6 +177,7 @@ const App = () => (
                 <Route path="saude" element={<AdminSaude />} />
                 <Route path="patrimonio" element={<AdminPatrimonio />} />
                 <Route path="contabilidade" element={<AdminContabilidade />} />
+                <Route path="rh" element={<AdminRH />} />
                 <Route path="associados" element={<AdminAssociados />} />
 
                 <Route path="dependentes" element={<AdminDependentes />} />

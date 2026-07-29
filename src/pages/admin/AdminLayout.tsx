@@ -26,6 +26,7 @@ const nav = [
   { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
   { to: "/admin/patrimonio", icon: Building2, label: "Patrimônio" },
   { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
+  { to: "/admin/rh", icon: UserPlus, label: "Recursos Humanos" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
