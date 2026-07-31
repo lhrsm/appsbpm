@@ -49,6 +49,11 @@ const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
 const BemQR = lazy(() => import("./pages/BemQR"));
 const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
+const PortalBoasVindas = lazy(() => import("./pages/portal/PortalBoasVindas"));
+const PortalEntrar = lazy(() => import("./pages/portal/PortalEntrar"));
+const PortalPrimeiroAcesso = lazy(() => import("./pages/portal/PortalPrimeiroAcesso"));
+const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarAcesso"));
+const AdminValidacaoExterna = lazy(() => import("./pages/admin/AdminValidacaoExterna"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -98,7 +103,7 @@ const RouteFallback = () => (
   </div>
 );
 
-const HIDDEN_CHAT_ROUTES = ["/", "/admin/login", "/quiosque", "/redefinir-senha"];
+const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/primeiro-acesso", "/recuperar-acesso", "/admin/login", "/quiosque", "/redefinir-senha"];
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
@@ -133,7 +138,11 @@ const App = () => (
           <BackToTop />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<PortalBoasVindas />} />
+              <Route path="/entrar" element={<PortalEntrar />} />
+              <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+              <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+              <Route path="/acesso-simplificado" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
               <Route path="/bem/:token" element={<BemQR />} />
               <Route path="/redefinir-senha" element={<RedefinirSenha />} />
@@ -189,6 +198,8 @@ const App = () => (
                 <Route path="automacoes" element={<AdminAutomacoes />} />
                 <Route path="integracoes" element={<AdminIntegracoes />} />
                 <Route path="integracoes/inconsistencias" element={<AdminIntegracoes />} />
+                <Route path="integracoes/validacao-externa" element={<AdminValidacaoExterna />} />
+
 
                 <Route path="sincronizacao" element={<AdminSincronizacao />} />
                 <Route path="configuracoes" element={<AdminConfiguracoes />} />
