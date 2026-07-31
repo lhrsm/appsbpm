@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import {
@@ -218,6 +218,15 @@ export default function PortalPrimeiroAcesso() {
                 <p className="text-sm text-muted-foreground">
                   Enviamos um código de 6 dígitos para <strong>{emailMascarado}</strong>. Ele expira em 5 minutos.
                 </p>
+                <p className="flex items-start gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-xs leading-relaxed text-foreground">
+                  <MailWarning className="mt-0.5 h-4 w-4 shrink-0 text-yellow-600" aria-hidden="true" />
+                  <span>
+                    Não encontrou o e-mail? Verifique as pastas <strong>Spam</strong>, <strong>Lixo Eletrônico</strong> ou{' '}
+                    <strong>Promoções</strong>. Marque a mensagem como "não é spam" e adicione{' '}
+                    <strong>naoresponda@notify.sbpmbahia.com.br</strong> aos seus contatos.
+                  </span>
+                </p>
+
                 <div className="space-y-2">
                   <Label htmlFor="codigo">Código de confirmação</Label>
                   <Input
@@ -285,30 +294,64 @@ export default function PortalPrimeiroAcesso() {
             )}
 
             {etapa === 'termos' && (
-              <div className="space-y-4">
-                <div className="max-h-40 overflow-y-auto rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
-                  O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
-                  carteirinha digital. O acesso é pessoal e intransferível. Os dados são tratados conforme a LGPD,
-                  utilizados apenas para prestação dos serviços associativos e mantidos com registro de auditoria dos
-                  acessos.
+              <div className="space-y-5">
+                <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
+                  <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span>Última etapa: leia e aceite os termos para liberar o seu acesso.</span>
+                </p>
+
+                <div className="rounded-lg border bg-card shadow-sm">
+                  <div className="flex items-center justify-between border-b px-4 py-2.5">
+                    <span className="text-sm font-semibold text-foreground">Termos de Uso</span>
+                    <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Role para ler</span>
+                  </div>
+                  <div className="max-h-44 space-y-3 overflow-y-auto px-4 py-3 text-xs leading-relaxed text-muted-foreground">
+                    <p>
+                      O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
+                      carteirinha digital.
+                    </p>
+                    <p>
+                      O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
+                      responsável por manter a confidencialidade da sua senha.
+                    </p>
+                    <p>
+                      Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
+                      associativos e mantidos com registro de auditoria dos acessos.
+                    </p>
+                  </div>
                 </div>
-                <Label className="flex items-start gap-3 text-xs font-normal leading-relaxed text-muted-foreground">
-                  <Checkbox checked={aceiteTermos} onCheckedChange={(v) => setAceiteTermos(v === true)} className="mt-0.5" />
-                  Li e aceito os Termos de Uso do Portal do Associado.
-                </Label>
-                <Label className="flex items-start gap-3 text-xs font-normal leading-relaxed text-muted-foreground">
-                  <Checkbox checked={aceitePrivacidade} onCheckedChange={(v) => setAceitePrivacidade(v === true)} className="mt-0.5" />
-                  Li e concordo com a{' '}
-                  <Link to="/privacidade" className="font-medium text-primary underline underline-offset-2">
-                    Política de Privacidade
-                  </Link>{' '}
-                  e com o tratamento dos meus dados conforme a LGPD.
-                </Label>
-                <Button className="w-full h-11" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
+
+                <div className="space-y-3">
+                  <Label
+                    className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
+                      aceiteTermos ? 'border-primary/40 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
+                    }`}
+                  >
+                    <Checkbox checked={aceiteTermos} onCheckedChange={(v) => setAceiteTermos(v === true)} className="mt-0.5" />
+                    <span className="text-muted-foreground">Li e aceito os Termos de Uso do Portal do Associado.</span>
+                  </Label>
+                  <Label
+                    className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
+                      aceitePrivacidade ? 'border-primary/40 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
+                    }`}
+                  >
+                    <Checkbox checked={aceitePrivacidade} onCheckedChange={(v) => setAceitePrivacidade(v === true)} className="mt-0.5" />
+                    <span className="text-muted-foreground">
+                      Li e concordo com a{' '}
+                      <Link to="/privacidade" className="font-medium text-primary underline underline-offset-2">
+                        Política de Privacidade
+                      </Link>{' '}
+                      e com o tratamento dos meus dados conforme a LGPD.
+                    </span>
+                  </Label>
+                </div>
+
+                <Button className="w-full h-11 font-semibold" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
                   {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Concluir cadastro'}
                 </Button>
               </div>
             )}
+
 
             {etapa === 'concluido' && (
               <div className="space-y-4 text-center">
