@@ -23,18 +23,30 @@ class MockEmailService implements TransactionalEmailService {
   }
 }
 
+export const DEFAULT_FROM = 'Portal da SBPM <naoresponda@notify.sbpmbahia.com.br>';
+
 class ResendEmailService implements TransactionalEmailService {
   readonly name = 'resend';
   async send(input: SendEmailInput) {
     const key = Deno.env.get('RESEND_API_KEY');
-    const from = Deno.env.get('EMAIL_FROM') || 'SBPM <nao-responda@sbpmbahia.com.br>';
+    const from = Deno.env.get('EMAIL_FROM') || DEFAULT_FROM;
     if (!key) return { success: false, error: 'RESEND_API_KEY ausente' };
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: [input.to], subject: input.subject, html: input.html }),
+      body: JSON.stringify({
+        from,
+        to: [input.to],
+        subject: input.subject,
+        html: input.html,
+        text: input.text,
+      }),
     });
-    if (!res.ok) return { success: false, error: `[${res.status}] ${await res.text()}` };
+    if (!res.ok) {
+      const details = await res.text();
+      console.error(`[email:resend] falha ${res.status} para ${maskEmail(input.to)}`);
+      return { success: false, error: `[${res.status}] ${details}` };
+    }
     return { success: true };
   }
 }
