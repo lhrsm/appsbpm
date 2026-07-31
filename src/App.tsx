@@ -138,7 +138,11 @@ const App = () => (
           <BackToTop />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route path="/" element={<PortalBoasVindas />} />
+              <Route path="/entrar" element={<PortalEntrar />} />
+              <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+              <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+              <Route path="/acesso-simplificado" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
               <Route path="/bem/:token" element={<BemQR />} />
               <Route path="/redefinir-senha" element={<RedefinirSenha />} />
