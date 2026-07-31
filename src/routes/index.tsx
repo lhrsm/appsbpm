@@ -5,7 +5,7 @@
 export default function RoutesIndex() {
   return (
     <div className="p-4 bg-muted/20 border rounded-md text-sm text-muted-foreground">
-      como eu abro esse arquivo?
+      parou no envio do email
     </div>
   );
 }
