@@ -401,12 +401,31 @@ Deno.serve(async (req) => {
           );
         }
 
+        // Verifica se este e-mail já é o que consta no cadastro da pessoa.
+        let emailJaCadastrado = false;
+        const { data: mockEmail } = await admin
+          .from('external_identity_mock_records')
+          .select('cpf_reference')
+          .eq('external_person_id', sess.external_person_id)
+          .maybeSingle();
+        if (mockEmail?.cpf_reference) {
+          const cpfDigits = String(mockEmail.cpf_reference).replace(/\D/g, '');
+          const { data: a } = await admin.from('associados').select('email').in('cpf', cpfVariants(cpfDigits)).maybeSingle();
+          const { data: d } = a
+            ? { data: null }
+            : await admin.from('dependentes').select('email').in('cpf', cpfVariants(cpfDigits)).maybeSingle();
+          const atual = ((a?.email ?? d?.email) || '').trim().toLowerCase();
+          emailJaCadastrado = atual === email;
+        }
+
         return json({
           success: true,
           maskedEmail: maskEmail(email),
+          emailJaCadastrado,
           demoMode: emailService.name === 'mock',
           resendInSeconds: RESEND_INTERVAL_MS / 1000,
         });
+
       }
 
       // ---------- CONFIRMAÇÃO DO CÓDIGO ----------
