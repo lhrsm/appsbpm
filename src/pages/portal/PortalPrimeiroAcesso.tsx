@@ -218,6 +218,15 @@ export default function PortalPrimeiroAcesso() {
                 <p className="text-sm text-muted-foreground">
                   Enviamos um código de 6 dígitos para <strong>{emailMascarado}</strong>. Ele expira em 5 minutos.
                 </p>
+                <p className="flex items-start gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-xs leading-relaxed text-foreground">
+                  <MailWarning className="mt-0.5 h-4 w-4 shrink-0 text-yellow-600" aria-hidden="true" />
+                  <span>
+                    Não encontrou o e-mail? Verifique as pastas <strong>Spam</strong>, <strong>Lixo Eletrônico</strong> ou{' '}
+                    <strong>Promoções</strong>. Marque a mensagem como "não é spam" e adicione{' '}
+                    <strong>naoresponda@notify.sbpmbahia.com.br</strong> aos seus contatos.
+                  </span>
+                </p>
+
                 <div className="space-y-2">
                   <Label htmlFor="codigo">Código de confirmação</Label>
                   <Input
