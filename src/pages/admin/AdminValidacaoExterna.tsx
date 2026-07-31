@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, RefreshCw, FlaskConical } from 'lucide-react';
-import PermissionGuard from '@/components/admin/PermissionGuard';
 
 const statusCores: Record<string, string> = {
   active: 'bg-emerald-100 text-emerald-800',
@@ -71,7 +70,7 @@ export default function AdminValidacaoExterna() {
   };
 
   return (
-    <PermissionGuard modulo="integracoes" acao="visualizar">
+    <>
       <div className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -281,6 +280,6 @@ export default function AdminValidacaoExterna() {
           </TabsContent>
         </Tabs>
       </div>
-    </PermissionGuard>
+    </>
   );
 }
