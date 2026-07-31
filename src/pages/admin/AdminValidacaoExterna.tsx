@@ -20,15 +20,16 @@ const statusCores: Record<string, string> = {
 };
 
 const vazio = {
+  external_person_id: '',
   cpf_reference: '',
   birth_date: '',
   registration_number: '',
   full_name: '',
   mother_name: '',
   person_type: 'associate',
-  status: 'active',
-  email_hint: '',
+  status: 'matched',
 };
+
 
 export default function AdminValidacaoExterna() {
   const [registros, setRegistros] = useState<any[]>([]);
