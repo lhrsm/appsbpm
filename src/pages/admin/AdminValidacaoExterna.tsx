@@ -158,11 +158,12 @@ export default function AdminValidacaoExterna() {
                           value={form.status}
                           onChange={(e) => setForm((p) => ({ ...p, status: e.target.value }))}
                         >
-                          <option value="active">Ativo</option>
+                          <option value="matched">Apto (válido)</option>
                           <option value="inactive">Inativo</option>
                           <option value="blocked">Bloqueado</option>
                           <option value="deceased">Falecido</option>
-                          <option value="manual_review">Revisão manual</option>
+                          <option value="duplicate_record">Cadastro duplicado</option>
+                          <option value="manual_review_required">Revisão manual</option>
                         </select>
                       </div>
                     </div>
