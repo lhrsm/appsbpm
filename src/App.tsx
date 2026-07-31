@@ -198,6 +198,8 @@ const App = () => (
                 <Route path="automacoes" element={<AdminAutomacoes />} />
                 <Route path="integracoes" element={<AdminIntegracoes />} />
                 <Route path="integracoes/inconsistencias" element={<AdminIntegracoes />} />
+                <Route path="integracoes/validacao-externa" element={<AdminValidacaoExterna />} />
+
 
                 <Route path="sincronizacao" element={<AdminSincronizacao />} />
                 <Route path="configuracoes" element={<AdminConfiguracoes />} />
