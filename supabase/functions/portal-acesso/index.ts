@@ -2,7 +2,7 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 import { getIdentityProvider, soNumeros, type PersonType } from './providers.ts';
-import { getEmailService, codeEmailHtml, maskEmail } from './email.ts';
+import { getEmailService, codeEmailHtml, codeEmailText, maskEmail } from './email.ts';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const VALIDATION_TTL_MIN = 15;
@@ -342,6 +342,7 @@ Deno.serve(async (req) => {
           to: email,
           subject: 'Código de confirmação — Portal da SBPM',
           html: codeEmailHtml(code),
+          text: codeEmailText(code),
         });
 
         await audit(admin, {
@@ -351,6 +352,14 @@ Deno.serve(async (req) => {
           provider: emailService.name,
           metadata_safe: { email: maskEmail(email) },
         });
+
+        if (!envio.success) {
+          console.error('[portal-acesso] falha no envio do código:', envio.error);
+          return json(
+            { success: false, message: 'Não foi possível enviar o código agora. Tente novamente em instantes.' },
+            502,
+          );
+        }
 
         return json({
           success: true,

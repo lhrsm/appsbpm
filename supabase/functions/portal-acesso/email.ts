@@ -23,18 +23,30 @@ class MockEmailService implements TransactionalEmailService {
   }
 }
 
+export const DEFAULT_FROM = 'Portal da SBPM <naoresponda@notify.sbpmbahia.com.br>';
+
 class ResendEmailService implements TransactionalEmailService {
   readonly name = 'resend';
   async send(input: SendEmailInput) {
     const key = Deno.env.get('RESEND_API_KEY');
-    const from = Deno.env.get('EMAIL_FROM') || 'SBPM <nao-responda@sbpmbahia.com.br>';
+    const from = Deno.env.get('EMAIL_FROM') || DEFAULT_FROM;
     if (!key) return { success: false, error: 'RESEND_API_KEY ausente' };
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: [input.to], subject: input.subject, html: input.html }),
+      body: JSON.stringify({
+        from,
+        to: [input.to],
+        subject: input.subject,
+        html: input.html,
+        text: input.text,
+      }),
     });
-    if (!res.ok) return { success: false, error: `[${res.status}] ${await res.text()}` };
+    if (!res.ok) {
+      const details = await res.text();
+      console.error(`[email:resend] falha ${res.status} para ${maskEmail(input.to)}`);
+      return { success: false, error: `[${res.status}] ${details}` };
+    }
     return { success: true };
   }
 }
@@ -46,10 +58,15 @@ export const maskEmail = (email: string) => {
 };
 
 export function getEmailService(): TransactionalEmailService {
-  const cfg = (Deno.env.get('EMAIL_PROVIDER') || 'mock').toLowerCase();
+  const cfg = (Deno.env.get('EMAIL_PROVIDER') || '').toLowerCase();
+  if (cfg === 'mock') return new MockEmailService();
   if (cfg === 'resend') return new ResendEmailService();
-  return new MockEmailService();
+  // Padrão: envio real via Resend quando a chave estiver configurada; mock em desenvolvimento.
+  return Deno.env.get('RESEND_API_KEY') ? new ResendEmailService() : new MockEmailService();
 }
+
+export const codeEmailText = (code: string) =>
+  `Portal da SBPM\n\nSeu código de verificação: ${code}\n\nO código expira em 5 minutos. Se não foi você, ignore esta mensagem.`;
 
 export const codeEmailHtml = (code: string) => `
   <div style="font-family:Arial,sans-serif;padding:24px;color:#1f2937">
