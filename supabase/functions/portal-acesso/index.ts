@@ -113,6 +113,46 @@ async function audit(admin: any, row: Record<string, unknown>) {
   await admin.from('external_auth_audit_logs').insert(row);
 }
 
+/**
+ * Localiza o cadastro (associado ou dependente) pelo CPF e garante que o e-mail
+ * informado no primeiro acesso fique salvo na base.
+ * Retorna se o e-mail já estava cadastrado e se houve gravação.
+ */
+async function sincronizarEmailCadastro(admin: any, cpfDigits: string, email: string) {
+  const normalizado = email.trim().toLowerCase();
+  const variants = cpfVariants(cpfDigits);
+
+  const { data: assoc } = await admin
+    .from('associados')
+    .select('id, email')
+    .in('cpf', variants)
+    .maybeSingle();
+
+  if (assoc) {
+    const atual = (assoc.email || '').trim().toLowerCase();
+    if (atual === normalizado) return { encontrado: true, jaCadastrado: true, salvo: false };
+    const { error } = await admin.from('associados').update({ email: normalizado }).eq('id', assoc.id);
+    if (error) console.error('[portal-acesso] falha ao salvar e-mail do associado:', error.message);
+    return { encontrado: true, jaCadastrado: Boolean(atual), salvo: !error };
+  }
+
+  const { data: dep } = await admin
+    .from('dependentes')
+    .select('id, email')
+    .in('cpf', variants)
+    .maybeSingle();
+
+  if (dep) {
+    const atual = (dep.email || '').trim().toLowerCase();
+    if (atual === normalizado) return { encontrado: true, jaCadastrado: true, salvo: false };
+    const { error } = await admin.from('dependentes').update({ email: normalizado }).eq('id', dep.id);
+    if (error) console.error('[portal-acesso] falha ao salvar e-mail do dependente:', error.message);
+    return { encontrado: true, jaCadastrado: Boolean(atual), salvo: !error };
+  }
+
+  return { encontrado: false, jaCadastrado: false, salvo: false };
+}
+
 /** Dados do portal para a sessão recém-criada (mesma resposta do login antigo). */
 async function portalPayload(admin: any, cpfDigits: string) {
   let associado: any = null;
