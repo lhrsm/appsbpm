@@ -49,6 +49,11 @@ const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
 const BemQR = lazy(() => import("./pages/BemQR"));
 const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
+const PortalBoasVindas = lazy(() => import("./pages/portal/PortalBoasVindas"));
+const PortalEntrar = lazy(() => import("./pages/portal/PortalEntrar"));
+const PortalPrimeiroAcesso = lazy(() => import("./pages/portal/PortalPrimeiroAcesso"));
+const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarAcesso"));
+const AdminValidacaoExterna = lazy(() => import("./pages/admin/AdminValidacaoExterna"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
