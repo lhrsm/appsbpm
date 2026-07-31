@@ -121,12 +121,12 @@ export default function AdminValidacaoExterna() {
                     </DialogHeader>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {[
+                        ['external_person_id', 'Identificador institucional'],
                         ['cpf_reference', 'CPF (somente números)'],
                         ['birth_date', 'Data de nascimento'],
                         ['registration_number', 'Matrícula'],
                         ['full_name', 'Nome completo'],
                         ['mother_name', 'Nome da mãe'],
-                        ['email_hint', 'E-mail de referência'],
                       ].map(([key, label]) => (
                         <div className="space-y-1" key={key}>
                           <Label htmlFor={key}>{label}</Label>
