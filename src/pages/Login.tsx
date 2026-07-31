@@ -115,7 +115,8 @@ export default function Login() {
       navigate('/dashboard');
 
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
+      if (import.meta.env.DEV) console.error('Erro ao fazer login:', error);
+
       toast({
         title: 'Erro',
         description: 'Ocorreu um erro ao acessar o sistema. Tente novamente.',
