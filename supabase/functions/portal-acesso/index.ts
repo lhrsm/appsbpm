@@ -342,6 +342,7 @@ Deno.serve(async (req) => {
           to: email,
           subject: 'Código de confirmação — Portal da SBPM',
           html: codeEmailHtml(code),
+          text: codeEmailText(code),
         });
 
         await audit(admin, {
@@ -351,6 +352,14 @@ Deno.serve(async (req) => {
           provider: emailService.name,
           metadata_safe: { email: maskEmail(email) },
         });
+
+        if (!envio.success) {
+          console.error('[portal-acesso] falha no envio do código:', envio.error);
+          return json(
+            { success: false, message: 'Não foi possível enviar o código agora. Tente novamente em instantes.' },
+            502,
+          );
+        }
 
         return json({
           success: true,
