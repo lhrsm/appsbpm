@@ -1,0 +1,338 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import sbpmLogo from '@/assets/sbpm-logo.png';
+import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
+import {
+  CAMPOS_VALIDACAO,
+  PersonType,
+  confirmarCodigo,
+  criarConta,
+  enviarCodigo,
+  forcaSenha,
+  mascararCpf,
+  senhaValida,
+  validarIdentidade,
+} from '@/lib/portalAcesso';
+import { useAplicarPortal } from './useAplicarPortal';
+
+type Etapa = 'identidade' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
+
+const TITULOS: Record<Etapa, string> = {
+  identidade: 'Validação de identidade',
+  email: 'Confirmação de e-mail',
+  codigo: 'Código de confirmação',
+  senha: 'Criação de senha',
+  termos: 'Termos de uso',
+  concluido: 'Acesso liberado',
+};
+
+const ORDEM: Etapa[] = ['identidade', 'email', 'codigo', 'senha', 'termos', 'concluido'];
+
+export default function PortalPrimeiroAcesso() {
+  const [etapa, setEtapa] = useState<Etapa>('identidade');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const aplicar = useAplicarPortal();
+
+  const [personType, setPersonType] = useState<PersonType>('associate');
+  const [cpf, setCpf] = useState('');
+  const [nascimento, setNascimento] = useState('');
+  const [extras, setExtras] = useState<Record<string, string>>({});
+  const [erro, setErro] = useState<string | null>(null);
+
+  const [sessao, setSessao] = useState<{ id: string; token: string; nome?: string; demo?: boolean } | null>(null);
+  const [email, setEmail] = useState('');
+  const [emailMascarado, setEmailMascarado] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirmacao, setConfirmacao] = useState('');
+  const [verSenha, setVerSenha] = useState(false);
+  const [aceiteTermos, setAceiteTermos] = useState(false);
+  const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
+
+  const progresso = ((ORDEM.indexOf(etapa) + 1) / ORDEM.length) * 100;
+  const forca = forcaSenha(senha);
+
+  const validar = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErro(null);
+    setLoading(true);
+    const res = await validarIdentidade({
+      cpf,
+      birthDate: nascimento,
+      personType,
+      registration: extras.registration,
+      fullName: extras.fullName,
+      motherName: extras.motherName,
+    });
+    setLoading(false);
+
+    if (!res.success || !res.sessionId || !res.validationToken) {
+      setErro(res.message ?? 'Não foi possível validar os dados informados.');
+      return;
+    }
+    setSessao({ id: res.sessionId, token: res.validationToken, nome: res.maskedName, demo: res.demoMode });
+    setEtapa('email');
+  };
+
+  const solicitarCodigo = async (reenvio = false) => {
+    if (!sessao) return;
+    setErro(null);
+    setLoading(true);
+    const res = await enviarCodigo({ sessionId: sessao.id, validationToken: sessao.token, email, resend: reenvio });
+    setLoading(false);
+    if (!res.success) {
+      setErro(res.message ?? 'Não foi possível enviar o código.');
+      return;
+    }
+    setEmailMascarado(res.maskedEmail ?? email);
+    setEtapa('codigo');
+    toast({ title: 'Código enviado', description: `Enviamos um código para ${res.maskedEmail ?? email}.` });
+  };
+
+  const verificar = async () => {
+    if (!sessao) return;
+    setErro(null);
+    setLoading(true);
+    const res = await confirmarCodigo({ sessionId: sessao.id, validationToken: sessao.token, code: codigo });
+    setLoading(false);
+    if (!res.success) {
+      setErro(res.message ?? 'Código inválido.');
+      return;
+    }
+    setEtapa('senha');
+  };
+
+  const concluir = async () => {
+    if (!sessao) return;
+    setErro(null);
+    setLoading(true);
+    const res = await criarConta({ sessionId: sessao.id, validationToken: sessao.token, password: senha });
+    setLoading(false);
+    if (!res.success) {
+      setErro(res.message ?? 'Não foi possível concluir o cadastro.');
+      return;
+    }
+    if (res.portal) aplicar(res.portal);
+    setEtapa('concluido');
+  };
+
+  return (
+    <AuthBackgroundLayout align="center">
+      <main className="w-full max-w-md">
+        <Card className="auth-card w-full border-0 animate-fade-in">
+          <CardHeader className="pb-2 text-center">
+            <div className="flex justify-center mb-3">
+              <img src={sbpmLogo} alt="SBPM" className="h-20 w-auto object-contain" />
+            </div>
+            <CardTitle className="text-xl font-bold text-primary">{TITULOS[etapa]}</CardTitle>
+            <CardDescription>Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}</CardDescription>
+            <Progress value={progresso} className="mt-3 h-2" />
+          </CardHeader>
+
+          <CardContent className="space-y-5">
+            {erro && (
+              <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                {erro}
+              </div>
+            )}
+
+            {etapa === 'identidade' && (
+              <form onSubmit={validar} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Você é</Label>
+                  <RadioGroup
+                    value={personType}
+                    onValueChange={(v) => { setPersonType(v as PersonType); setExtras({}); }}
+                    className="grid grid-cols-2 gap-2"
+                  >
+                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                      <RadioGroupItem value="associate" /> Associado(a)
+                    </Label>
+                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                      <RadioGroupItem value="dependent" /> Dependente
+                    </Label>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="cpf">CPF</Label>
+                  <Input id="cpf" inputMode="numeric" value={cpf} onChange={(e) => setCpf(mascararCpf(e.target.value))} maxLength={14} className="h-11" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="nasc">Data de nascimento</Label>
+                  <Input id="nasc" type="date" value={nascimento} onChange={(e) => setNascimento(e.target.value)} className="h-11" />
+                </div>
+
+                {CAMPOS_VALIDACAO[personType].map((campo) => (
+                  <div className="space-y-2" key={campo.key}>
+                    <Label htmlFor={campo.key}>{campo.label}</Label>
+                    <Input
+                      id={campo.key}
+                      value={extras[campo.key] ?? ''}
+                      onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
+                      className="h-11"
+                    />
+                    {campo.help && <p className="text-xs text-muted-foreground">{campo.help}</p>}
+                  </div>
+                ))}
+
+                <Button type="submit" className="w-full h-11" disabled={loading}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Validar meus dados'}
+                </Button>
+              </form>
+            )}
+
+            {etapa === 'email' && (
+              <div className="space-y-4">
+                <p className="flex items-start gap-2 rounded-md border bg-muted/30 p-3 text-sm">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <span>
+                    Identidade confirmada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Informe um e-mail válido para
+                    receber o código de confirmação.
+                  </span>
+                </p>
+                <div className="space-y-2">
+                  <Label htmlFor="email">E-mail</Label>
+                  <Input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11" />
+                </div>
+                <Button className="w-full h-11" onClick={() => solicitarCodigo(false)} disabled={loading || !email}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Enviar código'}
+                </Button>
+              </div>
+            )}
+
+            {etapa === 'codigo' && (
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Enviamos um código de 6 dígitos para <strong>{emailMascarado}</strong>. Ele expira em 5 minutos.
+                </p>
+                <div className="space-y-2">
+                  <Label htmlFor="codigo">Código de confirmação</Label>
+                  <Input
+                    id="codigo"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={codigo}
+                    onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))}
+                    className="h-12 text-center text-2xl tracking-[0.5em]"
+                  />
+                </div>
+                <Button className="w-full h-11" onClick={verificar} disabled={loading || codigo.length !== 6}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirmar código'}
+                </Button>
+                <div className="flex items-center justify-between text-sm">
+                  <button type="button" className="text-primary hover:underline" onClick={() => solicitarCodigo(true)} disabled={loading}>
+                    Reenviar código
+                  </button>
+                  <button type="button" className="text-muted-foreground hover:underline" onClick={() => setEtapa('email')}>
+                    Trocar e-mail
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {etapa === 'senha' && (
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="senha">Crie sua senha</Label>
+                  <div className="relative">
+                    <Input
+                      id="senha"
+                      type={verSenha ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      value={senha}
+                      onChange={(e) => setSenha(e.target.value)}
+                      className="h-11 pr-12"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setVerSenha((v) => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                    >
+                      {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
+                  <Progress value={(forca.score / 4) * 100} className="h-1.5" />
+                  <p className="text-xs text-muted-foreground">
+                    Força: {forca.label} — mínimo de 10 caracteres com maiúscula, minúscula, número e símbolo.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="conf">Confirme a senha</Label>
+                  <Input id="conf" type={verSenha ? 'text' : 'password'} value={confirmacao} onChange={(e) => setConfirmacao(e.target.value)} className="h-11" />
+                </div>
+                <Button
+                  className="w-full h-11"
+                  onClick={() => setEtapa('termos')}
+                  disabled={!senhaValida(senha) || senha !== confirmacao}
+                >
+                  Continuar
+                </Button>
+              </div>
+            )}
+
+            {etapa === 'termos' && (
+              <div className="space-y-4">
+                <div className="max-h-40 overflow-y-auto rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+                  O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
+                  carteirinha digital. O acesso é pessoal e intransferível. Os dados são tratados conforme a LGPD,
+                  utilizados apenas para prestação dos serviços associativos e mantidos com registro de auditoria dos
+                  acessos.
+                </div>
+                <Label className="flex items-start gap-3 text-xs font-normal leading-relaxed text-muted-foreground">
+                  <Checkbox checked={aceiteTermos} onCheckedChange={(v) => setAceiteTermos(v === true)} className="mt-0.5" />
+                  Li e aceito os Termos de Uso do Portal do Associado.
+                </Label>
+                <Label className="flex items-start gap-3 text-xs font-normal leading-relaxed text-muted-foreground">
+                  <Checkbox checked={aceitePrivacidade} onCheckedChange={(v) => setAceitePrivacidade(v === true)} className="mt-0.5" />
+                  Li e concordo com a{' '}
+                  <Link to="/privacidade" className="font-medium text-primary underline underline-offset-2">
+                    Política de Privacidade
+                  </Link>{' '}
+                  e com o tratamento dos meus dados conforme a LGPD.
+                </Label>
+                <Button className="w-full h-11" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Concluir cadastro'}
+                </Button>
+              </div>
+            )}
+
+            {etapa === 'concluido' && (
+              <div className="space-y-4 text-center">
+                <CheckCircle2 className="mx-auto h-14 w-14 text-primary" aria-hidden="true" />
+                <p className="text-sm text-muted-foreground">
+                  Seu acesso foi criado com sucesso. A partir de agora, entre com seu CPF ou matrícula e a senha
+                  cadastrada.
+                </p>
+                <Button className="w-full h-11" onClick={() => navigate('/dashboard')}>
+                  Ir para o portal
+                </Button>
+              </div>
+            )}
+
+            {etapa !== 'concluido' && (
+              <Button asChild variant="ghost" className="w-full">
+                <Link to="/">
+                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Voltar
+                </Link>
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      </main>
+    </AuthBackgroundLayout>
+  );
+}

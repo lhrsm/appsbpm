@@ -1433,6 +1433,263 @@ export type Database = {
         }
         Relationships: []
       }
+      external_account_links: {
+        Row: {
+          associado_id: string | null
+          cpf_reference: string
+          created_at: string
+          dependente_id: string | null
+          email: string
+          external_person_id: string
+          id: string
+          last_login_at: string | null
+          last_verified_at: string | null
+          linked_at: string
+          person_type: Database["public"]["Enums"]["ext_person_type"]
+          registration_number: string | null
+          source_provider: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          associado_id?: string | null
+          cpf_reference: string
+          created_at?: string
+          dependente_id?: string | null
+          email: string
+          external_person_id: string
+          id?: string
+          last_login_at?: string | null
+          last_verified_at?: string | null
+          linked_at?: string
+          person_type: Database["public"]["Enums"]["ext_person_type"]
+          registration_number?: string | null
+          source_provider?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          associado_id?: string | null
+          cpf_reference?: string
+          created_at?: string
+          dependente_id?: string | null
+          email?: string
+          external_person_id?: string
+          id?: string
+          last_login_at?: string | null
+          last_verified_at?: string | null
+          linked_at?: string
+          person_type?: Database["public"]["Enums"]["ext_person_type"]
+          registration_number?: string | null
+          source_provider?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      external_auth_audit_logs: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata_safe: Json
+          provider: string | null
+          result: string | null
+          user_id: string | null
+          validation_session_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata_safe?: Json
+          provider?: string | null
+          result?: string | null
+          user_id?: string | null
+          validation_session_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata_safe?: Json
+          provider?: string | null
+          result?: string | null
+          user_id?: string | null
+          validation_session_id?: string | null
+        }
+        Relationships: []
+      }
+      external_email_verification_codes: {
+        Row: {
+          attempt_count: number
+          code_hash: string
+          consumed_at: string | null
+          created_at: string
+          debug_code: string | null
+          email: string
+          expires_at: string
+          id: string
+          ip_hash: string | null
+          resend_count: number
+          status: string
+          user_agent_summary: string | null
+          validation_session_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          attempt_count?: number
+          code_hash: string
+          consumed_at?: string | null
+          created_at?: string
+          debug_code?: string | null
+          email: string
+          expires_at: string
+          id?: string
+          ip_hash?: string | null
+          resend_count?: number
+          status?: string
+          user_agent_summary?: string | null
+          validation_session_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          attempt_count?: number
+          code_hash?: string
+          consumed_at?: string | null
+          created_at?: string
+          debug_code?: string | null
+          email?: string
+          expires_at?: string
+          id?: string
+          ip_hash?: string | null
+          resend_count?: number
+          status?: string
+          user_agent_summary?: string | null
+          validation_session_id?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_email_verification_codes_validation_session_id_fkey"
+            columns: ["validation_session_id"]
+            isOneToOne: false
+            referencedRelation: "external_identity_validation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      external_identity_mock_records: {
+        Row: {
+          already_registered: boolean
+          birth_date: string
+          cpf_reference: string
+          created_at: string
+          deleted_at: string | null
+          external_person_id: string
+          full_name: string
+          id: string
+          is_active: boolean
+          mother_name: string | null
+          observacao: string | null
+          person_type: Database["public"]["Enums"]["ext_person_type"]
+          registration_number: string | null
+          status: Database["public"]["Enums"]["ext_validation_status"]
+          updated_at: string
+        }
+        Insert: {
+          already_registered?: boolean
+          birth_date: string
+          cpf_reference: string
+          created_at?: string
+          deleted_at?: string | null
+          external_person_id: string
+          full_name: string
+          id?: string
+          is_active?: boolean
+          mother_name?: string | null
+          observacao?: string | null
+          person_type: Database["public"]["Enums"]["ext_person_type"]
+          registration_number?: string | null
+          status?: Database["public"]["Enums"]["ext_validation_status"]
+          updated_at?: string
+        }
+        Update: {
+          already_registered?: boolean
+          birth_date?: string
+          cpf_reference?: string
+          created_at?: string
+          deleted_at?: string | null
+          external_person_id?: string
+          full_name?: string
+          id?: string
+          is_active?: boolean
+          mother_name?: string | null
+          observacao?: string | null
+          person_type?: Database["public"]["Enums"]["ext_person_type"]
+          registration_number?: string | null
+          status?: Database["public"]["Enums"]["ext_validation_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      external_identity_validation_sessions: {
+        Row: {
+          attempt_count: number
+          consumed_at: string | null
+          created_at: string
+          email: string | null
+          expires_at: string
+          external_person_id: string | null
+          id: string
+          ip_hash: string | null
+          person_type: Database["public"]["Enums"]["ext_person_type"] | null
+          provider: string
+          status: string
+          updated_at: string
+          user_agent_summary: string | null
+          validation_token_hash: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          attempt_count?: number
+          consumed_at?: string | null
+          created_at?: string
+          email?: string | null
+          expires_at: string
+          external_person_id?: string | null
+          id?: string
+          ip_hash?: string | null
+          person_type?: Database["public"]["Enums"]["ext_person_type"] | null
+          provider?: string
+          status?: string
+          updated_at?: string
+          user_agent_summary?: string | null
+          validation_token_hash?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          attempt_count?: number
+          consumed_at?: string | null
+          created_at?: string
+          email?: string | null
+          expires_at?: string
+          external_person_id?: string | null
+          id?: string
+          ip_hash?: string | null
+          person_type?: Database["public"]["Enums"]["ext_person_type"] | null
+          provider?: string
+          status?: string
+          updated_at?: string
+          user_agent_summary?: string | null
+          validation_token_hash?: string | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       faq_items: {
         Row: {
           categoria: string
@@ -5055,6 +5312,42 @@ export type Database = {
           },
         ]
       }
+      terms_acceptances: {
+        Row: {
+          accepted_at: string
+          created_at: string
+          external_person_id: string | null
+          id: string
+          metadata_safe: Json
+          privacy_version: string
+          source: string
+          terms_version: string
+          user_id: string | null
+        }
+        Insert: {
+          accepted_at?: string
+          created_at?: string
+          external_person_id?: string | null
+          id?: string
+          metadata_safe?: Json
+          privacy_version: string
+          source?: string
+          terms_version: string
+          user_id?: string | null
+        }
+        Update: {
+          accepted_at?: string
+          created_at?: string
+          external_person_id?: string | null
+          id?: string
+          metadata_safe?: Json
+          privacy_version?: string
+          source?: string
+          terms_version?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -5323,6 +5616,17 @@ export type Database = {
         | "importacao"
         | "integracao"
       ctb_situacao_periodo: "aberto" | "em_fechamento" | "fechado" | "reaberto"
+      ext_person_type: "associate" | "dependent"
+      ext_validation_status:
+        | "matched"
+        | "not_matched"
+        | "inactive"
+        | "blocked"
+        | "deceased"
+        | "already_linked"
+        | "duplicate_record"
+        | "unavailable"
+        | "manual_review_required"
       fin_conta_tipo: "corrente" | "poupanca" | "investimento" | "aplicacao"
       fin_natureza: "receita" | "despesa"
       fin_status:
@@ -5624,6 +5928,18 @@ export const Constants = {
         "integracao",
       ],
       ctb_situacao_periodo: ["aberto", "em_fechamento", "fechado", "reaberto"],
+      ext_person_type: ["associate", "dependent"],
+      ext_validation_status: [
+        "matched",
+        "not_matched",
+        "inactive",
+        "blocked",
+        "deceased",
+        "already_linked",
+        "duplicate_record",
+        "unavailable",
+        "manual_review_required",
+      ],
       fin_conta_tipo: ["corrente", "poupanca", "investimento", "aplicacao"],
       fin_natureza: ["receita", "despesa"],
       fin_status: [
