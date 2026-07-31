@@ -5,7 +5,7 @@
 export default function RoutesIndex() {
   return (
     <div className="p-4 bg-muted/20 border rounded-md text-sm text-muted-foreground">
-      me informe aqui os dados dos associados e dependentes para eu poder validar os testes
+      quero que voce me informe a data de nascimento e a matricula do titular.
     </div>
   );
 }
