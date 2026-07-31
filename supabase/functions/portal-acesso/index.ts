@@ -2,7 +2,7 @@ import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 import { getIdentityProvider, soNumeros, type PersonType } from './providers.ts';
-import { getEmailService, codeEmailHtml, maskEmail } from './email.ts';
+import { getEmailService, codeEmailHtml, codeEmailText, maskEmail } from './email.ts';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const VALIDATION_TTL_MIN = 15;
