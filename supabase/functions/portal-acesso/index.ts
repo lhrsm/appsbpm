@@ -543,6 +543,10 @@ Deno.serve(async (req) => {
 
         await provider.confirmAccountLink(sess.external_person_id!, userId);
 
+        // Garante que o e-mail fique salvo no cadastro (associado ou dependente).
+        if (cpf) await sincronizarEmailCadastro(admin, String(cpf).replace(/\D/g, ''), sess.email);
+
+
         await admin
           .from('external_identity_validation_sessions')
           .update({ consumed_at: new Date().toISOString(), status: 'consumed' })
