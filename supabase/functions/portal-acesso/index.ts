@@ -453,7 +453,32 @@ Deno.serve(async (req) => {
           .update({ verified_at: new Date().toISOString(), status: 'email_verified' })
           .eq('id', sess.id);
 
-        return json({ success: true, message: 'E-mail confirmado com sucesso.' });
+        // Salva o e-mail confirmado no cadastro do associado/dependente, se ainda não estiver lá.
+        const { data: mockRec } = await admin
+          .from('external_identity_mock_records')
+          .select('cpf_reference')
+          .eq('external_person_id', sess.external_person_id)
+          .maybeSingle();
+
+        let emailSalvo = false;
+        if (mockRec?.cpf_reference) {
+          const sync = await sincronizarEmailCadastro(
+            admin,
+            String(mockRec.cpf_reference).replace(/\D/g, ''),
+            codigo.email,
+          );
+          emailSalvo = sync.salvo;
+          await audit(admin, {
+            event_type: 'email_saved_to_record',
+            validation_session_id: sess.id,
+            result: sync.salvo ? 'saved' : sync.jaCadastrado ? 'already_registered' : 'not_found',
+            provider: providerMode,
+            metadata_safe: { email: maskEmail(codigo.email) },
+          });
+        }
+
+        return json({ success: true, message: 'E-mail confirmado com sucesso.', emailSalvo });
+
       }
 
       // ---------- CRIAÇÃO DA CONTA ----------
