@@ -12,11 +12,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, RefreshCw, FlaskConical } from 'lucide-react';
 
 const statusCores: Record<string, string> = {
-  active: 'bg-emerald-100 text-emerald-800',
+  matched: 'bg-emerald-100 text-emerald-800',
   inactive: 'bg-muted text-muted-foreground',
   blocked: 'bg-destructive/10 text-destructive',
   deceased: 'bg-muted text-muted-foreground',
-  manual_review: 'bg-amber-100 text-amber-800',
+  duplicate_record: 'bg-amber-100 text-amber-800',
+  manual_review_required: 'bg-amber-100 text-amber-800',
 };
 
 const vazio = {
