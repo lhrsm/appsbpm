@@ -289,7 +289,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(fu
   );
 });
 
-export interface DateInputProps extends Omit<TextInputProps, "value" | "onChange" | "type"> {
+export interface DateInputProps
+  extends Omit<TextInputProps, "value" | "onChange" | "type" | "prefix" | "suffix" | "iconLeft" | "iconRight"> {
   /** Valor no formato ISO (aaaa-mm-dd). */
   value?: string;
   onValueChange?: (iso: string) => void;
