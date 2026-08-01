@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature, Menu, Info, BookOpen } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature, Menu, Info, BookOpen, BadgePlus } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
@@ -28,6 +28,7 @@ const nav = [
   { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
   { to: "/admin/rh", icon: UserPlus, label: "Recursos Humanos" },
   { to: "/admin/associados", icon: Users, label: "Associados" },
+  { to: "/admin/associacoes/pre-cadastros", icon: BadgePlus, label: "Pré-cadastros" },
   { to: "/admin/dependentes", icon: UserPlus, label: "Dependentes" },
   { to: "/admin/integracoes", icon: Plug, label: "Integrações" },
   { to: "/admin/relatorios", icon: BarChart3, label: "Relatórios" },

@@ -182,6 +182,195 @@ export type Database = {
         }
         Relationships: []
       }
+      association_contacts: {
+        Row: {
+          contact_at: string
+          contact_type: string
+          created_at: string
+          id: string
+          notes: string | null
+          performed_by: string | null
+          pre_registration_id: string
+          result: string | null
+        }
+        Insert: {
+          contact_at?: string
+          contact_type?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_by?: string | null
+          pre_registration_id: string
+          result?: string | null
+        }
+        Update: {
+          contact_at?: string
+          contact_type?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          performed_by?: string | null
+          pre_registration_id?: string
+          result?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "association_contacts_pre_registration_id_fkey"
+            columns: ["pre_registration_id"]
+            isOneToOne: false
+            referencedRelation: "association_pre_registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      association_pre_registrations: {
+        Row: {
+          assigned_to: string | null
+          consent_accepted: boolean
+          cpf_reference: string
+          created_at: string
+          deleted_at: string | null
+          email: string
+          full_name: string
+          functional_status: string
+          id: string
+          observacoes: string | null
+          phone: string
+          privacy_version: string | null
+          protocol: string
+          rank_id: string | null
+          rank_other: string | null
+          registration_number: string | null
+          status: string
+          submitted_at: string
+          terms_version: string | null
+          updated_at: string
+          whatsapp_phone: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          consent_accepted?: boolean
+          cpf_reference: string
+          created_at?: string
+          deleted_at?: string | null
+          email: string
+          full_name: string
+          functional_status?: string
+          id?: string
+          observacoes?: string | null
+          phone: string
+          privacy_version?: string | null
+          protocol: string
+          rank_id?: string | null
+          rank_other?: string | null
+          registration_number?: string | null
+          status?: string
+          submitted_at?: string
+          terms_version?: string | null
+          updated_at?: string
+          whatsapp_phone?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          consent_accepted?: boolean
+          cpf_reference?: string
+          created_at?: string
+          deleted_at?: string | null
+          email?: string
+          full_name?: string
+          functional_status?: string
+          id?: string
+          observacoes?: string | null
+          phone?: string
+          privacy_version?: string | null
+          protocol?: string
+          rank_id?: string | null
+          rank_other?: string | null
+          registration_number?: string | null
+          status?: string
+          submitted_at?: string
+          terms_version?: string | null
+          updated_at?: string
+          whatsapp_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "association_pre_registrations_rank_id_fkey"
+            columns: ["rank_id"]
+            isOneToOne: false
+            referencedRelation: "association_ranks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      association_ranks: {
+        Row: {
+          ativo: boolean
+          created_at: string
+          id: string
+          nome: string
+          ordem: number
+          permite_complemento: boolean
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          nome: string
+          ordem?: number
+          permite_complemento?: boolean
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          created_at?: string
+          id?: string
+          nome?: string
+          ordem?: number
+          permite_complemento?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      association_status_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          pre_registration_id: string | null
+          previous_status: string | null
+          reason: string | null
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          pre_registration_id?: string | null
+          previous_status?: string | null
+          reason?: string | null
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          pre_registration_id?: string | null
+          previous_status?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "association_status_history_pre_registration_id_fkey"
+            columns: ["pre_registration_id"]
+            isOneToOne: false
+            referencedRelation: "association_pre_registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       audit_logs: {
         Row: {
           action: string

@@ -2,3 +2,6 @@ project_id = "iidqanlvudhrqobipimf"
 
 [functions.webhook-ingest]
 verify_jwt = false
+
+[functions.associacao-pre-cadastro]
+verify_jwt = false
