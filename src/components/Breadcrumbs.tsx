@@ -4,7 +4,6 @@ import { ChevronRight, Home } from 'lucide-react';
 const LABELS: Record<string, string> = {
   dashboard: 'Início',
   carteirinha: 'Carteirinha',
-  limite: 'Limite Disponível',
   clinicas: 'Clínicas e Parceiros',
   informes: 'Informe de Rendimentos',
   dependentes: 'Dependentes',
