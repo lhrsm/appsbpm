@@ -1,26 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, Outlet, Link, useLocation } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
+import { useNavigate, Outlet, useLocation, Link } from 'react-router-dom';
 import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
 import { useInactivityLock } from '@/hooks/useInactivityLock';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  CreditCard, 
-  DollarSign, 
-  Clock, 
-  Building2, 
-  FileText, 
-  Users, 
-  LogOut,
-  Menu,
-  X,
+import {
+  CreditCard,
+  Building2,
+  FileText,
+  Users,
   MessageCircle,
   Phone,
-  CheckCircle,
-  AlertCircle,
   User,
   Globe,
   Facebook,
@@ -31,70 +23,16 @@ import {
   UserCog,
   Handshake,
   ShieldCheck,
-  ShieldAlert,
-  Bell,
-  Ticket,
-  FolderOpen,
-  Wallet,
-  Calendar,
-  HelpCircle,
-  History,
-  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import ComunicadosBanner from '@/components/ComunicadosBanner';
-import { useNotificacoes } from '@/hooks/useNotificacoes';
-import ThemeToggle from '@/components/ThemeToggle';
-import GlobalSearch from '@/components/GlobalSearch';
 import WelcomeTour from '@/components/WelcomeTour';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import KeyboardShortcutsHelp from '@/components/KeyboardShortcutsHelp';
 import { usePageviewTracker } from '@/hooks/useAnalytics';
-
-// Menu completo para titular
-const menuItemsTitular = [
-  { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
-  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
-  { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
-  { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
-  { path: '/dashboard/financeiro', label: 'Financeiro', icon: Wallet },
-  { path: '/dashboard/limite', label: 'Limite Disponível', icon: DollarSign },
-  { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
-  { path: '/dashboard/informes', label: 'Informe de Rendimentos', icon: FileText },
-  { path: '/dashboard/dependentes', label: 'Dependentes', icon: Users },
-  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
-  { path: '/dashboard/beneficios', label: 'Benefícios e Cupons', icon: Ticket },
-  { path: '/dashboard/avaliar', label: 'Avaliar Parceiros', icon: Star },
-  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
-  { path: '/dashboard/historico', label: 'Histórico de Acessos', icon: History },
-  { path: '/dashboard/associacao-premiada', label: 'Associação Premiada', icon: Award },
-  { path: '/dashboard/simulador', label: 'Simulador de Mensalidade', icon: Calculator },
-  { path: '/dashboard/indicar-parceiro', label: 'Indicar Parceiro', icon: Handshake },
-  { path: '/dashboard/peculio', label: 'Pecúlio', icon: ShieldCheck },
-  { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
-  { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
-];
-
-// Menu restrito para dependentes
-const menuItemsDependente = [
-  { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: CreditCard },
-  { path: '/dashboard/notificacoes', label: 'Notificações', icon: Bell },
-  { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: Ticket },
-  { path: '/dashboard/documentos', label: 'Meus Documentos', icon: FolderOpen },
-  { path: '/dashboard/clinicas', label: 'Clínicas e Parceiros', icon: Building2 },
-  { path: '/dashboard/agenda', label: 'Agenda de Eventos', icon: Calendar },
-  { path: '/dashboard/beneficios', label: 'Benefícios e Cupons', icon: Ticket },
-  { path: '/dashboard/avaliar', label: 'Avaliar Parceiros', icon: Star },
-  { path: '/dashboard/faq', label: 'Perguntas Frequentes', icon: HelpCircle },
-  { path: '/dashboard/historico', label: 'Histórico de Acessos', icon: History },
-  { path: '/dashboard/solicitar-peculio', label: 'Solicitar Pecúlio', icon: ShieldCheck },
-  { path: '/dashboard/perfil', label: 'Meu Perfil', icon: UserCog },
-  { path: '/dashboard/minha-privacidade', label: 'Privacidade (LGPD)', icon: ShieldAlert },
-];
+import ExternalPortalLayout from '@/portal/ExternalPortalLayout';
+import { deprecatedPortalRoutes } from '@/portal/navigation';
 
 const whatsappContacts = [
   { 
@@ -170,15 +108,10 @@ const socialLinks = [
 ];
 
 export default function Dashboard() {
-  const { associado, logout, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
+  const { associado, logout, isDependente, dependenteLogado } = useAssociado();
   usePageviewTracker(associado?.id);
   const navigate = useNavigate();
   const location = useLocation();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { naoLidas } = useNotificacoes();
-
-  // Usar menu apropriado baseado se é dependente ou titular
-  const menuItems = isDependente ? menuItemsDependente : menuItemsTitular;
 
   useEffect(() => {
     if (!associado) {
@@ -186,15 +119,11 @@ export default function Dashboard() {
     }
   }, [associado, navigate]);
 
-  // Redirect dependente if trying to access restricted routes
+  // Rotas depreciadas do portal externo (ex.: limite disponível) -> visão geral
   useEffect(() => {
-    if (isDependente) {
-      const restrictedPaths = ['/dashboard/limite', '/dashboard/informes', '/dashboard/dependentes', '/dashboard/associacao-premiada', '/dashboard/indicar-parceiro', '/dashboard/simulador', '/dashboard/peculio'];
-      if (restrictedPaths.includes(location.pathname)) {
-        navigate('/dashboard/carteirinha');
-      }
-    }
-  }, [isDependente, location.pathname, navigate]);
+    const destino = deprecatedPortalRoutes[location.pathname];
+    if (destino) navigate(destino, { replace: true });
+  }, [location.pathname, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -205,202 +134,34 @@ export default function Dashboard() {
 
   if (!associado) return null;
 
-  // Nome a exibir - do dependente ou do titular
-  const nomeExibir = isDependente && dependenteLogado 
-    ? dependenteLogado.nome 
-    : associado.nome;
+  const nomeExibir = isDependente && dependenteLogado ? dependenteLogado.nome : associado.nome;
 
   return (
-    <div className="min-h-screen bg-background">
-      <WelcomeTour isDependente={isDependente} />
-      {/* Header */}
-      <header className="bg-primary text-primary-foreground shadow-lg sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src={sbpmLogo}
-              alt="SBPM"
-              className="h-10 w-10 rounded-full object-cover bg-white p-0.5"
-            />
-            <div className="hidden sm:block">
-              <h1 className="font-bold text-lg">Portal do Associado</h1>
-              <p className="text-xs opacity-90">
-                Olá, {nomeExibir.split(' ')[0]} | Mat: {associado.matricula}
-                {isDependente && <Badge variant="secondary" className="ml-2 text-xs">Dependente</Badge>}
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <GlobalSearch variant="bar" />
-            <div className="md:hidden">
-              <GlobalSearch variant="icon" />
-            </div>
-            <ThemeToggle className="text-primary-foreground hover:bg-primary/80" />
-            <KeyboardShortcutsHelp className="hidden md:inline-flex text-primary-foreground hover:bg-primary/80" />
-            <Link to="/dashboard/notificacoes" className="relative">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-primary-foreground hover:bg-primary/80"
-                aria-label="Notificações"
-              >
-                <Bell className="h-5 w-5" />
-              </Button>
-              {naoLidas > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-sbpm-red text-white text-[10px] font-bold flex items-center justify-center">
-                  {naoLidas > 99 ? '99+' : naoLidas}
-                </span>
-              )}
-            </Link>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden text-primary-foreground hover:bg-primary/80"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleLogout}
-              className="hidden md:flex text-primary-foreground hover:bg-primary/80"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sair
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex">
-        {/* Sidebar Desktop */}
-        <aside className="hidden md:block w-64 min-h-[calc(100vh-64px)] bg-card border-r shadow-sm">
-          <nav className="p-4 space-y-1">
-            <Link
-              to="/dashboard"
-              className={cn(
-                'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
-                location.pathname === '/dashboard'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-foreground hover:bg-muted'
-              )}
-            >
-              <User className="h-5 w-5" />
-              <span className="font-medium">Início</span>
-            </Link>
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
-                    isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
-                  )}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
-            <Button
-              variant="ghost"
-              onClick={handleLogout}
-              className="w-full justify-start gap-3 px-4 py-3 text-destructive hover:bg-destructive/10 mt-4"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="font-medium">Sair</span>
-            </Button>
-          </nav>
-        </aside>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-40 md:hidden">
-            <div className="fixed inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
-            <aside className="fixed left-0 top-0 h-full w-64 bg-card shadow-xl pt-16 animate-fade-in">
-              <nav className="p-4 space-y-1">
-                <Link
-                  to="/dashboard"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
-                    location.pathname === '/dashboard'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-muted'
-                  )}
-                >
-                  <User className="h-5 w-5" />
-                  <span className="font-medium">Início</span>
-                </Link>
-                {menuItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = location.pathname === item.path;
-                  return (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        'flex items-center gap-3 px-4 py-3 rounded-lg transition-colors',
-                        isActive
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-foreground hover:bg-muted'
-                      )}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  );
-                })}
-                <Button
-                  variant="ghost"
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full justify-start gap-3 px-4 py-3 text-destructive hover:bg-destructive/10 mt-4"
-                >
-                  <LogOut className="h-5 w-5" />
-                  <span className="font-medium">Sair</span>
-                </Button>
-              </nav>
-            </aside>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <main className="flex-1 p-4 md:p-6 space-y-4">
+    <ExternalPortalLayout
+      profileType={isDependente ? 'dependent' : 'associate'}
+      user={{
+        nome: nomeExibir,
+        fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado.foto_url,
+        matricula: associado.matricula,
+        titularNome: associado.nome,
+        ativo: associado.ativo,
+      }}
+      onLogout={handleLogout}
+      banner={
+        <>
+          <WelcomeTour isDependente={isDependente} />
           <ComunicadosBanner />
-          <Breadcrumbs />
-          {location.pathname === '/dashboard' ? (
-            <DashboardHome />
-          ) : (
-            <Outlet />
-          )}
-        </main>
-      </div>
-
-    </div>
+        </>
+      }
+    >
+      {location.pathname === '/dashboard' ? <DashboardHome /> : <Outlet />}
+    </ExternalPortalLayout>
   );
 }
 
 function DashboardHome() {
-  const { associado, dependentes, limite, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
-  
-  const limiteDisponivel = limite 
-    ? Number(limite.limite_total) - Number(limite.limite_utilizado)
-    : 0;
+  const { associado, dependentes, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
 
-  const limiteTotal = limite ? Number(limite.limite_total) : 0;
-  const limiteUtilizado = limite ? Number(limite.limite_utilizado) : 0;
-  const percentualUtilizado = limiteTotal > 0 ? (limiteUtilizado / limiteTotal) * 100 : 0;
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
@@ -474,44 +235,8 @@ function DashboardHome() {
         "grid gap-4",
         isDependente ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
       )}>
-        {/* Card Limite - Apenas para titular */}
-        {!isDependente && (
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <DollarSign className="h-5 w-5 text-primary" />
-                Limite Disponível
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-3xl font-bold text-primary">
-                  {(100 - percentualUtilizado).toFixed(0)}%
-                </p>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Utilizado</span>
-                    <span className="font-medium">{percentualUtilizado.toFixed(0)}%</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary transition-all"
-                      style={{ width: `${percentualUtilizado}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {limiteUtilizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} de {limiteTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                  </p>
-                </div>
-                <Link to="/dashboard/limite">
-                  <Button variant="outline" size="sm" className="w-full mt-2">
-                    Ver Detalhes
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+
+
 
         {/* Card Dependentes - Apenas para titular */}
         {!isDependente && (
@@ -803,7 +528,7 @@ function DashboardHome() {
       )}
 
       {/* Contatos WhatsApp e Telefones */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none">
+      <Card id="atendimento" className="scroll-mt-24 bg-muted/40 border-none">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-green-600" />

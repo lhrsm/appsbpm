@@ -21,7 +21,6 @@ const titularItems: Item[] = [
   { label: 'Solicitações / Chamados', path: '/dashboard/solicitacoes', group: 'Portal' },
   { label: 'Meus Documentos', path: '/dashboard/documentos', group: 'Portal' },
   { label: 'Financeiro / Mensalidades', path: '/dashboard/financeiro', group: 'Portal' },
-  { label: 'Limite Disponível', path: '/dashboard/limite', group: 'Portal' },
   { label: 'Clínicas e Parceiros', path: '/dashboard/clinicas', group: 'Portal' },
   { label: 'Informe de Rendimentos', path: '/dashboard/informes', group: 'Portal' },
   { label: 'Dependentes', path: '/dashboard/dependentes', group: 'Portal' },

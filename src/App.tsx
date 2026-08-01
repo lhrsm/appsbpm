@@ -8,7 +8,6 @@ import { AssociadoProvider } from "@/contexts/AssociadoContext";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Carteirinha from "./pages/Carteirinha";
-import Limite from "./pages/Limite";
 
 import Clinicas from "./pages/Clinicas";
 import Informes from "./pages/Informes";
@@ -156,7 +155,8 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />}>
                 <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
                 <Route path="carteirinha" element={<Carteirinha />} />
-                <Route path="limite" element={<Limite />} />
+                {/* Rota depreciada: "Limite disponível" foi removido do portal externo */}
+                <Route path="limite" element={<Navigate to="/dashboard" replace />} />
                 
                 <Route path="clinicas" element={<Clinicas />} />
                 <Route path="informes" element={<Informes />} />
