@@ -1,6 +1,9 @@
+@import "./design-system/styles/tokens.css";
+
 #lovable-badge {
   display: none !important;
 }
+
 
 @tailwind base;
 @tailwind components;
