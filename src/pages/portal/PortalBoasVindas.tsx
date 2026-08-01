@@ -47,7 +47,7 @@ export default function PortalBoasVindas() {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-3 pt-6">
             <nav aria-label="Como deseja continuar" className="grid gap-3 sm:grid-cols-1">
               {CAMINHOS.map(({ to, icone: Icone, titulo, descricao, destaque }) => (
                 <Link
@@ -71,11 +71,6 @@ export default function PortalBoasVindas() {
               <HelpCircle className="h-4 w-4" aria-hidden="true" /> Recuperar acesso
             </Link>
 
-            <p className="flex items-start gap-2 rounded-xl border bg-muted/30 p-3 text-xs text-muted-foreground">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-              O portal não cria cadastros novos: apenas confirma sua identidade junto à base da SBPM e libera a
-              consulta dos seus dados, conforme a LGPD.
-            </p>
           </CardContent>
         </Card>
 
