@@ -115,7 +115,7 @@ export function FileUploadField({
         <Upload className="mx-auto size-6 text-muted-foreground" aria-hidden />
         <p className="mt-2 text-sm text-foreground">Arraste os arquivos aqui ou selecione no dispositivo.</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {helperText ?? `Até ${maxFiles} arquivos, ${maxSizeMB} MB cada. Formatos: ${accept.replaceAll(".", "").toUpperCase()}.`}
+          {helperText ?? `Até ${maxFiles} arquivos, ${maxSizeMB} MB cada. Formatos: ${accept.replace(/\./g, "").toUpperCase()}.`}
         </p>
         <input
           ref={inputRef}
