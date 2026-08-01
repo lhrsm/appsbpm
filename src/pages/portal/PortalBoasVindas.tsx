@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShieldCheck, UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
+import { UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 
