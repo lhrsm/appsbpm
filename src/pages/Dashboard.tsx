@@ -242,44 +242,8 @@ function DashboardHome() {
         "grid gap-4",
         isDependente ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
       )}>
-        {/* Card Limite - Apenas para titular */}
-        {!isDependente && (
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <DollarSign className="h-5 w-5 text-primary" />
-                Limite Disponível
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-3xl font-bold text-primary">
-                  {(100 - percentualUtilizado).toFixed(0)}%
-                </p>
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Utilizado</span>
-                    <span className="font-medium">{percentualUtilizado.toFixed(0)}%</span>
-                  </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-primary transition-all"
-                      style={{ width: `${percentualUtilizado}%` }}
-                    />
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {limiteUtilizado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} de {limiteTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                  </p>
-                </div>
-                <Link to="/dashboard/limite">
-                  <Button variant="outline" size="sm" className="w-full mt-2">
-                    Ver Detalhes
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+
+
 
         {/* Card Dependentes - Apenas para titular */}
         {!isDependente && (
