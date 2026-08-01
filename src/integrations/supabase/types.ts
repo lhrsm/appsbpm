@@ -1825,6 +1825,59 @@ export type Database = {
         }
         Relationships: []
       }
+      external_identity_quiz_challenges: {
+        Row: {
+          chave: string
+          correto: boolean | null
+          created_at: string
+          id: string
+          opcoes: Json
+          ordem: number
+          pergunta: string
+          respondido_em: string | null
+          resposta_hash: string
+          tentativas: number
+          updated_at: string
+          validation_session_id: string
+        }
+        Insert: {
+          chave: string
+          correto?: boolean | null
+          created_at?: string
+          id?: string
+          opcoes?: Json
+          ordem: number
+          pergunta: string
+          respondido_em?: string | null
+          resposta_hash: string
+          tentativas?: number
+          updated_at?: string
+          validation_session_id: string
+        }
+        Update: {
+          chave?: string
+          correto?: boolean | null
+          created_at?: string
+          id?: string
+          opcoes?: Json
+          ordem?: number
+          pergunta?: string
+          respondido_em?: string | null
+          resposta_hash?: string
+          tentativas?: number
+          updated_at?: string
+          validation_session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_identity_quiz_challenges_validation_session_id_fkey"
+            columns: ["validation_session_id"]
+            isOneToOne: false
+            referencedRelation: "external_identity_validation_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       external_identity_validation_sessions: {
         Row: {
           attempt_count: number
