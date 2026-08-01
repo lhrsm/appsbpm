@@ -1,0 +1,73 @@
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNavigationSections, type PortalProfile } from "../navigation";
+import { SidebarLink } from "./PortalSidebar";
+import { maskMatricula, maskNome, primeiroNome } from "../mask";
+import type { PortalUser } from "./PortalUserMenu";
+
+export interface MobileNavigationDrawerProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  profile: PortalProfile;
+  permissions?: string[];
+  user: PortalUser;
+}
+
+/**
+ * Menu em drawer para tablet/mobile.
+ * Radix garante focus trap, fechamento por Escape e devolução do foco ao gatilho.
+ */
+export default function MobileNavigationDrawer({
+  open,
+  onOpenChange,
+  profile,
+  permissions,
+  user,
+}: MobileNavigationDrawerProps) {
+  const sections = getNavigationSections({ profile, permissions });
+  const iniciais = primeiroNome(user.nome).slice(0, 2).toUpperCase() || "SB";
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="left"
+        className="flex w-[85vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]"
+      >
+        <SheetHeader className="border-b p-4 text-left">
+          <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10">
+              {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
+              <AvatarFallback className="text-xs">{iniciais}</AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold">{primeiroNome(user.nome)}</p>
+              <p className="truncate text-xs text-muted-foreground">
+                {profile === "dependent"
+                  ? `Dependente de ${maskNome(user.titularNome)}`
+                  : `Matrícula ${maskMatricula(user.matricula)}`}
+              </p>
+            </div>
+          </div>
+        </SheetHeader>
+
+        <nav className="flex-1 overflow-y-auto p-2" aria-label="Menu principal">
+          {sections.map((section) => (
+            <div key={section.id} className="mb-3">
+              <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {section.section}
+              </p>
+              <ul className="space-y-0.5">
+                {section.items.map((item) => (
+                  <li key={item.id}>
+                    <SidebarLink item={item} onNavigate={() => onOpenChange(false)} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+      </SheetContent>
+    </Sheet>
+  );
+}
