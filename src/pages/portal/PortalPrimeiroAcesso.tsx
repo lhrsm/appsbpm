@@ -63,6 +63,11 @@ export default function PortalPrimeiroAcesso() {
   const [aceiteTermos, setAceiteTermos] = useState(false);
   const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
 
+  const [pergunta, setPergunta] = useState<DesafioIdentidade | null>(null);
+  const [resposta, setResposta] = useState('');
+  const [errosRestantes, setErrosRestantes] = useState<number | null>(null);
+  const [bloqueado, setBloqueado] = useState(false);
+
   const progresso = ((ORDEM.indexOf(etapa) + 1) / ORDEM.length) * 100;
   const forca = forcaSenha(senha);
 
@@ -85,7 +90,48 @@ export default function PortalPrimeiroAcesso() {
       return;
     }
     setSessao({ id: res.sessionId, token: res.validationToken, nome: res.maskedName, demo: res.demoMode });
+
+    if (res.question) {
+      setPergunta(res.question);
+      setResposta('');
+      setEtapa('perguntas');
+      return;
+    }
     setEtapa('email');
+  };
+
+  const responder = async () => {
+    if (!sessao || !pergunta || !resposta) return;
+    setErro(null);
+    setLoading(true);
+    const res = await responderPergunta({
+      sessionId: sessao.id,
+      validationToken: sessao.token,
+      ordem: pergunta.ordem,
+      answer: resposta,
+    });
+    setLoading(false);
+
+    if (typeof res.errosRestantes === 'number') setErrosRestantes(res.errosRestantes);
+
+    if (!res.success) {
+      setErro(res.message ?? 'Não foi possível validar sua resposta.');
+      if (res.status === 'quiz_failed') {
+        setBloqueado(true);
+        setPergunta(null);
+      }
+      return;
+    }
+
+    if (res.completed) {
+      setPergunta(null);
+      setEtapa('email');
+      return;
+    }
+    if (res.question) {
+      setPergunta(res.question);
+      setResposta('');
+    }
   };
 
   const solicitarCodigo = async (reenvio = false) => {
