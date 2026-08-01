@@ -250,3 +250,178 @@
     transition: none !important;
   }
 }
+
+/* ============================================================
+   Botões institucionais do fluxo externo (primário/secundário/terciário)
+   ============================================================ */
+
+.portal-btn-primary,
+.portal-btn-secondary,
+.portal-btn-tertiary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease,
+    border-color 160ms ease, color 160ms ease;
+}
+
+.portal-btn-primary {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--primary));
+  box-shadow: 0 8px 24px hsl(var(--primary) / 0.22);
+}
+
+.portal-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px hsl(var(--primary) / 0.28);
+}
+
+.portal-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.portal-btn-secondary {
+  background: hsl(var(--background) / 0.85);
+  color: hsl(var(--foreground));
+  border: 1.5px solid hsl(var(--border));
+  min-height: 48px;
+}
+
+.portal-btn-secondary:hover:not(:disabled) {
+  background: hsl(var(--muted));
+  border-color: hsl(var(--primary) / 0.45);
+}
+
+.portal-btn-tertiary {
+  background: transparent;
+  color: hsl(var(--primary));
+  border: 1px solid transparent;
+  min-height: 44px;
+  font-weight: 500;
+}
+
+.portal-btn-tertiary:hover:not(:disabled) {
+  background: hsl(var(--primary) / 0.08);
+  text-decoration: underline;
+}
+
+.portal-btn-primary:focus-visible,
+.portal-btn-secondary:focus-visible,
+.portal-btn-tertiary:focus-visible,
+.portal-choice:focus-visible {
+  outline: 3px solid hsl(var(--primary) / 0.35);
+  outline-offset: 3px;
+}
+
+.portal-btn-primary:disabled,
+.portal-btn-secondary:disabled,
+.portal-btn-tertiary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Cards de escolha da tela de boas-vindas */
+.portal-choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1.5px solid hsl(var(--border));
+  background: hsl(var(--background) / 0.82);
+  text-align: left;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.portal-choice:hover {
+  transform: translateY(-1px);
+  border-color: hsl(var(--primary) / 0.55);
+  box-shadow: 0 12px 30px hsl(var(--primary) / 0.14);
+}
+
+.portal-choice--primary {
+  border-color: hsl(var(--primary));
+  background: hsl(var(--primary) / 0.07);
+  box-shadow: 0 8px 24px hsl(var(--primary) / 0.14);
+}
+
+.portal-choice__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 12px;
+  background: hsl(var(--primary) / 0.12);
+  color: hsl(var(--primary));
+}
+
+.portal-choice__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.portal-choice__title {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.portal-choice__desc {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.portal-choice__chevron {
+  margin-left: auto;
+  flex: 0 0 auto;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Card mais largo (boas-vindas e pré-cadastro) */
+.auth-page .auth-card--wide {
+  width: min(100%, 620px);
+}
+
+@media (max-width: 767px) {
+  .auth-page .auth-card--wide {
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .dark .auth-page .auth-card--wide {
+    background: hsl(var(--card) / 0.94);
+  }
+
+  .portal-btn-primary,
+  .portal-btn-secondary,
+  .portal-btn-tertiary {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-btn-primary,
+  .portal-btn-secondary,
+  .portal-btn-tertiary,
+  .portal-choice {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -53,7 +53,9 @@ const PortalBoasVindas = lazy(() => import("./pages/portal/PortalBoasVindas"));
 const PortalEntrar = lazy(() => import("./pages/portal/PortalEntrar"));
 const PortalPrimeiroAcesso = lazy(() => import("./pages/portal/PortalPrimeiroAcesso"));
 const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarAcesso"));
+const PortalQueroMeAssociar = lazy(() => import("./pages/portal/PortalQueroMeAssociar"));
 const AdminValidacaoExterna = lazy(() => import("./pages/admin/AdminValidacaoExterna"));
+const AdminPreCadastros = lazy(() => import("./pages/admin/AdminPreCadastros"));
 
 // Lazy: TODO o admin (não baixa para usuários finais)
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -103,7 +105,7 @@ const RouteFallback = () => (
   </div>
 );
 
-const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/primeiro-acesso", "/recuperar-acesso", "/admin/login", "/quiosque", "/redefinir-senha"];
+const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/quero-me-associar", "/primeiro-acesso", "/recuperar-acesso", "/admin/login", "/quiosque", "/redefinir-senha"];
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
@@ -142,6 +144,7 @@ const App = () => (
               <Route path="/entrar" element={<PortalEntrar />} />
               <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
               <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+              <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
               <Route path="/acesso-simplificado" element={<Login />} />
               <Route path="/quiosque" element={<Quiosque />} />
               <Route path="/bem/:token" element={<BemQR />} />
@@ -189,6 +192,7 @@ const App = () => (
                 <Route path="contabilidade" element={<AdminContabilidade />} />
                 <Route path="rh" element={<AdminRH />} />
                 <Route path="associados" element={<AdminAssociados />} />
+                <Route path="associacoes/pre-cadastros" element={<AdminPreCadastros />} />
 
                 <Route path="dependentes" element={<AdminDependentes />} />
                 <Route path="limites" element={<AdminLimites />} />

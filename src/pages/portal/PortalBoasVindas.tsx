@@ -1,51 +1,88 @@
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ShieldCheck, UserPlus, LogIn, HelpCircle } from 'lucide-react';
+import { ShieldCheck, UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
+
+const CAMINHOS = [
+  {
+    to: '/primeiro-acesso',
+    icone: UserPlus,
+    titulo: 'Fazer primeiro acesso',
+    descricao: 'Valide seus dados e crie seu acesso ao Portal da SBPM.',
+    destaque: true,
+  },
+  {
+    to: '/entrar',
+    icone: LogIn,
+    titulo: 'Já tenho acesso',
+    descricao: 'Entre utilizando seu CPF ou matrícula e sua senha.',
+    destaque: false,
+  },
+  {
+    to: '/quero-me-associar',
+    icone: BadgePlus,
+    titulo: 'Quero me associar',
+    descricao: 'Preencha um pré-cadastro para iniciar seu processo de associação à SBPM.',
+    destaque: false,
+  },
+];
 
 export default function PortalBoasVindas() {
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-md">
-        <Card className="auth-card w-full border-0 animate-fade-in">
+      <main className="w-full max-w-xl">
+        <Card className="auth-card auth-card--wide w-full border-0 animate-fade-in">
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
-              <img src={sbpmLogo} alt="SBPM - Sociedade Beneficente da Polícia Militar" className="h-28 w-auto object-contain" />
+              <img
+                src={sbpmLogo}
+                alt="SBPM - Sociedade Beneficente da Polícia Militar"
+                className="h-24 w-auto object-contain"
+              />
             </div>
-            <CardTitle className="text-2xl font-bold text-primary">Portal do Associado</CardTitle>
+            <CardTitle className="text-2xl font-bold text-primary">Bem-vindo ao Portal da SBPM</CardTitle>
             <CardDescription>
-              Acesso exclusivo para associados e dependentes da SBPM. Seus dados cadastrais são consultados diretamente
-              na base institucional.
+              Acesse seus dados, serviços e informações institucionais em um ambiente seguro.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <Button asChild className="w-full h-12 text-base font-semibold">
-              <Link to="/entrar">
-                <LogIn className="mr-2 h-5 w-5" aria-hidden="true" /> Já tenho acesso
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="w-full h-12 text-base font-semibold">
-              <Link to="/primeiro-acesso">
-                <UserPlus className="mr-2 h-5 w-5" aria-hidden="true" /> Primeiro acesso
-              </Link>
-            </Button>
-            <Button asChild variant="ghost" className="w-full">
-              <Link to="/recuperar-acesso">
-                <HelpCircle className="mr-2 h-4 w-4" aria-hidden="true" /> Recuperar acesso
-              </Link>
-            </Button>
 
-            <p className="flex items-start gap-2 rounded-md border bg-muted/30 p-3 text-xs text-muted-foreground">
+          <CardContent className="space-y-3">
+            <nav aria-label="Como deseja continuar" className="grid gap-3 sm:grid-cols-1">
+              {CAMINHOS.map(({ to, icone: Icone, titulo, descricao, destaque }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className={`portal-choice ${destaque ? 'portal-choice--primary' : ''}`}
+                >
+                  <span className="portal-choice__icon" aria-hidden="true">
+                    <Icone className="h-5 w-5" />
+                  </span>
+                  <span className="portal-choice__body">
+                    <span className="portal-choice__title">{titulo}</span>
+                    <span className="portal-choice__desc">{descricao}</span>
+                  </span>
+                  <ChevronRight className="portal-choice__chevron h-5 w-5" aria-hidden="true" />
+                </Link>
+              ))}
+            </nav>
+
+            <Link to="/recuperar-acesso" className="portal-btn-tertiary w-full">
+              <HelpCircle className="h-4 w-4" aria-hidden="true" /> Recuperar acesso
+            </Link>
+
+            <p className="flex items-start gap-2 rounded-xl border bg-muted/30 p-3 text-xs text-muted-foreground">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-              O portal não cria cadastros novos: apenas confirma sua identidade junto à base da SBPM e libera a consulta
-              dos seus dados, conforme a LGPD.
+              O portal não cria cadastros novos: apenas confirma sua identidade junto à base da SBPM e libera a
+              consulta dos seus dados, conforme a LGPD.
             </p>
           </CardContent>
         </Card>
 
-        <nav aria-label="Links institucionais" className="auth-links mt-6 flex flex-wrap items-center justify-center gap-2 text-xs">
+        <nav
+          aria-label="Links institucionais"
+          className="auth-links mt-6 flex flex-wrap items-center justify-center gap-2 text-xs"
+        >
           <Link to="/privacidade" className="auth-link">Política de Privacidade</Link>
           <Link to="/acessibilidade" className="auth-link">Acessibilidade</Link>
         </nav>

@@ -59,6 +59,7 @@ export const ROTA_MODULO: Record<string, string> = {
   "/admin/contabilidade": "contabilidade",
   "/admin/rh": "rh",
   "/admin/associados": "associados",
+  "/admin/associacoes/pre-cadastros": "associados",
   "/admin/dependentes": "dependentes",
   "/admin/integracoes": "integracoes",
   "/admin/relatorios": "relatorios",
