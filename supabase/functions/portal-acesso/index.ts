@@ -310,10 +310,40 @@ Deno.serve(async (req) => {
         .update({ validation_token_hash: await sha256(validationToken) })
         .eq('id', sess!.id);
 
+      // --- Perguntas de segurança (uma por tela), geradas e conferidas no backend ---
+      const perguntas = await gerarPerguntas(admin, cpf, result.personType as PersonType);
+      let primeira: any = null;
+
+      if (perguntas.length >= 2) {
+        const linhas = await Promise.all(
+          perguntas.map(async (p, i) => ({
+            validation_session_id: sess!.id,
+            ordem: i + 1,
+            chave: p.chave,
+            pergunta: p.pergunta,
+            opcoes: montarOpcoes(p),
+            resposta_hash: await sha256(`${sess!.id}|${normalizarResposta(p.correta)}`),
+          })),
+        );
+        const { data: inseridas } = await admin
+          .from('external_identity_quiz_challenges')
+          .insert(linhas)
+          .select('ordem, chave, pergunta, opcoes')
+          .order('ordem');
+
+        if (inseridas?.length) {
+          await admin
+            .from('external_identity_validation_sessions')
+            .update({ status: 'quiz_pending' })
+            .eq('id', sess!.id);
+          primeira = publicar(inseridas[0], inseridas.length);
+        }
+      }
+
       // CPF guardado apenas no vínculo final; aqui fica na sessão do cliente.
       return json({
         success: true,
-        status: 'matched',
+        status: primeira ? 'quiz_required' : 'matched',
         sessionId: sess!.id,
         validationToken,
         personType: result.personType,
@@ -321,11 +351,17 @@ Deno.serve(async (req) => {
         registrationTail: result.registration ? String(result.registration).slice(-3) : null,
         expiresAt: new Date(Date.now() + VALIDATION_TTL_MIN * 60_000).toISOString(),
         demoMode: providerMode === 'mock',
+        question: primeira,
       });
     }
 
     // ---------------- SESSÃO DE VALIDAÇÃO ----------------
-    if (body.action === 'email_start' || body.action === 'email_verify' || body.action === 'create_account') {
+    if (
+      body.action === 'email_start' ||
+      body.action === 'email_verify' ||
+      body.action === 'create_account' ||
+      body.action === 'quiz_answer'
+    ) {
       const { data: sess } = await admin
         .from('external_identity_validation_sessions')
         .select('*')
