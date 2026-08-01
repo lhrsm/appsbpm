@@ -1,0 +1,123 @@
+/**
+ * Design System SBPM — camada CSS de tokens.
+ * Importado por `src/index.css`. Não define cores literais em componentes:
+ * tudo aqui vira variável semântica reutilizável.
+ */
+
+@layer base {
+  :root {
+    /* Cores de contexto por módulo institucional */
+    --module-lgpd: 265 65% 52%;
+    --module-financeiro: 210 85% 45%;
+    --module-saude: 0 75% 50%;
+    --module-previdencia: 145 63% 32%;
+    --module-patrimonio: 28 85% 48%;
+    --module-rh: 190 70% 40%;
+
+    /* Feedback semântico */
+    --success: 145 63% 32%;
+    --success-foreground: 0 0% 100%;
+    --info: 210 85% 45%;
+    --info-foreground: 0 0% 100%;
+
+    /* Escala neutra institucional */
+    --gray-50: 210 20% 98%;
+    --gray-100: 210 20% 96%;
+    --gray-200: 220 15% 91%;
+    --gray-300: 220 15% 84%;
+    --gray-400: 220 12% 66%;
+    --gray-500: 220 10% 50%;
+    --gray-600: 220 12% 40%;
+    --gray-700: 220 15% 30%;
+    --gray-800: 220 18% 20%;
+    --gray-900: 220 20% 12%;
+
+    /* Verdes institucionais */
+    --green-main: 145 63% 32%;
+    --green-dark: 145 68% 22%;
+    --green-medium: 145 55% 42%;
+    --green-light: 145 45% 90%;
+
+    /* Containers */
+    --container-laptop: 1400px;
+    --container-desktop: 1600px;
+  }
+
+  .dark {
+    --module-saude: 0 75% 58%;
+    --module-patrimonio: 28 85% 56%;
+    --module-lgpd: 265 70% 66%;
+    --module-financeiro: 210 85% 60%;
+    --module-previdencia: 145 63% 46%;
+    --module-rh: 190 70% 52%;
+
+    --success: 145 63% 42%;
+    --info: 210 85% 55%;
+
+    --green-light: 145 25% 20%;
+  }
+}
+
+@layer utilities {
+  .ds-shadow-xs {
+    box-shadow: 0 1px 2px 0 hsl(var(--foreground) / 0.04);
+  }
+  .ds-shadow-sm {
+    box-shadow: 0 1px 3px 0 hsl(var(--foreground) / 0.07), 0 1px 2px -1px hsl(var(--foreground) / 0.05);
+  }
+  .ds-shadow-md {
+    box-shadow: 0 4px 10px -2px hsl(var(--foreground) / 0.08), 0 2px 4px -2px hsl(var(--foreground) / 0.05);
+  }
+  .ds-shadow-lg {
+    box-shadow: 0 10px 24px -6px hsl(var(--foreground) / 0.12), 0 4px 8px -4px hsl(var(--foreground) / 0.06);
+  }
+  .ds-shadow-xl {
+    box-shadow: 0 20px 40px -12px hsl(var(--foreground) / 0.18);
+  }
+  .ds-shadow-floating {
+    box-shadow: 0 24px 60px -16px hsl(var(--primary) / 0.28);
+  }
+
+  .ds-animate-scale-in {
+    animation: ds-scale-in 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ds-animate-slide-in-right {
+    animation: ds-slide-in-right 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  .ds-animate-slide-in-up {
+    animation: ds-slide-in-up 220ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes ds-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ds-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ds-slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
