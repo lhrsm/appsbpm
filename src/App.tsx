@@ -96,6 +96,8 @@ const AdminPatrimonio = lazy(() => import("./pages/admin/AdminPatrimonio"));
 const AdminContabilidade = lazy(() => import("./pages/admin/AdminContabilidade"));
 const AdminRH = lazy(() => import("./pages/admin/AdminRH"));
 
+import LayoutPreviewTmp from "./pages/__LayoutPreview";
+
 const queryClient = new QueryClient();
 
 const RouteFallback = () => (
@@ -228,6 +230,7 @@ const App = () => (
                 <Route path="sobre" element={<AdminSobre />} />
                 <Route path="tutoriais" element={<AdminTutoriais />} />
               </Route>
+              <Route path="__preview" element={<LayoutPreviewTmp />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
