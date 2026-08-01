@@ -378,6 +378,79 @@ Deno.serve(async (req) => {
         return json({ success: false, message: 'Sua sessão expirou. Reinicie o primeiro acesso.' }, 401);
       }
 
+      if (sess.status === 'quiz_failed') {
+        return json({ success: false, message: MENSAGENS.quiz_failed }, 403);
+      }
+
+      // ---------- PERGUNTAS DE SEGURANÇA ----------
+      if (body.action === 'quiz_answer') {
+        const { data: desafios } = await admin
+          .from('external_identity_quiz_challenges')
+          .select('*')
+          .eq('validation_session_id', sess.id)
+          .order('ordem');
+
+        const total = desafios?.length ?? 0;
+        const atual = (desafios || []).find((d: any) => d.ordem === body.ordem);
+        if (!atual || atual.respondido_em) {
+          return json({ success: false, message: 'Pergunta inválida. Reinicie o primeiro acesso.' }, 400);
+        }
+
+        const acertou = atual.resposta_hash === (await sha256(`${sess.id}|${normalizarResposta(body.answer)}`));
+
+        await admin
+          .from('external_identity_quiz_challenges')
+          .update({ respondido_em: new Date().toISOString(), correto: acertou, tentativas: atual.tentativas + 1 })
+          .eq('id', atual.id);
+
+        const erros = (desafios || []).filter((d: any) => d.correto === false).length + (acertou ? 0 : 1);
+
+        await audit(admin, {
+          event_type: 'identity_quiz_answer',
+          validation_session_id: sess.id,
+          result: acertou ? 'correct' : 'incorrect',
+          provider: providerMode,
+          metadata_safe: { chave: atual.chave, ordem: atual.ordem },
+        });
+
+        if (erros > MAX_ERROS) {
+          await admin
+            .from('external_identity_validation_sessions')
+            .update({ status: 'quiz_failed' })
+            .eq('id', sess.id);
+          return json({ success: false, status: 'quiz_failed', message: MENSAGENS.quiz_failed }, 403);
+        }
+
+        const proxima = (desafios || []).find((d: any) => d.ordem === body.ordem + 1);
+        if (proxima) {
+          return json({
+            success: true,
+            correct: acertou,
+            completed: false,
+            question: publicar(proxima, total),
+            errosRestantes: MAX_ERROS - erros,
+          });
+        }
+
+        await admin
+          .from('external_identity_validation_sessions')
+          .update({ status: 'validated' })
+          .eq('id', sess.id);
+
+        await audit(admin, {
+          event_type: 'identity_quiz_completed',
+          validation_session_id: sess.id,
+          result: 'approved',
+          provider: providerMode,
+        });
+
+        return json({ success: true, correct: acertou, completed: true, errosRestantes: MAX_ERROS - erros });
+      }
+
+      if (sess.status === 'quiz_pending') {
+        return json({ success: false, message: 'Responda às perguntas de segurança antes de continuar.' }, 400);
+      }
+
       // ---------- ENVIO / REENVIO DO CÓDIGO ----------
       if (body.action === 'email_start') {
         const email = body.email.trim().toLowerCase();
