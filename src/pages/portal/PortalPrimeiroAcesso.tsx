@@ -243,6 +243,62 @@ export default function PortalPrimeiroAcesso() {
               </form>
             )}
 
+            {etapa === 'perguntas' && (
+              <div className="space-y-5">
+                {bloqueado ? (
+                  <div className="space-y-3 text-center">
+                    <ShieldQuestion className="mx-auto h-12 w-12 text-destructive" aria-hidden="true" />
+                    <p className="text-sm text-muted-foreground">
+                      Por segurança, encerramos esta tentativa de primeiro acesso. Procure o atendimento da SBPM para
+                      liberar o seu cadastro.
+                    </p>
+                  </div>
+                ) : pergunta ? (
+                  <>
+                    <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
+                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                      <span>
+                        Identidade localizada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Responda às perguntas abaixo
+                        para confirmarmos que é você.
+                      </span>
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span className="font-medium uppercase tracking-wide">
+                        Pergunta {pergunta.ordem} de {pergunta.total}
+                      </span>
+                      {typeof errosRestantes === 'number' && (
+                        <span>{errosRestantes} erro(s) restante(s)</span>
+                      )}
+                    </div>
+                    <Progress value={(pergunta.ordem / pergunta.total) * 100} className="h-1.5" />
+
+                    <fieldset className="space-y-3">
+                      <legend className="text-base font-semibold text-foreground">{pergunta.pergunta}</legend>
+                      <RadioGroup value={resposta} onValueChange={setResposta} className="grid gap-2">
+                        {pergunta.opcoes.map((opcao) => (
+                          <Label
+                            key={opcao}
+                            className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm font-normal transition-colors ${
+                              resposta === opcao ? 'border-primary/50 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
+                            }`}
+                          >
+                            <RadioGroupItem value={opcao} /> {opcao}
+                          </Label>
+                        ))}
+                      </RadioGroup>
+                    </fieldset>
+
+                    <Button className="w-full h-11" onClick={responder} disabled={loading || !resposta}>
+                      {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirmar resposta'}
+                    </Button>
+                  </>
+                ) : null}
+              </div>
+            )}
+
+
+
             {etapa === 'email' && (
               <div className="space-y-4">
                 <p className="flex items-start gap-2 rounded-md border bg-muted/30 p-3 text-sm">
