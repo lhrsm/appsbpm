@@ -528,7 +528,7 @@ function DashboardHome() {
       )}
 
       {/* Contatos WhatsApp e Telefones */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-none">
+      <Card id="atendimento" className="scroll-mt-24 bg-muted/40 border-none">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageCircle className="h-5 w-5 text-green-600" />
