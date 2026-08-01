@@ -3,6 +3,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 import { getIdentityProvider, soNumeros, type PersonType } from './providers.ts';
 import { getEmailService, codeEmailHtml, codeEmailText, maskEmail } from './email.ts';
+import { MAX_ERROS, gerarPerguntas, montarOpcoes, normalizarResposta, publicar } from './quiz.ts';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const VALIDATION_TTL_MIN = 15;
@@ -84,6 +85,13 @@ const Body = z.discriminatedUnion('action', [
     validationToken: z.string().min(10).max(200),
     email: z.string().email().max(200),
     resend: z.boolean().optional(),
+  }),
+  z.object({
+    action: z.literal('quiz_answer'),
+    sessionId: z.string().uuid(),
+    validationToken: z.string().min(10).max(200),
+    ordem: z.number().int().min(1).max(10),
+    answer: z.string().min(1).max(200),
   }),
   z.object({
     action: z.literal('email_verify'),
