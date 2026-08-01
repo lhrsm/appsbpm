@@ -8,26 +8,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning } from 'lucide-react';
+import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning, ShieldQuestion } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import {
   CAMPOS_VALIDACAO,
+  DesafioIdentidade,
   PersonType,
   confirmarCodigo,
   criarConta,
   enviarCodigo,
   forcaSenha,
   mascararCpf,
+  responderPergunta,
   senhaValida,
   validarIdentidade,
 } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
 
-type Etapa = 'identidade' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
+type Etapa = 'identidade' | 'perguntas' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
 
 const TITULOS: Record<Etapa, string> = {
   identidade: 'Validação de identidade',
+  perguntas: 'Perguntas de segurança',
   email: 'Confirmação de e-mail',
   codigo: 'Código de confirmação',
   senha: 'Criação de senha',
@@ -35,7 +38,7 @@ const TITULOS: Record<Etapa, string> = {
   concluido: 'Acesso liberado',
 };
 
-const ORDEM: Etapa[] = ['identidade', 'email', 'codigo', 'senha', 'termos', 'concluido'];
+const ORDEM: Etapa[] = ['identidade', 'perguntas', 'email', 'codigo', 'senha', 'termos', 'concluido'];
 
 export default function PortalPrimeiroAcesso() {
   const [etapa, setEtapa] = useState<Etapa>('identidade');
