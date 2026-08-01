@@ -29,7 +29,9 @@ const cardVariants = cva("rounded-xl border bg-card text-card-foreground transit
   defaultVariants: { elevation: "sm", interactive: false, padding: "md" },
 });
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof cardVariants> {
+export interface CardProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, "title">,
+    VariantProps<typeof cardVariants> {
   title?: ReactNode;
   subtitle?: ReactNode;
   icon?: LucideIcon;
