@@ -8,26 +8,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning } from 'lucide-react';
+import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning, ShieldQuestion } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import {
   CAMPOS_VALIDACAO,
+  DesafioIdentidade,
   PersonType,
   confirmarCodigo,
   criarConta,
   enviarCodigo,
   forcaSenha,
   mascararCpf,
+  responderPergunta,
   senhaValida,
   validarIdentidade,
 } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
 
-type Etapa = 'identidade' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
+type Etapa = 'identidade' | 'perguntas' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
 
 const TITULOS: Record<Etapa, string> = {
   identidade: 'Validação de identidade',
+  perguntas: 'Perguntas de segurança',
   email: 'Confirmação de e-mail',
   codigo: 'Código de confirmação',
   senha: 'Criação de senha',
@@ -35,7 +38,7 @@ const TITULOS: Record<Etapa, string> = {
   concluido: 'Acesso liberado',
 };
 
-const ORDEM: Etapa[] = ['identidade', 'email', 'codigo', 'senha', 'termos', 'concluido'];
+const ORDEM: Etapa[] = ['identidade', 'perguntas', 'email', 'codigo', 'senha', 'termos', 'concluido'];
 
 export default function PortalPrimeiroAcesso() {
   const [etapa, setEtapa] = useState<Etapa>('identidade');
@@ -60,6 +63,11 @@ export default function PortalPrimeiroAcesso() {
   const [aceiteTermos, setAceiteTermos] = useState(false);
   const [aceitePrivacidade, setAceitePrivacidade] = useState(false);
 
+  const [pergunta, setPergunta] = useState<DesafioIdentidade | null>(null);
+  const [resposta, setResposta] = useState('');
+  const [errosRestantes, setErrosRestantes] = useState<number | null>(null);
+  const [bloqueado, setBloqueado] = useState(false);
+
   const progresso = ((ORDEM.indexOf(etapa) + 1) / ORDEM.length) * 100;
   const forca = forcaSenha(senha);
 
@@ -82,7 +90,48 @@ export default function PortalPrimeiroAcesso() {
       return;
     }
     setSessao({ id: res.sessionId, token: res.validationToken, nome: res.maskedName, demo: res.demoMode });
+
+    if (res.question) {
+      setPergunta(res.question);
+      setResposta('');
+      setEtapa('perguntas');
+      return;
+    }
     setEtapa('email');
+  };
+
+  const responder = async () => {
+    if (!sessao || !pergunta || !resposta) return;
+    setErro(null);
+    setLoading(true);
+    const res = await responderPergunta({
+      sessionId: sessao.id,
+      validationToken: sessao.token,
+      ordem: pergunta.ordem,
+      answer: resposta,
+    });
+    setLoading(false);
+
+    if (typeof res.errosRestantes === 'number') setErrosRestantes(res.errosRestantes);
+
+    if (!res.success) {
+      setErro(res.message ?? 'Não foi possível validar sua resposta.');
+      if (res.status === 'quiz_failed') {
+        setBloqueado(true);
+        setPergunta(null);
+      }
+      return;
+    }
+
+    if (res.completed) {
+      setPergunta(null);
+      setEtapa('email');
+      return;
+    }
+    if (res.question) {
+      setPergunta(res.question);
+      setResposta('');
+    }
   };
 
   const solicitarCodigo = async (reenvio = false) => {
@@ -193,6 +242,62 @@ export default function PortalPrimeiroAcesso() {
                 </Button>
               </form>
             )}
+
+            {etapa === 'perguntas' && (
+              <div className="space-y-5">
+                {bloqueado ? (
+                  <div className="space-y-3 text-center">
+                    <ShieldQuestion className="mx-auto h-12 w-12 text-destructive" aria-hidden="true" />
+                    <p className="text-sm text-muted-foreground">
+                      Por segurança, encerramos esta tentativa de primeiro acesso. Procure o atendimento da SBPM para
+                      liberar o seu cadastro.
+                    </p>
+                  </div>
+                ) : pergunta ? (
+                  <>
+                    <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
+                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                      <span>
+                        Identidade localizada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Responda às perguntas abaixo
+                        para confirmarmos que é você.
+                      </span>
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span className="font-medium uppercase tracking-wide">
+                        Pergunta {pergunta.ordem} de {pergunta.total}
+                      </span>
+                      {typeof errosRestantes === 'number' && (
+                        <span>{errosRestantes} erro(s) restante(s)</span>
+                      )}
+                    </div>
+                    <Progress value={(pergunta.ordem / pergunta.total) * 100} className="h-1.5" />
+
+                    <fieldset className="space-y-3">
+                      <legend className="text-base font-semibold text-foreground">{pergunta.pergunta}</legend>
+                      <RadioGroup value={resposta} onValueChange={setResposta} className="grid gap-2">
+                        {pergunta.opcoes.map((opcao) => (
+                          <Label
+                            key={opcao}
+                            className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm font-normal transition-colors ${
+                              resposta === opcao ? 'border-primary/50 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
+                            }`}
+                          >
+                            <RadioGroupItem value={opcao} /> {opcao}
+                          </Label>
+                        ))}
+                      </RadioGroup>
+                    </fieldset>
+
+                    <Button className="w-full h-11" onClick={responder} disabled={loading || !resposta}>
+                      {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirmar resposta'}
+                    </Button>
+                  </>
+                ) : null}
+              </div>
+            )}
+
+
 
             {etapa === 'email' && (
               <div className="space-y-4">

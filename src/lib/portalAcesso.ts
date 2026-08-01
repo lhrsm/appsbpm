@@ -35,6 +35,14 @@ async function call<T = any>(action: string, payload: Record<string, unknown> = 
   return data as T;
 }
 
+export interface DesafioIdentidade {
+  ordem: number;
+  total: number;
+  chave: string;
+  pergunta: string;
+  opcoes: string[];
+}
+
 export interface ValidationResponse {
   success: boolean;
   status?: string;
@@ -46,6 +54,7 @@ export interface ValidationResponse {
   registrationTail?: string | null;
   expiresAt?: string;
   demoMode?: boolean;
+  question?: DesafioIdentidade | null;
 }
 
 export const validarIdentidade = (input: {
@@ -56,6 +65,23 @@ export const validarIdentidade = (input: {
   fullName?: string;
   motherName?: string;
 }) => call<ValidationResponse>('validate_identity', { ...input, user_agent: navigator.userAgent.slice(0, 300) });
+
+/** Responde uma pergunta de segurança; o backend confere e devolve a próxima. */
+export const responderPergunta = (input: {
+  sessionId: string;
+  validationToken: string;
+  ordem: number;
+  answer: string;
+}) =>
+  call<{
+    success: boolean;
+    status?: string;
+    message?: string;
+    correct?: boolean;
+    completed?: boolean;
+    question?: DesafioIdentidade | null;
+    errosRestantes?: number;
+  }>('quiz_answer', input);
 
 export const enviarCodigo = (input: {
   sessionId: string;

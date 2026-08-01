@@ -3,6 +3,7 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 import { getIdentityProvider, soNumeros, type PersonType } from './providers.ts';
 import { getEmailService, codeEmailHtml, codeEmailText, maskEmail } from './email.ts';
+import { MAX_ERROS, gerarPerguntas, montarOpcoes, normalizarResposta, publicar } from './quiz.ts';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const VALIDATION_TTL_MIN = 15;
@@ -65,6 +66,8 @@ const MENSAGENS: Record<string, string> = {
   already_linked: 'Já existe um acesso vinculado a estes dados.',
   unavailable: 'A validação está temporariamente indisponível. Tente novamente em alguns minutos.',
   rate_limited: 'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.',
+  quiz_failed:
+    'Não foi possível confirmar sua identidade pelas perguntas de segurança. Procure o atendimento da SBPM.',
 };
 
 const Body = z.discriminatedUnion('action', [
@@ -84,6 +87,13 @@ const Body = z.discriminatedUnion('action', [
     validationToken: z.string().min(10).max(200),
     email: z.string().email().max(200),
     resend: z.boolean().optional(),
+  }),
+  z.object({
+    action: z.literal('quiz_answer'),
+    sessionId: z.string().uuid(),
+    validationToken: z.string().min(10).max(200),
+    ordem: z.number().int().min(1).max(10),
+    answer: z.string().min(1).max(200),
   }),
   z.object({
     action: z.literal('email_verify'),
@@ -302,10 +312,40 @@ Deno.serve(async (req) => {
         .update({ validation_token_hash: await sha256(validationToken) })
         .eq('id', sess!.id);
 
+      // --- Perguntas de segurança (uma por tela), geradas e conferidas no backend ---
+      const perguntas = await gerarPerguntas(admin, cpf, result.personType as PersonType);
+      let primeira: any = null;
+
+      if (perguntas.length >= 2) {
+        const linhas = await Promise.all(
+          perguntas.map(async (p, i) => ({
+            validation_session_id: sess!.id,
+            ordem: i + 1,
+            chave: p.chave,
+            pergunta: p.pergunta,
+            opcoes: montarOpcoes(p),
+            resposta_hash: await sha256(`${sess!.id}|${normalizarResposta(p.correta)}`),
+          })),
+        );
+        const { data: inseridas } = await admin
+          .from('external_identity_quiz_challenges')
+          .insert(linhas)
+          .select('ordem, chave, pergunta, opcoes')
+          .order('ordem');
+
+        if (inseridas?.length) {
+          await admin
+            .from('external_identity_validation_sessions')
+            .update({ status: 'quiz_pending' })
+            .eq('id', sess!.id);
+          primeira = publicar(inseridas[0], inseridas.length);
+        }
+      }
+
       // CPF guardado apenas no vínculo final; aqui fica na sessão do cliente.
       return json({
         success: true,
-        status: 'matched',
+        status: primeira ? 'quiz_required' : 'matched',
         sessionId: sess!.id,
         validationToken,
         personType: result.personType,
@@ -313,11 +353,17 @@ Deno.serve(async (req) => {
         registrationTail: result.registration ? String(result.registration).slice(-3) : null,
         expiresAt: new Date(Date.now() + VALIDATION_TTL_MIN * 60_000).toISOString(),
         demoMode: providerMode === 'mock',
+        question: primeira,
       });
     }
 
     // ---------------- SESSÃO DE VALIDAÇÃO ----------------
-    if (body.action === 'email_start' || body.action === 'email_verify' || body.action === 'create_account') {
+    if (
+      body.action === 'email_start' ||
+      body.action === 'email_verify' ||
+      body.action === 'create_account' ||
+      body.action === 'quiz_answer'
+    ) {
       const { data: sess } = await admin
         .from('external_identity_validation_sessions')
         .select('*')
@@ -332,6 +378,79 @@ Deno.serve(async (req) => {
         new Date(sess.expires_at).getTime() < Date.now()
       ) {
         return json({ success: false, message: 'Sua sessão expirou. Reinicie o primeiro acesso.' }, 401);
+      }
+
+      if (sess.status === 'quiz_failed') {
+        return json({ success: false, message: MENSAGENS.quiz_failed }, 403);
+      }
+
+      // ---------- PERGUNTAS DE SEGURANÇA ----------
+      if (body.action === 'quiz_answer') {
+        const { data: desafios } = await admin
+          .from('external_identity_quiz_challenges')
+          .select('*')
+          .eq('validation_session_id', sess.id)
+          .order('ordem');
+
+        const total = desafios?.length ?? 0;
+        const atual = (desafios || []).find((d: any) => d.ordem === body.ordem);
+        if (!atual || atual.respondido_em) {
+          return json({ success: false, message: 'Pergunta inválida. Reinicie o primeiro acesso.' }, 400);
+        }
+
+        const acertou = atual.resposta_hash === (await sha256(`${sess.id}|${normalizarResposta(body.answer)}`));
+
+        await admin
+          .from('external_identity_quiz_challenges')
+          .update({ respondido_em: new Date().toISOString(), correto: acertou, tentativas: atual.tentativas + 1 })
+          .eq('id', atual.id);
+
+        const erros = (desafios || []).filter((d: any) => d.correto === false).length + (acertou ? 0 : 1);
+
+        await audit(admin, {
+          event_type: 'identity_quiz_answer',
+          validation_session_id: sess.id,
+          result: acertou ? 'correct' : 'incorrect',
+          provider: providerMode,
+          metadata_safe: { chave: atual.chave, ordem: atual.ordem },
+        });
+
+        if (erros > MAX_ERROS) {
+          await admin
+            .from('external_identity_validation_sessions')
+            .update({ status: 'quiz_failed' })
+            .eq('id', sess.id);
+          return json({ success: false, status: 'quiz_failed', message: MENSAGENS.quiz_failed }, 403);
+        }
+
+        const proxima = (desafios || []).find((d: any) => d.ordem === body.ordem + 1);
+        if (proxima) {
+          return json({
+            success: true,
+            correct: acertou,
+            completed: false,
+            question: publicar(proxima, total),
+            errosRestantes: MAX_ERROS - erros,
+          });
+        }
+
+        await admin
+          .from('external_identity_validation_sessions')
+          .update({ status: 'validated' })
+          .eq('id', sess.id);
+
+        await audit(admin, {
+          event_type: 'identity_quiz_completed',
+          validation_session_id: sess.id,
+          result: 'approved',
+          provider: providerMode,
+        });
+
+        return json({ success: true, correct: acertou, completed: true, errosRestantes: MAX_ERROS - erros });
+      }
+
+      if (sess.status === 'quiz_pending') {
+        return json({ success: false, message: 'Responda às perguntas de segurança antes de continuar.' }, 400);
       }
 
       // ---------- ENVIO / REENVIO DO CÓDIGO ----------
