@@ -11,7 +11,7 @@ import { DashboardEmptyState } from "./DashboardPrimitives";
 /** Serviços disponíveis para o perfil atual. */
 export function DashboardServicesSection({ services }: { services: ServiceItem[] }) {
   if (!services.length) {
-    return <DashboardEmptyState icon={icons.servicos} title="Nenhum serviço disponível no momento." />;
+    return <DashboardEmptyState icon={icons.pasta} title="Nenhum serviço disponível no momento." />;
   }
   return (
     <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
