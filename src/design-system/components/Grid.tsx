@@ -26,26 +26,48 @@ export function Container({ width = "desktop", className, children, ...props }: 
 }
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  /** Colunas por faixa: mobile 4, tablet 8, desktop 12. */
-  cols?: { mobile?: 1 | 2 | 3 | 4; tablet?: number; desktop?: number };
+  /** Colunas por faixa: mobile (máx. 4), tablet (máx. 8), desktop (máx. 12). */
+  cols?: { mobile?: 1 | 2 | 3 | 4; tablet?: 1 | 2 | 3 | 4 | 6 | 8; desktop?: 1 | 2 | 3 | 4 | 6 | 12 };
   gap?: "sm" | "md" | "lg";
   children: ReactNode;
 }
 
 const gapMap = { sm: "gap-3", md: "gap-4", lg: "gap-6" } as const;
 
+// Mapas estáticos — necessários para o Tailwind detectar as classes.
+const mobileCols = { 1: "grid-cols-1", 2: "grid-cols-2", 3: "grid-cols-3", 4: "grid-cols-4" } as const;
+const tabletCols = {
+  1: "md:grid-cols-1",
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+  4: "md:grid-cols-4",
+  6: "md:grid-cols-6",
+  8: "md:grid-cols-8",
+} as const;
+const desktopCols = {
+  1: "xl:grid-cols-1",
+  2: "xl:grid-cols-2",
+  3: "xl:grid-cols-3",
+  4: "xl:grid-cols-4",
+  6: "xl:grid-cols-6",
+  12: "xl:grid-cols-12",
+} as const;
+
 /**
  * Grid responsivo institucional (4 / 8 / 12 colunas).
  * @example <Grid cols={{ mobile: 1, tablet: 2, desktop: 4 }}>{cards}</Grid>
  */
 export function Grid({ cols, gap = "md", className, children, ...props }: GridProps) {
-  const m = cols?.mobile ?? 1;
-  const t = cols?.tablet ?? 2;
-  const d = cols?.desktop ?? 3;
   return (
     <div
-      className={cn("grid", gapMap[gap], `grid-cols-${m}`, `md:grid-cols-${t}`, `xl:grid-cols-${d}`, className)}
-      style={{ ["--ds-cols" as string]: d }}
+      className={cn(
+        "grid",
+        gapMap[gap],
+        mobileCols[cols?.mobile ?? 1],
+        tabletCols[cols?.tablet ?? 2],
+        desktopCols[cols?.desktop ?? 3],
+        className,
+      )}
       {...props}
     >
       {children}
