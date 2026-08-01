@@ -419,4 +419,3 @@ export function ProfileSummaryCard({
   );
 }
 
-export type { LucideIcon };

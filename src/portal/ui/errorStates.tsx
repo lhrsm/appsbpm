@@ -311,4 +311,3 @@ export function OfflineNotice({ lastUpdated, availableFeatures, onRetry, retryin
   );
 }
 
-export type { LucideIcon };
