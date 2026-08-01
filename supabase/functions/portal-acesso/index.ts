@@ -66,6 +66,8 @@ const MENSAGENS: Record<string, string> = {
   already_linked: 'Já existe um acesso vinculado a estes dados.',
   unavailable: 'A validação está temporariamente indisponível. Tente novamente em alguns minutos.',
   rate_limited: 'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.',
+  quiz_failed:
+    'Não foi possível confirmar sua identidade pelas perguntas de segurança. Procure o atendimento da SBPM.',
 };
 
 const Body = z.discriminatedUnion('action', [
