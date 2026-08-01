@@ -160,15 +160,8 @@ export default function Dashboard() {
 }
 
 function DashboardHome() {
-  const { associado, dependentes, limite, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
-  
-  const limiteDisponivel = limite 
-    ? Number(limite.limite_total) - Number(limite.limite_utilizado)
-    : 0;
+  const { associado, dependentes, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
 
-  const limiteTotal = limite ? Number(limite.limite_total) : 0;
-  const limiteUtilizado = limite ? Number(limite.limite_utilizado) : 0;
-  const percentualUtilizado = limiteTotal > 0 ? (limiteUtilizado / limiteTotal) * 100 : 0;
 
   const tipoLabel: Record<string, string> = {
     conjuge: 'Cônjuge',
