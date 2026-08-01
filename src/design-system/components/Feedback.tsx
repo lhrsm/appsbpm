@@ -10,7 +10,7 @@ const alertVariants = cva("flex gap-3 rounded-lg border p-4 text-sm", {
       info: "border-[hsl(var(--info)/0.35)] bg-[hsl(var(--info)/0.08)] text-foreground",
       success: "border-[hsl(var(--success)/0.35)] bg-[hsl(var(--success)/0.08)] text-foreground",
       warning: "border-warning/45 bg-warning/10 text-foreground",
-      danger: "border-destructive/40 bg-destructive/08 text-foreground",
+      danger: "border-destructive/40 bg-destructive/10 text-foreground",
       neutral: "border-border bg-muted/50 text-foreground",
     },
   },
