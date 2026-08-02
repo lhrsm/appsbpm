@@ -171,7 +171,7 @@ export default function SegurancaHub() {
           }
           secondaryAction={
             resumo.mfa_enabled && !resumo.mfa_required ? (
-              <PortalButton variant="ghost" tone="danger" onClick={() => setDialogo("mfa_off")}>
+              <PortalButton variant="ghost" className="text-destructive hover:bg-destructive/10" onClick={() => setDialogo("mfa_off")}>
                 Desativar
               </PortalButton>
             ) : undefined
@@ -540,7 +540,7 @@ export default function SegurancaHub() {
               Manter ativa
             </PortalButton>
             <PortalButton
-              tone="danger"
+              variant="danger"
               loading={enviando}
               onClick={() =>
                 executar(async () => {
