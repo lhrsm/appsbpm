@@ -20,6 +20,30 @@ export interface DataFilterDefinition {
   allLabel?: string;
 }
 
+function LabeledFilterSelect({
+  filter,
+  value,
+  onChange,
+  className,
+}: {
+  filter: DataFilterDefinition;
+  value: string;
+  onChange: (value?: string) => void;
+  className?: string;
+}) {
+  return (
+    <label className={cn("block space-y-1 text-sm", className)}>
+      <span className="font-medium">{filter.label}</span>
+      <SelectField
+        value={value}
+        placeholder={filter.allLabel ?? "Todos"}
+        options={filter.options}
+        onChange={(e) => onChange(e.target.value || undefined)}
+      />
+    </label>
+  );
+}
+
 export interface DataFiltersProps {
   filters: DataFilterDefinition[];
   values: FilterValues;
@@ -38,18 +62,16 @@ export function DataFilters({ filters, values, onChange, onClear, className }: D
   return (
     <div className={cn("flex flex-wrap items-end gap-3", className)} role="group" aria-label="Filtros">
       {filters.map((filter) => (
-        <SelectField
+        <LabeledFilterSelect
           key={filter.id}
-          label={filter.label}
+          filter={filter}
           value={values[filter.id] ?? ""}
-          placeholder={filter.allLabel ?? "Todos"}
-          options={filter.options}
-          onChange={(e) => onChange(filter.id, e.target.value || undefined)}
+          onChange={(value) => onChange(filter.id, value)}
           className="min-w-[10rem]"
         />
       ))}
       {hasActive && onClear && (
-        <PortalButton variant="ghost" size="sm" icon={icons.fechar} onClick={onClear}>
+        <PortalButton variant="ghost" size="small" iconLeft={icons.fechar} onClick={onClear}>
           Limpar filtros
         </PortalButton>
       )}
@@ -156,13 +178,11 @@ export function MobileFiltersDrawer({
     >
       <div className="space-y-4">
         {filters.map((filter) => (
-          <SelectField
+          <LabeledFilterSelect
             key={filter.id}
-            label={filter.label}
+            filter={filter}
             value={draft[filter.id] ?? ""}
-            placeholder={filter.allLabel ?? "Todos"}
-            options={filter.options}
-            onChange={(e) => setDraft((prev) => ({ ...prev, [filter.id]: e.target.value || undefined }))}
+            onChange={(value) => setDraft((prev) => ({ ...prev, [filter.id]: value }))}
           />
         ))}
       </div>
