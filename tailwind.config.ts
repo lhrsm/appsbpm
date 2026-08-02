@@ -12,7 +12,31 @@ export default {
         "2xl": "1400px",
       },
     },
+    screens: {
+      /* Breakpoints oficiais do Design System (Fase 1 / Fase 11) */
+      xs: "360px",
+      sm: "480px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1600px",
+      "3xl": "1920px",
+      uw: "2560px",
+    },
     extend: {
+      maxWidth: {
+        readable: "72ch",
+        "portal-form": "48rem",
+        "portal-content": "1600px",
+        "portal-ultrawide": "1800px",
+      },
+      spacing: {
+        "safe-top": "env(safe-area-inset-top)",
+        "safe-bottom": "env(safe-area-inset-bottom)",
+        "safe-left": "env(safe-area-inset-left)",
+        "safe-right": "env(safe-area-inset-right)",
+        "bottom-nav": "calc(4.25rem + env(safe-area-inset-bottom))",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
