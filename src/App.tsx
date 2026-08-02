@@ -31,13 +31,14 @@ const Simulador = lazy(() => import("./pages/Simulador"));
 const IndicarParceiro = lazy(() => import("./pages/IndicarParceiro"));
 const Peculio = lazy(() => import("./pages/Peculio"));
 const SolicitarPeculio = lazy(() => import("./pages/SolicitarPeculio"));
-const MinhaPrivacidade = lazy(() => import("./pages/MinhaPrivacidade"));
+const MinhaPrivacidade = lazy(() => import("./pages/portal/conta/PrivacidadeHub"));
 const Solicitacoes = lazy(() => import("./pages/Solicitacoes"));
 const MeusDocumentos = lazy(() => import("./pages/MeusDocumentos"));
 const Financeiro = lazy(() => import("./pages/Financeiro"));
 const Agenda = lazy(() => import("./pages/Agenda"));
 const FAQ = lazy(() => import("./pages/FAQ"));
-const HistoricoAcessos = lazy(() => import("./pages/HistoricoAcessos"));
+const HistoricoAcessos = lazy(() => import("./pages/portal/conta/HistoricoAcessos"));
+const SegurancaHub = lazy(() => import("./pages/portal/conta/SegurancaHub"));
 const Beneficios = lazy(() => import("./pages/Beneficios"));
 const AvaliarClinicas = lazy(() => import("./pages/AvaliarClinicas"));
 const AdminRelatorios = lazy(() => import("./pages/admin/AdminRelatorios"));
@@ -187,7 +188,7 @@ const App = () => (
                 <Route path="vinculo" element={<PortalVinculo />} />
                 <Route path="meus-dados" element={<RotaMeusDados />} />
                 <Route path="meu-titular" element={<RotaMeuTitular />} />
-                <Route path="seguranca" element={<RotaSeguranca />} />
+                <Route path="seguranca" element={<SegurancaHub />} />
                 <Route path="preferencias" element={<RotaPreferencias />} />
                 <Route path="atendimento" element={<RotaAtendimento />} />
                 <Route path="solicitacoes" element={<PortalSolicitacoes />} />
