@@ -14,3 +14,4 @@ export * from "./errorStates";
 export * from "./feedback";
 export * from "./skeletons";
 export * from "./DataFreshnessIndicator";
+export * from "./ResponsiveTabs";
