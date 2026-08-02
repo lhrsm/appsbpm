@@ -499,7 +499,7 @@ function itemAllowed(item: PortalNavItem, { profile, permissions, disabledFeatur
 
 /** Retorna as seções visíveis para o perfil/permissões informados. */
 export function getNavigationSections(options: NavFilterOptions): PortalNavSection[] {
-  return portalNavigation
+  return navigationByProfile(options.profile)
     .map((section) => ({
       ...section,
       items: section.items
@@ -524,7 +524,7 @@ export function isRouteAllowed(pathname: string, options: NavFilterOptions): boo
 
 /** Rótulo legível de uma rota (breadcrumbs). */
 export function getRouteLabel(pathname: string): string | undefined {
-  for (const section of portalNavigation) {
+  for (const section of [...portalNavigation, ...dependentNavigation]) {
     for (const item of section.items) {
       if (item.route.split("#")[0] === pathname) return item.label;
     }
@@ -532,5 +532,12 @@ export function getRouteLabel(pathname: string): string | undefined {
   return undefined;
 }
 
-/** Itens da navegação inferior no mobile (máx. 5). */
-export const bottomNavIds = ["visao-geral", "carteirinha", "solicitacoes", "atendimento", "dados-cadastrais"];
+/** Itens da navegação inferior no mobile (máx. 5), por perfil. */
+export const bottomNavIdsByProfile: Record<PortalProfile, string[]> = {
+  associate: ["visao-geral", "carteirinha", "solicitacoes", "atendimento", "dados-cadastrais"],
+  dependent: ["visao-geral", "carteirinha", "solicitacoes", "clinicas", "atendimento"],
+};
+
+/** @deprecated use `bottomNavIdsByProfile`. Mantido para compatibilidade. */
+export const bottomNavIds = bottomNavIdsByProfile.associate;
+
