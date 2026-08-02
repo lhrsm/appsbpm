@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { clearPortalToken } from '@/lib/portal';
+import { clearPrivateState } from '@/lib/perf/queryClient';
+import { closeAllRealtime } from '@/hooks/useRealtimeChannel';
 
 export interface Dependente {
   id: string;
@@ -83,6 +86,7 @@ interface AssociadoContextType {
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
 
 export function AssociadoProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const [associado, setAssociado] = useState<Associado | null>(null);
   const [dependentes, setDependentes] = useState<Dependente[]>([]);
   const [limite, setLimite] = useState<Limite | null>(null);
@@ -93,7 +97,11 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [dependenteLogado, setDependenteLogado] = useState<Dependente | null>(null);
 
   const logout = () => {
+    // Encerra sessão, cancela requisições/realtime e limpa todo o cache privado
+    // para que nenhum dado do usuário anterior fique visível no dispositivo.
+    closeAllRealtime();
     clearPortalToken();
+    clearPrivateState(queryClient);
     setAssociado(null);
     setDependentes([]);
     setLimite(null);

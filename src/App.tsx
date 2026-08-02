@@ -2,28 +2,31 @@ import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { createQueryClient } from "@/lib/perf/queryClient";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AssociadoProvider } from "@/contexts/AssociadoContext";
-import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Carteirinha from "./pages/Carteirinha";
-
-import Clinicas from "./pages/Clinicas";
-import Informes from "./pages/Informes";
-import Dependentes from "./pages/Dependentes";
-import Perfil from "./pages/Perfil";
-import Notificacoes from "./pages/Notificacoes";
 import NotFound from "./pages/NotFound";
-import Privacidade from "./pages/Privacidade";
-import Acessibilidade from "./pages/Acessibilidade";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
-import ChatbotWidget from "./components/ChatbotWidget";
 import InstallPWAPrompt from "./components/InstallPWAPrompt";
 import OfflineBanner from "./components/OfflineBanner";
 import BackToTop from "./components/BackToTop";
+import PWAUpdatePrompt from "./components/PWAUpdatePrompt";
 import PageSkeleton from "./components/PageSkeleton";
+import { initWebVitals } from "@/lib/observability/webVitals";
+
+// Lazy: chunks por área — o portal externo nunca baixa código administrativo.
+const ChatbotWidget = lazy(() => import("./components/ChatbotWidget"));
+const Login = lazy(() => import("./pages/Login"));
+const Clinicas = lazy(() => import("./pages/Clinicas"));
+const Informes = lazy(() => import("./pages/Informes"));
+const Dependentes = lazy(() => import("./pages/Dependentes"));
+const Perfil = lazy(() => import("./pages/Perfil"));
+const Notificacoes = lazy(() => import("./pages/Notificacoes"));
+const Privacidade = lazy(() => import("./pages/Privacidade"));
+const Acessibilidade = lazy(() => import("./pages/Acessibilidade"));
 
 // Lazy: páginas menos frequentes do portal do associado
 const AssociacaoPremiada = lazy(() => import("./pages/AssociacaoPremiada"));
@@ -111,7 +114,9 @@ const AdminPatrimonio = lazy(() => import("./pages/admin/AdminPatrimonio"));
 const AdminContabilidade = lazy(() => import("./pages/admin/AdminContabilidade"));
 const AdminRH = lazy(() => import("./pages/admin/AdminRH"));
 
-const queryClient = new QueryClient();
+const queryClient = createQueryClient();
+
+initWebVitals();
 
 const RouteFallback = () => (
   <div className="p-6">
@@ -124,7 +129,11 @@ const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/quero-me-associar", "/primeiro-ace
 const ChatbotGate = () => {
   const { pathname } = useLocation();
   if (HIDDEN_CHAT_ROUTES.includes(pathname) || pathname.startsWith("/bem/")) return null;
-  return <ChatbotWidget />;
+  return (
+    <Suspense fallback={null}>
+      <ChatbotWidget />
+    </Suspense>
+  );
 };
 
 /**
@@ -152,6 +161,7 @@ const App = () => (
           <InstallPWAPrompt />
           <OfflineBanner />
           <BackToTop />
+          <PWAUpdatePrompt />
           <Suspense fallback={<RouteFallback />}>
             <Routes>
               <Route path="/" element={<PortalBoasVindas />} />
