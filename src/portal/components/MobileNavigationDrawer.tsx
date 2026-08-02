@@ -31,7 +31,7 @@ export default function MobileNavigationDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="left"
-        className="flex w-[85vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]"
+        className="flex w-[86vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pt-[env(safe-area-inset-top)]"
       >
         <SheetHeader className="border-b p-4 text-left">
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
