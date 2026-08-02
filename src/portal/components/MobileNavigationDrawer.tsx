@@ -1,5 +1,6 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { icons } from "@/design-system/icons";
 import { getNavigationSections, type PortalProfile } from "../navigation";
 import { SidebarLink } from "./PortalSidebar";
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
@@ -11,7 +12,10 @@ export interface MobileNavigationDrawerProps {
   profile: PortalProfile;
   permissions?: string[];
   user: PortalUser;
+  /** Ação de sair exibida no rodapé do menu. */
+  onLogout?: () => void;
 }
+
 
 /**
  * Menu em drawer para tablet/mobile.
