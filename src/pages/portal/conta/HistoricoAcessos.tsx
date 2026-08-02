@@ -288,7 +288,7 @@ export default function HistoricoAcessos() {
         title="Reportar acesso suspeito"
         description="Todas as sessões e dispositivos confiáveis serão encerrados e um protocolo de segurança será aberto. Você precisará entrar novamente."
         confirmLabel="Confirmar e proteger conta"
-        tone="danger"
+        destructive
         onConfirm={() =>
           acao(async () => {
             const r = await contaCall<{ protocolo: string | null }>("reportar_acesso_suspeito");
