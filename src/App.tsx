@@ -55,6 +55,15 @@ const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarA
 const PortalQueroMeAssociar = lazy(() => import("./pages/portal/PortalQueroMeAssociar"));
 const PortalVinculo = lazy(() => import("./pages/portal/associado/Vinculo"));
 const PortalMeusDados = lazy(() => import("./pages/portal/associado/MeusDados"));
+import {
+  RotaCarteirinha,
+  RotaMeusDados,
+  RotaDocumentos,
+  RotaAtendimento,
+  RotaMeuTitular,
+  RotaSeguranca,
+  RotaPreferencias,
+} from "./portal/routesByProfile";
 const PortalSolicitacoes = lazy(() => import("./pages/portal/associado/Solicitacoes"));
 const PortalSolicitacaoNova = lazy(() => import("./pages/portal/associado/SolicitacaoNova"));
 const PortalSolicitacaoDetalhes = lazy(() => import("./pages/portal/associado/SolicitacaoDetalhes"));
@@ -160,7 +169,7 @@ const App = () => (
               <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
               <Route path="/dashboard" element={<Dashboard />}>
                 <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
-                <Route path="carteirinha" element={<Carteirinha />} />
+                <Route path="carteirinha" element={<RotaCarteirinha />} />
                 {/* Rota depreciada: "Limite disponível" foi removido do portal externo */}
                 <Route path="limite" element={<Navigate to="/dashboard" replace />} />
                 
@@ -176,14 +185,17 @@ const App = () => (
                 <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
                 <Route path="notificacoes" element={<Notificacoes />} />
                 <Route path="vinculo" element={<PortalVinculo />} />
-                <Route path="meus-dados" element={<PortalMeusDados />} />
-                <Route path="atendimento" element={<PortalAtendimento />} />
+                <Route path="meus-dados" element={<RotaMeusDados />} />
+                <Route path="meu-titular" element={<RotaMeuTitular />} />
+                <Route path="seguranca" element={<RotaSeguranca />} />
+                <Route path="preferencias" element={<RotaPreferencias />} />
+                <Route path="atendimento" element={<RotaAtendimento />} />
                 <Route path="solicitacoes" element={<PortalSolicitacoes />} />
                 <Route path="solicitacoes/nova" element={<PortalSolicitacaoNova />} />
                 <Route path="solicitacoes/:id" element={<PortalSolicitacaoDetalhes />} />
                 {/* Rota antiga da central de solicitações */}
                 <Route path="solicitacoes-legado" element={<Solicitacoes />} />
-                <Route path="documentos" element={<MeusDocumentos />} />
+                <Route path="documentos" element={<RotaDocumentos />} />
                 <Route path="financeiro" element={<Financeiro />} />
                 <Route path="agenda" element={<Agenda />} />
                 <Route path="faq" element={<FAQ />} />
