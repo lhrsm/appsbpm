@@ -4,9 +4,19 @@ import { portalCall } from "@/lib/portal";
 import { icons } from "@/design-system/icons";
 import PortalPageHeader from "@/portal/components/PortalPageHeader";
 import { PortalButton } from "@/portal/forms/buttons";
-import { ResponsiveDataView, useDataView, type DataColumn } from "@/portal/data";
+import {
+  DataToolbar,
+  DataExportMenu,
+  PortalPagination,
+  ResponsiveDataView,
+  searchRows,
+  sortRows,
+  paginateRows,
+  useDataView,
+  type DataColumn,
+} from "@/portal/data";
 import { getStatus } from "@/portal/ui/status";
-import { getCategoriaSolicitacao } from "@/portal/associado/config";
+import { categoriasSolicitacao, getCategoriaSolicitacao } from "@/portal/associado/config";
 
 export interface SolicitacaoRegistro {
   id: string;
@@ -23,12 +33,20 @@ export interface SolicitacaoRegistro {
 }
 
 export const formatarDataHora = (v?: string | null) =>
-  v ? new Date(v).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }) : "—";
+  v
+    ? new Date(v).toLocaleString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "—";
 
-export const protocoloDe = (s: SolicitacaoRegistro) =>
+export const protocoloDe = (s: Pick<SolicitacaoRegistro, "id" | "protocolo">) =>
   s.protocolo || `#${s.id.slice(0, 8).toUpperCase()}`;
 
-/** Central de solicitações do associado (§8) — listagem com filtros e protocolo. */
+/** Central de solicitações do associado (§8): protocolo, situação e histórico. */
 export default function Solicitacoes() {
   const navigate = useNavigate();
   const [itens, setItens] = useState<SolicitacaoRegistro[]>([]);
@@ -54,20 +72,8 @@ export default function Solicitacoes() {
 
   const columns = useMemo<DataColumn<SolicitacaoRegistro>[]>(
     () => [
-      {
-        id: "protocolo",
-        header: "Protocolo",
-        accessor: (r) => protocoloDe(r),
-        sortable: true,
-        mobilePriority: "primary",
-      },
-      {
-        id: "assunto",
-        header: "Assunto",
-        accessor: (r) => r.assunto,
-        sortable: true,
-        mobilePriority: "primary",
-      },
+      { id: "protocolo", header: "Protocolo", accessor: (r) => protocoloDe(r), sortable: true, mobilePriority: "primary" },
+      { id: "assunto", header: "Assunto", accessor: (r) => r.assunto, sortable: true, mobilePriority: "primary" },
       {
         id: "categoria",
         header: "Categoria",
@@ -78,8 +84,8 @@ export default function Solicitacoes() {
       {
         id: "created_at",
         header: "Abertura",
-        accessor: (r) => formatarDataHora(r.created_at),
-        sortValue: (r) => r.created_at,
+        accessor: (r) => r.created_at,
+        cell: (r) => formatarDataHora(r.created_at),
         sortable: true,
         mobilePriority: "secondary",
       },
@@ -87,8 +93,6 @@ export default function Solicitacoes() {
         id: "status",
         header: "Situação",
         accessor: (r) => getStatus(r.status).label,
-        type: "status",
-        statusValue: (r) => r.status,
         sortable: true,
         mobilePriority: "primary",
       },
@@ -96,32 +100,20 @@ export default function Solicitacoes() {
     [],
   );
 
-  const view = useDataView<SolicitacaoRegistro>({
-    data: itens,
-    columns,
-    searchKeys: ["assunto", "descricao", "categoria", "protocolo"],
-    filters: [
-      {
-        id: "status",
-        label: "Situação",
-        options: ["aberto", "em_andamento", "concluido", "cancelado"].map((s) => ({
-          value: s,
-          label: getStatus(s).label,
-        })),
-        accessor: (r) => r.status,
-      },
-      {
-        id: "categoria",
-        label: "Categoria",
-        options: [...new Set(itens.map((i) => i.categoria))].map((c) => ({
-          value: c,
-          label: getCategoriaSolicitacao(c)?.label ?? c,
-        })),
-        accessor: (r) => r.categoria,
-      },
-    ],
-    initialSort: { column: "created_at", direction: "desc" },
-  });
+  const view = useDataView({ syncUrl: true, pageSize: 10, initialSort: { columnId: "created_at", direction: "desc" } });
+
+  const filtradas = useMemo(() => {
+    let base = itens;
+    if (view.filters.status) base = base.filter((i) => i.status === view.filters.status);
+    if (view.filters.categoria) base = base.filter((i) => i.categoria === view.filters.categoria);
+    base = searchRows(base, columns, view.debouncedSearch);
+    return sortRows(base, columns, view.sort);
+  }, [itens, columns, view.filters, view.debouncedSearch, view.sort]);
+
+  const pagina = useMemo(
+    () => paginateRows(filtradas, view.page, view.pageSize),
+    [filtradas, view.page, view.pageSize],
+  );
 
   return (
     <div className="space-y-6">
@@ -136,17 +128,66 @@ export default function Solicitacoes() {
         }
       />
 
+      <DataToolbar
+        search={{ value: view.search, onChange: view.setSearch, placeholder: "Buscar por protocolo ou assunto", loading: view.searching }}
+        filters={[
+          {
+            id: "status",
+            label: "Situação",
+            options: ["aberto", "em_andamento", "concluido", "cancelado"].map((s) => ({ value: s, label: getStatus(s).label })),
+          },
+          {
+            id: "categoria",
+            label: "Categoria",
+            options: categoriasSolicitacao.map((c) => ({ value: c.value, label: c.label })),
+          },
+        ]}
+        filterValues={view.filters}
+        onFilterChange={view.setFilter}
+        onClearFilters={view.clearFilters}
+        sortOptions={[
+          { columnId: "created_at", direction: "desc", label: "Mais recentes" },
+          { columnId: "created_at", direction: "asc", label: "Mais antigas" },
+          { columnId: "status", direction: "asc", label: "Situação" },
+        ]}
+        sort={view.sort}
+        onSortChange={view.setSort}
+        total={filtradas.length}
+        onRefresh={carregar}
+        refreshing={loading}
+        actions={<DataExportMenu columns={columns} rows={filtradas} fileName="minhas-solicitacoes" title="Minhas solicitações" />}
+      />
+
       <ResponsiveDataView
-        {...view}
+        caption="Solicitações registradas no portal"
         columns={columns}
+        data={pagina}
+        rowKey={(r) => r.id}
         loading={loading}
         error={erro}
         onRetry={carregar}
-        caption="Solicitações registradas no portal"
-        emptyTitle="Você ainda não abriu solicitações"
-        emptyDescription="Quando abrir um pedido, ele aparecerá aqui com protocolo e histórico."
-        onRowClick={(row) => navigate(`/dashboard/solicitacoes/${row.id}`)}
-        exportFileName="minhas-solicitacoes"
+        sorting={{ value: view.sort, onToggle: view.toggleSort }}
+        onRowClick={(r) => navigate(`/dashboard/solicitacoes/${r.id}`)}
+        empty={{
+          title: "Você ainda não abriu solicitações",
+          description: "Quando abrir um pedido, ele aparecerá aqui com protocolo e histórico.",
+        }}
+        toCard={(r) => ({
+          title: r.assunto,
+          subtitle: protocoloDe(r),
+          status: r.status,
+          icon: icons.solicitacao,
+          date: formatarDataHora(r.created_at),
+          metadata: [{ label: "Categoria", value: getCategoriaSolicitacao(r.categoria)?.label ?? r.categoria }],
+        })}
+      />
+
+      <PortalPagination
+        page={view.page}
+        pageSize={view.pageSize}
+        total={filtradas.length}
+        onPageChange={view.setPage}
+        onPageSizeChange={view.setPageSize}
       />
     </div>
   );
