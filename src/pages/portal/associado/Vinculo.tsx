@@ -98,11 +98,10 @@ export default function Vinculo() {
             ]}
           />
 
-          <PortalAlert
-            tone="info"
-            title="Divergência nas informações?"
-            description="Os dados oficiais não podem ser alterados diretamente no portal. Registre uma solicitação de correção e acompanhe pelo protocolo."
-          />
+          <PortalAlert tone="info" title="Divergência nas informações?">
+            Os dados oficiais não podem ser alterados diretamente no portal. Registre uma solicitação de correção e
+            acompanhe pelo protocolo.
+          </PortalAlert>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <ActionCard
