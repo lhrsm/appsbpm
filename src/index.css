@@ -197,3 +197,111 @@ html.a11y-reduce-motion *::after {
     overflow-x: hidden;
   }
 }
+
+/* =========================================================
+   FASE 11 — Utilitários responsivos institucionais
+   ========================================================= */
+@layer base {
+  /* Evita overflow horizontal sem esconder conteúdo verticalmente */
+  body {
+    overflow-x: clip;
+  }
+
+  /* Nunca deixar elementos de mídia estourarem o container */
+  img,
+  video,
+  canvas,
+  svg,
+  iframe {
+    max-width: 100%;
+  }
+
+  img,
+  video {
+    height: auto;
+  }
+
+  /* Evita zoom automático do iOS em campos com fonte < 16px */
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: max(16px, 1rem);
+    }
+  }
+}
+
+@layer utilities {
+  /* Safe areas (notch / PWA standalone) */
+  .safe-pt {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-pb {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-px {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .safe-mb {
+    margin-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Espaço reservado para a navegação inferior (mobile/PWA) */
+  .pb-bottom-nav {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 768px) {
+    .pb-bottom-nav {
+      padding-bottom: 0;
+    }
+  }
+
+  /* Largura confortável de leitura (70–85 caracteres) */
+  .readable {
+    max-width: 72ch;
+  }
+
+  /* Rolagem horizontal local e acessível (tabelas/abas) */
+  .scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .scroll-x::-webkit-scrollbar {
+    height: 6px;
+  }
+  .scroll-x::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  /* Quebra segura de textos longos (protocolos, e-mails, URLs) */
+  .break-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Área mínima de toque (WCAG 2.5.8) */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Landscape em telas baixas: header e heros compactos */
+@media (orientation: landscape) and (max-height: 500px) {
+  .landscape-compact {
+    height: 3rem;
+  }
+  .landscape-hide {
+    display: none;
+  }
+}
