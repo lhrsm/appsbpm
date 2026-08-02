@@ -51,7 +51,7 @@ export default function MobileNavigationDrawer({
           </div>
         </SheetHeader>
 
-        <nav className="flex-1 overflow-y-auto p-2" aria-label="Menu principal">
+        <nav className="min-h-0 flex-1 overflow-y-auto p-2" aria-label="Menu principal">
           {sections.map((section) => (
             <div key={section.id} className="mb-3">
               <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -67,7 +67,32 @@ export default function MobileNavigationDrawer({
             </div>
           ))}
         </nav>
+
+        <div className="shrink-0 border-t p-2">
+          <a
+            href="/dashboard/faq"
+            onClick={() => onOpenChange(false)}
+            className="flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
+          >
+            <Ajuda className="h-4 w-4" aria-hidden />
+            Ajuda e suporte
+          </a>
+          {onLogout && (
+            <button
+              type="button"
+              onClick={() => {
+                onOpenChange(false);
+                onLogout();
+              }}
+              className="flex min-h-11 w-full items-center gap-2 rounded-md px-3 text-sm text-destructive transition hover:bg-destructive/10"
+            >
+              <Sair className="h-4 w-4" aria-hidden />
+              Sair da conta
+            </button>
+          )}
+        </div>
       </SheetContent>
+
     </Sheet>
   );
 }
