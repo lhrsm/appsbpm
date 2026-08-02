@@ -4,8 +4,9 @@ import { icons } from "@/design-system/icons";
 import PortalPageHeader from "@/portal/components/PortalPageHeader";
 import { PortalCard } from "@/portal/ui/PortalCard";
 import { PortalAlert, portalToast } from "@/portal/ui/feedback";
-import { SwitchField } from "@/portal/forms/SwitchField";
-import { SelectField } from "@/portal/forms/SelectField";
+import { SwitchField } from "@/portal/forms/choices";
+import { SelectField } from "@/portal/forms/selects";
+import { FormField } from "@/portal/forms/FormField";
 import { useTheme } from "next-themes";
 
 const STORAGE_KEY = "sbpm.dependente.preferencias";
@@ -90,18 +91,22 @@ export default function PreferenciasDependente() {
         </div>
       </PortalCard>
 
-      <PortalCard title="Exibição e acessibilidade" description="Conforto visual na navegação." icon={icons.acessibilidade}>
+      <PortalCard title="Exibição e acessibilidade" description="Conforto visual na navegação." icon={icons.perfil}>
         <div className="space-y-4">
-          <SelectField
-            label="Tema"
-            value={theme ?? "system"}
-            onChange={(v) => setTheme(v)}
-            options={[
-              { value: "system", label: "Seguir o sistema" },
-              { value: "light", label: "Claro" },
-              { value: "dark", label: "Escuro" },
-            ]}
-          />
+          <FormField label="Tema" hint="Aplica-se apenas a este dispositivo.">
+            {(field) => (
+              <SelectField
+                {...field}
+                value={theme ?? "system"}
+                onChange={(e) => setTheme(e.target.value)}
+                options={[
+                  { value: "system", label: "Seguir o sistema" },
+                  { value: "light", label: "Claro" },
+                  { value: "dark", label: "Escuro" },
+                ]}
+              />
+            )}
+          </FormField>
           <SwitchField
             label="Alto contraste"
             description="Aumenta o contraste entre texto e fundo."
