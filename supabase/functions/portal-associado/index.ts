@@ -419,17 +419,61 @@ Deno.serve(async (req) => {
         nome = dep.nome;
       }
 
-      const { error } = await admin.from('solicitacoes').insert({
-        associado_id: sessao.aid,
-        dependente_id: sessao.did,
-        solicitante_nome: nome,
-        solicitante_tipo: sessao.did ? 'dependente' : 'titular',
-        categoria: body.categoria,
-        assunto: body.assunto.trim(),
-        descricao: body.descricao.trim(),
-        prioridade: body.prioridade,
-        sla_prazo: body.sla_prazo ?? null,
-      });
+      // Protocolo institucional SBPM-AAAA-000000000 (sequencial por ano).
+      const ano = new Date().getFullYear();
+      const inicioAno = `${ano}-01-01T00:00:00.000Z`;
+      const { count } = await admin
+        .from('solicitacoes')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', inicioAno);
+      const protocolo = `SBPM-${ano}-${String((count ?? 0) + 1).padStart(9, '0')}`;
+
+      const { data: criada, error } = await admin
+        .from('solicitacoes')
+        .insert({
+          associado_id: sessao.aid,
+          dependente_id: sessao.did,
+          solicitante_nome: nome,
+          solicitante_tipo: sessao.did ? 'dependente' : 'titular',
+          categoria: body.categoria,
+          assunto: body.assunto.trim(),
+          descricao: body.descricao.trim(),
+          prioridade: body.prioridade,
+          sla_prazo: body.sla_prazo ?? null,
+          metadata: { protocolo, origem: 'portal' },
+        })
+        .select('*')
+        .single();
+      if (error) throw error;
+      return json({ ok: true, item: criada });
+    }
+
+    if (body.action === 'solicitacoes_feedback') {
+      const { data: atual } = await admin
+        .from('solicitacoes')
+        .select('id, metadata, associado_id, dependente_id')
+        .eq('id', body.solicitacao_id)
+        .eq('associado_id', sessao.aid)
+        .maybeSingle();
+      if (!atual) return json({ error: 'Solicitação não encontrada' }, 404);
+      if (sessao.did && atual.dependente_id !== sessao.did) return json({ error: 'Acesso negado' }, 403);
+
+      const metadata = {
+        ...((atual.metadata as Record<string, unknown>) ?? {}),
+        avaliacao: {
+          nota: body.nota,
+          satisfacao: body.satisfacao,
+          tempo_atendimento: body.tempo_atendimento,
+          comentario: body.comentario ?? null,
+          avaliado_em: new Date().toISOString(),
+        },
+      };
+
+      const { error } = await admin
+        .from('solicitacoes')
+        .update({ metadata })
+        .eq('id', body.solicitacao_id)
+        .eq('associado_id', sessao.aid);
       if (error) throw error;
       return json({ ok: true });
     }
