@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_recovery_requests: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          contact_email: string | null
+          cpf_reference: string | null
+          created_at: string
+          id: string
+          internal_notes: string | null
+          protocol: string | null
+          reason: string | null
+          recovery_type: string
+          status: string
+          submitted_at: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          contact_email?: string | null
+          cpf_reference?: string | null
+          created_at?: string
+          id?: string
+          internal_notes?: string | null
+          protocol?: string | null
+          reason?: string | null
+          recovery_type: string
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          contact_email?: string | null
+          cpf_reference?: string | null
+          created_at?: string
+          id?: string
+          internal_notes?: string | null
+          protocol?: string | null
+          reason?: string | null
+          recovery_type?: string
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       acessos_log: {
         Row: {
           associado_id: string | null
@@ -2958,6 +3009,33 @@ export type Database = {
           },
         ]
       }
+      mfa_recovery_codes: {
+        Row: {
+          code_hash: string
+          created_at: string
+          id: string
+          revoked_at: string | null
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          code_hash: string
+          created_at?: string
+          id?: string
+          revoked_at?: string | null
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          code_hash?: string
+          created_at?: string
+          id?: string
+          revoked_at?: string | null
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       notificacoes: {
         Row: {
           associado_id: string | null
@@ -3969,6 +4047,106 @@ export type Database = {
         }
         Relationships: []
       }
+      personal_data_exports: {
+        Row: {
+          created_at: string
+          downloaded_at: string | null
+          expires_at: string | null
+          file_path: string | null
+          format: string
+          id: string
+          request_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          downloaded_at?: string | null
+          expires_at?: string | null
+          file_path?: string | null
+          format?: string
+          id?: string
+          request_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          downloaded_at?: string | null
+          expires_at?: string | null
+          file_path?: string | null
+          format?: string
+          id?: string
+          request_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_data_exports_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "privacy_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portal_sessions: {
+        Row: {
+          browser: string | null
+          created_at: string
+          device_name: string | null
+          expires_at: string
+          id: string
+          last_activity_at: string
+          location_summary: string | null
+          operating_system: string | null
+          revoked_at: string | null
+          session_token_hash: string
+          started_at: string
+          trusted_device_id: string | null
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string
+          device_name?: string | null
+          expires_at: string
+          id?: string
+          last_activity_at?: string
+          location_summary?: string | null
+          operating_system?: string | null
+          revoked_at?: string | null
+          session_token_hash: string
+          started_at?: string
+          trusted_device_id?: string | null
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string
+          device_name?: string | null
+          expires_at?: string
+          id?: string
+          last_activity_at?: string
+          location_summary?: string | null
+          operating_system?: string | null
+          revoked_at?: string | null
+          session_token_hash?: string
+          started_at?: string
+          trusted_device_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portal_sessions_trusted_device_id_fkey"
+            columns: ["trusted_device_id"]
+            isOneToOne: false
+            referencedRelation: "user_trusted_devices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       previdencia_admins: {
         Row: {
           created_at: string
@@ -3980,6 +4158,134 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      privacy_consents: {
+        Row: {
+          consent_type: string
+          created_at: string
+          granted_at: string | null
+          id: string
+          purpose: string
+          revoked_at: string | null
+          source: string
+          status: string
+          updated_at: string
+          user_id: string
+          version: string
+        }
+        Insert: {
+          consent_type: string
+          created_at?: string
+          granted_at?: string | null
+          id?: string
+          purpose: string
+          revoked_at?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          version?: string
+        }
+        Update: {
+          consent_type?: string
+          created_at?: string
+          granted_at?: string | null
+          id?: string
+          purpose?: string
+          revoked_at?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      privacy_request_history: {
+        Row: {
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_status: string
+          notes_safe: string | null
+          previous_status: string | null
+          request_id: string
+        }
+        Insert: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status: string
+          notes_safe?: string | null
+          previous_status?: string | null
+          request_id: string
+        }
+        Update: {
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string
+          notes_safe?: string | null
+          previous_status?: string | null
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "privacy_request_history_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "privacy_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      privacy_requests: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          description: string
+          id: string
+          internal_notes: string | null
+          protocol: string | null
+          request_type: string
+          requester_type: string
+          status: string
+          submitted_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          internal_notes?: string | null
+          protocol?: string | null
+          request_type: string
+          requester_type?: string
+          status?: string
+          submitted_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          internal_notes?: string | null
+          protocol?: string | null
+          request_type?: string
+          requester_type?: string
+          status?: string
+          submitted_at?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -5607,6 +5913,155 @@ export type Database = {
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_security_events: {
+        Row: {
+          created_at: string
+          device_summary: string | null
+          event_type: string
+          id: string
+          ip_hash: string | null
+          location_summary: string | null
+          metadata_safe: Json
+          result: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          device_summary?: string | null
+          event_type: string
+          id?: string
+          ip_hash?: string | null
+          location_summary?: string | null
+          metadata_safe?: Json
+          result?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          device_summary?: string | null
+          event_type?: string
+          id?: string
+          ip_hash?: string | null
+          location_summary?: string | null
+          metadata_safe?: Json
+          result?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_security_settings: {
+        Row: {
+          created_at: string
+          email_verified: boolean
+          id: string
+          last_password_change_at: string | null
+          link_id: string | null
+          mfa_enabled: boolean
+          mfa_required: boolean
+          phone_verified: boolean
+          preferred_mfa_method: string
+          recovery_codes_generated_at: string | null
+          security_level: string
+          sessions_reviewed_at: string | null
+          totp_pending_enc: string | null
+          totp_pending_expires_at: string | null
+          totp_secret_enc: string | null
+          trusted_device_policy: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_verified?: boolean
+          id?: string
+          last_password_change_at?: string | null
+          link_id?: string | null
+          mfa_enabled?: boolean
+          mfa_required?: boolean
+          phone_verified?: boolean
+          preferred_mfa_method?: string
+          recovery_codes_generated_at?: string | null
+          security_level?: string
+          sessions_reviewed_at?: string | null
+          totp_pending_enc?: string | null
+          totp_pending_expires_at?: string | null
+          totp_secret_enc?: string | null
+          trusted_device_policy?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_verified?: boolean
+          id?: string
+          last_password_change_at?: string | null
+          link_id?: string | null
+          mfa_enabled?: boolean
+          mfa_required?: boolean
+          phone_verified?: boolean
+          preferred_mfa_method?: string
+          recovery_codes_generated_at?: string | null
+          security_level?: string
+          sessions_reviewed_at?: string | null
+          totp_pending_enc?: string | null
+          totp_pending_expires_at?: string | null
+          totp_secret_enc?: string | null
+          trusted_device_policy?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_security_settings_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "external_account_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_trusted_devices: {
+        Row: {
+          browser: string | null
+          created_at: string
+          device_name: string | null
+          device_token_hash: string
+          expires_at: string
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          operating_system: string | null
+          revoked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          created_at?: string
+          device_name?: string | null
+          device_token_hash: string
+          expires_at: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          operating_system?: string | null
+          revoked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          created_at?: string
+          device_name?: string | null
+          device_token_hash?: string
+          expires_at?: string
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          operating_system?: string | null
+          revoked_at?: string | null
           user_id?: string
         }
         Relationships: []
