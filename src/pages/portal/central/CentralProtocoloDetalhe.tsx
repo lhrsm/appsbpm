@@ -106,11 +106,11 @@ export default function CentralProtocoloDetalhe() {
           <PortalCard title="Resumo" density="compact">
             <SummaryList
               items={[
-                { id: "protocolo", label: "Protocolo", value: protocolo.protocolo },
-                { id: "abertura", label: "Aberto em", value: dataHora(protocolo.criadoEm) },
-                { id: "atualizacao", label: "Última atualização", value: dataHora(protocolo.atualizadoEm) },
-                { id: "responsavel", label: "Responsável", value: protocolo.responsavel ?? "Equipe SBPM" },
-                { id: "origem", label: "Origem", value: "Portal do associado" },
+                { id: "protocolo", title: "Protocolo", meta: protocolo.protocolo },
+                { id: "abertura", title: "Aberto em", meta: dataHora(protocolo.criadoEm) },
+                { id: "atualizacao", title: "Última atualização", meta: dataHora(protocolo.atualizadoEm) },
+                { id: "responsavel", title: "Responsável", meta: protocolo.responsavel ?? "Equipe SBPM" },
+                { id: "origem", title: "Origem", meta: "Portal do associado" },
               ]}
             />
           </PortalCard>
