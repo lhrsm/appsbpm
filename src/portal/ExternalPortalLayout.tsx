@@ -115,8 +115,10 @@ export default function ExternalPortalLayout({
             profile={profileType}
             permissions={permissions}
             user={user}
+            onLogout={onLogout}
           />
         </div>
+
 
         <div className="flex w-full flex-1 min-w-0">
           <PortalSidebar
