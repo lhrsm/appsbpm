@@ -24,8 +24,8 @@ export interface ResponsiveDataViewProps<T> extends PortalDataTableProps<T> {
  */
 export function ResponsiveDataView<T>(props: ResponsiveDataViewProps<T>) {
   const { toCard, mode = "auto", ...tableProps } = props;
-  const isDesktop = useBreakpoint("md");
-  const showTable = mode === "table" || (mode === "auto" && isDesktop);
+  const { isMobile } = useBreakpoint();
+  const showTable = mode === "table" || (mode === "auto" && !isMobile);
 
   if (showTable) return <PortalDataTable {...tableProps} />;
 
