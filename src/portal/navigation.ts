@@ -472,7 +472,7 @@ export const dependentNavigation: PortalNavSection[] = [
         route: "/dashboard/notificacoes",
         allowedProfiles: DEPENDENTE,
         keywords: ["avisos", "alertas"],
-        order: 5,
+        order: 6,
       },
       {
         id: "faq",
