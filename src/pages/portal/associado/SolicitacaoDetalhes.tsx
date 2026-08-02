@@ -81,7 +81,7 @@ export default function SolicitacaoDetalhes() {
         updatedAt={item.updated_at ?? item.created_at}
         source="Base institucional"
         action={
-          <PortalButton variant="outline" iconLeft={icons.voltar} onClick={() => navigate("/dashboard/solicitacoes")}>
+          <PortalButton variant="outline" iconLeft={icons.anterior} onClick={() => navigate("/dashboard/solicitacoes")}>
             Voltar às solicitações
           </PortalButton>
         }
