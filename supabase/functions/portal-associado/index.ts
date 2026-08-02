@@ -230,6 +230,16 @@ Deno.serve(async (req) => {
         exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS,
       });
 
+      // Registra a sessão e o evento de acesso da Central de Segurança (Fase 10).
+      // Falhas aqui não podem impedir o login.
+      try {
+        await registrarSessaoSegura(admin, req, token, associado.id, dependente?.id ?? null);
+      } catch (e) {
+        console.error('sessao_seguranca:', e instanceof Error ? e.message : 'erro');
+      }
+
+
+
       return json({
         token,
         associado,
