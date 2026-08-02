@@ -66,12 +66,15 @@ export function PortalModal({
         onEscapeKeyDown={(e) => !dismissible && e.preventDefault()}
       >
 
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+        <DialogHeader className="shrink-0 text-left">
+          <DialogTitle className="break-anywhere">{title}</DialogTitle>
+          {description && <DialogDescription className="break-anywhere">{description}</DialogDescription>}
         </DialogHeader>
-        <div className="space-y-4">{children}</div>
-        {footer && <DialogFooter className="flex-col-reverse gap-2 sm:flex-row">{footer}</DialogFooter>}
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto">{children}</div>
+        {footer && (
+          <DialogFooter className="shrink-0 flex-col-reverse gap-2 sm:flex-row">{footer}</DialogFooter>
+        )}
+
       </DialogContent>
     </Dialog>
   );
