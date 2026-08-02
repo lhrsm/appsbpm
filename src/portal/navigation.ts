@@ -281,7 +281,7 @@ export const portalNavigation: PortalNavSection[] = [
         route: "/dashboard/minha-privacidade",
         allowedProfiles: AMBOS,
         keywords: ["dados pessoais", "consentimento", "lgpd"],
-        order: 2,
+        order: 3,
       },
       {
         id: "historico",
@@ -290,7 +290,7 @@ export const portalNavigation: PortalNavSection[] = [
         route: "/dashboard/historico",
         allowedProfiles: AMBOS,
         keywords: ["sessões", "segurança", "logins"],
-        order: 3,
+        order: 4,
       },
       {
         id: "faq",
@@ -299,7 +299,7 @@ export const portalNavigation: PortalNavSection[] = [
         route: "/dashboard/faq",
         allowedProfiles: AMBOS,
         keywords: ["dúvidas", "ajuda", "faq"],
-        order: 4,
+        order: 5,
       },
     ],
   },
