@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { getNavigationItems, bottomNavIds, type PortalProfile } from "../navigation";
+import { getNavigationItems, bottomNavIdsByProfile, type PortalProfile } from "../navigation";
 import { isItemActive } from "./PortalSidebar";
 
 /** Navegação inferior (mobile/PWA) com até cinco atalhos principais. */
@@ -12,9 +12,10 @@ export default function PortalBottomNav({
   permissions?: string[];
 }) {
   const { pathname } = useLocation();
+  const ordem = bottomNavIdsByProfile[profile];
   const items = getNavigationItems({ profile, permissions })
-    .filter((i) => bottomNavIds.includes(i.id))
-    .sort((a, b) => bottomNavIds.indexOf(a.id) - bottomNavIds.indexOf(b.id))
+    .filter((i) => ordem.includes(i.id))
+    .sort((a, b) => ordem.indexOf(a.id) - ordem.indexOf(b.id))
     .slice(0, 5);
 
   if (items.length < 2) return null;
