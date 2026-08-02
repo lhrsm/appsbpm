@@ -56,10 +56,16 @@ export function PortalModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn("max-h-[90dvh] overflow-y-auto", sizeClass[size], className)}
+        className={cn(
+          "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
+          "pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6",
+          sizeClass[size],
+          className,
+        )}
         onInteractOutside={(e) => !dismissible && e.preventDefault()}
         onEscapeKeyDown={(e) => !dismissible && e.preventDefault()}
       >
+
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
