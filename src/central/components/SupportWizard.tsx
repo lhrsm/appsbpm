@@ -59,7 +59,7 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
 
   const { assuntos, loading: carregandoAssuntos } = useAssuntos(modulo || undefined);
   const moduloInfo = modulo ? getModulo(modulo) : null;
-  const assuntoFinal = assunto === "__outro" ? assuntoLivre.trim() : assunto;
+  const assuntoFinal = assunto === "__outro__" ? assuntoLivre.trim() : assunto;
 
   const podeAvancar = () => {
     if (etapa === 0) return !!modulo;
@@ -180,7 +180,7 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
                 />
               )}
             </FormField>
-            {assunto === "__outro" && (
+            {assunto === "__outro__" && (
               <FormField label="Descreva o assunto" required counter={`${assuntoLivre.length}/120`}>
                 {(f) => (
                   <TextInput
