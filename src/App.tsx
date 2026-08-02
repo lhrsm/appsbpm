@@ -53,6 +53,12 @@ const PortalEntrar = lazy(() => import("./pages/portal/PortalEntrar"));
 const PortalPrimeiroAcesso = lazy(() => import("./pages/portal/PortalPrimeiroAcesso"));
 const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarAcesso"));
 const PortalQueroMeAssociar = lazy(() => import("./pages/portal/PortalQueroMeAssociar"));
+const PortalVinculo = lazy(() => import("./pages/portal/associado/Vinculo"));
+const PortalMeusDados = lazy(() => import("./pages/portal/associado/MeusDados"));
+const PortalSolicitacoes = lazy(() => import("./pages/portal/associado/Solicitacoes"));
+const PortalSolicitacaoNova = lazy(() => import("./pages/portal/associado/SolicitacaoNova"));
+const PortalSolicitacaoDetalhes = lazy(() => import("./pages/portal/associado/SolicitacaoDetalhes"));
+const PortalAtendimento = lazy(() => import("./pages/portal/associado/Atendimento"));
 const AdminValidacaoExterna = lazy(() => import("./pages/admin/AdminValidacaoExterna"));
 const AdminPreCadastros = lazy(() => import("./pages/admin/AdminPreCadastros"));
 
@@ -169,7 +175,14 @@ const App = () => (
                 <Route path="perfil" element={<Perfil />} />
                 <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
                 <Route path="notificacoes" element={<Notificacoes />} />
-                <Route path="solicitacoes" element={<Solicitacoes />} />
+                <Route path="vinculo" element={<PortalVinculo />} />
+                <Route path="meus-dados" element={<PortalMeusDados />} />
+                <Route path="atendimento" element={<PortalAtendimento />} />
+                <Route path="solicitacoes" element={<PortalSolicitacoes />} />
+                <Route path="solicitacoes/nova" element={<PortalSolicitacaoNova />} />
+                <Route path="solicitacoes/:id" element={<PortalSolicitacaoDetalhes />} />
+                {/* Rota antiga da central de solicitações */}
+                <Route path="solicitacoes-legado" element={<Solicitacoes />} />
                 <Route path="documentos" element={<MeusDocumentos />} />
                 <Route path="financeiro" element={<Financeiro />} />
                 <Route path="agenda" element={<Agenda />} />
