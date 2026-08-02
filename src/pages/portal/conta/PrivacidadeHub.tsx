@@ -273,21 +273,32 @@ export default function PrivacidadeHub() {
         }
       >
         {erroForm && <PortalAlert tone="danger">{erroForm}</PortalAlert>}
-        <SelectField
-          label="Tipo de solicitação"
-          required
-          value={tipo}
-          onValueChange={setTipo}
-          options={TIPOS_LGPD}
-        />
-        <TextareaField
+        <FormField label="Tipo de solicitação" required>
+          {(f) => (
+            <SelectField
+              id={f.id}
+              options={TIPOS_LGPD}
+              value={tipo}
+              onChange={(e) => setTipo(e.target.value)}
+            />
+          )}
+        </FormField>
+        <FormField
           label="Descrição"
           required
-          maxLength={4000}
           helperText="Detalhe seu pedido com pelo menos 20 caracteres."
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-        />
+          counter={`${descricao.length}/4000`}
+        >
+          {(f) => (
+            <TextareaField
+              id={f.id}
+              maxLength={4000}
+              autoResize
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            />
+          )}
+        </FormField>
       </PortalModal>
 
       {/* -------------------------------------------------- Exportação */}
