@@ -62,7 +62,6 @@ import {
   RotaDocumentos,
   RotaAtendimento,
   RotaMeuTitular,
-  RotaSeguranca,
   RotaPreferencias,
 } from "./portal/routesByProfile";
 const PortalSolicitacoes = lazy(() => import("./pages/portal/associado/Solicitacoes"));
