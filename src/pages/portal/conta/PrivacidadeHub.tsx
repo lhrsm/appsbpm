@@ -334,16 +334,20 @@ export default function PrivacidadeHub() {
         }
       >
         {erroForm && <PortalAlert tone="danger">{erroForm}</PortalAlert>}
-        <SelectField
-          label="Formato do arquivo"
-          value={formato}
-          onValueChange={setFormato}
-          options={[
-            { value: "json", label: "JSON (estruturado)" },
-            { value: "csv", label: "CSV (planilha)" },
-            { value: "pdf", label: "PDF (leitura)" },
-          ]}
-        />
+        <FormField label="Formato do arquivo">
+          {(f) => (
+            <SelectField
+              id={f.id}
+              value={formato}
+              onChange={(e) => setFormato(e.target.value)}
+              options={[
+                { value: "json", label: "JSON (estruturado)" },
+                { value: "csv", label: "CSV (planilha)" },
+                { value: "pdf", label: "PDF (leitura)" },
+              ]}
+            />
+          )}
+        </FormField>
         <FormField label="Senha atual" required>
           {(f) => (
             <PasswordInput
