@@ -106,8 +106,8 @@ export default function Solicitacoes() {
     let base = itens;
     if (view.filters.status) base = base.filter((i) => i.status === view.filters.status);
     if (view.filters.categoria) base = base.filter((i) => i.categoria === view.filters.categoria);
-    base = searchRows(base, columns, view.debouncedSearch);
-    return sortRows(base, columns, view.sort);
+    base = searchRows(base, view.debouncedSearch, (r) => [protocoloDe(r), r.assunto, r.descricao, getCategoriaSolicitacao(r.categoria)?.label ?? r.categoria]);
+    return sortRows(base, view.sort, columns);
   }, [itens, columns, view.filters, view.debouncedSearch, view.sort]);
 
   const pagina = useMemo(
@@ -146,16 +146,16 @@ export default function Solicitacoes() {
         onFilterChange={view.setFilter}
         onClearFilters={view.clearFilters}
         sortOptions={[
-          { columnId: "created_at", direction: "desc", label: "Mais recentes" },
-          { columnId: "created_at", direction: "asc", label: "Mais antigas" },
-          { columnId: "status", direction: "asc", label: "Situação" },
+          { value: "created_at:desc", label: "Mais recentes" },
+          { value: "created_at:asc", label: "Mais antigas" },
+          { value: "status:asc", label: "Situação" },
         ]}
         sort={view.sort}
         onSortChange={view.setSort}
         total={filtradas.length}
         onRefresh={carregar}
         refreshing={loading}
-        actions={<DataExportMenu columns={columns} rows={filtradas} fileName="minhas-solicitacoes" title="Minhas solicitações" />}
+        actions={<DataExportMenu columns={columns} rows={filtradas} baseName="minhas-solicitacoes" title="Minhas solicitações" />}
       />
 
       <ResponsiveDataView
