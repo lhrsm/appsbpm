@@ -95,16 +95,19 @@ export default function SolicitacaoNova() {
             )}
           </FormField>
 
-          <RadioGroupField
-            name="assunto"
-            label="Assunto"
-            value={assunto || info.assuntos[0]}
-            onValueChange={setAssunto}
-            options={[
-              ...info.assuntos.map((a) => ({ value: a, label: a })),
-              { value: "__outro", label: "Outro assunto" },
-            ]}
-          />
+          <FormField label="Assunto" required>
+            {() => (
+              <RadioGroupField
+                name="assunto"
+                value={assunto || info.assuntos[0]}
+                onValueChange={setAssunto}
+                options={[
+                  ...info.assuntos.map((a) => ({ value: a, label: a })),
+                  { value: "__outro", label: "Outro assunto" },
+                ]}
+              />
+            )}
+          </FormField>
 
           {assunto === "__outro" && (
             <FormField label="Descreva o assunto" required error={erros.find((e) => e.field === "assunto")?.message}>
