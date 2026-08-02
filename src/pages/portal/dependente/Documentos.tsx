@@ -115,7 +115,7 @@ export default function DocumentosDependente() {
       </div>
 
       {loading ? (
-        <ListSkeleton rows={4} />
+        <ListSkeleton items={4} />
       ) : erro ? (
         <SectionErrorState description={erro} onRetry={carregar} />
       ) : !itens.length ? (
@@ -135,7 +135,7 @@ export default function DocumentosDependente() {
       ) : (
         <>
           <ul className="grid gap-3 md:grid-cols-2">
-            {pagina.rows.map((doc) => (
+            {pagina.map((doc) => (
               <li key={doc.id}>
                 <PortalCard title={doc.titulo ?? "Documento"} icon={icons.documento}>
                   <div className="flex flex-wrap items-center gap-2">
