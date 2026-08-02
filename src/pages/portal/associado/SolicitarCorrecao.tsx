@@ -18,6 +18,8 @@ export interface SolicitarCorrecaoModalProps {
   campoPadrao?: string;
   /** Valor atualmente exibido no portal. */
   valorAtual?: string;
+  /** Campos oficiais passíveis de correção (padrão: campos do associado). */
+  campos?: string[];
   onSucesso?: () => void;
 }
 
@@ -32,9 +34,11 @@ export function SolicitarCorrecaoModal({
   onOpenChange,
   campoPadrao,
   valorAtual,
+  campos,
   onSucesso,
 }: SolicitarCorrecaoModalProps) {
-  const [campo, setCampo] = useState(campoPadrao ?? camposOficiais[0].label);
+  const opcoesCampo = campos?.length ? campos : camposOficiais.map((c) => c.label);
+  const [campo, setCampo] = useState(campoPadrao ?? opcoesCampo[0]);
   const [atual, setAtual] = useState(valorAtual ?? "");
   const [correto, setCorreto] = useState("");
   const [motivo, setMotivo] = useState("");
@@ -109,7 +113,7 @@ export function SolicitarCorrecaoModal({
               {...f}
               value={campo}
               onChange={(e) => setCampo(e.target.value)}
-              options={camposOficiais.map((c) => ({ value: c.label, label: c.label }))}
+              options={opcoesCampo.map((c) => ({ value: c, label: c }))}
             />
           )}
         </FormField>

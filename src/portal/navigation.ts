@@ -296,6 +296,183 @@ export const portalNavigation: PortalNavSection[] = [
   },
 ];
 
+/**
+ * Menu exclusivo do Portal do Dependente (Fase 8).
+ *
+ * O dependente NÃO herda o menu do associado: nada de financeiro, mensalidades,
+ * informe de rendimentos, dependentes, associação premiada, pecúlio, simulador
+ * ou limite disponível.
+ */
+export const dependentNavigation: PortalNavSection[] = [
+  {
+    id: "inicio",
+    section: "Início",
+    order: 1,
+    items: [
+      {
+        id: "visao-geral",
+        label: "Início",
+        icon: icons.dashboard,
+        route: "/dashboard",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["início", "home", "painel", "resumo"],
+        order: 1,
+      },
+    ],
+  },
+  {
+    id: "vinculo",
+    section: "Meu vínculo",
+    order: 2,
+    items: [
+      {
+        id: "carteirinha",
+        label: "Minha carteirinha",
+        icon: icons.carteirinha,
+        route: "/dashboard/carteirinha",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["identificação", "cartão", "id digital", "qr code"],
+        order: 1,
+      },
+      {
+        id: "meu-titular",
+        label: "Meu titular",
+        icon: icons.associados,
+        route: "/dashboard/meu-titular",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["responsável", "titular", "vínculo"],
+        order: 2,
+      },
+      {
+        id: "dados-cadastrais",
+        label: "Meus dados",
+        icon: icons.perfil,
+        route: "/dashboard/meus-dados",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["cadastro", "contato", "telefone", "e-mail", "foto"],
+        order: 3,
+      },
+      {
+        id: "documentos",
+        label: "Meus documentos",
+        icon: icons.pasta,
+        route: "/dashboard/documentos",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["arquivos", "declarações", "comprovantes"],
+        order: 4,
+      },
+    ],
+  },
+  {
+    id: "servicos",
+    section: "Serviços",
+    order: 3,
+    items: [
+      {
+        id: "solicitacoes",
+        label: "Solicitações",
+        icon: icons.solicitacao,
+        route: "/dashboard/solicitacoes",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["chamados", "protocolos", "pedidos"],
+        order: 1,
+      },
+      {
+        id: "clinicas",
+        label: "Clínicas e parceiros",
+        icon: icons.saude,
+        route: "/dashboard/clinicas",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["rede credenciada", "convênio", "conveniados"],
+        order: 2,
+      },
+      {
+        id: "eventos",
+        label: "Eventos",
+        icon: icons.agenda,
+        route: "/dashboard/agenda",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["agenda", "calendário", "inscrição"],
+        order: 3,
+      },
+      {
+        id: "atendimento",
+        label: "Atendimento",
+        icon: icons.whatsapp,
+        route: "/dashboard/atendimento",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["whatsapp", "telefone", "contato", "suporte"],
+        order: 4,
+      },
+    ],
+  },
+  {
+    id: "conta",
+    section: "Conta",
+    order: 4,
+    items: [
+      {
+        id: "perfil",
+        label: "Meu perfil",
+        icon: icons.perfil,
+        route: "/dashboard/perfil",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["conta", "foto", "assinatura"],
+        order: 1,
+      },
+      {
+        id: "preferencias",
+        label: "Preferências",
+        icon: icons.configuracoes,
+        route: "/dashboard/preferencias",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["tema", "notificações", "acessibilidade", "fonte", "contraste"],
+        order: 2,
+      },
+      {
+        id: "seguranca",
+        label: "Segurança",
+        icon: icons.previdencia,
+        route: "/dashboard/seguranca",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["senha", "2fa", "sessões", "dispositivos", "acessos"],
+        order: 3,
+      },
+      {
+        id: "privacidade",
+        label: "Privacidade e LGPD",
+        icon: icons.lgpd,
+        route: "/dashboard/minha-privacidade",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["dados pessoais", "consentimento", "lgpd", "exportação"],
+        order: 4,
+      },
+      {
+        id: "notificacoes",
+        label: "Notificações",
+        icon: icons.notificacao,
+        route: "/dashboard/notificacoes",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["avisos", "alertas"],
+        order: 5,
+      },
+      {
+        id: "faq",
+        label: "Ajuda",
+        icon: icons.ajuda,
+        route: "/dashboard/faq",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["dúvidas", "ajuda", "faq"],
+        order: 6,
+      },
+    ],
+  },
+];
+
+/** Estrutura de menu conforme o perfil autenticado. */
+export const navigationByProfile = (profile: PortalProfile): PortalNavSection[] =>
+  profile === "dependent" ? dependentNavigation : portalNavigation;
+
 /** Rotas do portal externo desativadas — redirecionam para a visão geral. */
 export const deprecatedPortalRoutes: Record<string, string> = {
   "/dashboard/limite": "/dashboard",
@@ -322,7 +499,7 @@ function itemAllowed(item: PortalNavItem, { profile, permissions, disabledFeatur
 
 /** Retorna as seções visíveis para o perfil/permissões informados. */
 export function getNavigationSections(options: NavFilterOptions): PortalNavSection[] {
-  return portalNavigation
+  return navigationByProfile(options.profile)
     .map((section) => ({
       ...section,
       items: section.items
@@ -347,7 +524,7 @@ export function isRouteAllowed(pathname: string, options: NavFilterOptions): boo
 
 /** Rótulo legível de uma rota (breadcrumbs). */
 export function getRouteLabel(pathname: string): string | undefined {
-  for (const section of portalNavigation) {
+  for (const section of [...portalNavigation, ...dependentNavigation]) {
     for (const item of section.items) {
       if (item.route.split("#")[0] === pathname) return item.label;
     }
@@ -355,5 +532,12 @@ export function getRouteLabel(pathname: string): string | undefined {
   return undefined;
 }
 
-/** Itens da navegação inferior no mobile (máx. 5). */
-export const bottomNavIds = ["visao-geral", "carteirinha", "solicitacoes", "atendimento", "dados-cadastrais"];
+/** Itens da navegação inferior no mobile (máx. 5), por perfil. */
+export const bottomNavIdsByProfile: Record<PortalProfile, string[]> = {
+  associate: ["visao-geral", "carteirinha", "solicitacoes", "atendimento", "dados-cadastrais"],
+  dependent: ["visao-geral", "carteirinha", "solicitacoes", "clinicas", "atendimento"],
+};
+
+/** @deprecated use `bottomNavIdsByProfile`. Mantido para compatibilidade. */
+export const bottomNavIds = bottomNavIdsByProfile.associate;
+
