@@ -22,6 +22,8 @@ import {
   DashboardSupportPreview,
 } from "./components/DashboardSections";
 import { DashboardProfileStatus } from "./components/DashboardProfileStatus";
+import { canaisAtendimentoDependente } from "@/portal/dependente/config";
+import { linkWhatsApp } from "@/portal/associado/config";
 import type { PendingItem, QuickAction, ServiceItem, SummaryItem, SupportChannel } from "./types";
 
 const tipoLabel: Record<string, string> = {
@@ -49,6 +51,18 @@ const canais: SupportChannel[] = [
     icon: icons.whatsapp,
   },
 ];
+
+/** Canais exibidos ao dependente — atendimento assistencial, sem pauta financeira. */
+const canaisDependente: SupportChannel[] = canaisAtendimentoDependente
+  .filter((c) => !!c.whatsapp)
+  .map((c) => ({
+    id: c.id,
+    setor: c.setor,
+    horario: c.horario,
+    canal: "WhatsApp",
+    href: linkWhatsApp(c.whatsapp!, `Olá! Sou dependente e preciso de atendimento do setor ${c.setor}.`),
+    icon: icons.whatsapp,
+  }));
 
 const statusSolicitacao = (s?: string | null) => (s ?? "").toLowerCase();
 const emAberto = (s?: string | null) => !["concluida", "concluída", "cancelada", "fechada"].includes(statusSolicitacao(s));
@@ -143,7 +157,8 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
     { id: "solicitar-peculio", icon: icons.previdencia, title: "Solicitar pecúlio", description: "Abrir pedido", route: "/dashboard/solicitar-peculio", profiles: ["dependent"] },
     { id: "clinicas", icon: icons.saude, title: "Rede credenciada", description: "Clínicas e parceiros", route: "/dashboard/clinicas", profiles: ["associate", "dependent"] },
     { id: "notificacoes", icon: icons.notificacao, title: "Notificações", description: "Avisos da SBPM", route: "/dashboard/notificacoes", badge: naoLidas || undefined, profiles: ["associate", "dependent"] },
-    { id: "perfil", icon: icons.perfil, title: "Meus dados", description: "Cadastro e contato", route: "/dashboard/perfil", profiles: ["associate", "dependent"] },
+    { id: "meu-titular", icon: icons.associados, title: "Meu titular", description: "Vínculo responsável", route: "/dashboard/meu-titular", profiles: ["dependent"] },
+    { id: "perfil", icon: icons.perfil, title: "Meus dados", description: "Cadastro e contato", route: "/dashboard/meus-dados", profiles: ["associate", "dependent"] },
     { id: "faq", icon: icons.ajuda, title: "Ajuda", description: "Perguntas frequentes", route: "/dashboard/faq", profiles: ["associate", "dependent"] },
   ].filter((a) => a.profiles.includes(profileType) && podeVer(a.route)) as QuickAction[];
 
@@ -313,7 +328,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           </Button>
         }
       >
-        <DashboardSupportPreview channels={canais} />
+        <DashboardSupportPreview channels={isDependente ? canaisDependente : canais} />
       </DashboardSection>
 
       <DashboardLastUpdated date={new Date().toISOString()} />
