@@ -105,10 +105,17 @@ export function PortalDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side={isMobile ? "bottom" : side}
-        className={cn("flex flex-col gap-0 p-0", isMobile ? "max-h-[85dvh] rounded-t-2xl" : "w-full sm:max-w-md", className)}
+        className={cn(
+          "flex flex-col gap-0 p-0",
+          isMobile
+            ? "max-h-[88dvh] rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
+            : "w-full sm:max-w-md lg:max-w-lg xl:max-w-xl",
+          className,
+        )}
         onInteractOutside={(e) => !dismissible && e.preventDefault()}
         onEscapeKeyDown={(e) => !dismissible && e.preventDefault()}
       >
+
         {isMobile && <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted" aria-hidden />}
         <SheetHeader className="border-b border-border p-4 text-left">
           <SheetTitle>{title}</SheetTitle>
