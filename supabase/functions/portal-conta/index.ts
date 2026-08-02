@@ -92,13 +92,17 @@ async function registrarEvento(
 }
 
 async function auditar(ctx: Contexto, action: string, detalhes: Record<string, unknown> = {}) {
-  await ctx.db.from('audit_logs').insert({
-    user_id: ctx.userId,
-    action,
-    entity: 'conta_portal',
-    criticidade: 'alta',
-    details: detalhes,
-  }).select().maybeSingle().catch(() => null);
+  try {
+    await ctx.db.from('audit_logs').insert({
+      user_id: ctx.userId,
+      action,
+      entity: 'conta_portal',
+      criticidade: 'alta',
+      details: detalhes,
+    });
+  } catch {
+    // auditoria nunca deve interromper a operação do usuário
+  }
 }
 
 async function garantirSettings(ctx: Contexto) {
