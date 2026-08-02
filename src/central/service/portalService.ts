@@ -41,7 +41,9 @@ interface SolicitacaoBruta {
   resposta?: string | null;
   respondido_em?: string | null;
   responsavel?: string | null;
+  respondido_por?: string | null;
   anexos?: unknown;
+  metadata?: Record<string, unknown> | null;
 }
 
 const prioridadeDe = (valor?: string | null): CentralPrioridade => {
@@ -137,22 +139,30 @@ export function normalizarProtocoloRegistro(bruta: SolicitacaoBruta): CentralPro
       }))
     : [];
 
+  const metadata = (bruta.metadata ?? {}) as Record<string, unknown>;
+  const avaliacao = metadata.avaliacao as Record<string, unknown> | undefined;
+
   return {
     id: bruta.id,
-    protocolo: normalizarProtocolo(bruta.protocolo, bruta.id, bruta.created_at),
+    protocolo: normalizarProtocolo(
+      (typeof metadata.protocolo === "string" ? metadata.protocolo : null) ?? bruta.protocolo,
+      bruta.id,
+      bruta.created_at,
+    ),
     modulo: bruta.categoria ?? "outros",
     assunto: bruta.assunto ?? "Solicitação",
     descricao: bruta.descricao ?? "",
     status: normalizeCentralStatus(bruta.status),
     prioridade: prioridadeDe(bruta.prioridade),
-    origem: "portal",
-    responsavel: bruta.responsavel ?? null,
+    origem: (typeof metadata.origem === "string" ? metadata.origem : "portal") as CentralProtocolo["origem"],
+    responsavel: bruta.responsavel ?? bruta.respondido_por ?? null,
     criadoEm: bruta.created_at,
     atualizadoEm: bruta.updated_at ?? bruta.created_at,
     prazoEm: bruta.sla_prazo ?? null,
     resposta: bruta.resposta ?? null,
     anexos,
     historico: montarHistorico(bruta, anexos),
+    avaliado: !!avaliacao,
   };
 }
 
