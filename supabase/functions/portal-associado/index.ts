@@ -110,6 +110,15 @@ const BodySchema = z.discriminatedUnion('action', [
     prioridade: z.enum(['baixa', 'normal', 'alta', 'urgente']),
     sla_prazo: z.string().datetime().optional(),
   }),
+  z.object({
+    action: z.literal('solicitacoes_feedback'),
+    token: z.string().min(1).max(2000),
+    solicitacao_id: z.string().uuid(),
+    nota: z.number().int().min(1).max(5),
+    satisfacao: z.enum(['muito_insatisfeito', 'insatisfeito', 'neutro', 'satisfeito', 'muito_satisfeito']),
+    tempo_atendimento: z.enum(['muito_rapido', 'adequado', 'demorado']),
+    comentario: z.string().max(1000).nullable().optional(),
+  }),
 ]);
 
 const CAMPOS_ASSOCIADO =
