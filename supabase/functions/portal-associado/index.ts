@@ -1,6 +1,7 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
+import { sha256Hex } from '../_shared/portalSession.ts';
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8; // 8 horas
 
