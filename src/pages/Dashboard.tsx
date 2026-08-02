@@ -13,7 +13,7 @@ import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
 
 /** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
 const rotasProvaveis = [
-  () => import('@/portal/routesByProfile'),
+  () => import('@/pages/Carteirinha'),
   () => import('@/pages/portal/associado/Solicitacoes'),
   () => import('@/pages/Perfil'),
 ];
