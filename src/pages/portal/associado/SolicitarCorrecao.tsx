@@ -46,8 +46,8 @@ export function SolicitarCorrecaoModal({
 
   const enviar = async () => {
     const problemas: FormErrorItem[] = [];
-    if (!correto.trim()) problemas.push({ id: "correto", message: "Informe o valor correto." });
-    if (motivo.trim().length < 10) problemas.push({ id: "motivo", message: "Descreva o motivo com pelo menos 10 caracteres." });
+    if (!correto.trim()) problemas.push({ field: "correto", message: "Informe o valor correto." });
+    if (motivo.trim().length < 10) problemas.push({ field: "motivo", message: "Descreva o motivo com pelo menos 10 caracteres." });
     setErros(problemas);
     if (problemas.length) return;
 
@@ -118,11 +118,11 @@ export function SolicitarCorrecaoModal({
           {(f) => <TextInput {...f} value={atual} maxLength={140} onChange={(e) => setAtual(e.target.value)} />}
         </FormField>
 
-        <FormField label="Valor correto sugerido" required error={erros.find((e) => e.id === "correto")?.message}>
+        <FormField label="Valor correto sugerido" required error={erros.find((e) => e.field === "correto")?.message}>
           {(f) => <TextInput {...f} value={correto} maxLength={140} onChange={(e) => setCorreto(e.target.value)} />}
         </FormField>
 
-        <FormField label="Motivo da correção" required error={erros.find((e) => e.id === "motivo")?.message}>
+        <FormField label="Motivo da correção" required error={erros.find((e) => e.field === "motivo")?.message}>
           {(f) => (
             <TextareaField {...f} rows={4} maxLength={800} value={motivo} onChange={(e) => setMotivo(e.target.value)} />
           )}
