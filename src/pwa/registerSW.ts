@@ -1,7 +1,11 @@
 // Guarded service worker registration. Only registers in production on the
 // deployed app — never in Lovable preview, iframes, or dev.
 
+import { emFluxoCritico } from "./criticalFlow";
+
 const APP_SW_PATH = "/sw.js";
+
+export const PWA_UPDATE_EVENT = "sbpm:pwa-update";
 
 function isBlockedHost(hostname: string): boolean {
   if (hostname.startsWith("id-preview--") || hostname.startsWith("preview--")) return true;
@@ -28,6 +32,21 @@ async function unregisterAppSW() {
   }
 }
 
+let registration: ServiceWorkerRegistration | null = null;
+
+/** Aplica a versão nova; recusa durante fluxos críticos. */
+export async function aplicarAtualizacaoPWA(): Promise<boolean> {
+  if (emFluxoCritico() || !registration?.waiting) return false;
+  registration.waiting.postMessage({ type: "SKIP_WAITING" });
+  await new Promise((r) => setTimeout(r, 150));
+  window.location.reload();
+  return true;
+}
+
+function anunciarAtualizacao() {
+  window.dispatchEvent(new CustomEvent(PWA_UPDATE_EVENT));
+}
+
 export async function registerPWA() {
   if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
 
@@ -48,7 +67,18 @@ export async function registerPWA() {
   }
 
   try {
-    await navigator.serviceWorker.register(APP_SW_PATH, { scope: "/" });
+    registration = await navigator.serviceWorker.register(APP_SW_PATH, { scope: "/" });
+
+    if (registration.waiting) anunciarAtualizacao();
+    registration.addEventListener("updatefound", () => {
+      const sw = registration?.installing;
+      sw?.addEventListener("statechange", () => {
+        if (sw.state === "installed" && navigator.serviceWorker.controller) anunciarAtualizacao();
+      });
+    });
+
+    // Verificação periódica discreta (a cada 30 min), sem interromper o uso.
+    setInterval(() => void registration?.update(), 30 * 60_000);
   } catch {
     // ignore
   }

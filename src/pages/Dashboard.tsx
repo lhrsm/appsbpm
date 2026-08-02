@@ -9,12 +9,21 @@ import { usePageviewTracker } from '@/hooks/useAnalytics';
 import ExternalPortalLayout from '@/portal/ExternalPortalLayout';
 import { deprecatedPortalRoutes } from '@/portal/navigation';
 import ExternalDashboard from '@/portal/dashboard/ExternalDashboard';
+import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
+
+/** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
+const rotasProvaveis = [
+  () => import('@/portal/routesByProfile'),
+  () => import('@/pages/portal/associado/Solicitacoes'),
+  () => import('@/pages/Perfil'),
+];
 
 export default function Dashboard() {
   const { associado, logout, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
   usePageviewTracker(associado?.id);
   const navigate = useNavigate();
   const location = useLocation();
+  usePrefetchRoutes(rotasProvaveis, !!associado);
 
   useEffect(() => {
     if (!associado) {

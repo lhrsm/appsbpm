@@ -73,6 +73,14 @@ const json = (data: unknown, status = 200) =>
 
 const soNumeros = (v?: string | null) => (v || '').replace(/\D+/g, '');
 
+/** Faixa de paginação no servidor: o cliente nunca recebe a coleção inteira. */
+function faixa(page?: number, pageSize?: number) {
+  const tamanho = Math.min(Math.max(pageSize ?? 20, 1), 100);
+  const pagina = Math.max(page ?? 1, 1);
+  const inicio = (pagina - 1) * tamanho;
+  return { pagina, tamanho, inicio, fim: inicio + tamanho - 1 };
+}
+
 const BodySchema = z.discriminatedUnion('action', [
   z.object({
     action: z.literal('login'),
@@ -81,7 +89,12 @@ const BodySchema = z.discriminatedUnion('action', [
   }),
   z.object({ action: z.literal('perfil'), token: z.string().min(1).max(2000) }),
   z.object({ action: z.literal('mensalidades'), token: z.string().min(1).max(2000) }),
-  z.object({ action: z.literal('documentos'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('documentos'),
+    token: z.string().min(1).max(2000),
+    page: z.number().int().min(1).max(500).optional(),
+    page_size: z.number().int().min(1).max(100).optional(),
+  }),
   z.object({
     action: z.literal('documento_url'),
     token: z.string().min(1).max(2000),
@@ -94,14 +107,24 @@ const BodySchema = z.discriminatedUnion('action', [
     fcm_token: z.string().min(10).max(500),
     user_agent: z.string().max(500).optional(),
   }),
-  z.object({ action: z.literal('notificacoes_listar'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('notificacoes_listar'),
+    token: z.string().min(1).max(2000),
+    page: z.number().int().min(1).max(500).optional(),
+    page_size: z.number().int().min(1).max(100).optional(),
+  }),
   z.object({
     action: z.literal('notificacoes_marcar'),
     token: z.string().min(1).max(2000),
     ids: z.array(z.string().uuid()).min(1).max(200),
   }),
   z.object({ action: z.literal('privacidade'), token: z.string().min(1).max(2000) }),
-  z.object({ action: z.literal('solicitacoes_listar'), token: z.string().min(1).max(2000) }),
+  z.object({
+    action: z.literal('solicitacoes_listar'),
+    token: z.string().min(1).max(2000),
+    page: z.number().int().min(1).max(500).optional(),
+    page_size: z.number().int().min(1).max(100).optional(),
+  }),
   z.object({
     action: z.literal('solicitacoes_criar'),
     token: z.string().min(1).max(2000),
@@ -289,14 +312,17 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'documentos') {
+      const { pagina, tamanho, inicio, fim } = faixa(body.page, body.page_size);
       let q = admin
         .from('documentos_associado')
-        .select('*')
+        .select('id, titulo, categoria, visibilidade, publicado_em, arquivo_path, ativo, created_at', {
+          count: 'exact',
+        })
         .eq('associado_id', sessao.aid)
         .eq('ativo', true);
       if (sessao.did) q = q.or(`visibilidade.eq.todos,dependente_id.eq.${sessao.did}`);
-      const { data } = await q.order('publicado_em', { ascending: false });
-      return json({ itens: data || [] });
+      const { data, count } = await q.order('publicado_em', { ascending: false }).range(inicio, fim);
+      return json({ itens: data || [], total: count ?? 0, pagina, page_size: tamanho });
     }
 
     if (body.action === 'documento_url') {
@@ -347,16 +373,17 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'notificacoes_listar') {
+      const { pagina, tamanho, inicio, fim } = faixa(body.page, body.page_size ?? 30);
       let q = admin
         .from('notificacoes')
-        .select('*')
+        .select('id, titulo, mensagem, tipo, lida, read_at, created_at', { count: 'exact' })
         .order('created_at', { ascending: false })
-        .limit(100);
+        .range(inicio, fim);
       q = sessao.did
         ? q.eq('dependente_id', sessao.did)
         : q.eq('associado_id', sessao.aid).is('dependente_id', null);
-      const { data } = await q;
-      return json({ itens: data || [] });
+      const { data, count } = await q;
+      return json({ itens: data || [], total: count ?? 0, pagina, page_size: tamanho });
     }
 
     if (body.action === 'notificacoes_marcar') {
@@ -404,10 +431,14 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'solicitacoes_listar') {
-      let q = admin.from('solicitacoes').select('*').eq('associado_id', sessao.aid);
+      const { pagina, tamanho, inicio, fim } = faixa(body.page, body.page_size);
+      let q = admin
+        .from('solicitacoes')
+        .select('*', { count: 'exact' })
+        .eq('associado_id', sessao.aid);
       if (sessao.did) q = q.eq('dependente_id', sessao.did);
-      const { data } = await q.order('created_at', { ascending: false });
-      return json({ itens: data || [] });
+      const { data, count } = await q.order('created_at', { ascending: false }).range(inicio, fim);
+      return json({ itens: data || [], total: count ?? 0, pagina, page_size: tamanho });
     }
 
     if (body.action === 'solicitacoes_criar') {
