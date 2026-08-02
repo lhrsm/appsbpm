@@ -457,6 +457,15 @@ export const dependentNavigation: PortalNavSection[] = [
         order: 4,
       },
       {
+        id: "historico",
+        label: "Histórico de acessos",
+        icon: icons.horario,
+        route: "/dashboard/historico",
+        allowedProfiles: DEPENDENTE,
+        keywords: ["sessões", "logins", "dispositivos", "acessos"],
+        order: 5,
+      },
+      {
         id: "notificacoes",
         label: "Notificações",
         icon: icons.notificacao,
