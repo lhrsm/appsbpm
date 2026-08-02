@@ -494,3 +494,64 @@ Deno.serve(async (req) => {
     return json({ error: 'Erro ao processar a solicitação' }, 500);
   }
 });
+
+/**
+ * Registra a sessão ativa e o evento de login na Central de Segurança (Fase 10).
+ * Armazena apenas hash do token, resumo do dispositivo e origem aproximada —
+ * nunca o token, o IP completo ou o user agent bruto.
+ */
+async function registrarSessaoSegura(
+  admin: ReturnType<typeof createClient>,
+  req: Request,
+  token: string,
+  associadoId: string,
+  dependenteId: string | null,
+) {
+  const filtro = dependenteId ? { dependente_id: dependenteId } : { associado_id: associadoId };
+  const { data: link } = await admin.from('external_account_links').select('id, user_id').match(filtro).maybeSingle();
+  if (!link?.user_id) return;
+
+  const ua = req.headers.get('user-agent') || '';
+  const navegador = /Edg\//.test(ua) ? 'Edge'
+    : /OPR\//.test(ua) ? 'Opera'
+    : /Chrome\//.test(ua) ? 'Chrome'
+    : /Safari\//.test(ua) ? 'Safari'
+    : /Firefox\//.test(ua) ? 'Firefox'
+    : 'Navegador';
+  const so = /Android/.test(ua) ? 'Android'
+    : /iPhone|iPad|iOS/.test(ua) ? 'iOS'
+    : /Windows/.test(ua) ? 'Windows'
+    : /Mac OS/.test(ua) ? 'macOS'
+    : /Linux/.test(ua) ? 'Linux'
+    : 'Sistema não identificado';
+  const tipo = /Mobi|Android|iPhone/.test(ua) ? 'Celular' : /iPad|Tablet/.test(ua) ? 'Tablet' : 'Computador';
+
+  const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim();
+  const partes = ip.split('.');
+  const local = req.headers.get('x-vercel-ip-city')
+    || (partes.length === 4 ? `Rede ${partes[0]}.${partes[1]}.x.x` : 'Origem não identificada');
+
+  const tokenHash = await sha256Hex(token);
+  const agora = new Date().toISOString();
+
+  await admin.from('portal_sessions').insert({
+    user_id: link.user_id,
+    session_token_hash: tokenHash,
+    device_name: `${tipo} · ${so}`,
+    browser: navegador,
+    operating_system: so,
+    location_summary: local,
+    expires_at: new Date(Date.now() + SESSION_TTL_SECONDS * 1000).toISOString(),
+    last_activity_at: agora,
+  });
+
+  await admin.from('user_security_events').insert({
+    user_id: link.user_id,
+    event_type: 'login',
+    result: 'success',
+    device_summary: `${tipo} · ${so} · ${navegador}`,
+    location_summary: local,
+    ip_hash: ip ? await sha256Hex(`ip:${ip}`) : '',
+    metadata_safe: {},
+  });
+}
