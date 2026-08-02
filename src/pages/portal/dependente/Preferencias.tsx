@@ -93,7 +93,7 @@ export default function PreferenciasDependente() {
 
       <PortalCard title="Exibição e acessibilidade" description="Conforto visual na navegação." icon={icons.perfil}>
         <div className="space-y-4">
-          <FormField label="Tema" hint="Aplica-se apenas a este dispositivo.">
+          <FormField label="Tema" helperText="Aplica-se apenas a este dispositivo.">
             {(field) => (
               <SelectField
                 {...field}
