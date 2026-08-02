@@ -76,7 +76,7 @@ export default function MeusDados() {
         title="Meus dados"
         description="Confira suas informações cadastrais e mantenha seus dados de contato atualizados."
         source="Base institucional"
-        updatedAt={associado.updated_at ?? null}
+        updatedAt={null}
         action={
           <PortalButton variant="outline" iconLeft={icons.editar} onClick={() => setCorrecao(true)}>
             Solicitar correção
@@ -91,11 +91,11 @@ export default function MeusDados() {
 
       <PortalCard title="Foto do perfil" description="A foto é usada na sua identificação digital." icon={icons.perfil}>
         <ProfilePhotoUpload
-          currentUrl={associado.foto_url}
-          nome={associado.nome}
-          tipo="associado"
-          id={associado.id}
-          onUploaded={(url: string) => setAssociado({ ...associado, foto_url: url })}
+          currentPhotoUrl={associado.foto_url}
+          userName={associado.nome}
+          userType="associado"
+          userId={associado.id}
+          onPhotoUpdated={(url: string) => setAssociado({ ...associado, foto_url: url })}
         />
       </PortalCard>
 
@@ -108,7 +108,6 @@ export default function MeusDados() {
           { label: "CPF", value: maskCPF(associado.cpf ?? "") },
           { label: "Data de nascimento", value: data(associado.data_nascimento) },
           { label: "Matrícula", value: maskMatricula(associado.matricula) },
-          { label: "Posto / graduação", value: associado.patente ?? "Não informado" },
           { label: "Data de associação", value: data(associado.data_admissao) },
         ]}
       />
@@ -125,10 +124,10 @@ export default function MeusDados() {
           actions={<PortalFormActions submitLabel="Salvar alterações" loadingText="Salvando..." disabled={!alterado} />}
         >
           <FormField label="E-mail" error={erros.find((e) => e.field === "email")?.message}>
-            {(f) => <EmailInput {...f} value={email} onChange={(e) => setEmail(e.target.value)} />}
+            {(f) => <EmailInput {...f} value={email} onValueChange={setEmail} />}
           </FormField>
           <FormField label="Telefone / WhatsApp" error={erros.find((e) => e.field === "telefone")?.message}>
-            {(f) => <PhoneInput {...f} value={telefone} onChange={(e) => setTelefone(e.target.value)} />}
+            {(f) => <PhoneInput {...f} whatsapp value={telefone} onValueChange={setTelefone} />}
           </FormField>
           <FormField label="Endereço" helperText="Rua, número, complemento, bairro, cidade e CEP.">
             {(f) => (
