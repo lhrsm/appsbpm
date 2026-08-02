@@ -115,8 +115,10 @@ export default function ExternalPortalLayout({
             profile={profileType}
             permissions={permissions}
             user={user}
+            onLogout={onLogout}
           />
         </div>
+
 
         <div className="flex w-full flex-1 min-w-0">
           <PortalSidebar
@@ -129,8 +131,9 @@ export default function ExternalPortalLayout({
           <div className="flex min-w-0 flex-1 flex-col">
             <main
               id="conteudo-principal"
-              className={cn("min-w-0 flex-1", "pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0")}
+              className={cn("min-w-0 flex-1", "pb-bottom-nav")}
             >
+
               <PortalPageContainer>
                 {banner}
                 <PortalBreadcrumbs profile={profileType} />

@@ -56,16 +56,25 @@ export function PortalModal({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={cn("max-h-[90dvh] overflow-y-auto", sizeClass[size], className)}
+        className={cn(
+          "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
+          "pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6",
+          sizeClass[size],
+          className,
+        )}
         onInteractOutside={(e) => !dismissible && e.preventDefault()}
         onEscapeKeyDown={(e) => !dismissible && e.preventDefault()}
       >
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+
+        <DialogHeader className="shrink-0 text-left">
+          <DialogTitle className="break-anywhere">{title}</DialogTitle>
+          {description && <DialogDescription className="break-anywhere">{description}</DialogDescription>}
         </DialogHeader>
-        <div className="space-y-4">{children}</div>
-        {footer && <DialogFooter className="flex-col-reverse gap-2 sm:flex-row">{footer}</DialogFooter>}
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto">{children}</div>
+        {footer && (
+          <DialogFooter className="shrink-0 flex-col-reverse gap-2 sm:flex-row">{footer}</DialogFooter>
+        )}
+
       </DialogContent>
     </Dialog>
   );
@@ -96,10 +105,17 @@ export function PortalDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side={isMobile ? "bottom" : side}
-        className={cn("flex flex-col gap-0 p-0", isMobile ? "max-h-[85dvh] rounded-t-2xl" : "w-full sm:max-w-md", className)}
+        className={cn(
+          "flex flex-col gap-0 p-0",
+          isMobile
+            ? "max-h-[88dvh] rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
+            : "w-full sm:max-w-md lg:max-w-lg xl:max-w-xl",
+          className,
+        )}
         onInteractOutside={(e) => !dismissible && e.preventDefault()}
         onEscapeKeyDown={(e) => !dismissible && e.preventDefault()}
       >
+
         {isMobile && <div className="mx-auto mt-3 h-1.5 w-10 rounded-full bg-muted" aria-hidden />}
         <SheetHeader className="border-b border-border p-4 text-left">
           <SheetTitle>{title}</SheetTitle>

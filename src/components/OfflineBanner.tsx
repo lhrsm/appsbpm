@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { WifiOff, Wifi } from "lucide-react";
+import { WifiOff, Wifi, RefreshCw } from "lucide-react";
 
+/**
+ * Aviso global de conectividade (Fase 11).
+ * Respeita safe areas e não cobre o conteúdo — empurra a página.
+ */
 export default function OfflineBanner() {
   const [online, setOnline] = useState(typeof navigator !== "undefined" ? navigator.onLine : true);
   const [justReconnected, setJustReconnected] = useState(false);
@@ -9,7 +13,7 @@ export default function OfflineBanner() {
     const goOnline = () => {
       setOnline(true);
       setJustReconnected(true);
-      window.setTimeout(() => setJustReconnected(false), 3000);
+      window.setTimeout(() => setJustReconnected(false), 4000);
     };
     const goOffline = () => setOnline(false);
     window.addEventListener("online", goOnline);
@@ -26,19 +30,27 @@ export default function OfflineBanner() {
     <div
       role="status"
       aria-live="polite"
-      className={`fixed top-0 inset-x-0 z-[100] px-4 py-2 text-sm font-medium text-center shadow-md transition-colors ${
-        online
-          ? "bg-sbpm-green text-white"
-          : "bg-destructive text-destructive-foreground"
+      className={`sticky top-0 z-[100] w-full px-4 py-2 text-center text-sm font-medium shadow-md safe-pt ${
+        online ? "bg-sbpm-green text-white" : "bg-destructive text-destructive-foreground"
       }`}
     >
-      <div className="flex items-center justify-center gap-2">
-        {online ? <Wifi className="w-4 h-4" aria-hidden /> : <WifiOff className="w-4 h-4" aria-hidden />}
-        <span>
+      <div className="mx-auto flex max-w-3xl flex-col items-center justify-center gap-2 sm:flex-row">
+        {online ? <Wifi className="h-4 w-4 shrink-0" aria-hidden /> : <WifiOff className="h-4 w-4 shrink-0" aria-hidden />}
+        <span className="break-anywhere">
           {online
-            ? "Conexão restabelecida"
-            : "Você está sem conexão. Algumas funções podem ficar indisponíveis."}
+            ? "Conexão restabelecida. Você pode tentar novamente."
+            : "Você está sem conexão. Apenas conteúdos já carregados ficam disponíveis; envios serão bloqueados."}
         </span>
+        {online && (
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex min-h-9 items-center gap-1 rounded-md bg-white/20 px-3 text-xs font-semibold hover:bg-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            <RefreshCw className="h-3.5 w-3.5" aria-hidden />
+            Atualizar
+          </button>
+        )}
       </div>
     </div>
   );

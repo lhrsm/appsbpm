@@ -13,9 +13,9 @@ export const PORTAL_VERSION = "2.0";
 /** Rodapé institucional do portal externo. */
 export default function PortalFooter() {
   return (
-    <footer className="border-t bg-card/60">
-      <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-3 px-4 py-6 text-sm text-muted-foreground sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-        <p className="text-xs">
+    <footer className="border-t bg-card/60 pb-bottom-nav">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
+        <p className="text-xs break-anywhere">
           © {new Date().getFullYear()} SBPM — Sociedade Beneficente da Polícia Militar · Portal v{PORTAL_VERSION}
         </p>
         <ul className="flex flex-col gap-1 md:flex-row md:flex-wrap md:items-center md:gap-4">
