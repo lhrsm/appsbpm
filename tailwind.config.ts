@@ -13,13 +13,15 @@ export default {
       },
     },
     screens: {
-      /* Breakpoints oficiais do Design System (Fase 1 / Fase 11) */
+      /* Breakpoints oficiais do Design System (Fase 1 / Fase 11).
+         sm/md/lg/xl mantêm os valores já usados em toda a plataforma. */
       xs: "360px",
-      sm: "480px",
+      ms: "480px",
+      sm: "640px",
       md: "768px",
       lg: "1024px",
       xl: "1280px",
-      "2xl": "1600px",
+      "2xl": "1536px",
       "3xl": "1920px",
       uw: "2560px",
     },
