@@ -27,9 +27,13 @@ export default function MobileNavigationDrawer({
   profile,
   permissions,
   user,
+  onLogout,
 }: MobileNavigationDrawerProps) {
   const sections = getNavigationSections({ profile, permissions });
   const iniciais = primeiroNome(user.nome).slice(0, 2).toUpperCase() || "SB";
+  const Ajuda = icons.ajuda;
+  const Sair = icons.sair;
+
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
