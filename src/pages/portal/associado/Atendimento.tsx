@@ -70,16 +70,21 @@ export default function Atendimento() {
                 <PortalButton
                   variant="primary"
                   iconLeft={icons.whatsapp}
-                  as="a"
-                  href={linkWhatsApp(canal.whatsapp, mensagem(canal.setor))}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() =>
+                    window.open(linkWhatsApp(canal.whatsapp!, mensagem(canal.setor)), "_blank", "noopener,noreferrer")
+                  }
                 >
                   WhatsApp
                 </PortalButton>
               )}
               {canal.email && (
-                <PortalButton variant="outline" iconLeft={icons.email} as="a" href={`mailto:${canal.email}`}>
+                <PortalButton
+                  variant="outline"
+                  iconLeft={icons.email}
+                  onClick={() => {
+                    window.location.href = `mailto:${canal.email}`;
+                  }}
+                >
                   Enviar e-mail
                 </PortalButton>
               )}
