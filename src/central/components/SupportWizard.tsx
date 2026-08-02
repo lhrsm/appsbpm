@@ -124,7 +124,7 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
         </ol>
       </div>
 
-      {erro && <PortalAlert tone="danger" title="Verifique os dados" description={erro} />}
+      {erro && <PortalAlert tone="danger" title="Verifique os dados">{erro}</PortalAlert>}
 
       <PortalCard density="regular">
         {etapa === 0 && (
@@ -219,19 +219,20 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
 
         {etapa === 3 && (
           <div className="space-y-3">
-            <RadioGroupField
-              label="Prioridade"
-              name="prioridade"
-              value={prioridade}
-              onChange={(v) => setPrioridade(v as CentralPrioridade)}
-              options={prioridades}
-            />
-            {moduloInfo && (
-              <PortalAlert
-                tone="info"
-                title={`Prazo estimado: ${moduloInfo.sla} dias úteis`}
-                description="A prioridade orienta o setor, mas o prazo institucional do módulo continua valendo."
+            <fieldset className="space-y-2">
+              <legend className="text-sm font-semibold">Prioridade</legend>
+              <RadioGroupField
+                name="prioridade"
+                variant="cards"
+                value={prioridade}
+                onValueChange={(v) => setPrioridade(v as CentralPrioridade)}
+                options={prioridades}
               />
+            </fieldset>
+            {moduloInfo && (
+              <PortalAlert tone="info" title={`Prazo estimado: ${moduloInfo.sla} dias úteis`}>
+                A prioridade orienta o setor, mas o prazo institucional do módulo continua valendo.
+              </PortalAlert>
             )}
           </div>
         )}
@@ -241,11 +242,9 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
             <Text variant="h6" as="p">
               Documentos comprobatórios
             </Text>
-            <PortalAlert
-              tone="warning"
-              title="Envio de anexos pelo portal em implantação"
-              description={`Assim que a integração for concluída, será possível anexar até ${uploadConfig.maxArquivos} arquivos de ${uploadConfig.maxTamanhoMb} MB (${uploadConfig.formatos.join(", ")}). Por enquanto, o setor solicitará os documentos pelo protocolo, por e-mail ou WhatsApp.`}
-            />
+            <PortalAlert tone="warning" title="Envio de anexos pelo portal em implantação">
+              {`Assim que a integração for concluída, será possível anexar até ${uploadConfig.maxArquivos} arquivos de ${uploadConfig.maxTamanhoMb} MB (${uploadConfig.formatos.join(", ")}). Por enquanto, o setor solicitará os documentos pelo protocolo, por e-mail ou WhatsApp.`}
+            </PortalAlert>
             <Text variant="small" className="text-muted-foreground">
               Você pode seguir para a confirmação — o pedido será registrado normalmente.
             </Text>
@@ -283,11 +282,9 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
                 <dd className="whitespace-pre-wrap text-sm">{descricao}</dd>
               </div>
             </dl>
-            <PortalAlert
-              tone="info"
-              title="Protocolo automático"
-              description="Ao enviar, você receberá um número no formato SBPM-AAAA-000000000 para acompanhar o atendimento."
-            />
+            <PortalAlert tone="info" title="Protocolo automático">
+              Ao enviar, você receberá um número no formato SBPM-AAAA-000000000 para acompanhar o atendimento.
+            </PortalAlert>
           </PortalForm>
         )}
       </PortalCard>
@@ -295,7 +292,7 @@ export default function SupportWizard({ perfil, moduloInicial, onConcluido }: Su
       {etapa < 5 && (
         <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
           {etapa > 0 && (
-            <PortalButton variant="ghost" onClick={voltar} icon={icons.anterior} className="w-full sm:w-auto">
+            <PortalButton variant="ghost" onClick={voltar} iconLeft={icons.anterior} className="w-full sm:w-auto">
               Voltar
             </PortalButton>
           )}
