@@ -266,6 +266,15 @@ export const portalNavigation: PortalNavSection[] = [
         order: 1,
       },
       {
+        id: "seguranca",
+        label: "Segurança da conta",
+        icon: icons.previdencia,
+        route: "/dashboard/seguranca",
+        allowedProfiles: AMBOS,
+        keywords: ["senha", "2fa", "dois fatores", "dispositivos", "sessões"],
+        order: 2,
+      },
+      {
         id: "privacidade",
         label: "Privacidade e LGPD",
         icon: icons.lgpd,
