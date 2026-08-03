@@ -310,6 +310,8 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'mensalidades') {
+      const { data: assoc } = await admin.from('associados').select('id, status').eq('id', sessao.aid).maybeSingle();
+      if (!assoc || assoc.status !== 'regular') return json({ itens: [] });
       if (sessao.did) return json({ itens: [] });
       const { data } = await admin
         .from('mensalidades')
@@ -320,14 +322,17 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'documentos') {
+      const { data: assoc } = await admin.from('associados').select('id, status').eq('id', sessao.aid).maybeSingle();
+      if (!assoc || assoc.status !== 'regular') return json({ itens: [], total: 0 });
+
       const { pagina, tamanho, inicio, fim } = faixa(body.page, body.page_size);
       let q = admin
         .from('documentos_associado')
-        .select('id, titulo, categoria, visibilidade, publicado_em, arquivo_path, ativo, created_at', {
+        .select('id, titulo, categoria, visibilidade, publicado_em, arquivo_path, status, created_at', {
           count: 'exact',
         })
         .eq('associado_id', sessao.aid)
-        .eq('ativo', true);
+        .eq('status', 'regular');
       if (sessao.did) q = q.or(`visibilidade.eq.todos,dependente_id.eq.${sessao.did}`);
       const { data, count } = await q.order('publicado_em', { ascending: false }).range(inicio, fim);
       return json({ itens: data || [], total: count ?? 0, pagina, page_size: tamanho });
@@ -336,10 +341,10 @@ Deno.serve(async (req) => {
     if (body.action === 'documento_url') {
       const { data: doc } = await admin
         .from('documentos_associado')
-        .select('id, associado_id, dependente_id, visibilidade, arquivo_path, ativo')
+        .select('id, associado_id, dependente_id, visibilidade, arquivo_path, status')
         .eq('id', body.documento_id)
         .maybeSingle();
-      if (!doc || !doc.ativo || doc.associado_id !== sessao.aid) {
+      if (!doc || doc.status !== 'regular' || doc.associado_id !== sessao.aid) {
         return json({ error: 'Documento não disponível' }, 403);
       }
       if (sessao.did && doc.visibilidade !== 'todos' && doc.dependente_id !== sessao.did) {

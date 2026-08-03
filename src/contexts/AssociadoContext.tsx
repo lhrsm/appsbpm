@@ -144,7 +144,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setDependenteLogado(data.dependente || null);
         setError(null);
       } else {
-        console.error("[PortalIdentity] Cadastro institucional não retornado pelo backend. Verifique RLS ou status 'regular'.");
+        console.error("[PortalIdentity] Cadastro institucional não localizado ou inativo (status regular exigido).");
         setError('Cadastro institucional não localizado ou inativo. Entre em contato com o suporte.');
       }
     } catch (err: any) {
