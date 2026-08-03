@@ -23,8 +23,13 @@ export interface Dependente {
   bairro_residencia?: string | null;
   cidade_residencia?: string | null;
   estado_residencia?: string | null;
+  rg_civil?: string | null;
+  estado_civil?: string | null;
+  sexo?: string | null;
+  sync_status?: string | null;
   utiliza_endereco_titular?: boolean;
 }
+
 
 
 export interface Limite {
@@ -75,7 +80,13 @@ export interface Associado {
   bairro_residencia?: string | null;
   cidade_residencia?: string | null;
   estado_residencia?: string | null;
+  unidade_id?: string | null;
+  rg_civil?: string | null;
+  estado_civil?: string | null;
+  sexo?: string | null;
+  sync_status?: string | null;
 }
+
 
 
 
