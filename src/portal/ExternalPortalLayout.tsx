@@ -94,9 +94,8 @@ export default function ExternalPortalLayout({
   return (
     <TooltipProvider delayDuration={200}>
       <div className="flex min-h-dvh w-full flex-col bg-background">
-        <a href="#conteudo-principal" className="skip-link">
-          Ir para o conteúdo
-        </a>
+        <SkipLinks />
+
 
         <PortalHeader
           profile={profileType}
