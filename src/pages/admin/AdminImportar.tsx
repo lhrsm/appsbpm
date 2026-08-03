@@ -279,7 +279,7 @@ export default function AdminImportar() {
                 </div>
               )}
                 <Label className="text-xs">Status</Label>
-                <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroStatus} onChange={(e) => setFiltroStatus(e.target.value)}>
                   <option value="todos">Todos</option>
                   <option value="regular">Regular</option>
                   <option value="inativo">Inativo</option>
