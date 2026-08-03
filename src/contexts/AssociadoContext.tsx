@@ -154,28 +154,24 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       };
     }
 
-    // A RPC retorna campos em snake_case. Mapeamos para camelCase.
-    // Campos da RPC: auth_id, link_id, associado_id, dependente_id, cpf_ref, link_status, person_type, associado_nome, associado_status
-    const resolved = Boolean(row.auth_id);
-    const linkStatus = row.link_status || null;
-    const associationStatus = row.associado_status || null;
+    // A RPC agora retorna campos padronizados em snake_case (ou camelCase dependendo do driver, mas o Supabase costuma manter snake_case se não for transformado).
+    // Contrato Padronizado: resolved, auth_user_id, link_id, associate_id, dependent_id, profile_type, association_status, link_status, access_level, reason_code
     
-    // Lógica de nível de acesso no frontend baseada nos status retornados
-    let accessLevel: PortalIdentity['accessLevel'] = 'read_only';
-    let reasonCode = 'READY';
-
-    if (!row.link_id) {
-      reasonCode = 'PROFILE_LINK_MISSING';
-      accessLevel = 'blocked';
-    } else if (linkStatus === 'active' && (row.person_type === 'dependent' || associationStatus === 'regular')) {
-      accessLevel = 'full';
-    }
+    // Suporte a ambos para transição suave, mas priorizando o novo contrato
+    const associateId = row.associate_id || row.associado_id || null;
+    const associationStatus = row.association_status || row.associado_status || null;
+    const profileType = (row.profile_type || row.person_type) as any || null;
+    const authUserId = row.auth_user_id || row.auth_id || null;
+    const linkStatus = row.link_status || null;
+    const accessLevel = (row.access_level as any) || (linkStatus === 'active' ? 'full' : 'blocked');
+    const reasonCode = row.reason_code || (associateId ? 'READY' : 'PROFILE_LINK_MISSING');
+    const resolved = row.resolved ?? Boolean(associateId && linkStatus === 'active');
 
     return {
       resolved,
-      associateId: row.associado_id || null,
-      dependentId: row.dependente_id || null,
-      profileType: (row.person_type as any) || null,
+      associateId,
+      dependentId: row.dependent_id || row.dependente_id || null,
+      profileType,
       associationStatus,
       linkStatus,
       accessLevel,

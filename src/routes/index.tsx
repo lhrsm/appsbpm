@@ -21,7 +21,6 @@ export default function RoutesIndex() {
         <div className="space-y-4">
           <Text variant="body" className="readable">
             Todas as 15 fases do Portal SBPM foram auditadas. A implementação do sistema de Gestão e Impressão de Cheques no módulo financeiro está 100% concluída e operacional.
-
           </Text>
 
           <div className="grid gap-4 sm:grid-cols-3">

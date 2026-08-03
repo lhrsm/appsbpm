@@ -6364,15 +6364,16 @@ export type Database = {
       get_my_portal_identity: {
         Args: never
         Returns: {
-          associado_id: string
-          associado_nome: string
-          associado_status: string
-          auth_id: string
-          cpf_ref: string
-          dependente_id: string
+          access_level: string
+          associate_id: string
+          association_status: string
+          auth_user_id: string
+          dependent_id: string
           link_id: string
           link_status: string
-          person_type: string
+          profile_type: string
+          reason_code: string
+          resolved: boolean
         }[]
       }
       has_role: {
