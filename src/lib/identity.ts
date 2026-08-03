@@ -177,9 +177,10 @@ export interface PortalIdentity {
  */
 export function formatDateForDisplay(isoDate: string | null | undefined): string {
   if (!isoDate) return "";
-  // Extrai apenas a parte da data caso venha com tempo
+  // Garante que pegamos apenas YYYY-MM-DD mesmo que venha com tempo
   const dateStr = isoDate.split('T')[0];
   const parts = dateStr.split('-');
+
   if (parts.length !== 3) return isoDate; // Fallback
   const [year, month, day] = parts;
   return `${day}/${month}/${year}`;
