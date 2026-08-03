@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/design-system/components/Button";
 import { icons } from "@/design-system/icons";
+import { useAssociado } from "@/contexts/AssociadoContext";
 
 export interface PortalErrorStateProps {
   title?: string;
@@ -78,9 +79,23 @@ export function PortalLoadingState({ message = "Carregando seu portal..." }: { m
 }
 
 /** Estado exibido quando o perfil não é localizado após a autenticação. */
-export function PortalProfileNotFound({ onRetry }: { onRetry: () => void }) {
+export function PortalProfileNotFound({ 
+  onRetry,
+  title = "Não foi possível localizar seu cadastro",
+  description = "Identificamos sua conta, mas não conseguimos carregar os dados vinculados ao seu perfil institucional."
+}: { 
+  onRetry: () => void;
+  title?: string;
+  description?: string;
+}) {
   const navigate = useNavigate();
   const UserSearch = icons.associados;
+  const { logout } = useAssociado();
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
   
   return (
     <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm">
@@ -88,14 +103,15 @@ export function PortalProfileNotFound({ onRetry }: { onRetry: () => void }) {
         <UserSearch className="h-6 w-6 text-muted-foreground" />
       </span>
       <div className="max-w-md">
-        <h2 className="text-lg font-semibold text-foreground">Não foi possível localizar seu cadastro</h2>
+        <h2 className="text-lg font-semibold text-foreground">{title}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Identificamos sua conta, mas não conseguimos carregar os dados vinculados ao seu perfil institucional.
+          {description}
         </p>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         <Button onClick={onRetry} leftIcon={icons.atualizar}>Tentar novamente</Button>
-        <Button variant="secondary" onClick={() => navigate("/")}>Voltar ao início</Button>
+        <Button variant="secondary" onClick={handleLogout} leftIcon={icons.lgpd}>Sair da conta</Button>
+        <Button variant="ghost" onClick={() => navigate("/")}>Página pública</Button>
       </div>
     </div>
   );

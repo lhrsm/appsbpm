@@ -1830,10 +1830,12 @@ export type Database = {
           external_person_id: string
           id: string
           last_login_at: string | null
+          last_repair_at: string | null
           last_verified_at: string | null
           linked_at: string
           person_type: Database["public"]["Enums"]["ext_person_type"]
           registration_number: string | null
+          repair_notes: string | null
           source_provider: string
           status: string
           updated_at: string
@@ -1848,10 +1850,12 @@ export type Database = {
           external_person_id: string
           id?: string
           last_login_at?: string | null
+          last_repair_at?: string | null
           last_verified_at?: string | null
           linked_at?: string
           person_type: Database["public"]["Enums"]["ext_person_type"]
           registration_number?: string | null
+          repair_notes?: string | null
           source_provider?: string
           status?: string
           updated_at?: string
@@ -1866,10 +1870,12 @@ export type Database = {
           external_person_id?: string
           id?: string
           last_login_at?: string | null
+          last_repair_at?: string | null
           last_verified_at?: string | null
           linked_at?: string
           person_type?: Database["public"]["Enums"]["ext_person_type"]
           registration_number?: string | null
+          repair_notes?: string | null
           source_provider?: string
           status?: string
           updated_at?: string
@@ -6415,6 +6421,7 @@ export type Database = {
       perfil_ativo: { Args: { _user_id: string }; Returns: string }
       pode_gerenciar_usuarios: { Args: { _user_id: string }; Returns: boolean }
       registrar_acesso_interno: { Args: never; Returns: undefined }
+      repair_portal_identity: { Args: never; Returns: Json }
       tem_permissao: {
         Args: {
           _acao: Database["public"]["Enums"]["perm_acao"]
