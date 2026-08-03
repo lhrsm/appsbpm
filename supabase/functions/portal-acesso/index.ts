@@ -762,7 +762,7 @@ Deno.serve(async (req) => {
           provider: providerMode,
         });
 
-        const payload = await portalPayload(admin, cpf);
+        const payload = await portalPayload(admin, cpf, userId);
         return json({ success: true, portal: payload, maskedEmail: maskEmail(sess.email) });
       }
     }
@@ -807,7 +807,7 @@ Deno.serve(async (req) => {
         .update({ last_login_at: new Date().toISOString() })
         .eq('id', link.id);
 
-      const payload = await portalPayload(admin, link.cpf_reference);
+      const payload = await portalPayload(admin, link.cpf_reference, link.user_id);
       if (!payload) {
         return json(
           { success: false, message: 'Seu cadastro ainda está em sincronização. Fale com o atendimento da SBPM.' },
