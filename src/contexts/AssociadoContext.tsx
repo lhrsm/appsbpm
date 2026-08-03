@@ -144,8 +144,18 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setDependenteLogado(data.dependente || null);
         setError(null);
       } else {
-        console.error("[PortalIdentity] Cadastro institucional não localizado ou inativo (status regular exigido).");
-        setError('Cadastro institucional não localizado ou inativo. Entre em contato com o suporte.');
+        const token = getPortalToken();
+        console.error("[PortalIdentity] Resolução de perfil falhou.", {
+          hasToken: !!token,
+          dataReturned: !!data,
+          error: data?.error
+        });
+        
+        if (!data?.associado) {
+          setError('Cadastro institucional não localizado ou inativo. Entre em contato com o suporte.');
+        } else {
+          setError('Não foi possível carregar seu painel institucional no momento.');
+        }
       }
     } catch (err: any) {
       console.error("[PortalIdentity] Erro na resolução:", err);

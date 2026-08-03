@@ -166,13 +166,18 @@ async function sincronizarEmailCadastro(admin: any, cpfDigits: string, email: st
 }
 
 /** Dados do portal para a sessão recém-criada (mesma resposta do login antigo). */
-async function portalPayload(admin: any, cpfDigits: string) {
+async function portalPayload(admin: any, cpfDigits: string, userId?: string) {
   // Busca o vínculo de conta para obter os IDs institucionais corretos
-  const { data: link } = await admin
-    .from('external_account_links')
-    .select('associado_id, dependente_id, person_type')
-    .eq('cpf_reference', cpfDigits)
-    .maybeSingle();
+  const query = admin.from('external_account_links').select('associado_id, dependente_id, person_type, status, user_id');
+  
+  const { data: link } = userId 
+    ? await query.eq('user_id', userId).maybeSingle()
+    : await query.eq('cpf_reference', cpfDigits).maybeSingle();
+
+  if (link && link.status !== 'active') {
+    console.warn(`[portalPayload] Vínculo encontrado mas inativo: ${link.id}`);
+    return { error: 'Vínculo inativo. Procure o suporte.' };
+  }
 
   let associado: any = null;
   let dependente: any = null;
@@ -197,8 +202,8 @@ async function portalPayload(admin: any, cpfDigits: string) {
     dependente = dep;
   }
 
-  // Fallback para login via CPF/Matrícula se o link ainda não tiver IDs (legado)
-  if (!associado && !dependente) {
+  // Fallback para login via CPF/Matrícula se o link ainda não existir (raro após migração)
+  if (!associado && !dependente && cpfDigits) {
     const { data: assoc } = await admin
       .from('associados')
       .select(CAMPOS_ASSOCIADO)
@@ -757,7 +762,7 @@ Deno.serve(async (req) => {
           provider: providerMode,
         });
 
-        const payload = await portalPayload(admin, cpf);
+        const payload = await portalPayload(admin, cpf, userId);
         return json({ success: true, portal: payload, maskedEmail: maskEmail(sess.email) });
       }
     }
@@ -802,7 +807,7 @@ Deno.serve(async (req) => {
         .update({ last_login_at: new Date().toISOString() })
         .eq('id', link.id);
 
-      const payload = await portalPayload(admin, link.cpf_reference);
+      const payload = await portalPayload(admin, link.cpf_reference, link.user_id);
       if (!payload) {
         return json(
           { success: false, message: 'Seu cadastro ainda está em sincronização. Fale com o atendimento da SBPM.' },

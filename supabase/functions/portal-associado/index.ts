@@ -175,17 +175,19 @@ Deno.serve(async (req) => {
       // Busca na external_account_links primeiro (novo fluxo institucional)
       const { data: link } = await admin
         .from('external_account_links')
-        .select('associado_id, dependente_id')
+        .select('associado_id, dependente_id, status')
         .or(`cpf_reference.eq.${digitos},registration_number.eq.${credencial.trim().toUpperCase()}`)
         .maybeSingle();
 
-      if (link?.associado_id) {
-        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('status', 'regular').maybeSingle();
-        associado = assoc;
-      }
-      if (link?.dependente_id) {
-        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('status', 'regular').maybeSingle();
-        dependente = dep;
+      if (link?.status === 'active') {
+        if (link.associado_id) {
+          const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('status', 'regular').maybeSingle();
+          associado = assoc;
+        }
+        if (link.dependente_id) {
+          const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('status', 'regular').maybeSingle();
+          dependente = dep;
+        }
       }
 
       // Fallback legado se não houver link
@@ -306,7 +308,20 @@ Deno.serve(async (req) => {
           .maybeSingle();
         dependente = data;
       }
-      return json({ associado, dependente });
+      const [dependentes, limite, historico, informes] = await Promise.all([
+        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('status', 'regular'),
+        admin.from('limites').select('*').eq('associado_id', associado.id).maybeSingle(),
+        admin.from('historico_limite').select('*').eq('associado_id', associado.id).order('data_utilizacao', { ascending: false }),
+        admin.from('informes_rendimentos').select('*').eq('associado_id', associado.id).order('ano', { ascending: false }),
+      ]);
+      return json({ 
+        associado, 
+        dependente,
+        dependentes: dependentes.data || [],
+        limite: limite.data || null,
+        historico: historico.data || [],
+        informes: informes.data || []
+      });
     }
 
     if (body.action === 'mensalidades') {
@@ -552,9 +567,14 @@ async function registrarSessaoSegura(
   associadoId: string,
   dependenteId: string | null,
 ) {
+  // Tenta localizar o vínculo para obter o user_id real do Auth
   const filtro = dependenteId ? { dependente_id: dependenteId } : { associado_id: associadoId };
   const { data: link } = await admin.from('external_account_links').select('id, user_id').match(filtro).maybeSingle();
-  if (!link?.user_id) return;
+  
+  if (!link?.user_id) {
+    console.warn(`[registrarSessaoSegura] Vínculo não encontrado para ${dependenteId ? 'dependente' : 'associado'} ${dependenteId || associadoId}`);
+    return;
+  }
 
   const ua = req.headers.get('user-agent') || '';
   const navegador = /Edg\//.test(ua) ? 'Edge'
@@ -579,6 +599,7 @@ async function registrarSessaoSegura(
   const tokenHash = await sha256Hex(token);
   const agora = new Date().toISOString();
 
+  // Garante auditoria da sessão para a Central de Segurança
   await admin.from('portal_sessions').insert({
     user_id: link.user_id,
     session_token_hash: tokenHash,
@@ -597,6 +618,6 @@ async function registrarSessaoSegura(
     device_summary: `${tipo} · ${so} · ${navegador}`,
     location_summary: local,
     ip_hash: ip ? await sha256Hex(`ip:${ip}`) : '',
-    metadata_safe: {},
+    metadata_safe: { source: 'portal-associado' },
   });
 }
