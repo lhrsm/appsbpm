@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import OrigemDadoBadge from "@/components/admin/OrigemDadoBadge";
-import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber, AssociadoStatusLabels, formatDateForDisplay, normalizeBirthDate, validateBirthDate } from "@/lib/identity";
+import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber, formatDateForDisplay, normalizeBirthDate, validateBirthDate } from "@/lib/identity";
 
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
