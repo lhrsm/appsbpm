@@ -94,18 +94,18 @@ export default function Dashboard() {
         />
         
         {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
-        {identity?.debug && (
+        {identity && (
           <div className="max-w-md w-full p-4 bg-muted/50 rounded-lg text-[10px] font-mono border text-muted-foreground overflow-auto">
             <p className="font-bold mb-1 uppercase tracking-wider text-[9px]">Diagnóstico Técnico (Admin)</p>
             <pre>{JSON.stringify({ 
               error,
               identity: {
                 resolved: identity.resolved,
-                link_status: identity.linkStatus,
-                assoc_status: identity.associationStatus,
-                access: identity.accessLevel,
-                reason: identity.reasonCode,
-                associate_id: identity.associateId ? 'PRESENT' : 'MISSING'
+                linkStatus: identity.linkStatus,
+                associationStatus: identity.associationStatus,
+                accessLevel: identity.accessLevel,
+                reasonCode: identity.reasonCode,
+                associateId: identity.associateId
               }
             }, null, 2)}</pre>
           </div>
