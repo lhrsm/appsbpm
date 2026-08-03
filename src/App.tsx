@@ -155,30 +155,30 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <A11yProvider>
-      <AssociadoProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <RouteAnnouncer />
-          <CookieConsent />
-          <AccessibilityWidget />
-          <ChatbotGate />
+        <AssociadoProvider>
+          <BrowserRouter>
+            <Toaster />
+            <Sonner />
+            <RouteAnnouncer />
+            <CookieConsent />
+            <AccessibilityWidget />
+            <ChatbotGate />
 
-          <InstallPWAPrompt />
-          <OfflineBanner />
-          <BackToTop />
-          <PWAUpdatePrompt />
-          <Suspense fallback={<RouteFallback />}>
-            <Routes>
-              <Route path="/" element={<PortalBoasVindas />} />
-              <Route path="/entrar" element={<PortalEntrar />} />
-              <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
-              <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
-              <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
-              <Route path="/acesso-simplificado" element={<Login />} />
-              <Route path="/quiosque" element={<Quiosque />} />
-              <Route path="/bem/:token" element={<BemQR />} />
-              <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+            <InstallPWAPrompt />
+            <OfflineBanner />
+            <BackToTop />
+            <PWAUpdatePrompt />
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<PortalBoasVindas />} />
+                <Route path="/entrar" element={<PortalEntrar />} />
+                <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+                <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+                <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
+                <Route path="/acesso-simplificado" element={<Login />} />
+                <Route path="/quiosque" element={<Quiosque />} />
+                <Route path="/bem/:token" element={<BemQR />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="/acessibilidade" element={<Acessibilidade />} />
@@ -273,12 +273,13 @@ const App = () => (
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
+            </Routes>
           </Suspense>
         </BrowserRouter>
       </AssociadoProvider>
-      </A11yProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+    </A11yProvider>
+  </TooltipProvider>
+</QueryClientProvider>
 );
 
 export default App;
