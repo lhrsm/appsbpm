@@ -149,7 +149,7 @@ const CAMPOS_ASSOCIADO =
   'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, status, patente, cep, cidade';
 
 const CAMPOS_DEPENDENTE =
-  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, ativo, status';
+  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, status';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -180,11 +180,11 @@ Deno.serve(async (req) => {
         .maybeSingle();
 
       if (link?.associado_id) {
-        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('ativo', true).maybeSingle();
+        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('status', 'regular').maybeSingle();
         associado = assoc;
       }
       if (link?.dependente_id) {
-        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('ativo', true).maybeSingle();
+        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('status', 'regular').maybeSingle();
         dependente = dep;
       }
 
@@ -194,7 +194,7 @@ Deno.serve(async (req) => {
           .from('associados')
           .select(CAMPOS_ASSOCIADO)
           .eq('matricula', credencial)
-          .eq('ativo', true)
+          .eq('status', 'regular')
           .maybeSingle();
 
         if (porMatricula) {
@@ -203,7 +203,7 @@ Deno.serve(async (req) => {
           const { data: porCpf } = await admin
             .from('associados')
             .select(CAMPOS_ASSOCIADO)
-            .eq('ativo', true)
+            .eq('status', 'regular')
             .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
             .maybeSingle();
 
@@ -213,12 +213,12 @@ Deno.serve(async (req) => {
             const { data: dep } = await admin
               .from('dependentes')
               .select(CAMPOS_DEPENDENTE)
-              .eq('ativo', true)
+              .eq('status', 'regular')
               .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
               .maybeSingle();
 
             if (dep) {
-              const { data: titular } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', dep.associado_id).eq('ativo', true).maybeSingle();
+              const { data: titular } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', dep.associado_id).eq('status', 'regular').maybeSingle();
               if (titular) {
                 associado = titular;
                 dependente = dep;
@@ -233,7 +233,7 @@ Deno.serve(async (req) => {
       }
 
       const [dependentes, limite, historico, informes] = await Promise.all([
-        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('ativo', true),
+        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('status', 'regular'),
         admin.from('limites').select('*').eq('associado_id', associado.id).maybeSingle(),
         admin
           .from('historico_limite')
