@@ -81,12 +81,13 @@ export default function PortalPrimeiroAcesso() {
     setLoading(true);
     const res = await validarIdentidade({
       cpf: padCpf(cpf) || "",
-      birthDate: nascimento,
+      birthDate: nascimento, // Já está em ISO via BirthDateInput
       personType,
       registration: extras.registration ? padRegistrationNumber(extras.registration) || undefined : undefined,
       fullName: extras.fullName,
       motherName: extras.motherName,
     });
+
     setLoading(false);
 
     if (!res.success || !res.sessionId || !res.validationToken) {
