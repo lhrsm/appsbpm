@@ -6361,6 +6361,20 @@ export type Database = {
           tipo: string
         }[]
       }
+      get_my_portal_identity: {
+        Args: never
+        Returns: {
+          associado_id: string
+          associado_nome: string
+          associado_status: string
+          auth_id: string
+          cpf_ref: string
+          dependente_id: string
+          link_id: string
+          link_status: string
+          person_type: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
