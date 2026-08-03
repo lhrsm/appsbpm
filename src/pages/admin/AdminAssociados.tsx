@@ -12,18 +12,21 @@ import { Pencil, Trash2, Plus, Search, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { logAudit } from "@/lib/audit";
 
-const PATENTES = [
-  "Coronel",
-  "Tenente-Coronel",
-  "Major",
-  "Capitão",
-  "Tenente",
-  "Aspirante a Oficial",
-  "Subtenente",
-  "Sargento",
-  "Cabo",
-  "Soldado",
+const SITUACOES_FUNCIONAIS = [
+  { value: "ativo", label: "Ativo" },
+  { value: "reserva", label: "Reserva" },
+  { value: "reformado", label: "Reformado" },
+  { value: "civil", label: "Civil" },
 ];
+
+const SITUACOES_ASSOCIATIVAS = [
+  { value: "regular", label: "Regular" },
+  { value: "suspenso", label: "Suspenso" },
+  { value: "excluido", label: "Excluído" },
+  { value: "falecido", label: "Falecido" },
+  { value: "licenciado", label: "Licenciado" },
+];
+
 
 interface Associado {
   id?: string;
@@ -33,13 +36,25 @@ interface Associado {
   email?: string;
   telefone?: string;
   patente?: string;
+  posto_graduacao_id?: string;
+  unidade_id?: string;
+  situacao_funcional?: string;
+  situacao_associativa?: string;
   data_nascimento?: string;
   data_admissao?: string;
   cep?: string;
+  cep_residencia?: string;
   endereco?: string;
+  numero_residencia?: string;
+  complemento_residencia?: string;
+  bairro_residencia?: string;
   cidade?: string;
+  cidade_residencia?: string;
+  estado_residencia?: string;
   foto_url?: string;
   ativo?: boolean;
+  cams_last_sync?: string;
+
 }
 
 const onlyDigits = (v: string) => (v ?? "").replace(/\D/g, "");
