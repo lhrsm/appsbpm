@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/design-system/components/Navigation";
+import SkipLinks from "@/a11y/SkipLinks";
 import PortalHeader from "./components/PortalHeader";
 import PortalSidebar from "./components/PortalSidebar";
 import MobileNavigationDrawer from "./components/MobileNavigationDrawer";
@@ -130,7 +131,8 @@ export default function ExternalPortalLayout({
           <div className="flex min-w-0 flex-1 flex-col">
             <main
               id="conteudo-principal"
-              className={cn("min-w-0 flex-1", "pb-bottom-nav")}
+              tabIndex={-1}
+              className={cn("min-w-0 flex-1 focus:outline-none", "pb-bottom-nav")}
             >
 
               <PortalPageContainer>
