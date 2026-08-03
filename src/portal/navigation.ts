@@ -88,7 +88,8 @@ export const portalNavigation: PortalNavSection[] = [
         id: "dados-cadastrais",
         label: "Meus dados",
         icon: icons.perfil,
-        route: "/dashboard/meus-dados",
+        route: "/dashboard/perfil",
+
         allowedProfiles: TITULAR,
         keywords: ["cadastro", "endereço", "telefone", "e-mail"],
         order: 4,
@@ -356,7 +357,7 @@ export const dependentNavigation: PortalNavSection[] = [
         id: "dados-cadastrais",
         label: "Meus dados",
         icon: icons.perfil,
-        route: "/dashboard/meus-dados",
+        route: "/dashboard/perfil",
         allowedProfiles: DEPENDENTE,
         keywords: ["cadastro", "contato", "telefone", "e-mail", "foto"],
         order: 3,
