@@ -232,14 +232,18 @@ export default function AdminDependentes() {
               <Input value={editing?.foto_url ?? ""} onChange={(e) => setEditing({ ...editing, foto_url: e.target.value })} />
             </div>
             <div>
-              <Label>Ativo</Label>
+              <Label>Status da Associação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={String(editing?.ativo ?? "true")}
-                onChange={(e) => setEditing({ ...editing, ativo: e.target.value === "true" })}
+                value={editing?.status ?? "regular"}
+                onChange={(e) => setEditing({ ...editing, status: e.target.value })}
               >
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
+                <option value="regular">Regular</option>
+                <option value="inativo">Inativo</option>
+                <option value="suspenso">Suspenso</option>
+                <option value="em_analise">Em análise</option>
+                <option value="aguardando_reativacao">Aguardando reativação</option>
+                <option value="falecido">Falecido</option>
               </select>
             </div>
           </div>
