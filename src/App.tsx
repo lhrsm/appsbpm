@@ -157,12 +157,11 @@ const App = () => (
       <A11yProvider>
         <AssociadoProvider>
           <BrowserRouter>
-            <div>
-              <Toaster />
-              <Sonner />
-              <RouteAnnouncer />
-              <CookieConsent />
-              <AccessibilityWidget />
+            <Toaster />
+            <Sonner />
+            <RouteAnnouncer />
+            <CookieConsent />
+            <AccessibilityWidget />
               <ChatbotGate />
               <InstallPWAPrompt />
               <OfflineBanner />
@@ -170,15 +169,15 @@ const App = () => (
               <PWAUpdatePrompt />
               <Suspense fallback={<RouteFallback />}>
                 <Routes>
-                <Route path="/" element={<div><PortalBoasVindas /></div>} />
-                <Route path="/entrar" element={<div><PortalEntrar /></div>} />
-                <Route path="/primeiro-acesso" element={<div><PortalPrimeiroAcesso /></div>} />
-                <Route path="/recuperar-acesso" element={<div><PortalRecuperarAcesso /></div>} />
-                <Route path="/quero-me-associar" element={<div><PortalQueroMeAssociar /></div>} />
-                <Route path="/acesso-simplificado" element={<div><Login /></div>} />
-                <Route path="/quiosque" element={<div><Quiosque /></div>} />
-                <Route path="/bem/:token" element={<div><BemQR /></div>} />
-                <Route path="/redefinir-senha" element={<div><RedefinirSenha /></div>} />
+                <Route path="/" element={<PortalBoasVindas />} />
+                <Route path="/entrar" element={<PortalEntrar />} />
+                <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+                <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+                <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
+                <Route path="/acesso-simplificado" element={<Login />} />
+                <Route path="/quiosque" element={<Quiosque />} />
+                <Route path="/bem/:token" element={<BemQR />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
                 <Route path="/privacidade" element={<Privacidade />} />
                 <Route path="/acessibilidade" element={<Acessibilidade />} />
@@ -274,7 +273,6 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
-            </div>
           </BrowserRouter>
         </AssociadoProvider>
       </A11yProvider>
