@@ -308,7 +308,20 @@ Deno.serve(async (req) => {
           .maybeSingle();
         dependente = data;
       }
-      return json({ associado, dependente });
+      const [dependentes, limite, historico, informes] = await Promise.all([
+        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('status', 'regular'),
+        admin.from('limites').select('*').eq('associado_id', associado.id).maybeSingle(),
+        admin.from('historico_limite').select('*').eq('associado_id', associado.id).order('data_utilizacao', { ascending: false }),
+        admin.from('informes_rendimentos').select('*').eq('associado_id', associado.id).order('ano', { ascending: false }),
+      ]);
+      return json({ 
+        associado, 
+        dependente,
+        dependentes: dependentes.data || [],
+        limite: limite.data || null,
+        historico: historico.data || [],
+        informes: informes.data || []
+      });
     }
 
     if (body.action === 'mensalidades') {
