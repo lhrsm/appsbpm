@@ -18,7 +18,11 @@ export const CpfInput = React.forwardRef<HTMLInputElement, CpfInputProps>(
     const [internalError, setInternalError] = useState<string | null>(null);
 
     useEffect(() => {
-      setDisplayValue(formatCpf(value));
+      // Sincronizar apenas se o valor normalizado mudar externamente
+      const currentFormatted = formatCpf(value);
+      if (currentFormatted !== displayValue) {
+        setDisplayValue(currentFormatted);
+      }
     }, [value]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
