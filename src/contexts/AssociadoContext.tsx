@@ -127,7 +127,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const data = await portalCall<any>('login', { token });
+      const data = await portalCall<any>('perfil');
       if (data?.associado) {
         setAssociado(data.associado);
         setDependentes(data.dependentes || []);
