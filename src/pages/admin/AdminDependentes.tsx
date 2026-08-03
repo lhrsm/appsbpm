@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CpfInput } from "@/components/CpfInput";
+import { padCpf } from "@/lib/identity";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -71,7 +72,10 @@ export default function AdminDependentes() {
 
   const save = async () => {
     if (!editing) return;
-    const payload: any = { ...editing };
+    const payload: any = { 
+      ...editing,
+      cpf: padCpf(editing.cpf)
+    };
     // Remover campo redundante ativo
     delete payload.ativo;
     
