@@ -171,6 +171,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
+      console.log(`[PortalIdentity] ACTIVE PROVIDER FILE: src/contexts/AssociadoContext.tsx`);
       console.log(`[PortalIdentity] ${isRepairAttempt ? 'Iniciando reparo' : 'Resolvendo identidade'} via get_my_portal_identity()...`);
       
       if (isRepairAttempt) {
@@ -187,14 +188,17 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      console.log("RPC RESPONSE DATA", rpcData);
+      console.log("RAW RPC DATA", rpcData);
       const row = Array.isArray(rpcData) ? rpcData[0] : rpcData;
       console.log("RPC ROW", row);
 
       const mappedIdentity = mapPortalIdentityResponse(row);
       console.log("MAPPED IDENTITY", mappedIdentity);
       
+      console.log("STATE BEFORE SET", identity);
       setIdentity(mappedIdentity);
+      console.log("STATE AFTER SET", mappedIdentity);
+
 
       if (
         mappedIdentity.resolved && 
