@@ -66,8 +66,9 @@ export function usePortalDashboardData(enabled: boolean) {
   const solicitacoes = useSection<DashboardSolicitacao[]>(
     "solicitacoes",
     async () => {
-      const res = await portalCall<{ itens: DashboardSolicitacao[] }>("solicitacoes_listar");
-      return res?.itens ?? [];
+      const res = await portalCall<any>("solicitacoes_listar");
+      const list = res?.itens || res?.payload || (Array.isArray(res) ? res : []);
+      return list as DashboardSolicitacao[];
     },
     [],
     enabled,
