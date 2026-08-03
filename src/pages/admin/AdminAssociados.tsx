@@ -198,7 +198,10 @@ export default function AdminAssociados() {
         const msg = error.message.includes("matricula") ? "Já existe um associado com essa matrícula" : "Já existe um associado com esse CPF";
         return toast.error(msg);
       }
-      return toast.error(error.message);
+      if ((error as any).code === "42501") {
+        return toast.error("Você não possui permissão para salvar este cadastro.");
+      }
+      return toast.error("Não foi possível salvar o associado. Tente novamente.");
     }
     await logAudit(isNew ? "create" : "update", "associados", (data as any)?.id ?? payload.id, payload);
     toast.success(isNew ? "Criado com sucesso" : "Atualizado");
