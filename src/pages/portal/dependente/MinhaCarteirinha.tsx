@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
  */
 export default function MinhaCarteirinha() {
   const { dependenteLogado } = useAssociado();
-  const ativo = dependenteLogado?.ativo !== false;
+  const ativo = dependenteLogado?.status === 'regular';
 
   return (
     <div className="space-y-6">
