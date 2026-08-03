@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CpfInput } from "@/components/CpfInput";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -203,8 +204,11 @@ export default function AdminDependentes() {
               <Input value={editing?.nome ?? ""} onChange={(e) => setEditing({ ...editing, nome: e.target.value })} />
             </div>
             <div>
-              <Label>CPF</Label>
-              <Input value={editing?.cpf ?? ""} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
+              <CpfInput 
+                label="CPF" 
+                value={editing?.cpf ?? ""} 
+                onChange={(v) => setEditing({ ...editing, cpf: v })} 
+              />
             </div>
             <div>
               <Label>Data de nascimento</Label>
