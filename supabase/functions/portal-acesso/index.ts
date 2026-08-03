@@ -654,12 +654,20 @@ Deno.serve(async (req) => {
 
         const userId = criado.data.user.id;
 
+        // Busca os IDs institucionais reais para vincular na external_account_links
+        const { data: instAssoc } = await admin.from('associados').select('id').in('cpf', cpfVariants(cpf)).maybeSingle();
+        const { data: instDep } = sess.person_type === 'dependent'
+          ? await admin.from('dependentes').select('id').in('cpf', cpfVariants(cpf)).maybeSingle()
+          : { data: null };
+
         const link = await admin.from('external_account_links').insert({
           user_id: userId,
           external_person_id: sess.external_person_id,
           person_type: sess.person_type,
           cpf_reference: cpf,
           registration_number: mock?.registration_number ?? null,
+          associado_id: sess.person_type === 'associate' ? (instAssoc?.id ?? null) : (instDep ? instAssoc?.id : null),
+          dependente_id: sess.person_type === 'dependent' ? (instDep?.id ?? null) : null,
           email: sess.email,
           source_provider: providerMode,
           last_verified_at: new Date().toISOString(),
