@@ -118,7 +118,8 @@ interface AssociadoContextType {
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
 
 export function AssociadoProvider({ children }: { children: ReactNode }) {
-  const PORTAL_IDENTITY_FRONTEND_VERSION = "identity-v3-2026-08-03";
+  const PORTAL_FRONTEND_VERSION = "portal-auth-dashboard-v4-2026-08-03";
+  const PORTAL_IDENTITY_FRONTEND_VERSION = PORTAL_FRONTEND_VERSION;
   const queryClient = useQueryClient();
   const [associado, setAssociado] = useState<Associado | null>(null);
   const [dependentes, setDependentes] = useState<Dependente[]>([]);

@@ -26,12 +26,15 @@ export default defineConfig(({ mode }) => ({
         navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
         globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,webp,woff2}"],
+        cleanupOutdatedCaches: true, // Remove caches de versões anteriores automaticamente
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.mode === "navigate",
             handler: "NetworkFirst",
             options: {
-              cacheName: "html-cache",
+              cacheName: "sbpm-portal-html-v4",
               networkTimeoutSeconds: 5,
             },
           },

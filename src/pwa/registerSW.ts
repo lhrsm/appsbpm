@@ -15,6 +15,20 @@ function isBlockedHost(hostname: string): boolean {
   return false;
 }
 
+async function unregisterOldCaches() {
+  if (!("caches" in window)) return;
+  const cacheNames = await caches.keys();
+  const oldCaches = [
+    "identity-v1", "identity-v2", "identity-v3",
+    "html-cache", "assets-cache", "images-cache", "profile-photos"
+  ];
+  await Promise.all(
+    cacheNames
+      .filter(name => oldCaches.some(old => name.includes(old)))
+      .map(name => caches.delete(name))
+  );
+}
+
 async function unregisterAppSW() {
   if (!("serviceWorker" in navigator)) return;
   try {
@@ -27,6 +41,7 @@ async function unregisterAppSW() {
         })
         .map((r) => r.unregister()),
     );
+    await unregisterOldCaches();
   } catch {
     // ignore
   }

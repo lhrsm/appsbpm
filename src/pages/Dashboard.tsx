@@ -152,7 +152,7 @@ export default function Dashboard() {
               status: error ? 'error' : 'pending',
               associateIdPresent: !!identity?.associateId
             },
-            version: "identity-v3-2026-08-03"
+            version: "portal-auth-dashboard-v4-2026-08-03"
           }, null, 2)}</pre>
         </div>
       </div>

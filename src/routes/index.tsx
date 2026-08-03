@@ -5,7 +5,7 @@ export default function RoutesIndex() {
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-fade-in">
       <Card 
         title="Relatório de Auditoria: Estabilização do Carregamento de Cadastro" 
-        subtitle="Conformidade Técnica V3.1 - 03-Ago-2026"
+        subtitle="Conformidade Técnica V4.0 - 03-Ago-2026"
         icon={icons.previdencia}
         elevation="md"
         className="ds-animate-slide-in-up"
@@ -92,8 +92,8 @@ export default function RoutesIndex() {
 
         <footer className="mt-8 flex items-center justify-between border-t pt-6">
           <div className="flex gap-2">
-            <span className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">Loading-Fix-V3.1</span>
-            <span className="px-2 py-1 bg-muted text-muted-foreground text-[10px] font-bold rounded uppercase tracking-wider">Audited: 03-Ago-2026</span>
+            <span className="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-wider">Auth-Fix-V4.0</span>
+            <span className="px-2 py-1 bg-muted text-muted-foreground text-[10px] font-bold rounded uppercase tracking-wider">Audited: 03-Ago-2026 (14:43 UTC)</span>
           </div>
           <Button variant="primary" tone="success" leftIcon={icons.confirmar} onClick={() => window.location.href = '/dashboard'}>
             Acessar Dashboard
