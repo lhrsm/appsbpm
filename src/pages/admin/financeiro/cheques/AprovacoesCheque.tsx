@@ -24,7 +24,7 @@ export default function AprovacoesCheque() {
                 <Text variant="caption">Solicitado por {a.solicitante} em {a.data}</Text>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="ghost" tone="danger" leftIcon={icons.remover}>Recusar</Button>
+                <Button variant="ghost" tone="danger" leftIcon={icons.alerta}>Recusar</Button>
                 <Button variant="secondary" tone="success" leftIcon={icons.confirmar}>Aprovar</Button>
               </div>
             </div>

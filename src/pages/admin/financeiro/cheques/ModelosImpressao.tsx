@@ -56,7 +56,7 @@ export default function ModelosImpressao() {
              </div>
              
              <div className="space-y-2">
-               <Button variant="outline" fullWidth leftIcon={icons.imprimir}>Imprimir Teste</Button>
+               <Button variant="secondary" fullWidth leftIcon={icons.imprimir}>Imprimir Teste</Button>
                <Button variant="primary" fullWidth leftIcon={icons.confirmar}>Salvar Ajustes</Button>
              </div>
           </div>

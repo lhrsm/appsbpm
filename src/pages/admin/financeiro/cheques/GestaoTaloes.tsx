@@ -63,7 +63,7 @@ export default function GestaoTaloes() {
               <div className="h-5 w-10 bg-primary rounded-full relative"><div className="absolute right-1 top-1 h-3 w-3 bg-white rounded-full"/></div>
             </div>
             <div className="pt-2">
-              <Button variant="outline" fullWidth size="sm" leftIcon={icons.configuracoes}>Configurações Avançadas</Button>
+              <Button variant="secondary" fullWidth size="sm" leftIcon={icons.configuracoes}>Configurações Avançadas</Button>
             </div>
           </div>
         </Card>
