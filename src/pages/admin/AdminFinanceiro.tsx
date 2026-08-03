@@ -6,6 +6,7 @@ import LancamentosTab from './financeiro/LancamentosTab';
 import CadastrosTab from './financeiro/CadastrosTab';
 import RelatoriosTab from './financeiro/RelatoriosTab';
 import MensalidadesTab from './financeiro/MensalidadesTab';
+import ChequesDashboard from './financeiro/cheques/ChequesDashboard';
 
 export default function AdminFinanceiro() {
   const [aba, setAba] = useState('painel');
@@ -41,6 +42,7 @@ export default function AdminFinanceiro() {
         <TabsContent value="receber" className="mt-4"><LancamentosTab modo="receber" /></TabsContent>
         <TabsContent value="mensalidades" className="mt-4"><MensalidadesTab /></TabsContent>
         <TabsContent value="cadastros" className="mt-4"><CadastrosTab /></TabsContent>
+        <TabsContent value="cheques" className="mt-4"><ChequesDashboard /></TabsContent>
         <TabsContent value="relatorios" className="mt-4"><RelatoriosTab /></TabsContent>
       </Tabs>
     </div>

@@ -64,10 +64,10 @@ export default function ChequesDashboard() {
         <Card title="Ações Rápidas" className="lg:col-span-1">
           <div className="space-y-2">
             {[
+              { label: "Cheques Emitidos", to: "emitidos", icon: icons.documento },
+              { label: "Aprovações Pendentes", to: "aprovacoes", icon: icons.alerta },
               { label: "Gerenciar Talões", to: "taloes", icon: icons.pasta },
               { label: "Modelos de Impressão", to: "modelos", icon: icons.configuracoes },
-              { label: "Relatórios", to: "/admin/relatorios", icon: icons.relatorio },
-              { label: "Calibração", to: "modelos", icon: icons.configuracoes },
             ].map((acao) => (
               <Button 
                 key={acao.label}
