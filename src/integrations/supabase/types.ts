@@ -645,25 +645,34 @@ export type Database = {
       }
       cams_unidades: {
         Row: {
+          active: boolean | null
           cidade: string | null
           created_at: string | null
+          display_order: number | null
           id: string
+          instituicao: string | null
           nome: string
           sigla: string
           tipo: string | null
         }
         Insert: {
+          active?: boolean | null
           cidade?: string | null
           created_at?: string | null
+          display_order?: number | null
           id?: string
+          instituicao?: string | null
           nome: string
           sigla: string
           tipo?: string | null
         }
         Update: {
+          active?: boolean | null
           cidade?: string | null
           created_at?: string | null
+          display_order?: number | null
           id?: string
+          instituicao?: string | null
           nome?: string
           sigla?: string
           tipo?: string | null
