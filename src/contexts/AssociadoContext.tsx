@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { clearPortalToken } from '@/lib/portal';
+import { clearPortalToken, getPortalToken, portalCall } from '@/lib/portal';
 import { clearPrivateState } from '@/lib/perf/queryClient';
 import { closeAllRealtime } from '@/hooks/useRealtimeChannel';
 
@@ -90,6 +90,8 @@ interface AssociadoContextType {
   informes: InformeRendimento[];
   isDependente: boolean;
   dependenteLogado: Dependente | null;
+  initializing: boolean;
+  error: string | null;
   setAssociado: (associado: Associado | null) => void;
   setDependentes: (dependentes: Dependente[]) => void;
   setLimite: (limite: Limite | null) => void;
@@ -99,6 +101,7 @@ interface AssociadoContextType {
   setIsDependente: (isDependente: boolean) => void;
   setDependenteLogado: (dependente: Dependente | null) => void;
   logout: () => void;
+  refreshProfile: () => Promise<void>;
 }
 
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
@@ -113,6 +116,44 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [informes, setInformes] = useState<InformeRendimento[]>([]);
   const [isDependente, setIsDependente] = useState<boolean>(false);
   const [dependenteLogado, setDependenteLogado] = useState<Dependente | null>(null);
+  const [initializing, setInitializing] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const refreshProfile = async () => {
+    const token = getPortalToken();
+    if (!token) {
+      setInitializing(false);
+      return;
+    }
+
+    try {
+      const data = await portalCall<any>('login', { token });
+      if (data?.associado) {
+        setAssociado(data.associado);
+        setDependentes(data.dependentes || []);
+        setLimite(data.limite || null);
+        setHistoricoLimite(data.historico || []);
+        setInformes(data.informes || []);
+        setIsDependente(Boolean(data.dependente));
+        setDependenteLogado(data.dependente || null);
+        setError(null);
+      } else {
+        clearPortalToken();
+      }
+    } catch (err: any) {
+      if (err?.status === 401) {
+        clearPortalToken();
+      } else {
+        setError('Não foi possível carregar seu perfil. Verifique sua conexão.');
+      }
+    } finally {
+      setInitializing(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshProfile();
+  }, []);
 
   const logout = () => {
     // Encerra sessão, cancela requisições/realtime e limpa todo o cache privado
@@ -141,6 +182,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         informes,
         isDependente,
         dependenteLogado,
+        initializing,
+        error,
         setAssociado,
         setDependentes,
         setLimite,
@@ -150,6 +193,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setIsDependente,
         setDependenteLogado,
         logout,
+        refreshProfile,
       }}
     >
       {children}
