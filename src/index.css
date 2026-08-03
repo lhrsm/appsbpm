@@ -31,7 +31,7 @@
     --secondary-foreground: 220 20% 15%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 220 10% 50%;
+    --muted-foreground: 220 12% 40%;
 
     /* Azul Institucional */
     --accent: 210 85% 45%;
@@ -78,7 +78,7 @@
     --secondary-foreground: 0 0% 95%;
 
     --muted: 220 15% 20%;
-    --muted-foreground: 220 10% 60%;
+    --muted-foreground: 220 12% 72%;
 
     --accent: 210 85% 55%;
     --accent-foreground: 0 0% 100%;
