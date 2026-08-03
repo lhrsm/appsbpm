@@ -114,7 +114,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           id: "dependentes",
           icon: icons.dependentes,
           title: "Dependentes ativos",
-          value: dependentes.filter((d) => d.ativo !== false).length,
+          value: dependentes.filter((d) => d.status === 'regular').length,
           context: dependentes.length ? `${dependentes.length} cadastrado(s)` : "Nenhum dependente cadastrado",
           route: "/dashboard/dependentes",
           actionLabel: "Gerenciar",
