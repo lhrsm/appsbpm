@@ -3,7 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature, Menu, Info, BookOpen, BadgePlus } from "lucide-react";
+import { LogOut, Users, UserPlus, Wallet, Clock, Building2, FileText, LayoutDashboard, Zap, Plug, RefreshCw, Settings, Cake, Megaphone, Upload, ShieldCheck, HeartHandshake, KeyRound, Bell, Ticket, FolderOpen, DollarSign, Search, Calendar, HelpCircle, Star, BarChart3, TrendingUp, Palette, FileSignature, Menu, Info, BookOpen, BadgePlus, Landmark } from "lucide-react";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdminNotificationsBell from "@/components/AdminNotificationsBell";
@@ -24,6 +24,7 @@ const nav = [
   { to: "/admin/previdencia", icon: ShieldCheck, label: "Previdência" },
   { to: "/admin/saude", icon: HeartHandshake, label: "Assistência à Saúde" },
   { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
+  { to: "/admin/financeiro/cheques", icon: Landmark, label: "Gestão de Cheques" },
   { to: "/admin/patrimonio", icon: Building2, label: "Patrimônio" },
   { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
   { to: "/admin/rh", icon: UserPlus, label: "Recursos Humanos" },
