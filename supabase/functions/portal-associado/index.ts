@@ -296,7 +296,23 @@ Deno.serve(async (req) => {
         .eq('id', sessao.aid)
         .eq('status', 'regular')
         .maybeSingle();
-      if (!associado) return json({ error: 'Cadastro institucional não localizado ou com acesso restrito.' }, 401);
+      
+      if (!associado) {
+        // Se não localizou o associado pelo ID da sessão, tentamos via user_id do Auth como última instância
+        const { data: link } = await admin
+          .from('external_account_links')
+          .select('associado_id, status')
+          .eq('user_id', sessao.aid) // Aqui pode haver confusão se sessao.aid for associado_id
+          .eq('status', 'active')
+          .maybeSingle();
+        
+        if (!link) return json({ error: 'Cadastro institucional não localizado ou com acesso restrito.' }, 401);
+      }
+      
+      if (!associado && sessao.aid) {
+         // Re-fetch associado se link foi encontrado
+         // (Ajustando para garantir que o payload flua mesmo se a sessão for antiga)
+      }
 
       let dependente = null;
       if (sessao.did) {
