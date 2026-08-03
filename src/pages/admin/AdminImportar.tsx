@@ -127,7 +127,7 @@ export default function AdminImportar() {
       if (target === "associados") {
         let q = supabase.from("associados").select("nome,matricula,cpf,patente,status,cidade").order("nome");
         if (filtroPatente !== "todos") q = q.eq("patente", filtroPatente);
-        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus);
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus as any);
         if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
         const { data, error } = await q;
         if (error) throw error;
@@ -137,7 +137,7 @@ export default function AdminImportar() {
       } else if (target === "dependentes") {
         let q = supabase.from("dependentes").select("nome,cpf,tipo,status,associados(nome,matricula)").order("nome");
         if (filtroTipo !== "todos") q = q.eq("tipo", filtroTipo as any);
-        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus);
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus as any);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "CPF", "Parentesco", "Titular", "Status"]];
