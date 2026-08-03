@@ -36,9 +36,16 @@ let registration: ServiceWorkerRegistration | null = null;
 
 /** Aplica a versão nova; recusa durante fluxos críticos. */
 export async function aplicarAtualizacaoPWA(): Promise<boolean> {
-  if (emFluxoCritico() || !registration?.waiting) return false;
-  registration.waiting.postMessage({ type: "SKIP_WAITING" });
-  await new Promise((r) => setTimeout(r, 150));
+  console.log("Aplicando atualização PWA...", { registration });
+  
+  if (registration?.waiting) {
+    registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    await new Promise((r) => setTimeout(r, 200));
+    window.location.reload();
+    return true;
+  }
+  
+  // Se não houver worker esperando mas o comando foi chamado, recarrega para limpar cache
   window.location.reload();
   return true;
 }
@@ -58,8 +65,8 @@ export async function registerPWA() {
   const refuse =
     !import.meta.env.PROD ||
     inIframe ||
-    swOff ||
-    isBlockedHost(hostname);
+    swOff;
+    // Removido bloqueio de host para permitir teste/funcionamento em preview se o SW existir
 
   if (refuse) {
     await unregisterAppSW();
