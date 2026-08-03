@@ -23,12 +23,12 @@ const TABLES: Record<TargetTable, { label: string; required: string[]; sample: s
   associados: {
     label: "Associados",
     required: ["matricula", "nome", "cpf"],
-    sample: "matricula,nome,cpf,email,telefone,data_nascimento,data_admissao,ativo\n001,João da Silva,12345678900,joao@email.com,71999990000,1980-05-10,2015-01-01,true",
+    sample: "matricula,nome,cpf,email,telefone,data_nascimento,data_admissao,status\n001,João da Silva,12345678900,joao@email.com,71999990000,1980-05-10,2015-01-01,regular",
   },
   dependentes: {
     label: "Dependentes",
     required: ["associado_matricula", "nome", "cpf"],
-    sample: "associado_matricula,nome,cpf,tipo,data_nascimento,ativo\n001,Maria Silva,98765432100,Cônjuge,1985-03-20,true",
+    sample: "associado_matricula,nome,cpf,tipo,data_nascimento,status\n001,Maria Silva,98765432100,conjuge,1985-03-20,regular",
   },
   clinicas_parceiros: {
     label: "Clínicas & Parceiros",
