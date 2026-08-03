@@ -37,10 +37,11 @@ export default function Dashboard() {
   usePrefetchRoutes(rotasProvaveis, !!associado);
 
   useEffect(() => {
-    if (!initializing && !associado) {
+    if (!initializing && !associado && !error) {
+      // Se não está carregando, não tem associado e não tem erro, volta pro início
       navigate('/');
     }
-  }, [associado, navigate, initializing]);
+  }, [associado, navigate, initializing, error]);
 
   // Rotas depreciadas do portal externo (ex.: limite disponível) -> visão geral
   useEffect(() => {
@@ -80,11 +81,25 @@ export default function Dashboard() {
   
   if (error) {
     console.error("[Dashboard] Interrompido por erro de perfil:", error);
+    
+    // Se o erro for de vínculo ausente, exibimos a tela de reparo controlada
+    if (error === 'PROFILE_LINK_MISSING') {
+      return (
+        <div className="flex min-h-screen items-center justify-center p-6 bg-background">
+          <PortalProfileNotFound 
+            title="Estamos concluindo a vinculação do seu cadastro"
+            description="Seus dados de acesso foram validados, mas ainda precisamos concluir a vinculação com o cadastro institucional."
+            onRetry={() => refreshProfile(true)} 
+          />
+        </div>
+      );
+    }
+
     return (
       <div className="flex min-h-screen items-center justify-center p-6 bg-background">
         <PortalProfileNotFound onRetry={() => {
           console.log("[Dashboard] Tentando revalidar perfil...");
-          refreshProfile();
+          refreshProfile(false);
         }} />
       </div>
     );

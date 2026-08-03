@@ -296,7 +296,7 @@ Deno.serve(async (req) => {
         .eq('id', sessao.aid)
         .eq('status', 'regular')
         .maybeSingle();
-      if (!associado) return json({ error: 'Cadastro indisponível' }, 401);
+      if (!associado) return json({ error: 'Cadastro institucional não localizado ou com acesso restrito.' }, 401);
 
       let dependente = null;
       if (sessao.did) {
