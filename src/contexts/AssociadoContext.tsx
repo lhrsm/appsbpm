@@ -211,25 +211,26 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // 2. Chamar RPC Institucional
       console.log("[PortalIdentity] Chamando get_my_portal_identity...");
-      const { data, error: rpcError, status, statusText } = await supabase.rpc('get_my_portal_identity');
+      const { data: rpcResponse, error: rpcError, status, statusText } = await supabase.rpc('get_my_portal_identity');
       
       console.log("IDENTITY RPC STATUS", status, statusText);
       
       if (rpcError) {
         console.error("[PortalIdentity] Erro na RPC:", rpcError);
         setError('RPC_ERROR');
-        setInitializing(false); // Garantir que não trava no initializing
+        setInitializing(false);
         return;
       }
 
-      if (!data || (Array.isArray(data) && data.length === 0)) {
+      const row = Array.isArray(rpcResponse) ? rpcResponse[0] : rpcResponse;
+      
+      if (!row) {
         console.error("[PortalIdentity] Resposta da RPC vazia.");
         setError('RPC_EMPTY_RESPONSE');
-        setInitializing(false); // Garantir que não trava no initializing
+        setInitializing(false);
         return;
       }
 
-      const row = Array.isArray(data) ? data[0] : data;
       console.log("IDENTITY RPC ROW", row);
       
       const mappedIdentity = mapPortalIdentityResponse(row);
