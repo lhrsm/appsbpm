@@ -64,6 +64,7 @@ export default function ChequesDashboard() {
         <Card title="Ações Rápidas" className="lg:col-span-1">
           <div className="space-y-2">
             {[
+              { label: "Novo Cheque", to: "novo", icon: icons.adicionar, tone: "primary" },
               { label: "Cheques Emitidos", to: "emitidos", icon: icons.documento },
               { label: "Aprovações Pendentes", to: "aprovacoes", icon: icons.alerta },
               { label: "Gerenciar Talões", to: "taloes", icon: icons.pasta },
@@ -71,7 +72,7 @@ export default function ChequesDashboard() {
             ].map((acao) => (
               <Button 
                 key={acao.label}
-                variant="ghost" 
+                variant={acao.tone === "primary" ? "primary" : "ghost"} 
                 fullWidth 
                 className="justify-start gap-3"
                 onClick={() => navigate(acao.to)}
