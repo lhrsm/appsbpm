@@ -258,8 +258,8 @@ export default function AdminAssociados() {
           <option value="">Todas as cidades</option>
           {cidadesDisponiveis.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
-        {(filterPatente || filterAtivo || filterCidade) && (
-          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterAtivo(""); setFilterCidade(""); }}>
+        {(filterPatente || filterStatus || filterCidade) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterStatus(""); setFilterCidade(""); }}>
             Limpar filtros
           </Button>
         )}
