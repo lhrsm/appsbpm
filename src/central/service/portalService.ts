@@ -260,8 +260,8 @@ export const portalService: RelationshipService = {
   async listarNoticias() {
     const { data } = await supabase
       .from("comunicados")
-      .select("id, titulo, mensagem, tipo, data_inicio, created_at, status")
-      .eq("status", "ativo")
+      .select("id, titulo, mensagem, tipo, data_inicio, created_at, ativo")
+      .eq("ativo", true)
       .order("data_inicio", { ascending: false })
       .limit(30);
 
