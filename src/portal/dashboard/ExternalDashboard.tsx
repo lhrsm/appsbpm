@@ -73,12 +73,11 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
   const { associado, dependentes, dependenteLogado, identity } = useAssociado();
   const isDependente = profileType === "dependent";
   const { items: notificacoes, loading: loadingNotificacoes } = useNotificacoes();
-  const { solicitacoes, documentos, eventos, parceiros, loading: loadingDashboard } = usePortalDashboardData(!!identity?.resolved);
+  const { solicitacoes, documentos, eventos, parceiros } = usePortalDashboardData(!!identity?.resolved);
 
   console.log("[ExternalDashboard] Data sources:", { 
     hasAssociado: !!associado, 
-    hasIdentity: identity?.resolved,
-    loadingDashboard 
+    hasIdentity: identity?.resolved
   });
 
   const permitido = useMemo(
