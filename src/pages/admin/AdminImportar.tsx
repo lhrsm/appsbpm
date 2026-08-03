@@ -145,7 +145,7 @@ export default function AdminImportar() {
         subtitle = `Parentesco: ${filtroTipo === "todos" ? "Todos" : PARENTESCOS.find(p => p.value === filtroTipo)?.label} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
       } else if (target === "clinicas_parceiros") {
         let q = supabase.from("clinicas_parceiros").select("nome,categoria,cidade,estado,telefone,ativo").order("nome");
-        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus as any);
+        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "regular");
         if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
         const { data, error } = await q;
         if (error) throw error;
