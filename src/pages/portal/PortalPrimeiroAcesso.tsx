@@ -13,6 +13,7 @@ import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { RegistrationNumberInput } from '@/components/RegistrationNumberInput';
 import { CpfInput } from '@/components/CpfInput';
+import { BirthDateInput } from '@/components/BirthDateInput';
 import {
   CAMPOS_VALIDACAO,
   DesafioIdentidade,
@@ -25,7 +26,8 @@ import {
   senhaValida,
   validarIdentidade,
 } from '@/lib/portalAcesso';
-import { padCpf, padRegistrationNumber } from '@/lib/identity';
+import { padCpf, padRegistrationNumber, normalizeBirthDate } from '@/lib/identity';
+
 import { useAplicarPortal } from './useAplicarPortal';
 
 type Etapa = 'identidade' | 'perguntas' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
@@ -223,10 +225,14 @@ export default function PortalPrimeiroAcesso() {
                   className="h-11" 
                 />
 
-                <div className="space-y-2">
-                  <Label htmlFor="nasc">Data de nascimento</Label>
-                  <Input id="nasc" type="date" value={nascimento} onChange={(e) => setNascimento(e.target.value)} className="h-11" />
-                </div>
+                <BirthDateInput
+                  label="Data de nascimento"
+                  value={nascimento}
+                  onChange={setNascimento}
+                  className="h-11"
+                  required
+                />
+
 
                 {CAMPOS_VALIDACAO[personType].map((campo) => (
                   <div className="space-y-2" key={campo.key}>
