@@ -28,7 +28,7 @@ export const RegistrationNumberInput = React.forwardRef<HTMLInputElement, Regist
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = e.target.value.replace(/\D/g, '').slice(0, 9);
       const formatted = formatRegistrationNumber(rawValue);
-      const normalized = normalizeRegistrationNumber(rawValue) || "";
+      const normalized = rawValue;
       
       setDisplayValue(formatted);
       onChange(normalized);

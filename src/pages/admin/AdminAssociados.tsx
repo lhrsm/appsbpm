@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import OrigemDadoBadge from "@/components/admin/OrigemDadoBadge";
+import { padCpf, padRegistrationNumber } from "@/lib/identity";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, Trash2, Plus, Search, Loader2 } from "lucide-react";
@@ -163,8 +164,8 @@ export default function AdminAssociados() {
     if (!editing) return;
 
     // Validação de duplicidade (matrícula e CPF)
-    const matricula = (editing.matricula ?? "").trim();
-    const cpf = (editing.cpf ?? "").trim();
+    const matricula = padRegistrationNumber(editing.matricula) || "";
+    const cpf = padCpf(editing.cpf) || "";
     if (!matricula) return toast.error("Matrícula é obrigatória");
     if (!cpf) return toast.error("CPF é obrigatório");
 
@@ -178,7 +179,11 @@ export default function AdminAssociados() {
     if (cpfDup && cpfDup.id !== editing.id) return toast.error("Já existe um associado com esse CPF");
 
     // Validação/conversão de datas
-    const payload: any = { ...editing };
+    const payload: any = { 
+      ...editing,
+      cpf,
+      matricula
+    };
     
     // Removendo explicitamente o campo redundante 'ativo'
     delete payload.ativo;

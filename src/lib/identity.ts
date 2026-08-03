@@ -7,7 +7,17 @@ export function normalizeCpf(cpf: string | null | undefined): string | null {
   if (!cpf) return null;
   const digits = cpf.replace(/\D/g, '');
   if (digits.length === 0) return null;
-  return digits.padStart(11, '0').slice(-11);
+  return digits;
+}
+
+/**
+ * Garante que o CPF tenha 11 dígitos, preenchendo com zeros à esquerda se necessário.
+ * Deve ser usado apenas no momento de salvar ou comparar no banco de dados.
+ */
+export function padCpf(cpf: string | null | undefined): string | null {
+  const normalized = normalizeCpf(cpf);
+  if (!normalized) return null;
+  return normalized.padStart(11, '0').slice(-11);
 }
 
 /**
@@ -27,7 +37,7 @@ export function formatCpf(cpf: string | null | undefined): string {
  * Valida o formato e os dígitos verificadores do CPF.
  */
 export function validateCpf(cpf: string | null | undefined): boolean {
-  const normalized = normalizeCpf(cpf);
+  const normalized = padCpf(cpf);
   if (!normalized || normalized.length !== 11) return false;
   
   // Rejeitar sequências repetidas
@@ -60,8 +70,17 @@ export function normalizeRegistrationNumber(reg: string | null | undefined): str
   if (!reg) return null;
   const digits = reg.replace(/\D/g, '');
   if (digits.length === 0) return null;
-  // Preserva zeros à esquerda e limita a 9 dígitos
-  return digits.padStart(9, '0').slice(-9);
+  return digits;
+}
+
+/**
+ * Garante que a matrícula tenha 9 dígitos, preenchendo com zeros à esquerda se necessário.
+ * Deve ser usado apenas no momento de salvar ou comparar no banco de dados.
+ */
+export function padRegistrationNumber(reg: string | null | undefined): string | null {
+  const normalized = normalizeRegistrationNumber(reg);
+  if (!normalized) return null;
+  return normalized.padStart(9, '0').slice(-9);
 }
 
 /**
@@ -80,8 +99,8 @@ export function formatRegistrationNumber(reg: string | null | undefined): string
  */
 export function validateRegistrationNumberFormat(reg: string | null | undefined): boolean {
   if (!reg) return false;
-  const digits = reg.replace(/\D/g, '');
-  return digits.length === 9;
+  const digits = normalizeRegistrationNumber(reg);
+  return digits?.length === 9;
 }
 
 /**

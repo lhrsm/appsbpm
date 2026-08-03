@@ -28,7 +28,7 @@ export const CpfInput = React.forwardRef<HTMLInputElement, CpfInputProps>(
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = e.target.value.replace(/\D/g, '').slice(0, 11);
       const formatted = formatCpf(rawValue);
-      const normalized = normalizeCpf(rawValue) || "";
+      const normalized = rawValue;
       
       setDisplayValue(formatted);
       onChange(normalized);

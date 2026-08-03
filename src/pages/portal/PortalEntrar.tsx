@@ -10,6 +10,7 @@ import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { loginComSenha } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
+import { padCpf, padRegistrationNumber } from '@/lib/identity';
 
 export default function PortalEntrar() {
   const [credential, setCredential] = useState('');
@@ -38,7 +39,8 @@ export default function PortalEntrar() {
 
   const submeter = async (e: React.FormEvent) => {
     e.preventDefault();
-    const normalized = credential.replace(/\D/g, '');
+    const clean = credential.replace(/\D/g, '');
+    const normalized = clean.length > 9 ? padCpf(clean) : padRegistrationNumber(clean);
     if (!normalized || !password) {
       toast({ title: 'Informe seus dados', description: 'Preencha CPF ou matrícula e a senha.', variant: 'destructive' });
       return;

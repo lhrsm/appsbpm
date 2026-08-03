@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { normalizeCpf, normalizeRegistrationNumber } from '@/lib/identity';
+import { padCpf, padRegistrationNumber } from '@/lib/identity';
 
 /**
  * Migration para normalizar dados de associados e dependentes.
@@ -14,8 +14,8 @@ export default function MigrationNormalizacao() {
       // 1. Associados
       const { data: assoc } = await supabase.from('associados').select('id, cpf, matricula');
       for (const a of (assoc || [])) {
-        const normCpf = normalizeCpf(a.cpf);
-        const normMat = normalizeRegistrationNumber(a.matricula);
+        const normCpf = padCpf(a.cpf);
+        const normMat = padRegistrationNumber(a.matricula);
         
         if ((normCpf && normCpf !== a.cpf) || (normMat && normMat !== a.matricula)) {
           await supabase.from('associados').update({
@@ -28,7 +28,7 @@ export default function MigrationNormalizacao() {
       // 2. Dependentes
       const { data: dep } = await supabase.from('dependentes').select('id, cpf');
       for (const d of (dep || [])) {
-        const normCpf = normalizeCpf(d.cpf);
+        const normCpf = padCpf(d.cpf);
         if (normCpf && normCpf !== d.cpf) {
           await supabase.from('dependentes').update({
             cpf: normCpf
@@ -39,8 +39,8 @@ export default function MigrationNormalizacao() {
       // 3. Mock Records
       const { data: mock } = await supabase.from('external_identity_mock_records').select('id, cpf_reference, registration_number');
       for (const m of (mock || [])) {
-        const normCpf = normalizeCpf(m.cpf_reference);
-        const normMat = normalizeRegistrationNumber(m.registration_number);
+        const normCpf = padCpf(m.cpf_reference);
+        const normMat = padRegistrationNumber(m.registration_number);
         
         if ((normCpf && normCpf !== m.cpf_reference) || (normMat && normMat !== m.registration_number)) {
           await supabase.from('external_identity_mock_records').update({

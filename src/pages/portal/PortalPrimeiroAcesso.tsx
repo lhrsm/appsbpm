@@ -25,6 +25,7 @@ import {
   senhaValida,
   validarIdentidade,
 } from '@/lib/portalAcesso';
+import { padCpf, padRegistrationNumber } from '@/lib/identity';
 import { useAplicarPortal } from './useAplicarPortal';
 
 type Etapa = 'identidade' | 'perguntas' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
@@ -77,10 +78,10 @@ export default function PortalPrimeiroAcesso() {
     setErro(null);
     setLoading(true);
     const res = await validarIdentidade({
-      cpf: cpf.replace(/\D/g, ''),
+      cpf: padCpf(cpf) || "",
       birthDate: nascimento,
       personType,
-      registration: extras.registration ? extras.registration.replace(/\D/g, '') : undefined,
+      registration: extras.registration ? padRegistrationNumber(extras.registration) || undefined : undefined,
       fullName: extras.fullName,
       motherName: extras.motherName,
     });
