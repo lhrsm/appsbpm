@@ -100,6 +100,7 @@ export default function AdminValidacaoExterna() {
           <TabsList>
             <TabsTrigger value="mock">Base fictícia</TabsTrigger>
             <TabsTrigger value="vinculos">Acessos criados</TabsTrigger>
+            <TabsTrigger value="diagnostico">Diagnóstico</TabsTrigger>
             <TabsTrigger value="auditoria">Auditoria</TabsTrigger>
           </TabsList>
 
@@ -242,6 +243,67 @@ export default function AdminValidacaoExterna() {
                     )}
                   </TableBody>
                 </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="diagnostico" className="mt-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Diagnóstico de Identidade</CardTitle>
+                <CardDescription>Análise técnica detalhada do fluxo de validação (Admin-only).</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="rounded-lg border p-4 space-y-2">
+                    <h3 className="font-semibold text-sm">Registro de Teste (Carlos Antonio)</h3>
+                    <div className="text-xs space-y-1">
+                      <p><strong>CPF:</strong> 06192793549 (11 dígitos)</p>
+                      <p><strong>Matrícula:</strong> 300642010 (9 dígitos)</p>
+                      <p><strong>Nascimento:</strong> 1950-11-03</p>
+                      <p><strong>Status Mock:</strong> matched</p>
+                      <p><strong>Status Associado:</strong> regular</p>
+                    </div>
+                  </div>
+                  <div className="rounded-lg border p-4 space-y-2">
+                    <h3 className="font-semibold text-sm">Caminho do Fluxo</h3>
+                    <p className="text-xs text-muted-foreground">
+                      PortalPrimeiroAcesso → validarIdentidade → Edge Function (portal-acesso) → MockExternalIdentityProvider → external_identity_mock_records
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="font-semibold text-sm">Últimos Diagnósticos Técnicos</h3>
+                  <div className="rounded-md border overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Data</TableHead>
+                          <TableHead>CPF (Rec)</TableHead>
+                          <TableHead>Resultado</TableHead>
+                          <TableHead>Detalhes</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {logs.filter(l => l.event_type === 'identity_validation').slice(0, 10).map((l) => (
+                          <TableRow key={l.id}>
+                            <TableCell className="text-[10px]">{new Date(l.created_at).toLocaleString('pt-BR')}</TableCell>
+                            <TableCell className="font-mono text-[10px]">***{l.metadata_safe?.cpf_tail || 'N/A'}</TableCell>
+                            <TableCell>
+                              <Badge variant={l.result === 'matched' ? 'default' : 'destructive'} className="text-[10px]">
+                                {l.result}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-[10px] truncate max-w-[200px]">
+                              {JSON.stringify(l.metadata_safe)}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

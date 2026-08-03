@@ -340,7 +340,13 @@ Deno.serve(async (req) => {
         validation_session_id: sess?.id ?? null,
         result: result.status,
         provider: providerMode,
-        metadata_safe: { personType: body.personType },
+        metadata_safe: { 
+          personType: body.personType,
+          cpf_tail: cpf.slice(-4),
+          birthDate_received: body.birthDate,
+          status_received: result.status,
+          error_code: result.errorCode
+        },
       });
 
       if (!result.success) {
