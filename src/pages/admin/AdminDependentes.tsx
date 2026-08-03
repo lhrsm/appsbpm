@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CpfInput } from "@/components/CpfInput";
-import { padCpf } from "@/lib/identity";
+import { padCpf, formatCpf } from "@/lib/identity";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -174,7 +174,7 @@ export default function AdminDependentes() {
                     <span className="font-medium text-foreground">Titular:</span>{" "}
                     {titular ? `${titular.matricula} — ${titular.nome}` : "—"}
                   </div>
-                  <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf ?? "—"}</div>
+                  <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {formatCpf(r.cpf)}</div>
                   {r.data_nascimento && (
                     <div className="truncate">
                       <span className="font-medium text-foreground">Nascimento:</span>{" "}

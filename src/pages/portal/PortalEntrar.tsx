@@ -10,7 +10,7 @@ import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { loginComSenha } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
-import { padCpf, padRegistrationNumber } from '@/lib/identity';
+import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber } from '@/lib/identity';
 
 export default function PortalEntrar() {
   const [credential, setCredential] = useState('');
@@ -24,16 +24,9 @@ export default function PortalEntrar() {
   const handleCredentialChange = (v: string) => {
     const clean = v.replace(/\D/g, '');
     if (clean.length <= 9) {
-      // Padrão Matrícula: 00000000-0
-      if (clean.length <= 8) setCredential(clean);
-      else setCredential(clean.replace(/^(\d{8})(\d{0,1})/, '$1-$2'));
+      setCredential(formatRegistrationNumber(clean));
     } else {
-      // Padrão CPF: 000.000.000-00
-      const d = clean.slice(0, 11);
-      if (d.length <= 3) setCredential(d);
-      else if (d.length <= 6) setCredential(d.replace(/^(\d{3})(\d{0,3})/, '$1.$2'));
-      else if (d.length <= 9) setCredential(d.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3'));
-      else setCredential(d.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4'));
+      setCredential(formatCpf(clean));
     }
   };
 
