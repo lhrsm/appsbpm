@@ -125,23 +125,23 @@ export default function AdminImportar() {
       let subtitle = "";
 
       if (target === "associados") {
-        let q = supabase.from("associados").select("nome,matricula,cpf,patente,ativo,cidade").order("nome");
+        let q = supabase.from("associados").select("nome,matricula,cpf,patente,status,cidade").order("nome");
         if (filtroPatente !== "todos") q = q.eq("patente", filtroPatente);
-        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus);
         if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "Matrícula", "CPF", "Patente", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.matricula, r.cpf, r.patente ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.matricula, r.cpf, r.patente ?? "-", r.status || "Inativo"]);
         subtitle = `Patente: ${filtroPatente === "todos" ? "Todas" : filtroPatente} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus} · Cidade: ${filtroCidade || "Todas"}`;
       } else if (target === "dependentes") {
-        let q = supabase.from("dependentes").select("nome,cpf,tipo,ativo,associados(nome,matricula)").order("nome");
+        let q = supabase.from("dependentes").select("nome,cpf,tipo,status,associados(nome,matricula)").order("nome");
         if (filtroTipo !== "todos") q = q.eq("tipo", filtroTipo as any);
-        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "CPF", "Parentesco", "Titular", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.cpf, PARENTESCOS.find(p => p.value === r.tipo)?.label ?? r.tipo, r.associados ? `${r.associados.nome} (${r.associados.matricula})` : "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.cpf, PARENTESCOS.find(p => p.value === r.tipo)?.label ?? r.tipo, r.associados ? `${r.associados.nome} (${r.associados.matricula})` : "-", r.status || "Inativo"]);
         subtitle = `Parentesco: ${filtroTipo === "todos" ? "Todos" : PARENTESCOS.find(p => p.value === filtroTipo)?.label} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
       } else if (target === "clinicas_parceiros") {
         let q = supabase.from("clinicas_parceiros").select("nome,categoria,cidade,estado,telefone,ativo").order("nome");
