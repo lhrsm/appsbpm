@@ -171,78 +171,74 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
-      console.log(`[PortalIdentity] ACTIVE PROVIDER FILE: src/contexts/AssociadoContext.tsx`);
-      console.log(`[PortalIdentity] ${isRepairAttempt ? 'Iniciando reparo' : 'Resolvendo identidade'} via get_my_portal_identity()...`);
+      // 1. Verificar Sessão
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
       
-      if (isRepairAttempt) {
-        const { data: repairResult, error: rpcError } = await supabase.rpc('repair_portal_identity');
-        if (rpcError) throw rpcError;
-        console.log("[PortalIdentity] Resultado do reparo:", repairResult);
-      }
-
-      const { data: rpcData, error: rpcError } = await supabase.rpc('get_my_portal_identity');
-      
-      if (rpcError) {
-        console.error("[PortalIdentity] Erro na RPC de identidade:", rpcError);
-        setError('TECHNICAL_ERROR');
+      if (sessionError) {
+        console.error("[PortalIdentity] Erro ao obter sessão:", sessionError);
+        setError('AUTH_ERROR');
+        setInitializing(false);
         return;
       }
 
-      console.log("RAW RPC DATA", rpcData);
-      const row = Array.isArray(rpcData) ? rpcData[0] : rpcData;
-      console.log("RPC ROW", row);
+      if (!session?.user?.id) {
+        console.warn("[PortalIdentity] Sessão não encontrada. Aguardando...");
+        setIdentity(null);
+        setInitializing(false);
+        return;
+      }
 
+      console.log("[PortalIdentity] Sessão ativa:", session.user.id);
+      
+      if (isRepairAttempt) {
+        console.log("[PortalIdentity] Executando repair_portal_identity...");
+        await supabase.rpc('repair_portal_identity');
+      }
+
+      // 2. Chamar RPC Institucional
+      console.log("[PortalIdentity] Chamando get_my_portal_identity...");
+      const { data, error: rpcError, status, statusText } = await supabase.rpc('get_my_portal_identity');
+      
+      console.log("IDENTITY RPC STATUS", status, statusText);
+      
+      if (rpcError) {
+        console.error("[PortalIdentity] Erro na RPC:", rpcError);
+        setError('RPC_ERROR');
+        return;
+      }
+
+      if (!data || (Array.isArray(data) && data.length === 0)) {
+        console.error("[PortalIdentity] Resposta da RPC vazia.");
+        setError('RPC_EMPTY_RESPONSE');
+        return;
+      }
+
+      const row = Array.isArray(data) ? data[0] : data;
+      console.log("IDENTITY RPC ROW", row);
+      
       const mappedIdentity = mapPortalIdentityResponse(row);
       console.log("MAPPED IDENTITY", mappedIdentity);
       
-      console.log("STATE BEFORE SET", identity);
       setIdentity(mappedIdentity);
-      console.log("STATE AFTER SET", mappedIdentity);
 
-
-      if (
-        mappedIdentity.resolved && 
-        mappedIdentity.associateId && 
-        mappedIdentity.reasonCode === 'READY'
-      ) {
-        // Carrega o perfil completo usando o payload centralizado
-        const data = await portalCall<any>('perfil');
+      // 3. Avaliar Acesso
+      if (mappedIdentity.resolved && mappedIdentity.associateId && mappedIdentity.reasonCode === 'READY') {
+        const payload = await portalCall<any>('perfil');
         
-        if (data?.associado) {
-          setAssociado(data.associado);
-          setDependentes(data.dependentes || []);
-          setLimite(data.limite || null);
-          setHistoricoLimite(data.historico || []);
-          setInformes(data.informes || []);
-          setIsDependente(Boolean(data.dependente));
-          setDependenteLogado(data.dependente || null);
+        if (payload?.associado) {
+          setAssociado(payload.associado);
+          setDependentes(payload.dependentes || []);
+          setLimite(payload.limite || null);
+          setHistoricoLimite(payload.historico || []);
+          setInformes(payload.informes || []);
+          setIsDependente(Boolean(payload.dependente));
+          setDependenteLogado(payload.dependente || null);
           setError(null);
         } else {
-          console.error("[PortalIdentity] Falha ao carregar payload do perfil.");
-          setError(data?.error || 'Erro ao carregar dados do painel.');
+          setError(payload?.error || 'Erro ao carregar dados do painel.');
         }
-        return;
-      }
-
-      // Se não resolveu ou não está READY
-      if (!mappedIdentity.resolved) {
-        // Invariante institucional: se reasonCode é READY, resolved DEVE ser true
-        if (mappedIdentity.reasonCode === 'READY') {
-          console.error("[PortalIdentity] Inconsistência Crítica: reasonCode READY mas resolved false", mappedIdentity);
-          setError('IDENTITY_INCONSISTENCY');
-          return;
-        }
-
-        setError('PROFILE_LINK_MISSING');
       } else {
-        // Invariante institucional: se resolved é true mas associateId está nulo
-        if (!mappedIdentity.associateId) {
-          console.error("[PortalIdentity] Inconsistência Crítica: resolved true mas associateId ausente", mappedIdentity);
-          setError('ADAPTER_ERROR');
-          return;
-        }
-        
-        setError(mappedIdentity.reasonCode || 'ACCESS_DENIED');
+        setError(mappedIdentity.reasonCode || 'PROFILE_LINK_MISSING');
       }
     } catch (err: any) {
       console.error("[PortalIdentity] Erro crítico:", err);
@@ -253,7 +249,37 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    refreshProfile();
+    let mounted = true;
+
+    const checkInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (mounted) {
+        if (session) {
+          refreshProfile();
+        } else {
+          setInitializing(false);
+        }
+      }
+    };
+
+    checkInitialSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (mounted) {
+        if (session) {
+          refreshProfile();
+        } else {
+          setAssociado(null);
+          setIdentity(null);
+          setInitializing(false);
+        }
+      }
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const logout = () => {

@@ -113,6 +113,8 @@ export default function Dashboard() {
                 accessLevel: identity.accessLevel,
                 reasonCode: identity.reasonCode,
                 associateId: identity.associateId,
+                dependentId: identity.dependentId,
+                profileType: identity.profileType,
                 version: "identity-v3-2026-08-03"
               }
             }, null, 2)}</pre>
