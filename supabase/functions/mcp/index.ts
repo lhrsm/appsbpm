@@ -35,7 +35,7 @@ var list_parceiros_default = defineTool({
     );
     let query = supabase.from("clinicas_parceiros").select(
       "nome, especialidade, cidade, endereco, telefone, email, horario_funcionamento, logo_url"
-    ).eq("status", "ativo").order("cidade", { ascending: true }).order("nome", { ascending: true }).limit(Math.min(Math.max(limit ?? 100, 1), 500));
+    ).eq("ativo", true).order("cidade", { ascending: true }).order("nome", { ascending: true }).limit(Math.min(Math.max(limit ?? 100, 1), 500));
     if (cidade) query = query.ilike("cidade", `%${cidade}%`);
     if (especialidade)
       query = query.ilike("especialidade", `%${especialidade}%`);

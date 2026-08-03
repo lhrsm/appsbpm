@@ -44,7 +44,7 @@ export default function AvaliarClinicas() {
 
   const load = async () => {
     const [{ data: cs }, { data: mine }, { data: all }] = await Promise.all([
-      supabase.from('clinicas_parceiros').select('id,nome,especialidade').eq('status', 'ativo').order('nome'),
+      supabase.from('clinicas_parceiros').select('id,nome,especialidade').eq('ativo', true).order('nome'),
       associado?.id
         ? supabase.from('avaliacoes_parceiros').select('*').eq('associado_id', associado.id)
         : Promise.resolve({ data: [] as Avaliacao[] }),
