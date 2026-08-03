@@ -150,7 +150,7 @@ export default function AdminImportar() {
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "Categoria", "Cidade/UF", "Telefone", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.categoria ?? "-", `${r.cidade ?? "-"}/${r.estado ?? "-"}`, r.telefone ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.categoria ?? "-", `${r.cidade ?? "-"}/${r.estado ?? "-"}`, r.telefone ?? "-", r.ativo ? "Regular" : "Inativo"]);
         subtitle = `Cidade: ${filtroCidade || "Todas"} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
       } else {
         toast.info("Exportação em PDF disponível para Associados, Dependentes e Clínicas.");
