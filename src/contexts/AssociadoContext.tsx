@@ -218,7 +218,6 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setError(mappedIdentity.reasonCode || 'ACCESS_DENIED');
       }
     } catch (err: any) {
-    } catch (err: any) {
       console.error("[PortalIdentity] Erro crítico:", err);
       setError(err.message || 'Erro de conexão.');
     } finally {
