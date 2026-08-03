@@ -65,10 +65,9 @@ export interface Associado {
   foto_url: string | null;
   assinatura_url?: string | null;
   data_admissao: string;
-  ativo: boolean;
+  status: string;
   patente?: string | null;
   situacao_funcional?: string | null;
-  situacao_associativa?: string | null;
   cep_residencia?: string | null;
   numero_residencia?: string | null;
   complemento_residencia?: string | null;
