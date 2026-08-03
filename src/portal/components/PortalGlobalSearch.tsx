@@ -73,7 +73,7 @@ export default function PortalGlobalSearch({ profile, permissions, variant = "ba
         <Button
           variant="ghost"
           size="icon"
-          id="busca-portal"
+          id="busca-portal-mobile"
           onClick={() => setOpen(true)}
           className="min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15 lg:hidden"
           aria-label="Pesquisar serviços, documentos e ajuda"

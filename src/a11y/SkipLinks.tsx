@@ -22,7 +22,12 @@ export default function SkipLinks({ links = DEFAULT_LINKS }: { links?: SkipLinkT
           href={l.href}
           className="skip-link"
           onClick={(e) => {
-            const el = document.querySelector<HTMLElement>(l.href);
+            // Alguns alvos existem em duas variantes (desktop/mobile);
+            // foca a primeira que estiver realmente visível.
+            const candidates = Array.from(
+              document.querySelectorAll<HTMLElement>(`${l.href}, ${l.href}-mobile`),
+            );
+            const el = candidates.find((c) => c.offsetParent !== null) ?? candidates[0];
             if (!el) return;
             e.preventDefault();
             if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1");
