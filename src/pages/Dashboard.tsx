@@ -109,42 +109,52 @@ export default function Dashboard() {
   if (error) {
     console.error("[Dashboard] Interrompido por erro:", error, identity);
     
+    const isTechnicalError = ['ASSOCIATE_QUERY_ERROR', 'ASSOCIATE_RLS_DENIED', 'ASSOCIATE_PAYLOAD_INVALID', 'RPC_ERROR'].includes(error);
+
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background gap-8">
         <PortalProfileNotFound 
           title={
             error === 'PROFILE_LINK_MISSING' ? "Estamos vinculando seu cadastro" : 
-            error === 'IDENTITY_INCONSISTENCY' ? "Inconsistência de Identidade" :
-            "Não foi possível carregar seu cadastro"
+            error === 'ASSOCIATE_RLS_DENIED' ? "Acesso Restrito" :
+            error === 'ASSOCIATE_PAYLOAD_INVALID' ? "Erro no Carregamento de Dados" :
+            "Não foi possível localizar seu cadastro"
           }
           description={
             error === 'PROFILE_LINK_MISSING' ? "Identificamos sua conta, mas precisamos sincronizar seu vínculo institucional para liberar o acesso." : 
-            error === 'IDENTITY_INCONSISTENCY' ? "Detectamos um problema na configuração do seu perfil institucional. Por favor, tente novamente ou contate o suporte." :
-            "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."
+            error === 'ASSOCIATE_RLS_DENIED' ? "Seu usuário não tem permissão para visualizar estes dados institucionais no momento." :
+            error === 'ASSOCIATE_PAYLOAD_INVALID' ? "Os dados recebidos do servidor estão incompletos ou em formato incorreto." :
+            "Identificamos sua conta, mas não conseguimos carregar os dados vinculados ao seu perfil institucional."
           }
           onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING' || error === 'IDENTITY_INCONSISTENCY')} 
         />
         
-        {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
-        {identity && (
-          <div className="max-w-md w-full p-4 bg-muted/50 rounded-lg text-[10px] font-mono border text-muted-foreground overflow-auto">
-            <p className="font-bold mb-1 uppercase tracking-wider text-[9px]">Diagnóstico Técnico (Admin)</p>
-            <pre>{JSON.stringify({ 
-              error,
-              identity: {
-                resolved: identity.resolved,
-                linkStatus: identity.linkStatus,
-                associationStatus: identity.associationStatus,
-                accessLevel: identity.accessLevel,
-                reasonCode: identity.reasonCode,
-                associateId: identity.associateId,
-                dependentId: identity.dependentId,
-                profileType: identity.profileType,
-                version: "identity-v3-2026-08-03"
-              }
-            }, null, 2)}</pre>
-          </div>
-        )}
+        {/* Debug Panel - Sempre visível para auxílio no diagnóstico solicitado */}
+        <div className="max-w-md w-full p-4 bg-muted/50 rounded-lg text-[10px] font-mono border text-muted-foreground overflow-auto">
+          <p className="font-bold mb-1 uppercase tracking-wider text-[9px] flex justify-between">
+            <span>Diagnóstico Técnico</span>
+            <span className="text-primary/70">{new Date().toLocaleTimeString()}</span>
+          </p>
+          <pre>{JSON.stringify({ 
+            error,
+            identity: identity ? {
+              resolved: identity.resolved,
+              associateId: identity.associateId,
+              profileType: identity.profileType,
+              associationStatus: identity.associationStatus,
+              accessLevel: identity.accessLevel,
+              reasonCode: identity.reasonCode,
+              linkStatus: identity.linkStatus
+            } : null,
+            associateQuery: {
+              started: true,
+              source: "portalCall('perfil')",
+              status: error ? 'error' : 'pending',
+              associateIdPresent: !!identity?.associateId
+            },
+            version: "identity-v3-2026-08-03"
+          }, null, 2)}</pre>
+        </div>
       </div>
     );
   }

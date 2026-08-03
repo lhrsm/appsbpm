@@ -245,26 +245,39 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
           const rawPayload = await portalCall<any>('perfil');
           console.log("[PortalIdentity] portalCall('perfil') raw result:", rawPayload);
           
-          // Se a RPC retornar um array, pega o primeiro item (normalização do adapter do backend)
-          const payload = Array.isArray(rawPayload) ? rawPayload[0] : rawPayload;
+          // Extração resiliente do payload
+          const extractAssociatePayload = (response: any) => {
+            const data = response?.data ?? response;
+            if (Array.isArray(data)) return data[0] ?? null;
+            if (data?.associado) return data.associado;
+            if (data?.id && (data?.matricula || data?.nome)) return data;
+            return null;
+          };
+
+          const associateData = extractAssociatePayload(rawPayload);
           
-          if (payload?.associado) {
-            setAssociado(payload.associado);
-            setDependentes(payload.dependentes || []);
-            setLimite(payload.limite || null);
-            setHistoricoLimite(payload.historico || []);
-            setInformes(payload.informes || []);
-            setIsDependente(Boolean(payload.dependente));
-            setDependenteLogado(payload.dependente || null);
+          if (associateData?.id) {
+            setAssociado(associateData);
+            // Se o payload for o formato C/D (envelope), extrai os outros campos
+            const envelope = (rawPayload?.data ?? rawPayload);
+            setDependentes(envelope?.dependentes || []);
+            setLimite(envelope?.limite || null);
+            setHistoricoLimite(envelope?.historico || []);
+            setInformes(envelope?.informes || []);
+            setIsDependente(Boolean(envelope?.dependente));
+            setDependenteLogado(envelope?.dependente || null);
+            
             setError(null);
-            console.log("[PortalIdentity] Context updated successfully.");
+            console.log("[PortalIdentity] Context updated successfully with associate ID:", associateData.id);
           } else {
-            console.error("[PortalIdentity] portalCall returned no associado:", payload);
-            setError(payload?.error || 'Erro ao carregar dados do painel.');
+            console.error("[PortalIdentity] Failed to extract associate from payload:", rawPayload);
+            setError('ASSOCIATE_PAYLOAD_INVALID');
           }
         } catch (callErr: any) {
           console.error("[PortalIdentity] portalCall('perfil') failed:", callErr);
-          setError(callErr.message || 'Falha na comunicação com o backend.');
+          const status = callErr.status;
+          if (status === 42501) setError('ASSOCIATE_RLS_DENIED');
+          else setError(callErr.message || 'ASSOCIATE_QUERY_ERROR');
         }
       } else {
         console.warn("[PortalIdentity] Identity not ready:", mappedIdentity.reasonCode);
