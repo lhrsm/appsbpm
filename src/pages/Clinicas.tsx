@@ -41,7 +41,7 @@ export default function Clinicas() {
   useEffect(() => {
     try { setFavoritos(new Set(JSON.parse(localStorage.getItem('sbpm_clinicas_fav') || '[]'))); } catch {}
     (async () => {
-      const { data } = await supabase.from('clinicas_parceiros').select('*').eq('ativo', true).order('cidade');
+      const { data } = await supabase.from('clinicas_parceiros').select('*').eq('status', 'ativo').order('cidade');
       setClinicas((data ?? []) as any);
       setLoading(false);
     })();

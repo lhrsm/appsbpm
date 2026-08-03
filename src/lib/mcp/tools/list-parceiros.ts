@@ -43,7 +43,7 @@ export default defineTool({
       .select(
         "nome, especialidade, cidade, endereco, telefone, email, horario_funcionamento, logo_url"
       )
-      .eq("ativo", true)
+      .eq("status", "ativo")
       .order("cidade", { ascending: true })
       .order("nome", { ascending: true })
       .limit(Math.min(Math.max(limit ?? 100, 1), 500));

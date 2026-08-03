@@ -33,7 +33,7 @@ export default function Agenda() {
     const { data: evts } = await supabase
       .from("eventos")
       .select("*")
-      .eq("ativo", true)
+      .eq("status", "ativo")
       .order("data_inicio", { ascending: true });
     setEventos((evts as Evento[]) ?? []);
     if (associado) {
