@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, icons, Badge, useToast } from "@/design-system";
+import { Card, Text, Button, icons, Badge } from "@/design-system";
+import { useToast } from "@/hooks/use-toast";
+
 import { supabase } from "@/integrations/supabase/client";
 
 export default function GestaoTaloes() {
