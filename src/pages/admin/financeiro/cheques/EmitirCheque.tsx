@@ -26,12 +26,13 @@ export default function EmitirCheque() {
 
   useEffect(() => {
     const carregarTaloes = async () => {
-      const { data } = await supabase.from('financeiro_taloes_cheque').select('*').eq('ativo', true);
+      const { data } = await (supabase.from('financeiro_taloes_cheque' as any).select('*') as any).eq('ativo', true);
       setTaloes(data || []);
-      if (data && data.length > 0) setTalaoSelecionado(data[0].id);
+      if (data && data.length > 0) setTalaoSelecionado((data[0] as any).id);
     };
     carregarTaloes();
   }, []);
+
 
   const buscarPendencias = async () => {
     setLoading(true);
