@@ -4,7 +4,7 @@ export default function RoutesIndex() {
       <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-slate-800">
         {`SBPM PORTAL UI/UX REFACTORING V2.0
 
-FASE 14 — IMPLEMENTAR MICROINTERAÇÕES, ANIMAÇÕES, TRANSIÇÕES E FEEDBACK VISUAL REFINADO
+FASE 15 — EXECUTAR AUDITORIA FINAL, TESTES COMPLETOS, LIMPEZA TÉCNICA, CONSOLIDAÇÃO VISUAL E PREPARAÇÃO PARA PRODUÇÃO
 
 CONTEXTO
 
@@ -23,1132 +23,1606 @@ As fases anteriores criaram ou deverão criar:
 - Perfil, segurança, 2FA, privacidade e LGPD;
 - Responsividade avançada;
 - Performance, cache, lazy loading e observabilidade;
-- Acessibilidade segundo WCAG 2.2 AA.
+- Acessibilidade segundo WCAG 2.2 AA;
+- Microinterações, animações e feedbacks visuais.
 
-Agora a Fase 14 deverá refinar a experiência visual e interativa da plataforma por meio de microinterações consistentes, feedbacks claros e transições suaves.
+Agora a Fase 15 deverá consolidar todo o trabalho realizado e preparar o Portal da SBPM para uma entrada segura em homologação avançada e, posteriormente, produção.
 
 OBJETIVO
 
-Tornar o Portal da SBPM mais agradável, moderno e previsível sem comprometer:
+Realizar uma auditoria completa, corrigir regressões, remover inconsistências, eliminar componentes obsoletos, validar permissões, revisar rotas, testar fluxos críticos e garantir que toda a plataforma funcione de forma:
 
-- Performance;
-- Acessibilidade;
-- Clareza;
-- Segurança;
-- Usabilidade;
-- Compatibilidade com mobile e PWA.
-
-As animações deverão orientar o usuário, reforçar ações e melhorar a percepção de fluidez.
-
-Elas não deverão servir apenas como decoração.
+- Coerente;
+- Segura;
+- Responsiva;
+- Acessível;
+- Performática;
+- Auditável;
+- Estável;
+- Preparada para integração futura;
+- Preparada para crescimento modular.
 
 IMPORTANTE
 
 Nesta fase:
 
-- Não alterar regras de negócio;
-- Não alterar autenticação;
-- Não alterar integrações;
-- Não alterar banco de dados;
-- Não alterar permissões;
+- Não adicionar grandes funcionalidades novas;
+- Não redesenhar novamente o portal sem necessidade;
+- Não alterar regras de negócio sem justificativa;
 - Não reintroduzir “Limite disponível”;
-- Não criar animações excessivas;
-- Não utilizar efeitos que prejudiquem usuários com sensibilidade a movimento;
-- Não esconder atrasos reais com animações;
-- Não alterar layouts já validados;
-- Reutilizar tokens e componentes do Design System;
-- Respeitar prefers-reduced-motion;
-- Manter todos os fluxos acessíveis por teclado e leitor de tela.
-
-==================================================
-1. VARREDURA INICIAL
-==================================================
-
-Antes de implementar, auditar:
-
-- Botões;
-- Cards;
-- Menus;
-- Dropdowns;
-- Modais;
-- Drawers;
-- Tabs;
-- Accordions;
-- Tabelas;
-- Filtros;
-- Paginação;
-- Formulários;
-- Inputs;
-- Uploads;
-- OTP;
-- 2FA;
-- Notificações;
-- Toasts;
-- Skeletons;
-- Dashboards;
-- Timelines;
-- Empty states;
-- Navegação entre rotas;
-- Carregamento de páginas;
-- PWA;
-- Estados offline;
-- Estados de erro;
-- Estados de sucesso.
-
-Identificar:
-
-- Transições inconsistentes;
-- Elementos sem feedback;
-- Hover excessivo;
-- Componentes que mudam de tamanho;
-- Layout shifts;
-- Animações repetidas;
-- Elementos que piscam;
-- Modais abruptas;
-- Drawers bruscos;
-- Foco perdido;
-- Feedback lento;
-- Botões sem resposta visual;
-- Cards que parecem clicáveis sem ser;
-- Toasts rápidos demais;
-- Loading sem contexto;
-- Atualizações abruptas;
-- Mudança de rota sem indicação;
-- Animações que não respeitam reduced motion.
-
-Criar inventário interno com:
-
-- Componente;
-- Estado atual;
-- Problema;
-- Interação proposta;
-- Duração;
-- Easing;
-- Comportamento reduzido;
-- Status.
-
-==================================================
-2. PRINCÍPIOS DAS MICROINTERAÇÕES
-==================================================
-
-Toda microinteração deve cumprir pelo menos uma função:
-
-- Confirmar ação;
-- Mostrar mudança de estado;
-- Indicar carregamento;
-- Orientar navegação;
-- Destacar atualização;
-- Demonstrar relação entre elementos;
-- Prevenir erro;
-- Reforçar hierarquia;
-- Comunicar sucesso;
-- Comunicar falha.
-
-Não implementar animação sem propósito claro.
-
-==================================================
-3. TOKENS DE MOVIMENTO
-==================================================
-
-Criar ou consolidar tokens:
-
-duration-instant
-duration-fast
-duration-normal
-duration-slow
-
-Sugestão:
-
-- instant: 80ms;
-- fast: 140ms;
-- normal: 220ms;
-- slow: 320ms.
-
-Criar easings:
-
-- ease-standard;
-- ease-enter;
-- ease-exit;
-- ease-emphasized.
-
-Não espalhar durações arbitrárias pelo projeto.
-
-==================================================
-4. PREFERS-REDUCED-MOTION
-==================================================
-
-Respeitar:
-
-prefers-reduced-motion: reduce
-
-Quando ativo:
-
-- Remover deslocamentos;
-- Remover zoom;
-- Reduzir fade;
-- Desativar parallax;
-- Desativar skeleton shimmer agressivo;
-- Evitar scroll animado;
-- Manter apenas feedback instantâneo.
-
-Não remover informações essenciais.
-
-==================================================
-5. BOTÕES
-==================================================
-
-Aplicar microinterações em:
-
-- Hover;
-- Focus;
-- Press;
-- Loading;
-- Success;
-- Error;
-- Disabled.
-
-Comportamento sugerido:
-
-Hover:
-
-- Mudança discreta de fundo;
-- Sombra leve;
-- Sem deslocamento exagerado.
-
-Press:
-
-- Redução muito sutil;
-- Sem alterar layout.
-
-Loading:
-
-- Spinner pequeno;
-- Texto contextual;
-- Largura preservada;
-- Botão desabilitado.
-
-Success temporário:
-
-- Ícone de confirmação;
-- Texto “Concluído” quando apropriado;
-- Retorno ao estado normal.
-
-Não usar bounce.
-
-==================================================
-6. ICON BUTTONS
-==================================================
-
-Aplicar:
-
-- Hover discreto;
-- Tooltip;
-- Press;
-- Focus;
-- Loading;
-- Badge animado apenas na chegada de nova informação.
-
-Não girar ícones sem significado.
-
-==================================================
-7. CARDS INTERATIVOS
-==================================================
-
-Somente cards realmente clicáveis devem possuir:
-
-- Hover;
-- Focus;
-- Mudança de borda;
-- Elevação discreta;
-- Cursor;
-- Transição.
-
-Cards estáticos não devem parecer clicáveis.
-
-Evitar elevar todos os cards no hover.
-
-==================================================
-8. AÇÕES RÁPIDAS
-==================================================
-
-Ao interagir:
-
-- Destacar o item;
-- Mostrar estado pressionado;
-- Navegar sem atraso artificial;
-- Exibir skeleton da próxima rota;
-- Preservar foco.
-
-Não exibir animações longas antes da navegação.
-
-==================================================
-9. SIDEBAR
-==================================================
-
-Ao expandir ou recolher:
-
-- Transição suave de largura;
-- Ícones permanecem alinhados;
-- Textos aparecem sem saltos;
-- Tooltips apenas no estado recolhido;
-- Conteúdo principal não deve tremer.
-
-No reduced motion:
-
-- Alteração instantânea.
-
-==================================================
-10. DRAWER MOBILE
-==================================================
-
-Ao abrir:
-
-- Overlay com fade curto;
-- Drawer com slide controlado;
-- Focus trap;
-- Conteúdo de fundo bloqueado.
-
-Ao fechar:
-
-- Transição inversa;
-- Retorno de foco.
-
-Não usar efeito elástico.
-
-==================================================
-11. MENUS E DROPDOWNS
-==================================================
-
-Aplicar:
-
-- Fade curto;
-- Scale mínimo;
-- Origem coerente;
-- Posicionamento estável;
-- Foco no primeiro item;
-- Fechamento por Escape.
-
-Não animar cada item separadamente de forma exagerada.
-
-==================================================
-12. MODAIS
-==================================================
-
-Entrada:
-
-- Fade do overlay;
-- Scale muito sutil;
-- Duração curta.
-
-Saída:
-
-- Fade;
-- Sem atraso.
-
-Modal de sucesso:
-
-- Ícone discreto;
-- Não usar confete;
-- Não bloquear a tela mais tempo que o necessário.
-
-==================================================
-13. ABAS
-==================================================
-
-Ao trocar:
-
-- Indicador desliza;
-- Conteúdo muda com fade curto;
-- Altura deve permanecer estável quando possível.
-
-Não usar carrossel horizontal agressivo.
-
-Preservar navegação por teclado.
-
-==================================================
-14. ACCORDIONS
-==================================================
-
-Ao expandir:
-
-- Altura animada ou técnica equivalente;
-- Ícone rotaciona discretamente;
-- Foco preservado.
-
-No reduced motion:
-
-- Abrir imediatamente.
-
-Não esconder o conteúdo de forma brusca.
-
-==================================================
-15. FORMULÁRIOS
-==================================================
-
-Ao focar campo:
-
-- Borda;
-- Sombra de foco;
-- Label consistente.
-
-Ao validar:
-
-- Erro aparece sem deslocamento abrupto;
-- Mensagem com fade curto;
-- Sucesso discreto;
-- Não usar tremor de campo.
-
-Campos com erro não devem piscar.
-
-==================================================
-16. CAMPO DE SENHA
-==================================================
-
-Ao atender requisitos:
-
-- Marcar item;
-- Alterar ícone;
-- Alterar texto;
-- Não animar continuamente.
-
-Indicador de força deve atualizar suavemente.
-
-==================================================
-17. OTP E 2FA
-==================================================
-
-Ao digitar código:
-
-- Avanço visual;
-- Campo ativo destacado;
-- Erro anunciado;
-- Sem tremor;
-- Sem zoom.
-
-Ao validar:
-
-- Loading no botão;
-- Mensagem de sucesso;
-- Redirecionamento curto e previsível.
-
-==================================================
-18. UPLOADS
-==================================================
-
-Exibir:
-
-- Progresso real;
-- Percentual;
-- Estado;
-- Cancelamento;
-- Retry;
-- Sucesso.
-
-Ao concluir:
-
-- Ícone de confirmação;
-- Nome do arquivo;
-- Ações.
-
-Não simular progresso falso.
-
-==================================================
-19. TOASTS
-==================================================
-
-Entrada:
-
-- Fade e deslocamento mínimo.
-
-Saída:
-
-- Fade.
-
-Duração:
-
-- Sucesso simples: curta;
-- Informação: média;
-- Erro: mais longa;
-- Crítico: persistente até ação.
-
-Evitar vários toasts empilhados.
-
-Agrupar mensagens repetidas.
-
-==================================================
-20. ALERTAS INLINE
-==================================================
-
-Ao aparecer:
-
-- Fade curto;
-- Sem empurrar a página abruptamente;
-- Preservar leitura.
-
-Alertas persistentes não devem desaparecer automaticamente.
-
-==================================================
-21. SKELETONS
-==================================================
-
-Padronizar shimmer suave.
-
-Respeitar reduced motion.
-
-Skeleton deve:
-
-- Manter formato do conteúdo;
-- Evitar layout shift;
-- Sumir com fade curto;
-- Não ficar ativo indefinidamente.
-
-Não usar shimmer muito contrastante.
-
-==================================================
-22. CARREGAMENTO DE PÁGINAS
-==================================================
-
-Ao navegar:
-
-- Exibir skeleton específico;
-- Não usar tela branca;
-- Não bloquear o header;
-- Manter estrutura;
-- Preservar posição quando apropriado.
-
-Não mostrar spinner central genérico em todas as rotas.
-
-==================================================
-23. TRANSIÇÕES ENTRE ROTAS
-==================================================
-
-Aplicar transição mínima:
-
-- Fade curto no conteúdo;
-- Sem deslocamento lateral exagerado;
-- Foco no h1;
-- Title atualizado.
-
-Não animar o layout inteiro.
-
-==================================================
-24. DASHBOARDS
-==================================================
-
-Ao carregar:
-
-- Hero primeiro;
-- Indicadores em seguida;
-- Seções secundárias depois.
-
-Os cards podem aparecer com fade escalonado muito leve, desde que:
-
-- Não atrase leitura;
-- Não prejudique reduced motion;
-- Não dure mais que alguns centenas de milissegundos.
-
-==================================================
-25. INDICADORES
-==================================================
-
-Ao atualizar valores:
-
-- Transição numérica opcional apenas se útil;
-- Sem rolagem de números longa;
-- Destacar atualização com borda ou badge;
-- Informar última atualização.
-
-Não animar dados críticos de forma que dificultem leitura.
-
-==================================================
-26. NOTIFICAÇÕES
-==================================================
-
-Quando chegar nova notificação:
-
-- Badge atualiza;
-- Ícone recebe destaque breve;
-- Sem som automático;
-- Sem animação contínua.
-
-Ao marcar como lida:
-
-- Estado muda suavemente;
-- Item permanece visível;
-- Não desaparecer abruptamente, salvo filtro específico.
-
-==================================================
-27. TIMELINES
-==================================================
-
-Ao adicionar novo evento:
-
-- Inserção suave;
-- Indicador “Novo”;
-- Sem reposicionar toda a página.
-
-Ao expandir detalhes:
-
-- Accordion acessível;
-- Estado preservado.
-
-==================================================
-28. TABELAS
-==================================================
-
-Ao ordenar:
-
-- Indicador muda;
-- Linhas atualizam sem fade excessivo.
-
-Ao filtrar:
-
-- Loading local;
-- Manter cabeçalho;
-- Resultados trocados de forma suave.
-
-Ao selecionar linha:
-
-- Fundo;
-- Checkbox;
-- Barra de ações.
-
-Não animar linhas individualmente em massa.
-
-==================================================
-29. PAGINAÇÃO
-==================================================
-
-Ao trocar página:
-
-- Manter toolbar;
-- Loading local;
-- Mover foco para início da lista;
-- Preservar filtros.
-
-Scroll deve ser instantâneo ou respeitar reduced motion.
-
-==================================================
-30. FILTROS
-==================================================
-
-Ao aplicar:
-
-- Chips aparecem suavemente;
-- Contador atualiza;
-- Drawer fecha;
-- Resultado anunciado.
-
-Ao remover:
-
-- Chip desaparece;
-- Lista atualiza;
-- Sem salto brusco.
-
-==================================================
-31. ESTADOS VAZIOS
-==================================================
-
-Empty states podem possuir:
-
-- Ilustração discreta;
-- Fade curto;
-- Ação clara.
-
-Não utilizar animação em loop.
-
-==================================================
-32. ERROS
-==================================================
-
-Ao ocorrer erro:
-
-- Exibir mensagem claramente;
-- Preservar dados;
-- Destacar ação de retry;
-- Não piscar;
-- Não tremer a tela.
-
-Erros críticos podem usar ícone e cor, sem animação excessiva.
-
-==================================================
-33. SUCESSOS
-==================================================
-
-Após:
-
-- Envio;
-- Salvamento;
-- Criação de solicitação;
-- Alteração de senha;
-- Ativação de 2FA;
-- Pré-cadastro;
-
-exibir:
-
-- Ícone;
-- Mensagem;
-- Protocolo quando aplicável;
-- Próxima ação.
-
-Não usar confete ou celebração inadequada.
-
-==================================================
-34. CONFIRMAÇÕES
-==================================================
-
-Ao concluir ação crítica:
-
-- Fechar modal;
-- Exibir feedback;
-- Atualizar tela;
-- Manter contexto.
-
-Não deixar a interface em estado intermediário sem explicação.
-
-==================================================
-35. CARTEIRINHA DIGITAL
-==================================================
-
-Ao abrir:
-
-- Fade curto;
-- QR Code carregado com placeholder;
-- Sem flip automático.
-
-Pode permitir frente e verso somente se houver conteúdo real.
-
-Não usar animação 3D exagerada.
-
-==================================================
-36. CLÍNICAS E PARCEIROS
-==================================================
-
-Ao trocar filtros:
-
-- Cards atualizam com loading local;
-- Manter altura;
-- Evitar reorganização excessiva.
-
-Ao abrir detalhes:
-
-- Página ou drawer com transição leve.
-
-==================================================
-37. MAPAS
-==================================================
-
-Se houver mapa:
-
-- Carregar sob ação;
-- Placeholder antes;
-- Zoom controlado;
-- Não mover automaticamente;
-- Não disparar geolocalização sem consentimento.
-
-==================================================
-38. FAQ
-==================================================
-
-Ao abrir pergunta:
-
-- Accordion;
-- Ícone;
-- Altura suave;
-- Foco preservado.
-
-Não fechar outras perguntas automaticamente sem necessidade.
-
-==================================================
-39. TUTORIAIS GUIADOS
-==================================================
-
-Ao avançar etapa:
-
-- Conteúdo substituído com fade curto;
-- Progresso atualizado;
-- Foco no título da etapa.
-
-Não usar slide lateral forte.
-
-==================================================
-40. PWA
-==================================================
-
-Ao detectar nova versão:
-
-- Banner discreto;
-- Botão atualizar;
-- Botão depois.
-
-Ao ficar offline:
-
-- Banner;
-- Ícone;
-- Sem animação contínua.
-
-Ao reconectar:
-
-- Feedback breve;
-- Retry controlado.
-
-==================================================
-41. FEEDBACK DE COPIAR
-==================================================
-
-Para:
-
-- Protocolo;
-- Matrícula mascarada;
-- Chave manual;
-- Recovery code;
-- Endereço;
-
-ao copiar:
-
-- Ícone muda;
-- Texto “Copiado”;
-- Retorno ao estado original.
-
-Não usar toast em excesso para cada cópia pequena.
-
-==================================================
-42. TOOLTIP
-==================================================
-
-Aplicar:
-
-- Atraso curto;
-- Fade;
-- Posicionamento;
-- Teclado;
-- Foco;
-- Conteúdo curto.
-
-Não esconder informação essencial apenas em tooltip.
-
-==================================================
-43. HOVERS
-==================================================
-
-Hover deve ser discreto.
-
-Não mover elementos de forma significativa.
-
-Não usar hover como única indicação.
-
-Em touch devices:
-
-- Não depender de hover.
-
-==================================================
-44. FOCUS TRANSITIONS
-==================================================
-
-O foco deve aparecer imediatamente.
-
-Pode usar transição curta de cor, mas nunca atrasar.
-
-Não usar animação que dificulte localizar o foco.
-
-==================================================
-45. SCROLL
-==================================================
-
-Evitar scroll automático.
-
-Usar apenas quando necessário:
-
-- Primeiro erro;
-- Nova etapa;
-- Título da rota;
-- Resultado de ação.
-
-Respeitar reduced motion.
-
-Não reposicionar o usuário após atualizações pequenas.
-
-==================================================
-46. COUNTERS
-==================================================
-
-Contadores podem atualizar com fade discreto.
-
-Não animar dígitos por longos períodos.
+- Não excluir estruturas de banco sem análise;
+- Não remover componentes usados por outras páginas;
+- Não alterar autenticação de forma destrutiva;
+- Não remover logs, RLS ou auditoria;
+- Não migrar produção sem validação;
+- Não considerar concluído apenas porque a aplicação compila;
+- Validar funcionamento real dos fluxos;
+- Criar rollback para alterações críticas;
+- Documentar todas as correções.
+
+==================================================
+1. CRIAR PLANO DE AUDITORIA FINAL
+==================================================
+
+Antes de executar alterações, criar um plano com:
+
+- Escopo;
+- Rotas;
+- Perfis;
+- Módulos;
+- Fluxos;
+- Riscos;
+- Dependências;
+- Critérios de aceite;
+- Responsáveis;
+- Ambiente;
+- Dados de teste;
+- Evidências;
+- Rollback.
+
+Separar a auditoria em:
+
+1. Funcional;
+2. Visual;
+3. Responsividade;
+4. Acessibilidade;
+5. Segurança;
+6. Permissões;
+7. Banco;
+8. Performance;
+9. Integrações;
+10. PWA;
+11. Auditoria e logs;
+12. Conteúdo e documentação.
+
+==================================================
+2. INVENTÁRIO COMPLETO DAS ROTAS
+==================================================
+
+Mapear todas as rotas da área externa.
 
 Exemplos:
 
-- Notificações;
-- Solicitações;
+- Boas-vindas;
+- Login;
+- Primeiro acesso;
+- Validação;
+- Confirmação de e-mail;
+- Criação de senha;
+- Recuperação;
+- 2FA;
+- Quero me associar;
+- Dashboard associado;
+- Dashboard dependente;
+- Carteirinha;
+- Titular;
+- Dependentes;
+- Meus dados;
 - Documentos;
-- Resultados.
+- Solicitações;
+- Clínicas e parceiros;
+- Benefícios;
+- Eventos;
+- Financeiro autorizado;
+- Informe de rendimentos;
+- Perfil;
+- Segurança;
+- Sessões;
+- Histórico;
+- Privacidade;
+- LGPD;
+- Preferências;
+- Atendimento;
+- FAQ;
+- Tutoriais;
+- Downloads;
+- Notícias;
+- Avisos;
+- Acessibilidade.
+
+Para cada rota, registrar:
+
+- Situação;
+- Perfil autorizado;
+- Permissão;
+- Dados carregados;
+- Integração;
+- Responsividade;
+- Acessibilidade;
+- Loading;
+- Erro;
+- Empty state;
+- Auditoria;
+- Testes;
+- Status final.
 
 ==================================================
-47. BADGES
+3. INVENTÁRIO DOS COMPONENTES
 ==================================================
 
-Ao mudar status:
+Mapear:
 
-- Badge muda cor e texto;
-- Transição curta;
-- Estado anunciado.
+- Componentes do Design System;
+- Componentes de layout;
+- Componentes de formulário;
+- Cards;
+- Tabelas;
+- Modais;
+- Drawers;
+- Badges;
+- Skeletons;
+- Alertas;
+- Timelines;
+- Menus;
+- Hooks;
+- Stores;
+- Contextos;
+- Utilitários;
+- Serviços;
+- Providers.
 
-Não pulsar badges continuamente.
+Classificar:
 
-==================================================
-48. BLOQUEIOS E PROCESSAMENTO
-==================================================
+- Em uso;
+- Duplicado;
+- Obsoleto;
+- Parcialmente migrado;
+- Sem documentação;
+- Sem teste;
+- Sem acessibilidade;
+- Sem responsividade.
 
-Durante operação crítica:
+Não excluir imediatamente componentes classificados como obsoletos.
 
-- Botão em loading;
-- Demais ações relevantes desabilitadas;
-- Mensagem contextual;
-- Sem bloqueio global desnecessário.
-
-==================================================
-49. ESTADO DE CONEXÃO
-==================================================
-
-Quando a conexão estiver instável:
-
-- Exibir aviso;
-- Não repetir animação;
-- Permitir retry;
-- Manter dados existentes.
-
-==================================================
-50. ANIMAÇÕES EM MOBILE
-==================================================
-
-Em dispositivos móveis:
-
-- Durações menores;
-- Menos deslocamento;
-- Menos sombras;
-- Evitar efeitos pesados;
-- Priorizar resposta imediata.
+Primeiro verificar imports e dependências.
 
 ==================================================
-51. PERFORMANCE
+4. LIMPEZA DE CÓDIGO
 ==================================================
 
-As animações devem usar propriedades eficientes:
+Remover de forma segura:
 
-- transform;
-- opacity.
+- Imports não utilizados;
+- Componentes obsoletos;
+- CSS duplicado;
+- Classes antigas;
+- Hooks não utilizados;
+- Funções mortas;
+- Rotas antigas;
+- Feature flags vencidas;
+- Logs de desenvolvimento;
+- Console.log;
+- Código comentado sem finalidade;
+- Dados mock fora do ambiente correto;
+- Dependências não utilizadas.
 
-Evitar animar:
+Não remover:
 
-- width;
-- height;
-- top;
-- left;
-- box-shadow pesado;
-- filtros caros;
-
-quando houver alternativa.
-
-Usar will-change somente quando necessário.
+- Migrações;
+- Auditoria;
+- Tratamentos de fallback;
+- Rollback;
+- Código usado por ambiente de homologação;
+- Compatibilidade necessária sem análise.
 
 ==================================================
-52. ACESSIBILIDADE
+5. CONSOLIDAÇÃO DO DESIGN SYSTEM
 ==================================================
 
-Garantir:
+Verificar se todas as páginas utilizam:
 
-- Reduced motion;
+- Tokens;
+- Cores;
+- Tipografia;
+- Espaçamentos;
+- Radius;
+- Sombras;
+- Breakpoints;
+- Botões;
+- Inputs;
+- Cards;
+- Badges;
+- Modais;
+- Drawers;
+- Tabelas;
+- Feedbacks.
+
+Identificar páginas que ainda usam:
+
+- Cores locais;
+- Padding arbitrário;
+- Botões próprios;
+- Inputs próprios;
+- Cards próprios;
+- Modais próprias;
+- Ícones inconsistentes.
+
+Migrar para o Design System quando seguro.
+
+==================================================
+6. CONSISTÊNCIA VISUAL
+==================================================
+
+Auditar:
+
+- Header;
+- Sidebar;
+- Hero;
+- Cards;
+- Títulos;
+- Subtítulos;
+- Botões;
+- Inputs;
+- Abas;
+- Accordions;
+- Tabelas;
+- Páginas vazias;
+- Loading;
+- Modais;
+- Drawers;
+- Rodapés;
+- Navegação inferior;
+- Tooltips;
+- Toasts;
+- Timeline.
+
+Verificar:
+
+- Alinhamento;
+- Espaçamento;
+- Altura;
+- Tipografia;
+- Cores;
+- Ícones;
+- Estado ativo;
 - Foco;
-- ARIA;
-- Estados anunciados;
-- Loading anunciado;
-- Sucesso anunciado;
-- Erro anunciado;
-- Animação não essencial;
-- Nenhuma informação apenas visual.
+- Contraste;
+- Responsividade.
 
 ==================================================
-53. SEGURANÇA
+7. AUDITORIA DO MENU
 ==================================================
 
-Não animar ou exibir temporariamente:
+Verificar o menu do associado.
+
+Confirmar presença somente de itens autorizados.
+
+Verificar o menu do dependente.
+
+Confirmar ausência de:
+
+- Financeiro indevido;
+- Mensalidades;
+- Informe de rendimentos;
+- Dependentes;
+- Associação premiada;
+- Pecúlio;
+- Simulador;
+- Limite disponível.
+
+Verificar:
+
+- Grupos;
+- Ordem;
+- Ícones;
+- Item ativo;
+- Permissões;
+- Mobile;
+- Sidebar recolhida;
+- Drawer;
+- Navegação inferior.
+
+==================================================
+8. REMOÇÃO DEFINITIVA DE “LIMITE DISPONÍVEL”
+==================================================
+
+Executar busca global em:
+
+- Código;
+- Rotas;
+- Menus;
+- Dashboard;
+- Componentes;
+- Busca;
+- FAQ;
+- Tutoriais;
+- Textos;
+- Notificações;
+- Relatórios;
+- Mock;
+- Banco;
+- Feature flags;
+- Breadcrumbs;
+- Testes;
+- Exportações.
+
+Confirmar ausência de:
+
+- Card;
+- Percentual;
+- Barra;
+- Valor;
+- Página;
+- Atalho;
+- Link;
+- Resultado;
+- Tutorial;
+- FAQ;
+- Rota antiga ativa.
+
+Caso a rota antiga exista:
+
+- Redirecionar;
+- Marcar depreciada;
+- Não gerar 404;
+- Não reativar no menu.
+
+Não excluir estrutura de banco sem análise.
+
+==================================================
+9. TESTES FUNCIONAIS DO PRIMEIRO ACESSO
+==================================================
+
+Testar:
+
+- Tela de boas-vindas;
+- Primeiro acesso;
+- Já tenho acesso;
+- Quero me associar;
+- Seleção de associado/dependente;
+- CPF;
+- Data de nascimento;
+- Perguntas;
+- Alternativas;
+- Validação positiva;
+- Validação negativa;
+- Tentativas;
+- Bloqueio;
+- E-mail;
+- Código;
+- Reenvio;
+- Senha;
+- Termos;
+- Conta criada;
+- Primeiro login.
+
+Validar modo:
+
+- Mock;
+- Provedor real futuro;
+- E-mail mock;
+- E-mail real, quando ativado.
+
+==================================================
+10. TESTES DA VALIDAÇÃO POR PERGUNTAS
+==================================================
+
+Confirmar:
+
+- Perguntas diferentes por perfil;
+- Alternativas plausíveis;
+- Embaralhamento;
+- Backend valida;
+- Resposta correta não vai ao frontend;
+- Sessão expira;
+- Tentativas controladas;
+- Erro genérico;
+- Não revela resposta;
+- Não revela existência de CPF;
+- “Não sei responder” funciona;
+- Auditoria registra;
+- Mobile funciona;
+- Teclado funciona;
+- Leitor de tela funciona.
+
+==================================================
+11. TESTES DO PRÉ-CADASTRO
+==================================================
+
+Validar:
+
+- Nome;
+- CPF;
+- Matrícula;
+- Posto/graduação;
+- Ativo/inativo;
+- E-mail;
+- WhatsApp;
+- Consentimento;
+- Duplicidade;
+- Protocolo;
+- Mensagem de sucesso;
+- Texto sobre SAEB;
+- Notificação interna;
+- E-mail;
+- Painel administrativo;
+- Status;
+- Conversão em processo.
+
+Confirmar que o pré-cadastro não cria associado ativo.
+
+==================================================
+12. TESTES DE LOGIN E RECUPERAÇÃO
+==================================================
+
+Testar:
+
+- CPF;
+- Matrícula;
+- Senha;
+- Usuário inexistente;
+- Senha incorreta;
+- Conta bloqueada;
+- Conta inativa;
+- Recuperação;
+- E-mail;
+- Código;
+- Nova senha;
+- Sessões anteriores;
+- Rate limiting;
+- CAPTCHA, se ativado;
+- Mensagens genéricas.
+
+==================================================
+13. TESTES DO 2FA
+==================================================
+
+Testar:
+
+- Ativação TOTP;
+- QR Code;
+- Chave manual;
+- Código válido;
+- Código inválido;
+- Expiração;
+- Recovery codes;
+- Uso único;
+- Novos códigos;
+- Troca de dispositivo;
+- Desativação;
+- Política obrigatória;
+- Dispositivo confiável;
+- Sessões;
+- Auditoria;
+- Alertas.
+
+Confirmar ausência de segredos em logs.
+
+==================================================
+14. TESTES DO PORTAL DO ASSOCIADO
+==================================================
+
+Validar:
+
+- Dashboard;
+- Carteirinha;
+- Meus dados;
+- Solicitação de correção;
+- Dependentes;
+- Documentos;
+- Benefícios;
+- Clínicas;
+- Parceiros;
+- Solicitações;
+- Eventos;
+- Financeiro autorizado;
+- Informe;
+- Perfil;
+- Segurança;
+- LGPD;
+- Atendimento;
+- Tutoriais.
+
+Confirmar:
+
+- Ownership;
+- Dados mascarados;
+- Dados oficiais somente leitura;
+- Downloads seguros;
+- Rotas protegidas;
+- Mobile;
+- PWA.
+
+==================================================
+15. TESTES DO PORTAL DO DEPENDENTE
+==================================================
+
+Validar:
+
+- Dashboard próprio;
+- Titular mascarado;
+- Carteirinha;
+- Meus dados;
+- Documentos;
+- Solicitações;
+- Clínicas;
+- Eventos;
+- Atendimento;
+- Perfil;
+- Segurança;
+- LGPD.
+
+Confirmar ausência de:
+
+- Dados financeiros;
+- Dados do titular;
+- Dependentes;
+- Informações administrativas;
+- Conteúdo não autorizado.
+
+==================================================
+16. TESTES DA CENTRAL DE RELACIONAMENTO
+==================================================
+
+Validar:
+
+- Busca;
+- Abrir solicitação;
+- Protocolo;
+- Timeline;
+- Upload;
+- FAQ;
+- Tutoriais;
+- Downloads;
+- Contatos;
+- Notícias;
+- Avisos;
+- Feedback;
+- Notificações;
+- Permissões;
+- Mobile;
+- PWA.
+
+==================================================
+17. TESTES DE DOCUMENTOS
+==================================================
+
+Testar:
+
+- Listagem;
+- Busca;
+- Filtro;
+- Paginação;
+- Visualização;
+- Download;
+- Impressão;
+- URL temporária;
+- Expiração;
+- Ownership;
+- Documento inexistente;
+- Documento indisponível;
+- Auditoria;
+- Mobile;
+- PDF grande.
+
+==================================================
+18. TESTES DE SOLICITAÇÕES
+==================================================
+
+Testar:
+
+- Nova solicitação;
+- Categoria;
+- Assunto;
+- Descrição;
+- Anexo;
+- Revisão;
+- Protocolo;
+- Status;
+- Timeline;
+- Resposta;
+- Pendência;
+- Cancelamento;
+- Permissões;
+- Exportação;
+- Notificação;
+- Realtime.
+
+==================================================
+19. TESTES DE PERFIL E DADOS
+==================================================
+
+Validar:
+
+- Dados oficiais;
+- Dados editáveis;
+- E-mail;
+- Telefone;
+- Foto;
+- Preferências;
+- Solicitar correção;
+- Auditoria;
+- Sincronização;
+- Mensagens;
+- Responsividade.
+
+==================================================
+20. TESTES DE LGPD
+==================================================
+
+Testar:
+
+- Consentimentos;
+- Revogação;
+- Histórico;
+- Termos;
+- Solicitações;
+- Protocolo;
+- Exportação;
+- Download;
+- Expiração;
+- Ownership;
+- Retenção;
+- Auditoria;
+- Perfil associado;
+- Perfil dependente.
+
+==================================================
+21. TESTES DE PERMISSÕES
+==================================================
+
+Criar matriz:
+
+- Rota;
+- Associado;
+- Dependente;
+- Visitante;
+- Administrador;
+- Usuário bloqueado;
+- Usuário inativo.
+
+Validar:
+
+- Menu;
+- Rota;
+- Consulta;
+- Download;
+- Ação;
+- RLS;
+- Backend;
+- Frontend.
+
+Não considerar suficiente esconder o menu.
+
+==================================================
+22. TESTES DE OWNERSHIP
+==================================================
+
+Tentar acessar:
+
+- Solicitação de outro usuário;
+- Documento de outro usuário;
+- Dependente de outro associado;
+- Sessão de outro usuário;
+- Histórico de outro usuário;
+- Exportação de outro usuário;
+- Perfil de outro usuário;
+- Protocolo de outro usuário.
+
+Resultado esperado:
+
+- Acesso negado;
+- Dados não carregados;
+- Evento auditado quando necessário;
+- Sem exposição de existência.
+
+==================================================
+23. AUDITORIA DE RLS
+==================================================
+
+Revisar todas as tabelas acessíveis pelo portal externo.
+
+Confirmar:
+
+- RLS ativa;
+- Policies específicas;
+- Ownership;
+- Perfil;
+- Organização;
+- Tenant;
+- Dados sensíveis;
+- Storage;
+- RPC;
+- Views;
+- Edge Functions.
+
+Não depender de anon access inadequado.
+
+==================================================
+24. AUDITORIA DO STORAGE
+==================================================
+
+Verificar buckets:
+
+- Avatares;
+- Documentos;
+- Anexos;
+- Carteirinhas;
+- Exportações;
+- Tutoriais;
+- Imagens públicas.
+
+Classificar:
+
+- Público;
+- Privado;
+- Temporário.
+
+Confirmar:
+
+- URLs assinadas;
+- Expiração;
+- Ownership;
+- Upload seguro;
+- Nome seguro;
+- MIME;
+- Tamanho;
+- Exclusão;
+- Retenção.
+
+==================================================
+25. AUDITORIA DE SECRETS
+==================================================
+
+Verificar se não existem secrets em:
+
+- Frontend;
+- Git;
+- Logs;
+- Banco;
+- LocalStorage;
+- Config público;
+- Código;
+- Screenshots;
+- Mensagens.
+
+Revisar:
+
+- API keys;
+- E-mail;
+- Supabase service role;
+- Integrações;
+- Webhooks;
+- Tokens.
+
+Rotacionar secrets expostos.
+
+==================================================
+26. AUDITORIA DE LOGS
+==================================================
+
+Confirmar ausência de:
 
 - Senha;
 - OTP;
 - Recovery code;
-- Tokens;
-- Dados sensíveis;
-- Conteúdo restrito.
+- Token;
+- CPF completo;
+- E-mail completo desnecessário;
+- Documento;
+- Dados médicos;
+- Conteúdo sensível.
 
-Não permitir que o conteúdo apareça antes da validação de permissão.
+Verificar:
 
-==================================================
-54. COMPONENTES SUGERIDOS
-==================================================
-
-Criar ou consolidar:
-
-MotionProvider
-
-AnimatedPresence
-
-RouteTransition
-
-ButtonFeedback
-
-StatusTransition
-
-LoadingTransition
-
-SuccessFeedback
-
-ErrorFeedback
-
-CopyFeedback
-
-ConnectionStatus
-
-UpdateAvailableBanner
-
-AnimatedCounter
-
-ExpandableContent
-
-ProgressTransition
-
-NotificationPulse
-
-Respeitar a arquitetura e as bibliotecas já existentes.
-
-Não adicionar biblioteca pesada sem necessidade.
+- Estrutura;
+- Correlation ID;
+- Ambiente;
+- Retenção;
+- Acesso;
+- Integridade.
 
 ==================================================
-55. BIBLIOTECA DE ANIMAÇÃO
+27. TESTES DE SEGURANÇA
 ==================================================
 
-Antes de adicionar dependência:
+Executar testes controlados para:
 
-- Verificar se CSS resolve;
-- Verificar se o projeto já possui biblioteca;
-- Avaliar peso;
-- Avaliar acessibilidade;
-- Avaliar manutenção.
+- Enumeração;
+- Brute force;
+- Rate limiting;
+- Sessão expirada;
+- Fixação de sessão;
+- CSRF quando aplicável;
+- XSS;
+- Upload malicioso;
+- IDOR;
+- Acesso direto;
+- URL previsível;
+- Manipulação de IDs;
+- Ação duplicada;
+- Injection;
+- Headers;
+- CORS;
+- Secrets;
+- Cache.
 
-Se usar biblioteca:
-
-- Importar somente o necessário;
-- Aplicar lazy loading quando apropriado;
-- Centralizar padrões.
-
-==================================================
-56. DOCUMENTAÇÃO
-==================================================
-
-Documentar:
-
-- Durações;
-- Easings;
-- Estados;
-- Reduced motion;
-- Padrões por componente;
-- Animações permitidas;
-- Animações proibidas;
-- Exemplos;
-- Acessibilidade;
-- Performance.
-
-Criar tabela:
-
-Componente | Interação | Duração | Easing | Reduced Motion
+Não realizar testes destrutivos em produção.
 
 ==================================================
-57. TESTES
+28. TESTES DE RESPONSIVIDADE
 ==================================================
 
-Criar ou atualizar testes para:
+Executar matriz completa:
 
-- Botões;
-- Menus;
-- Modal;
-- Drawer;
-- Tabs;
-- Accordion;
+- 320x568;
+- 360x800;
+- 375x812;
+- 390x844;
+- 412x915;
+- 430x932;
+- 768x1024;
+- 800x1280;
+- 820x1180;
+- 1024x768;
+- 1280x800;
+- 1366x768;
+- 1440x900;
+- 1536x864;
+- 1920x1080;
+- 2560x1080;
+- 2560x1440;
+- 3440x1440.
+
+Validar:
+
+- Scroll;
+- Overflow;
+- Header;
+- Menu;
+- Footer;
+- Modais;
+- Drawers;
+- Tabelas;
 - Formulários;
-- OTP;
-- Upload;
-- Toast;
-- Skeleton;
-- Dashboard;
-- Timeline;
-- Tabela;
-- Filtros;
-- PWA;
-- Offline;
-- Reduced motion;
 - Teclado;
-- Leitor de tela;
-- Performance.
+- Safe areas;
+- PWA;
+- Landscape.
 
 ==================================================
-58. TESTES VISUAIS
+29. TESTES DE ACESSIBILIDADE
 ==================================================
 
-Executar testes de regressão visual em:
+Executar:
 
-- Desktop;
-- Tablet;
+- Teclado;
+- NVDA;
+- VoiceOver;
+- TalkBack;
+- Zoom 200%;
+- Zoom 400%;
+- Alto contraste;
+- Fonte ampliada;
+- Reduced motion;
+- axe;
+- Lighthouse;
+- JSX a11y.
+
+Validar:
+
+- Headings;
+- Foco;
+- Labels;
+- Erros;
+- Modais;
+- Drawers;
+- Tabelas;
+- OTP;
+- 2FA;
+- QR Code;
+- Tutoriais;
+- PDF alternativo.
+
+==================================================
+30. TESTES DE PERFORMANCE
+==================================================
+
+Medir:
+
+- FCP;
+- LCP;
+- INP;
+- CLS;
+- TTFB;
+- Bundle;
+- Requests;
+- Consultas;
+- Realtime;
+- Imagens;
+- PWA;
+- Rotas;
+- Mobile.
+
+Comparar com a Fase 12.
+
+Corrigir regressões.
+
+==================================================
+31. TESTES DE REDE E INDISPONIBILIDADE
+==================================================
+
+Simular:
+
+- Rede lenta;
+- Offline;
+- Timeout;
+- Banco indisponível;
+- E-mail indisponível;
+- Storage indisponível;
+- Realtime desconectado;
+- Edge Function falhando;
+- Integração indisponível.
+
+Validar:
+
+- Mensagem;
+- Retry;
+- Preservação de dados;
+- Não duplicidade;
+- Não sucesso falso;
+- Recuperação.
+
+==================================================
+32. TESTES DO PWA
+==================================================
+
+Validar:
+
+- Instalação;
+- Ícones;
+- Manifest;
+- Splash;
+- Standalone;
+- Safe areas;
+- Offline;
+- Atualização;
+- Cache;
+- Logout;
+- Dados privados;
+- Navegação inferior;
+- Orientação;
+- Background.
+
+Confirmar que dados sensíveis não permanecem após logout.
+
+==================================================
+33. TESTES DE E-MAIL
+==================================================
+
+Validar:
+
+- Primeiro acesso;
+- Código;
+- Recuperação;
+- Segurança;
+- Pré-cadastro;
+- Protocolo;
+- LGPD;
+- Alertas.
+
+Verificar:
+
+- Remetente;
+- Assunto;
+- Entrega;
+- Expiração;
+- Links;
+- Responsividade;
+- Dados sensíveis;
+- Logs;
+- Ambiente mock;
+- Ambiente real.
+
+==================================================
+34. TESTES DE NOTIFICAÇÕES
+==================================================
+
+Validar:
+
+- Criação;
+- Realtime;
+- Badge;
+- Marcar como lida;
+- Filtros;
+- Perfil;
+- Link;
+- Ownership;
 - Mobile;
 - PWA;
-- Ultrawide;
-- Tema claro;
-- Tema escuro, se existir;
-- Alto contraste;
-- Reduced motion.
+- Duplicidade.
 
 ==================================================
-59. CRITÉRIOS DE ACEITE
+35. TESTES DE EXPORTAÇÃO
 ==================================================
 
-Considerar a Fase 14 concluída somente quando:
+Validar:
 
-- Existirem tokens de movimento;
-- Botões possuírem feedback consistente;
-- Modais e drawers abrirem suavemente;
-- Menus e dropdowns estiverem refinados;
-- Formulários possuírem feedback claro;
-- Uploads mostrarem progresso real;
-- Toasts estiverem padronizados;
-- Skeletons estiverem suaves;
-- Navegação entre rotas não for abrupta;
-- Dashboards carregarem progressivamente;
-- Notificações tiverem destaque discreto;
-- Tabelas atualizarem sem saltos;
-- Paginação preservar contexto;
-- Sucessos e erros estiverem claros;
-- Reduced motion estiver totalmente respeitado;
-- Nenhuma animação bloquear o usuário;
-- Nenhuma animação prejudicar performance;
-- Nenhuma animação depender exclusivamente de cor;
-- Nenhum dado sensível aparecer durante transições;
-- Desktop, tablet, mobile, PWA e ultrawide estiverem consistentes;
-- “Limite disponível” permanecer completamente ausente.
+- PDF;
+- XLSX;
+- CSV;
+- Filtros;
+- Permissões;
+- Mascaramento;
+- Auditoria;
+- Link temporário;
+- Expiração;
+- Fórmula maliciosa;
+- Volume;
+- Cancelamento;
+- Falha.
+
+==================================================
+36. AUDITORIA DOS DADOS MOCK
+==================================================
+
+Confirmar que:
+
+- Mock aparece somente em ambiente permitido;
+- Dados fictícios são identificados;
+- Produção não usa registros fictícios;
+- E-mail mock não envia;
+- Integração mock não mistura dados;
+- Exportações mock possuem marcação;
+- Usuários não confundem demonstração com produção.
+
+==================================================
+37. FEATURE FLAGS
+==================================================
+
+Revisar:
+
+- Flags ativas;
+- Flags antigas;
+- Flags de testes;
+- Flags sem documentação;
+- Flags em produção.
+
+Remover flags obsoletas após segurança.
+
+Manter rollback para mudanças recentes.
+
+==================================================
+38. TRATAMENTO DE ROTAS ANTIGAS
+==================================================
+
+Criar redirecionamentos.
+
+Verificar:
+
+- Links antigos;
+- Favoritos;
+- Tutoriais;
+- Notificações;
+- E-mails;
+- QR Codes;
+- Busca;
+- Breadcrumbs.
+
+Evitar:
+
+- 404 desnecessário;
+- Loop;
+- Rota sem permissão;
+- Redirecionamento para página errada.
+
+==================================================
+39. CONTEÚDOS E TEXTOS
+==================================================
+
+Revisar:
+
+- Ortografia;
+- Pontuação;
+- Termos;
+- Siglas;
+- Tom institucional;
+- Consistência;
+- Mensagens;
+- Botões;
+- Empty states;
+- Erros;
+- Alertas;
+- Tutoriais;
+- FAQ.
+
+Padronizar:
+
+- SBPM;
+- Associado;
+- Dependente;
+- Portal;
+- Solicitação;
+- Protocolo;
+- SAEB;
+- Previdência;
+- Assistência à Saúde.
+
+==================================================
+40. TERMOS TÉCNICOS
+==================================================
+
+Remover da interface externa:
+
+- Nome de tabela;
+- RPC;
+- RLS;
+- Edge Function;
+- Stack;
+- API;
+- Provider;
+- MockProvider;
+- Status HTTP;
+- Query.
+
+Usar mensagens amigáveis.
+
+==================================================
+41. AUDITORIA DOS TUTORIAIS
+==================================================
+
+Verificar se:
+
+- Rotas existem;
+- Passos correspondem à interface;
+- Imagens estão atualizadas;
+- Status está correto;
+- Conteúdo não inventa função;
+- Perfil está correto;
+- Vídeos possuem legenda;
+- Links funcionam;
+- “Limite disponível” foi removido.
+
+Criar fila:
+
+- Atualizado;
+- Revisar;
+- Arquivar;
+- Aguardando integração.
+
+==================================================
+42. AUDITORIA DO FAQ
+==================================================
+
+Verificar:
+
+- Duplicidade;
+- Respostas desatualizadas;
+- Perguntas sem resposta;
+- Links quebrados;
+- Conteúdo técnico;
+- Conteúdo não autorizado;
+- Perfil;
+- Busca;
+- Acessibilidade.
+
+==================================================
+43. AUDITORIA DE NOTÍCIAS E AVISOS
+==================================================
+
+Confirmar:
+
+- Data;
+- Autor;
+- Publicação;
+- Expiração;
+- Perfil;
+- Prioridade;
+- Conteúdo;
+- Imagem;
+- Acessibilidade;
+- Status.
+
+Não exibir aviso expirado.
+
+==================================================
+44. DOCUMENTAÇÃO TÉCNICA
+==================================================
+
+Consolidar documentação de:
+
+- Arquitetura;
+- Design System;
+- Componentes;
+- Rotas;
+- Perfis;
+- Permissões;
+- RLS;
+- Banco;
+- Storage;
+- Auth;
+- 2FA;
+- E-mail;
+- PWA;
+- Performance;
+- Acessibilidade;
+- Logs;
+- Monitoramento;
+- Integração;
+- Feature flags;
+- Ambientes;
+- Rollback.
+
+==================================================
+45. DOCUMENTAÇÃO OPERACIONAL
+==================================================
+
+Criar documentação para:
+
+- Suporte;
+- Segurança;
+- Recuperação;
+- LGPD;
+- Publicação;
+- Atualização;
+- Incidente;
+- Falha de e-mail;
+- Falha de integração;
+- Falha de integração;
+- Falha de autenticação;
+- Restore;
+- Rollback.
+
+==================================================
+46. CHECKLIST DE HOMOLOGAÇÃO
+==================================================
+
+Criar checklist assinado ou validado por:
+
+- Desenvolvimento;
+- TI;
+- Segurança;
+- Área de negócio;
+- Atendimento;
+- LGPD;
+- Responsável institucional.
+
+Itens:
+
+- Fluxos;
+- Dados;
+- Permissões;
+- Conteúdo;
+- Responsividade;
+- Acessibilidade;
+- Performance;
+- Backup;
+- Segurança;
+- Treinamento;
+- Suporte.
+
+==================================================
+47. AMBIENTE DE HOMOLOGAÇÃO
+==================================================
+
+Confirmar separação entre:
+
+- Desenvolvimento;
+- Homologação;
+- Produção.
+
+Homologação deve possuir:
+
+- Banco próprio;
+- Storage próprio;
+- Chaves próprias;
+- E-mail controlado;
+- Dados fictícios;
+- URL própria;
+- Logs;
+- Monitoramento.
+
+Não usar dados reais sem base legal e controle.
+
+==================================================
+48. BACKUP
+==================================================
+
+Antes de produção, confirmar:
+
+- Backup automático;
+- Retenção;
+- Banco;
+- Storage;
+- Configurações;
+- Secrets;
+- Código;
+- Migrações.
+
+Executar teste de restauração.
+
+Backup não testado não deve ser considerado garantia.
+
+==================================================
+49. ROLLBACK
+==================================================
+
+Criar plano de rollback para:
+
+- Frontend;
+- Banco;
+- Migration;
+- Auth;
+- E-mail;
+- Integração;
+- PWA;
+- Feature flag;
+- Storage.
+
+Definir:
+
+- Quem executa;
+- Quando;
+- Critério;
+- Tempo estimado;
+- Validação.
+
+==================================================
+50. OBSERVABILIDADE
+==================================================
+
+Confirmar:
+
+- Monitoramento;
+- Alertas;
+- Erros;
+- Latência;
+- E-mail;
+- Storage;
+- Auth;
+- 2FA;
+- Realtime;
+- PWA;
+- Integração;
+- Banco.
+
+Configurar alertas para responsáveis.
+
+==================================================
+51. PAINEL DE SAÚDE
+==================================================
+
+Criar ou revisar painel administrativo restrito com:
+
+- Frontend;
+- Banco;
+- Auth;
+- Storage;
+- E-mail;
+- Realtime;
+- Funções;
+- Integrações;
+- Último backup;
+- Última sincronização;
+- Erros recentes.
+
+Não exibir secrets.
+
+==================================================
+52. PLANO DE INCIDENTE
+==================================================
+
+Criar procedimento para:
+
+- Indisponibilidade;
+- Vazamento;
+- Conta comprometida;
+- E-mail falhando;
+- Integração parada;
+- Banco indisponível;
+- Documento incorreto;
+- Acesso indevido;
+- Erro de permissão;
+- Falha de backup.
+
+Definir:
+
+- Detecção;
+- Contenção;
+- Correção;
+- Comunicação;
+- Auditoria;
+- Pós-incidente.
+
+==================================================
+53. TREINAMENTO
+==================================================
+
+Preparar treinamento para:
+
+- Administradores;
+- Atendimento;
+- Segurança;
+- LGPD;
+- Gestores;
+- Suporte técnico;
+- Usuários externos.
+
+Utilizar:
+
+- Tutoriais;
+- Vídeos;
+- FAQ;
+- Ambiente de homologação;
+- Exercícios.
+
+==================================================
+54. PUBLICAÇÃO GRADUAL
+==================================================
+
+Não liberar imediatamente para todos os usuários.
+
+Criar estratégia:
+
+1. Equipe interna;
+2. Grupo piloto;
+3. Associados selecionados;
+4. Dependentes selecionados;
+5. Expansão gradual;
+6. Produção completa.
+
+Monitorar:
+
+- Erros;
+- Suporte;
+- Performance;
+- Dúvidas;
+- Conversão;
+- Bloqueios;
+- Recuperações.
+
+==================================================
+55. COMUNICAÇÃO DE LANÇAMENTO
+==================================================
+
+Preparar:
+
+- Aviso;
+- E-mail;
+- Tutorial;
+- FAQ;
+- Canal de suporte;
+- Orientações de primeiro acesso;
+- Segurança;
+- 2FA;
+- Recuperação.
+
+Não comunicar funções ainda indisponíveis.
+
+==================================================
+56. CRITÉRIOS DE GO/NO-GO
+==================================================
+
+GO somente se:
+
+- Fluxos críticos passarem;
+- RLS estiver validada;
+- Ownership estiver validado;
+- Backup estiver testado;
+- Rollback estiver documentado;
+- Logs estiverem seguros;
+- E-mail funcionar;
+- Autenticação funcionar;
+- 2FA possuir recuperação;
+- Mobile funcionar;
+- Acessibilidade crítica passar;
+- Monitoramento estiver ativo;
+- Suporte estiver preparado.
+
+NO-GO se houver:
+
+- Exposição de dados;
+- Rota sem proteção;
+- Falha de ownership;
+- Recovery impossível;
+- Backup não testado;
+- E-mail crítico indisponível;
+- Erro grave em mobile;
+- Falha de autenticação;
+- Instabilidade;
+- Bug crítico.
+
+==================================================
+57. RELATÓRIO FINAL
+==================================================
+
+Criar relatório com:
+
+- Fases concluídas;
+- Alterações;
+- Testes;
+- Resultados;
+- Métricas;
+- Pendências;
+- Riscos;
+- Exceções;
+- Itens adiados;
+- Recomendações;
+- Go/No-Go;
+- Plano pós-produção.
+
+==================================================
+58. CRITÉRIOS DE ACEITE
+==================================================
+
+Considerar a Fase 15 concluída somente quando:
+
+- Todas as rotas estiverem inventariadas;
+- Componentes obsoletos tiverem sido analisados;
+- Design System estiver consolidado;
+- Menus estiverem corretos;
+- “Limite disponível” estiver completamente ausente;
+- Primeiro acesso estiver validado;
+- Validação por perguntas estiver segura;
+- Pré-cadastro estiver funcional;
+- Login e recuperação estiverem seguros;
+- 2FA possuir ativação e recuperação;
+- Portal do associado estiver funcional;
+- Portal do dependente estiver restrito corretamente;
+- Central de Relacionamento estiver funcional;
+- Documentos utilizarem acesso seguro;
+- Solicitações possuírem protocolo e timeline;
+- LGPD estiver funcional;
+- Permissões e ownership estiverem testados;
+- RLS estiver validada;
+- Storage estiver protegido;
+- Secrets estiverem seguros;
+- Logs não possuírem dados sensíveis;
+- Responsividade estiver aprovada;
+- Acessibilidade estiver validada;
+- Performance estiver dentro das metas;
+- PWA estiver seguro;
+- E-mails estiverem testados;
+- Backups e restauração estiverem testados;
+- Rollback estiver documentado;
+- Monitoramento estiver ativo;
+- Tutoriais estiverem atualizados;
+- Homologação estiver aprovada;
+- Plano de publicação gradual estiver definido;
+- Relatório final estiver concluído.
 
 RESULTADO ESPERADO
 
-Ao final da Fase 14, o Portal da SBPM deverá transmitir uma sensação de fluidez, qualidade e previsibilidade.
+Ao final da Fase 15, o Portal da SBPM deverá estar consolidado como uma plataforma institucional moderna, segura, acessível, responsiva e preparada para produção.
 
-O usuário deverá perceber imediatamente:
+A plataforma deverá possuir:
 
-- Quando uma ação foi reconhecida;
-- Quando o sistema está carregando;
-- Quando um dado foi atualizado;
-- Quando uma operação foi concluída;
-- Quando ocorreu um erro;
-- Quando há uma nova notificação;
-- Quando uma seção foi aberta;
-- Quando uma página foi alterada.
+- Experiência consistente;
+- Perfis separados;
+- Fluxos seguros;
+- Dados protegidos;
+- Permissões validadas;
+- Auditoria;
+- Performance;
+- Acessibilidade;
+- Observabilidade;
+- Backup;
+- Rollback;
+- Documentação;
+- Treinamento;
+- Estratégia de implantação.
 
-As microinterações deverão tornar a plataforma mais clara e agradável sem transformar o portal em uma interface excessivamente animada ou cansativa.`}
+A entrada em produção deverá ocorrer apenas após o atendimento dos critérios de Go/No-Go e a aprovação formal da homologação.`}
       </pre>
     </div>
   );
