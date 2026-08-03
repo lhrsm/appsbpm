@@ -3,7 +3,7 @@
 
 import { emFluxoCritico } from "./criticalFlow";
 
-const APP_SW_PATH = "/sw.js";
+const APP_SW_PATH = "/dev-sw.js?dev-sw"; // Fallback para desenvolvimento/preview se o sw.js não existir
 
 export const PWA_UPDATE_EVENT = "sbpm:pwa-update";
 

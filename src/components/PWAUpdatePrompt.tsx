@@ -34,8 +34,17 @@ export default function PWAUpdatePrompt() {
           disabled={aplicando}
           onClick={async () => {
             setAplicando(true);
-            const ok = await aplicarAtualizacaoPWA();
-            if (!ok) setAplicando(false);
+            try {
+              const ok = await aplicarAtualizacaoPWA();
+              if (!ok) {
+                setAplicando(false);
+                // Força recarregamento se o método PWA falhar mas o usuário clicou
+                window.location.reload();
+              }
+            } catch (err) {
+              console.error("Erro ao atualizar PWA:", err);
+              window.location.reload();
+            }
           }}
         >
           Atualizar agora
