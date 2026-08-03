@@ -306,6 +306,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
             refreshProfile();
           } else {
             console.log("[PortalIdentity] No session found in checkInitialSession.");
+            // Garante que termina o initializing se não houver sessão
             setInitializing(false);
           }
         }
@@ -339,7 +340,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = () => {
-    console.log("[PortalIdentity] Logout: clearing states and caches...");
+    console.log("[PortalIdentity] Logout: clearing states...");
     // Encerra sessão, cancela requisições/realtime e limpa todo o cache privado
     // para que nenhum dado do usuário anterior fique visível no dispositivo.
     closeAllRealtime();
@@ -358,11 +359,11 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setDependenteLogado(null);
     setError(null);
     
-    // Limpeza profunda de persistência (localStorage/sessionStorage)
+    // NÃO LIMPAR LOCALSTORAGE/SESSIONSTORAGE GLOBALMENTE para não derrubar a sessão do Supabase
+    // O logout deve ser controlado pelo componente que chama supabase.auth.signOut()
     try {
       localStorage.removeItem('portal-associado-cache');
       localStorage.removeItem('portal-identity');
-      sessionStorage.clear();
     } catch (e) {
       // ignore
     }

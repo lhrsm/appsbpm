@@ -7,6 +7,7 @@ import { createQueryClient } from "@/lib/perf/queryClient";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AssociadoProvider } from "@/contexts/AssociadoContext";
 import Dashboard from "./pages/Dashboard";
+const DashboardRecovery = lazy(() => import("./pages/DashboardRecovery"));
 import NotFound from "./pages/NotFound";
 import CookieConsent from "./components/CookieConsent";
 import AccessibilityWidget from "./components/AccessibilityWidget";
@@ -182,6 +183,7 @@ const App = () => (
               <Route path="/privacidade" element={<Privacidade />} />
               <Route path="/acessibilidade" element={<Acessibilidade />} />
               <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+              <Route path="/recovery" element={<DashboardRecovery />} />
               <Route path="/dashboard" element={<Dashboard />}>
                 <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
                 <Route path="carteirinha" element={<RotaCarteirinha />} />

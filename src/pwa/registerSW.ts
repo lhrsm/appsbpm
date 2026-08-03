@@ -89,9 +89,12 @@ export async function registerPWA() {
     return;
   }
 
-  // Limpa caches antigos na inicialização para evitar conflitos de versão
-  await unregisterOldCaches();
+  // Temporariamente desativado para diagnóstico de tela branca
+  // await unregisterOldCaches();
+  await unregisterAppSW();
+  return;
 
+  /*
   try {
     registration = await navigator.serviceWorker.register(APP_SW_PATH, { scope: "/" });
 
@@ -108,4 +111,6 @@ export async function registerPWA() {
   } catch {
     // ignore
   }
+  */
+}
 }
