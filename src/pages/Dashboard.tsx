@@ -10,6 +10,7 @@ import ExternalPortalLayout from '@/portal/ExternalPortalLayout';
 import { deprecatedPortalRoutes } from '@/portal/navigation';
 import ExternalDashboard from '@/portal/dashboard/ExternalDashboard';
 import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
+import { PortalLoadingState, PortalProfileNotFound } from '@/portal/components/PortalStates';
 
 /** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
 const rotasProvaveis = [
@@ -19,17 +20,27 @@ const rotasProvaveis = [
 ];
 
 export default function Dashboard() {
-  const { associado, logout, isDependente, dependenteLogado, setAssociado, setDependenteLogado } = useAssociado();
+  const { 
+    associado, 
+    logout, 
+    isDependente, 
+    dependenteLogado, 
+    setAssociado, 
+    setDependenteLogado,
+    initializing,
+    error,
+    refreshProfile
+  } = useAssociado();
   usePageviewTracker(associado?.id);
   const navigate = useNavigate();
   const location = useLocation();
   usePrefetchRoutes(rotasProvaveis, !!associado);
 
   useEffect(() => {
-    if (!associado) {
+    if (!initializing && !associado) {
       navigate('/');
     }
-  }, [associado, navigate]);
+  }, [associado, navigate, initializing]);
 
   // Rotas depreciadas do portal externo (ex.: limite disponível) -> visão geral
   useEffect(() => {
@@ -64,6 +75,16 @@ export default function Dashboard() {
   };
 
   useInactivityLock(!!associado, handleLogout);
+
+  if (initializing) return <PortalLoadingState />;
+  
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-6">
+        <PortalProfileNotFound onRetry={refreshProfile} />
+      </div>
+    );
+  }
 
   if (!associado) return null;
 
