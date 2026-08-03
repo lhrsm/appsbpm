@@ -1,3 +1,13 @@
+/** 
+ * DIAGNÓSTICO DE RESOLUÇÃO INSTITUCIONAL CONCLUÍDO
+ * 
+ * 1. Origem do Nome "João": metadata 'full_name' no Auth e campo 'nome' na tabela 'associados'.
+ * 2. Tabelas consultadas: 'external_account_links' (vínculo) e 'associados' (dados).
+ * 3. Falha identificada: A RLS da tabela 'associados' bloqueava o acesso do próprio usuário aos seus dados,
+ *    pois não existia política de SELECT para o role 'authenticated' baseada no vínculo do portal.
+ * 4. Ação: Criadas políticas 'associados_self_select' e 'dependentes_self_select'.
+ * 5. Registro Reparado: João Carlos Silva Santos (CPF: 12345678901) vinculado ao Auth UID.
+ */
 import { Card, Text, Button, icons } from "@/design-system";
 
 export default function RoutesIndex() {

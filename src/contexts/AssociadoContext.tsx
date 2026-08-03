@@ -127,7 +127,15 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     }
 
     try {
+      console.log("[PortalIdentity] Iniciando resolução de perfil institucional...");
       const data = await portalCall<any>('perfil');
+      
+      console.log("[PortalIdentity] Resposta do backend:", {
+        associadoEncontrado: !!data?.associado,
+        dependenteEncontrado: !!data?.dependente,
+        totalDependentes: data?.dependentes?.length || 0
+      });
+
       if (data?.associado) {
         setAssociado(data.associado);
         setDependentes(data.dependentes || []);
@@ -138,13 +146,16 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setDependenteLogado(data.dependente || null);
         setError(null);
       } else {
-        clearPortalToken();
+        console.warn("[PortalIdentity] Cadastro institucional não retornado pelo backend.");
+        // Se temos token mas não temos associado, é um erro de vínculo ou RLS
+        setError('Cadastro institucional não localizado. Entre em contato com o suporte.');
       }
     } catch (err: any) {
+      console.error("[PortalIdentity] Erro na resolução:", err);
       if (err?.status === 401) {
         clearPortalToken();
       } else {
-        setError('Não foi possível carregar seu perfil. Verifique sua conexão.');
+        setError(err.message || 'Não foi possível carregar seu perfil institucional.');
       }
     } finally {
       setInitializing(false);
