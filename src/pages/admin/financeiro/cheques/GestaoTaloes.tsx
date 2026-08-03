@@ -58,7 +58,7 @@ export default function GestaoTaloes() {
             <div className="flex items-center justify-between p-2 border-b">
               <div>
                 <Text variant="small" className="font-medium">Aprovação Dupla</Text>
-                <Text variant="caption">Exigir 2 assinaturas para > R$ 5.000</Text>
+                <Text variant="caption">Exigir 2 assinaturas para valores acima de R$ 5.000</Text>
               </div>
               <div className="h-5 w-10 bg-primary rounded-full relative"><div className="absolute right-1 top-1 h-3 w-3 bg-white rounded-full"/></div>
             </div>
