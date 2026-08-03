@@ -14,9 +14,13 @@ export function normalizeCpf(cpf: string | null | undefined): string | null {
  * Formata CPF para o padrão 000.000.000-00.
  */
 export function formatCpf(cpf: string | null | undefined): string {
-  const normalized = normalizeCpf(cpf);
-  if (!normalized) return "";
-  return normalized.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  if (!cpf) return "";
+  const digits = cpf.replace(/\D/g, '').slice(0, 11);
+  
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return digits.replace(/(\d{3})(\d{0,3})/, "$1.$2");
+  if (digits.length <= 9) return digits.replace(/(\d{3})(\d{3})(\d{0,3})/, "$1.$2.$3");
+  return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, "$1.$2.$3-$4");
 }
 
 /**
@@ -63,9 +67,11 @@ export function normalizeRegistrationNumber(reg: string | null | undefined): str
  * Formata Matrícula para o padrão 00000000-0.
  */
 export function formatRegistrationNumber(reg: string | null | undefined): string {
-  const normalized = normalizeRegistrationNumber(reg);
-  if (!normalized) return "";
-  return normalized.replace(/(\d{8})(\d{1})/, "$1-$2");
+  if (!reg) return "";
+  const digits = reg.replace(/\D/g, '').slice(0, 9);
+  
+  if (digits.length <= 8) return digits;
+  return digits.replace(/(\d{8})(\d{0,1})/, "$1-$2");
 }
 
 /**
