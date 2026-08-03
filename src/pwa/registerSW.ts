@@ -1,3 +1,4 @@
+// PORTAL_FRONTEND_VERSION = "portal-auth-dashboard-v4-2026-08-03"
 // Guarded service worker registration. Only registers in production on the
 // deployed app — never in Lovable preview, iframes, or dev.
 
@@ -15,6 +16,20 @@ function isBlockedHost(hostname: string): boolean {
   return false;
 }
 
+async function unregisterOldCaches() {
+  if (!("caches" in window)) return;
+  const cacheNames = await caches.keys();
+  const oldCaches = [
+    "identity-v1", "identity-v2", "identity-v3",
+    "html-cache", "assets-cache", "images-cache", "profile-photos"
+  ];
+  await Promise.all(
+    cacheNames
+      .filter(name => oldCaches.some(old => name.includes(old)))
+      .map(name => caches.delete(name))
+  );
+}
+
 async function unregisterAppSW() {
   if (!("serviceWorker" in navigator)) return;
   try {
@@ -27,6 +42,7 @@ async function unregisterAppSW() {
         })
         .map((r) => r.unregister()),
     );
+    await unregisterOldCaches();
   } catch {
     // ignore
   }
@@ -72,6 +88,9 @@ export async function registerPWA() {
     await unregisterAppSW();
     return;
   }
+
+  // Limpa caches antigos na inicialização para evitar conflitos de versão
+  await unregisterOldCaches();
 
   try {
     registration = await navigator.serviceWorker.register(APP_SW_PATH, { scope: "/" });

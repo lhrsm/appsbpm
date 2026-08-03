@@ -98,17 +98,17 @@ export function PortalProfileNotFound({
   };
   
   return (
-    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm">
+    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm w-full max-w-2xl">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted" aria-hidden>
         <UserSearch className="h-6 w-6 text-muted-foreground" />
       </span>
       <div className="max-w-md">
         <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <div className="mt-2 p-3 bg-destructive/5 border border-destructive/10 rounded-lg text-sm text-muted-foreground leading-relaxed">
           {description}
-        </p>
+        </div>
       </div>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2 mt-2">
         <Button onClick={onRetry} leftIcon={icons.atualizar}>Tentar novamente</Button>
         <Button variant="secondary" onClick={handleLogout} leftIcon={icons.lgpd}>Sair da conta</Button>
         <Button variant="ghost" onClick={() => navigate("/")}>Página pública</Button>

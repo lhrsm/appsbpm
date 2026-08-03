@@ -118,7 +118,8 @@ interface AssociadoContextType {
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
 
 export function AssociadoProvider({ children }: { children: ReactNode }) {
-  const PORTAL_IDENTITY_FRONTEND_VERSION = "identity-v3-2026-08-03";
+  const PORTAL_FRONTEND_VERSION = "portal-auth-dashboard-v4-2026-08-03";
+  const PORTAL_IDENTITY_FRONTEND_VERSION = PORTAL_FRONTEND_VERSION;
   const queryClient = useQueryClient();
   const [associado, setAssociado] = useState<Associado | null>(null);
   const [dependentes, setDependentes] = useState<Dependente[]>([]);
@@ -338,11 +339,14 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = () => {
+    console.log("[PortalIdentity] Logout: clearing states and caches...");
     // Encerra sessão, cancela requisições/realtime e limpa todo o cache privado
     // para que nenhum dado do usuário anterior fique visível no dispositivo.
     closeAllRealtime();
     clearPortalToken();
     clearPrivateState(queryClient);
+    
+    // Limpar estados locais
     setAssociado(null);
     setIdentity(null);
     setDependentes([]);
@@ -352,6 +356,16 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setInformes([]);
     setIsDependente(false);
     setDependenteLogado(null);
+    setError(null);
+    
+    // Limpeza profunda de persistência (localStorage/sessionStorage)
+    try {
+      localStorage.removeItem('portal-associado-cache');
+      localStorage.removeItem('portal-identity');
+      sessionStorage.clear();
+    } catch (e) {
+      // ignore
+    }
   };
 
   return (

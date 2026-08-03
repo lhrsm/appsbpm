@@ -1,4 +1,5 @@
 /**
+ * PORTAL_NAVIGATION_VERSION = "v4-2026-08-03"
  * Configuração central da navegação do Portal externo (associado e dependente).
  *
  * REGRA: nenhum componente deve repetir manualmente itens de menu.

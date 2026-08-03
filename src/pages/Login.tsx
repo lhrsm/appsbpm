@@ -12,16 +12,19 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
+import { cn } from '@/lib/utils';
 
 
 
 export default function Login() {
-  const [credential, setCredential] = useState('');
+  const [loginMethod, setLoginMethod] = useState<'cpf' | 'registration'>('cpf');
+  const [identifier, setIdentifier] = useState('');
   const [loading, setLoading] = useState(false);
   const [consent, setConsent] = useState(false);
   const [forgotOpen, setForgotOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  
   const { 
     setAssociado, 
     setDependentes, 
@@ -33,28 +36,34 @@ export default function Login() {
     setDependenteLogado
   } = useAssociado();
 
-  // Remove formatting from CPF for comparison
-  const cleanCpf = (cpf: string) => cpf.replace(/\D/g, '');
+  const handleMethodChange = (method: 'cpf' | 'registration') => {
+    setLoginMethod(method);
+    setIdentifier(''); // Limpa ao trocar para evitar máscaras cruzadas
+  };
 
-  // Aplica máscara de CPF (000.000.000-00) quando o valor passa de 8 dígitos
-  // (matrícula tem no máximo 8 dígitos, então continua sem formatação)
   const applyMask = (value: string) => {
-    const d = value.replace(/\D/g, '').slice(0, 11);
-    if (d.length <= 8) return d;
-    return d
-      .replace(/^(\d{3})(\d)/, '$1.$2')
-      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
+    const d = value.replace(/\D/g, '');
+    if (loginMethod === 'cpf') {
+      const digits = d.slice(0, 11);
+      if (digits.length <= 3) return digits;
+      if (digits.length <= 6) return digits.replace(/(\d{3})(\d{0,3})/, "$1.$2");
+      if (digits.length <= 9) return digits.replace(/(\d{3})(\d{3})(\d{0,3})/, "$1.$2.$3");
+      return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{0,2})/, "$1.$2.$3-$4");
+    } else {
+      const digits = d.slice(0, 9);
+      if (digits.length <= 8) return digits;
+      return digits.replace(/(\d{8})(\d{0,1})/, "$1-$2");
+    }
   };
 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!credential.trim()) {
+    if (!identifier.trim()) {
       toast({
         title: 'Erro',
-        description: 'Por favor, informe sua matrícula ou CPF.',
+        description: `Por favor, informe seu ${loginMethod === 'cpf' ? 'CPF' : 'número de matrícula'}.`,
         variant: 'destructive',
       });
       return;
@@ -72,10 +81,11 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const cleanedCredential = cleanCpf(credential.trim());
+      const normalized = identifier.replace(/\D/g, '');
 
       const res = await portalCall<any>('login', {
-        credential: /^\d{11}$/.test(cleanedCredential) ? cleanedCredential : credential.trim(),
+        identifier_type: loginMethod,
+        identifier: normalized,
         user_agent: navigator.userAgent.slice(0, 500),
       });
 
@@ -151,26 +161,49 @@ export default function Login() {
               Portal do Associado
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Acesse com sua matrícula ou CPF para consultar seus benefícios
+              Selecione o método de acesso e informe seus dados
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-6" aria-label="Formulário de acesso ao Portal do Associado">
+              <div className="flex p-1 bg-muted rounded-lg mb-6">
+                <button
+                  type="button"
+                  onClick={() => handleMethodChange('cpf')}
+                  className={cn(
+                    "flex-1 py-2 text-sm font-medium rounded-md transition-all",
+                    loginMethod === 'cpf' ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Entrar com CPF
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleMethodChange('registration')}
+                  className={cn(
+                    "flex-1 py-2 text-sm font-medium rounded-md transition-all",
+                    loginMethod === 'registration' ? "bg-white shadow-sm text-primary" : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Entrar com Matrícula
+                </button>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor="credential" className="text-foreground font-medium">
-                  Matrícula ou CPF
+                <Label htmlFor="identifier" className="text-foreground font-medium">
+                  {loginMethod === 'cpf' ? 'CPF' : 'Número de Matrícula'}
                 </Label>
                 <Input
-                  id="credential"
+                  id="identifier"
+                  name={loginMethod === 'cpf' ? 'login-cpf' : 'login-registration'}
                   type="text"
                   inputMode="numeric"
-                  autoComplete="username"
-                  placeholder="Digite sua matrícula ou CPF"
-                  value={credential}
-                  onChange={(e) => setCredential(applyMask(e.target.value))}
-                  maxLength={14}
-
-                  className="h-12 text-lg"
+                  autoComplete={loginMethod === 'cpf' ? 'username' : 'off'}
+                  placeholder={loginMethod === 'cpf' ? '000.000.000-00' : '00000000-0'}
+                  value={identifier}
+                  onChange={(e) => setIdentifier(applyMask(e.target.value))}
+                  maxLength={loginMethod === 'cpf' ? 14 : 10}
+                  className="h-12 text-lg font-mono tracking-wider"
                   disabled={loading}
                   aria-required="true"
                 />
