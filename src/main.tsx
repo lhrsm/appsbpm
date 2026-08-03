@@ -13,6 +13,9 @@ class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, {
   }
   static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
   componentDidCatch(error: any, errorInfo: any) {
+    console.error("ROOT ERROR MESSAGE", error.message);
+    console.error("ROOT ERROR STACK", error.stack);
+    console.error("ROOT COMPONENT STACK", errorInfo.componentStack);
     console.error("[RootErrorBoundary] CRITICAL ERROR:", error, errorInfo);
   }
   render() {
