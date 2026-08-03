@@ -371,20 +371,19 @@ export default function AdminAssociados() {
               </select>
             </div>
             <div>
-              <Label>Situação Associativa</Label>
+              <Label>Status da Associação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={editing?.situacao_associativa ?? "regular"}
+                value={editing?.status ?? "regular"}
                 onChange={(e) => {
                   const val = e.target.value;
                   setEditing({ 
                     ...editing, 
-                    situacao_associativa: val,
-                    ativo: val === "regular" 
+                    status: val
                   });
                 }}
               >
-                {SITUACOES_ASSOCIATIVAS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                {STATUS_ASSOCIAÇÃO.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
             </div>
 
