@@ -157,19 +157,19 @@ const App = () => (
       <A11yProvider>
         <AssociadoProvider>
           <BrowserRouter>
-            <Toaster />
-            <Sonner />
-            <RouteAnnouncer />
-            <CookieConsent />
-            <AccessibilityWidget />
-            <ChatbotGate />
-
-            <InstallPWAPrompt />
-            <OfflineBanner />
-            <BackToTop />
-            <PWAUpdatePrompt />
-            <Suspense fallback={<RouteFallback />}>
-              <Routes>
+            <div>
+              <Toaster />
+              <Sonner />
+              <RouteAnnouncer />
+              <CookieConsent />
+              <AccessibilityWidget />
+              <ChatbotGate />
+              <InstallPWAPrompt />
+              <OfflineBanner />
+              <BackToTop />
+              <PWAUpdatePrompt />
+              <Suspense fallback={<RouteFallback />}>
+                <Routes>
                 <Route path="/" element={<div><PortalBoasVindas /></div>} />
                 <Route path="/entrar" element={<div><PortalEntrar /></div>} />
                 <Route path="/primeiro-acesso" element={<div><PortalPrimeiroAcesso /></div>} />
@@ -274,6 +274,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            </div>
           </BrowserRouter>
         </AssociadoProvider>
       </A11yProvider>
