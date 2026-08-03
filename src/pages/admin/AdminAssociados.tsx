@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RegistrationNumberInput } from "@/components/RegistrationNumberInput";
 import { CpfInput } from "@/components/CpfInput";
+import { BirthDateInput } from "@/components/BirthDateInput";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import OrigemDadoBadge from "@/components/admin/OrigemDadoBadge";
-import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber, AssociadoStatusLabels } from "@/lib/identity";
+import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber, formatDateForDisplay, normalizeBirthDate, validateBirthDate } from "@/lib/identity";
+
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Pencil, Trash2, Plus, Search, Loader2 } from "lucide-react";
@@ -67,30 +69,10 @@ const formatCep = (v: string) => {
   return `${d.slice(0, 5)}-${d.slice(5)}`;
 };
 
-const formatDateBR = (v: string) => {
-  const d = onlyDigits(v).slice(0, 8);
-  if (d.length <= 2) return d;
-  if (d.length <= 4) return `${d.slice(0, 2)}/${d.slice(2)}`;
-  return `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`;
-};
-// Converte ISO (yyyy-mm-dd) -> dd/mm/yyyy
-const isoToBR = (iso?: string | null) => {
-  if (!iso) return "";
-  const s = String(iso).slice(0, 10);
-  const [y, m, d] = s.split("-");
-  if (!y || !m || !d) return "";
-  return `${d}/${m}/${y}`;
-};
-// Converte dd/mm/yyyy -> ISO (yyyy-mm-dd). Retorna null se inválido/vazio.
-const brToISO = (br?: string | null) => {
-  if (!br) return null;
-  const m = String(br).trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (!m) return null;
-  const [, d, mo, y] = m;
-  const dt = new Date(`${y}-${mo}-${d}T00:00:00`);
-  if (isNaN(dt.getTime())) return null;
-  return `${y}-${mo}-${d}`;
-};
+const isoToBR = (iso?: string | null) => formatDateForDisplay(iso);
+
+const brToISO = (br?: string | null) => normalizeBirthDate(br);
+
 
 export default function AdminAssociados() {
   const [rows, setRows] = useState<Associado[]>([]);
@@ -188,16 +170,13 @@ export default function AdminAssociados() {
     // Removendo explicitamente o campo redundante 'ativo'
     delete payload.ativo;
     
+    // As datas já chegam como ISO string via BirthDateInput ou no load
     for (const k of ["data_nascimento", "data_admissao"] as const) {
-      const v = payload[k];
-      if (v) {
-        const iso = brToISO(v);
-        if (!iso) return toast.error(`${k === "data_nascimento" ? "Data de nascimento" : "Data de admissão"} inválida (use dd/mm/aaaa)`);
-        payload[k] = iso;
-      } else {
+      if (!payload[k]) {
         payload[k] = null;
       }
     }
+
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
 
     const isNew = !payload.id;
@@ -308,11 +287,11 @@ export default function AdminAssociados() {
                 <div className="truncate"><span className="font-medium text-foreground">E-mail:</span> {r.email ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">Telefone:</span> {r.telefone ?? "—"}</div>
                 {r.cidade_residencia && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade_residencia}</div>}
-                {r.data_admissao && <div className="truncate"><span className="font-medium text-foreground">Admissão:</span> {isoToBR(r.data_admissao)}</div>}
+                {r.data_admissao && <div className="truncate"><span className="font-medium text-foreground">Admissão:</span> {formatDateForDisplay(r.data_admissao)}</div>}
 
               </div>
               <div className="flex justify-end gap-1 pt-2 border-t">
-                <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
               </div>
             </Card>
@@ -407,23 +386,20 @@ export default function AdminAssociados() {
               <Input value={editing?.telefone ?? ""} onChange={(e) => setEditing({ ...editing, telefone: e.target.value })} />
             </div>
             <div>
-              <Label>Data de nascimento</Label>
-              <Input
-                placeholder="dd/mm/aaaa"
-                maxLength={10}
+              <BirthDateInput
+                label="Data de nascimento"
                 value={editing?.data_nascimento ?? ""}
-                onChange={(e) => setEditing({ ...editing, data_nascimento: formatDateBR(e.target.value) })}
+                onChange={(v) => setEditing({ ...editing, data_nascimento: v })}
               />
             </div>
             <div>
-              <Label>Data de admissão</Label>
-              <Input
-                placeholder="dd/mm/aaaa"
-                maxLength={10}
+              <BirthDateInput
+                label="Data de admissão"
                 value={editing?.data_admissao ?? ""}
-                onChange={(e) => setEditing({ ...editing, data_admissao: formatDateBR(e.target.value) })}
+                onChange={(v) => setEditing({ ...editing, data_admissao: v })}
               />
             </div>
+
             <div>
               <Label>CEP</Label>
               <div className="relative">

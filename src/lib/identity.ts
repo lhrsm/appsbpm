@@ -1,5 +1,9 @@
 
 /**
+ * PADRONIZAÇÃO INSTITUCIONAL DE IDENTIDADE (CPF, MATRÍCULA E DATAS)
+ */
+
+/**
  * Normaliza CPF removendo pontuação e espaços.
  */
 export function normalizeCpf(cpf: string | null | undefined): string | null {
@@ -37,22 +41,18 @@ export function validateCpf(cpf: string | null | undefined): boolean {
   const normalized = padCpf(cpf);
   if (!normalized || normalized.length !== 11) return false;
   
-  // Rejeitar sequências repetidas
   if (/^(\d)\1{10}$/.test(normalized)) return false;
 
   let sum = 0;
   let remainder;
-
   for (let i = 1; i <= 9; i++) sum = sum + parseInt(normalized.substring(i - 1, i)) * (11 - i);
   remainder = (sum * 10) % 11;
-
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(normalized.substring(9, 10))) return false;
 
   sum = 0;
   for (let i = 1; i <= 10; i++) sum = sum + parseInt(normalized.substring(i - 1, i)) * (12 - i);
   remainder = (sum * 10) % 11;
-
   if (remainder === 10 || remainder === 11) remainder = 0;
   if (remainder !== parseInt(normalized.substring(10, 11))) return false;
 
@@ -69,7 +69,6 @@ export function normalizeRegistrationNumber(reg: string | null | undefined): str
 
 /**
  * Garante que a matrícula tenha 9 dígitos, preenchendo com zeros à esquerda se necessário.
- * Deve ser usado apenas no momento de salvar ou comparar no banco de dados.
  */
 export function padRegistrationNumber(reg: string | null | undefined): string | null {
   const normalized = normalizeRegistrationNumber(reg);
@@ -83,13 +82,12 @@ export function padRegistrationNumber(reg: string | null | undefined): string | 
 export function formatRegistrationNumber(reg: string | null | undefined): string {
   if (!reg) return "";
   const digits = reg.replace(/\D/g, '').slice(0, 9);
-  
   if (digits.length <= 8) return digits;
   return digits.replace(/(\d{8})(\d{0,1})/, "$1-$2");
 }
 
 /**
- * Valida se a matrícula possui o formato institucional (9 dígitos no total).
+ * Valida se a matrícula possui o formato institucional (9 dígitos).
  */
 export function validateRegistrationNumberFormat(reg: string | null | undefined): boolean {
   if (!reg) return false;
@@ -98,76 +96,50 @@ export function validateRegistrationNumberFormat(reg: string | null | undefined)
 }
 
 /**
- * Status da Associação unificado.
+ * Converte data ISO (YYYY-MM-DD) para formato de exibição (DD/MM/YYYY).
  */
-export type AssociadoStatus = 'regular' | 'inativo' | 'suspenso' | 'em_analise' | 'aguardando_reativacao' | 'falecido';
-
-export const AssociadoStatusLabels: Record<AssociadoStatus, string> = {
-  regular: 'Regular',
-  inativo: 'Inativo',
-  suspenso: 'Suspenso',
-  em_analise: 'Em análise',
-  aguardando_reativacao: 'Aguardando reativação',
-  falecido: 'Falecido'
-};
-
-/**
- * Mapeia os status institucionais para o padrão do sistema.
- */
-export function mapInstitutionalStatus(status: string | null | undefined): AssociadoStatus {
-  if (!status) return 'inativo';
-  const s = status.trim().toLowerCase();
-  
-  const map: Record<string, AssociadoStatus> = {
-    'regular': 'regular',
-    'ativo': 'regular',
-    'inativo': 'inativo',
-    'excluido': 'inativo',
-    'licenciado': 'inativo',
-    'suspenso': 'suspenso',
-    'em_analise': 'em_analise',
-    'em análise': 'em_analise',
-    'aguardando_reativacao': 'aguardando_reativacao',
-    'aguardando reativação': 'aguardando_reativacao',
-    'falecido': 'falecido'
-  };
-
-  return map[s] || 'inativo';
+export function formatDateForDisplay(isoDate: string | null | undefined): string {
+  if (!isoDate) return "";
+  const dateStr = isoDate.split('T')[0];
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return isoDate;
+  const [year, month, day] = parts;
+  return `${day}/${month}/${year}`;
 }
 
 /**
- * Verifica se o status permite acesso básico ao portal.
- * Regra: somente 'regular' tem acesso completo.
+ * Normaliza data do formato DD/MM/YYYY para ISO (YYYY-MM-DD).
  */
-export function isStatusAtivo(status: AssociadoStatus | string | null | undefined): boolean {
-  if (!status) return false;
-  return status === 'regular';
+export function normalizeBirthDate(input: string | null | undefined): string | null {
+  if (!input) return null;
+  const trimmed = input.trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) return trimmed.split('T')[0];
+  const match = trimmed.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  return `${year}-${month}-${day}`;
 }
 
 /**
- * Define o nível de acesso baseado no status da associação.
+ * Valida se a data no formato DD/MM/YYYY é uma data civil real e não futura.
  */
-export function getAccessLevel(status: AssociadoStatus | string | null | undefined): PortalIdentity['portal_access_level'] {
-  const s = status as AssociadoStatus;
-  if (s === 'regular') return 'full';
-  if (s === 'inativo' || s === 'aguardando_reativacao') return 'read_only';
-  if (s === 'suspenso' || s === 'em_analise') return 'blocked';
-  return 'blocked'; // Falecido ou desconhecido
+export function validateBirthDate(input: string | null | undefined): boolean {
+  const iso = normalizeBirthDate(input);
+  if (!iso) return false;
+  const [year, month, day] = iso.split('-').map(Number);
+  if (year < 1900 || month < 1 || month > 12 || day < 1 || day > 31) return false;
+  const daysInMonth = new Date(year, month, 0).getDate();
+  if (day > daysInMonth) return false;
+  const inputDate = new Date(year, month - 1, day);
+  const now = new Date();
+  if (inputDate > now) return false;
+  return true;
 }
 
 /**
- * Interface unificada de identidade do portal para associados e dependentes.
+ * Compara duas datas em formato ISO YYYY-MM-DD ignorando timezone.
  */
-export interface PortalIdentity {
-  auth_user_id: string;
-  person_id: string;
-  membership_id: string | null; // Associado.id
-  dependent_id: string | null;  // Dependente.id
-  profile_type: 'associate' | 'dependent';
-  cpf_normalized: string;
-  registration_number: string | null;
-  membership_status: AssociadoStatus;
-  functional_status: string | null;
-  portal_access_level: 'full' | 'read_only' | 'blocked' | 'manual_review';
-  holder_member_id?: string | null; // Para dependentes
+export function compareIsoDates(date1: string | null | undefined, date2: string | null | undefined): boolean {
+  if (!date1 || !date2) return false;
+  return date1.split('T')[0] === date2.split('T')[0];
 }

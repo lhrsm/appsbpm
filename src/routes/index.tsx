@@ -1,10 +1,11 @@
 /** 
-1. Matrícula: Padrão 00000000-0 aplicado com RegistrationNumberInput. Normalização para 9 dígitos.
-2. CPF: Padrão 000.000.000-00 aplicado com CpfInput em todas as telas administrativas e de portal.
-3. Validação: backend agora normaliza CPF (11) e Matrícula (9) antes da comparação, aceitando "Regular" como ativo.
-4. UI: Máscaras progressivas e validação visual de CPF implementadas.
-5. Status: Concluído conforme roteiro institucional.
+1. CPF e Matrícula: Padrão oficial 11 e 9 dígitos, com preenchimento de zeros à esquerda (padCpf, padRegistrationNumber).
+2. Data de Nascimento: Padrão ISO (YYYY-MM-DD) no banco e backend. Formato brasileiro (DD/MM/YYYY) na interface.
+3. Validação: backend normaliza CPF, Matrícula e Data antes da comparação institucional.
+4. UI: BirthDateInput com máscara progressiva e normalização ISO implementado em todas as telas.
+5. PWA: Sistema de atualização e limpeza de cache sincronizados.
 */
+
 import { Card, Text, Button, icons } from "@/design-system";
 
 export default function RoutesIndex() {

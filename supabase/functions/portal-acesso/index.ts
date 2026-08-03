@@ -4,6 +4,8 @@ import { z } from 'npm:zod@3.23.8';
 import { getIdentityProvider, soNumeros, type PersonType } from './providers.ts';
 import { getEmailService, codeEmailHtml, codeEmailText, maskEmail } from './email.ts';
 import { MAX_ERROS, gerarPerguntas, montarOpcoes, normalizarResposta, publicar } from './quiz.ts';
+import { normalizeBirthDate, validateBirthDate } from './utils.ts';
+
 
 const SESSION_TTL_SECONDS = 60 * 60 * 8;
 const VALIDATION_TTL_MIN = 15;
@@ -74,7 +76,7 @@ const Body = z.discriminatedUnion('action', [
   z.object({
     action: z.literal('validate_identity'),
     cpf: z.string().min(11).max(14),
-    birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    birthDate: z.string().min(10).max(10),
     personType: z.enum(['associate', 'dependent']),
     registration: z.string().max(40).optional(),
     fullName: z.string().max(200).optional(),
@@ -297,10 +299,23 @@ Deno.serve(async (req) => {
         return json({ success: false, status: 'already_linked', message: MENSAGENS.already_linked });
       }
 
+      const birthDateNormal = normalizeBirthDate(body.birthDate);
+      // O frontend já envia YYYY-MM-DD. Se falhar, tentamos normalizar de novo.
+      if (!validateBirthDate(body.birthDate) && (!birthDateNormal || !validateBirthDate(birthDateNormal))) {
+        return json({ success: false, status: 'not_matched', message: MENSAGENS.not_matched });
+      }
+
+      const finalBirthDate = birthDateNormal || body.birthDate;
+
+
+
+
       const result = await provider.validateIdentity({
         cpf,
-        birthDate: body.birthDate,
+        birthDate: finalBirthDate,
+
         personType: body.personType as PersonType,
+
         registration: body.registration,
         fullName: body.fullName,
         motherName: body.motherName,

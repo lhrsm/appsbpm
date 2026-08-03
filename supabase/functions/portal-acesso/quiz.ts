@@ -39,14 +39,22 @@ const embaralhar = <T,>(arr: T[]): T[] => {
   return copia;
 };
 
-const ano = (data?: string | null) => (data ? String(new Date(`${data}T12:00:00`).getFullYear()) : null);
+const ano = (data?: string | null) => {
+  if (!data) return null;
+  // A data já vem no formato YYYY-MM-DD do banco (coluna date)
+  const parts = data.split('-');
+  return parts.length === 3 ? parts[0] : null;
+};
 
 const anoPorExtenso = (data?: string | null) => {
   if (!data) return null;
-  const d = new Date(`${data}T12:00:00`);
-  if (Number.isNaN(d.getTime())) return null;
+  const parts = data.split('-');
+  if (parts.length !== 3) return null;
+  const [year, month] = parts;
+  const d = new Date(Number(year), Number(month) - 1, 15);
   return d.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 };
+
 
 const primeiroNome = (nome?: string | null) => (nome || '').trim().split(/\s+/)[0] || null;
 
@@ -207,7 +215,8 @@ export async function gerarPerguntas(
 
     const admissao = anoPorExtenso(associado.data_admissao);
     if (admissao) {
-      const d = new Date(`${associado.data_admissao}T12:00:00`);
+      const [year, month] = associado.data_admissao.split('-');
+      const d = new Date(Number(year), Number(month) - 1, 15);
       const falsos = embaralhar([-14, -7, 5, 11])
         .slice(0, 3)
         .map((m) => {
@@ -215,6 +224,7 @@ export async function gerarPerguntas(
           alt.setMonth(alt.getMonth() + m);
           return alt.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
         });
+
       perguntas.push({
         chave: 'admissao',
         pergunta: 'Em que mês e ano você passou a ser associado da SBPM?',

@@ -3,7 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CpfInput } from "@/components/CpfInput";
-import { padCpf, formatCpf } from "@/lib/identity";
+import { BirthDateInput } from "@/components/BirthDateInput";
+import { padCpf, formatCpf, formatDateForDisplay } from "@/lib/identity";
+
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -76,10 +78,15 @@ export default function AdminDependentes() {
       ...editing,
       cpf: padCpf(editing.cpf)
     };
+
+    // As datas já chegam como ISO string via BirthDateInput ou no load
+    if (!payload.data_nascimento) payload.data_nascimento = null;
+
     // Remover campo redundante ativo
     delete payload.ativo;
     
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
+
     const isNew = !payload.id;
     const { data, error } = isNew
       ? await supabase.from("dependentes").insert(payload).select().maybeSingle()
@@ -178,7 +185,7 @@ export default function AdminDependentes() {
                   {r.data_nascimento && (
                     <div className="truncate">
                       <span className="font-medium text-foreground">Nascimento:</span>{" "}
-                      {new Date(r.data_nascimento).toLocaleDateString("pt-BR")}
+                      {formatDateForDisplay(r.data_nascimento)}
                     </div>
                   )}
                 </div>
@@ -221,9 +228,13 @@ export default function AdminDependentes() {
               />
             </div>
             <div>
-              <Label>Data de nascimento</Label>
-              <Input type="date" value={editing?.data_nascimento ?? ""} onChange={(e) => setEditing({ ...editing, data_nascimento: e.target.value })} />
+              <BirthDateInput
+                label="Data de nascimento"
+                value={editing?.data_nascimento ?? ""}
+                onChange={(v) => setEditing({ ...editing, data_nascimento: v })}
+              />
             </div>
+
             <div>
               <Label>Grau de parentesco</Label>
               <select
