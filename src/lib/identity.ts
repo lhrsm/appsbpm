@@ -5,9 +5,7 @@
  */
 export function normalizeCpf(cpf: string | null | undefined): string | null {
   if (!cpf) return null;
-  const digits = cpf.replace(/\D/g, '');
-  if (digits.length === 0) return null;
-  return digits;
+  return cpf.replace(/\D/g, '');
 }
 
 /**
@@ -68,9 +66,7 @@ export function validateCpf(cpf: string | null | undefined): boolean {
  */
 export function normalizeRegistrationNumber(reg: string | null | undefined): string | null {
   if (!reg) return null;
-  const digits = reg.replace(/\D/g, '');
-  if (digits.length === 0) return null;
-  return digits;
+  return reg.replace(/\D/g, '');
 }
 
 /**
@@ -129,8 +125,15 @@ export function mapInstitutionalStatus(status: string | null | undefined): Assoc
     'falecido': 'falecido'
   };
 
-  return map[s] || 'inativo';
-}
+export const AssociadoStatusLabels: Record<AssociadoStatus, string> = {
+  regular: 'Regular',
+  inativo: 'Inativo',
+  suspenso: 'Suspenso',
+  em_analise: 'Em análise',
+  aguardando_reativacao: 'Aguardando reativação',
+  falecido: 'Falecido'
+};
+
 
 /**
  * Verifica se o status permite acesso básico ao portal.
