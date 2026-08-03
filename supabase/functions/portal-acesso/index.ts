@@ -721,11 +721,12 @@ Deno.serve(async (req) => {
         link = (await admin.from('external_account_links').select('*').eq('cpf_reference', digitos).maybeSingle()).data;
       }
       if (!link) {
+        const queryReg = credencial.trim().toUpperCase();
         link = (
           await admin
             .from('external_account_links')
             .select('*')
-            .ilike('registration_number', credencial)
+            .eq('registration_number', queryReg)
             .maybeSingle()
         ).data;
       }
