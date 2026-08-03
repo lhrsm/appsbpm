@@ -155,127 +155,127 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <A11yProvider>
-      <AssociadoProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <RouteAnnouncer />
-          <CookieConsent />
-          <AccessibilityWidget />
-          <ChatbotGate />
+        <AssociadoProvider>
+          <BrowserRouter>
+            <Toaster />
+            <Sonner />
+            <RouteAnnouncer />
+            <CookieConsent />
+            <AccessibilityWidget />
+            <ChatbotGate />
 
-          <InstallPWAPrompt />
-          <OfflineBanner />
-          <BackToTop />
-          <PWAUpdatePrompt />
-          <Suspense fallback={<RouteFallback />}>
-            <Routes>
-              <Route path="/" element={<PortalBoasVindas />} />
-              <Route path="/entrar" element={<PortalEntrar />} />
-              <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
-              <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
-              <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
-              <Route path="/acesso-simplificado" element={<Login />} />
-              <Route path="/quiosque" element={<Quiosque />} />
-              <Route path="/bem/:token" element={<BemQR />} />
-              <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+            <InstallPWAPrompt />
+            <OfflineBanner />
+            <BackToTop />
+            <PWAUpdatePrompt />
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<PortalBoasVindas />} />
+                <Route path="/entrar" element={<PortalEntrar />} />
+                <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+                <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+                <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
+                <Route path="/acesso-simplificado" element={<Login />} />
+                <Route path="/quiosque" element={<Quiosque />} />
+                <Route path="/bem/:token" element={<BemQR />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
-              <Route path="/privacidade" element={<Privacidade />} />
-              <Route path="/acessibilidade" element={<Acessibilidade />} />
-              <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
-              <Route path="/recovery" element={<DashboardRecovery />} />
-              <Route path="/dashboard" element={<Dashboard />}>
-                <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
-                <Route path="carteirinha" element={<RotaCarteirinha />} />
-                {/* Rota depreciada: "Limite disponível" foi removido do portal externo */}
-                <Route path="limite" element={<Navigate to="/dashboard" replace />} />
-                
-                <Route path="clinicas" element={<Clinicas />} />
-                <Route path="informes" element={<Informes />} />
-                <Route path="dependentes" element={<Dependentes />} />
-                <Route path="associacao-premiada" element={<AssociacaoPremiada />} />
-                <Route path="simulador" element={<Simulador />} />
-                <Route path="indicar-parceiro" element={<IndicarParceiro />} />
-                <Route path="peculio" element={<Peculio />} />
-                <Route path="solicitar-peculio" element={<SolicitarPeculio />} />
-                <Route path="perfil" element={<Perfil />} />
-                <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
-                <Route path="notificacoes" element={<Notificacoes />} />
-                <Route path="vinculo" element={<PortalVinculo />} />
-                <Route path="meus-dados" element={<RotaMeusDados />} />
-                <Route path="meu-titular" element={<RotaMeuTitular />} />
-                <Route path="seguranca" element={<SegurancaHub />} />
-                <Route path="preferencias" element={<RotaPreferencias />} />
-                <Route path="atendimento" element={<RotaAtendimento />} />
-                <Route path="solicitacoes" element={<PortalSolicitacoes />} />
-                <Route path="solicitacoes/nova" element={<PortalSolicitacaoNova />} />
-                <Route path="solicitacoes/:id" element={<PortalSolicitacaoDetalhes />} />
-                {/* Rota antiga da central de solicitações */}
-                <Route path="solicitacoes-legado" element={<Solicitacoes />} />
-                <Route path="documentos" element={<RotaDocumentos />} />
-                <Route path="financeiro" element={<Financeiro />} />
-                <Route path="agenda" element={<Agenda />} />
-                <Route path="faq" element={<FAQ />} />
-                <Route path="historico" element={<HistoricoAcessos />} />
-                <Route path="beneficios" element={<Beneficios />} />
-                <Route path="avaliar" element={<AvaliarClinicas />} />
-              </Route>
-              {/* Alias do portal externo */}
-              <Route path="/portal/*" element={<PortalAlias />} />
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminVisaoGeral />} />
-                <Route path="painel" element={<AdminHome />} />
-                <Route path="usuarios" element={<AdminUsuarios />} />
-                {/* Hubs dos módulos institucionais */}
-                <Route path="previdencia" element={<AdminPrevidencia />} />
-                <Route path="saude" element={<AdminSaude />} />
-                <Route path="patrimonio" element={<AdminPatrimonio />} />
-                <Route path="contabilidade" element={<AdminContabilidade />} />
-                <Route path="rh" element={<AdminRH />} />
-                <Route path="associados" element={<AdminAssociados />} />
-                <Route path="associacoes/pre-cadastros" element={<AdminPreCadastros />} />
+                <Route path="/privacidade" element={<Privacidade />} />
+                <Route path="/acessibilidade" element={<Acessibilidade />} />
+                <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+                <Route path="/recovery" element={<DashboardRecovery />} />
+                <Route path="/dashboard" element={<Dashboard />}>
+                  <Route index element={<Navigate to="/dashboard/carteirinha" replace />} />
+                  <Route path="carteirinha" element={<RotaCarteirinha />} />
+                  {/* Rota depreciada: "Limite disponível" foi removido do portal externo */}
+                  <Route path="limite" element={<Navigate to="/dashboard" replace />} />
+                  
+                  <Route path="clinicas" element={<Clinicas />} />
+                  <Route path="informes" element={<Informes />} />
+                  <Route path="dependentes" element={<Dependentes />} />
+                  <Route path="associacao-premiada" element={<AssociacaoPremiada />} />
+                  <Route path="simulador" element={<Simulador />} />
+                  <Route path="indicar-parceiro" element={<IndicarParceiro />} />
+                  <Route path="peculio" element={<Peculio />} />
+                  <Route path="solicitar-peculio" element={<SolicitarPeculio />} />
+                  <Route path="perfil" element={<Perfil />} />
+                  <Route path="minha-privacidade" element={<MinhaPrivacidade />} />
+                  <Route path="notificacoes" element={<Notificacoes />} />
+                  <Route path="vinculo" element={<PortalVinculo />} />
+                  <Route path="meus-dados" element={<RotaMeusDados />} />
+                  <Route path="meu-titular" element={<RotaMeuTitular />} />
+                  <Route path="seguranca" element={<SegurancaHub />} />
+                  <Route path="preferencias" element={<RotaPreferencias />} />
+                  <Route path="atendimento" element={<RotaAtendimento />} />
+                  <Route path="solicitacoes" element={<PortalSolicitacoes />} />
+                  <Route path="solicitacoes/nova" element={<PortalSolicitacaoNova />} />
+                  <Route path="solicitacoes/:id" element={<PortalSolicitacaoDetalhes />} />
+                  {/* Rota antiga da central de solicitações */}
+                  <Route path="solicitacoes-legado" element={<Solicitacoes />} />
+                  <Route path="documentos" element={<RotaDocumentos />} />
+                  <Route path="financeiro" element={<Financeiro />} />
+                  <Route path="agenda" element={<Agenda />} />
+                  <Route path="faq" element={<FAQ />} />
+                  <Route path="historico" element={<HistoricoAcessos />} />
+                  <Route path="beneficios" element={<Beneficios />} />
+                  <Route path="avaliar" element={<AvaliarClinicas />} />
+                </Route>
+                {/* Alias do portal externo */}
+                <Route path="/portal/*" element={<PortalAlias />} />
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route index element={<AdminVisaoGeral />} />
+                  <Route path="painel" element={<AdminHome />} />
+                  <Route path="usuarios" element={<AdminUsuarios />} />
+                  {/* Hubs dos módulos institucionais */}
+                  <Route path="previdencia" element={<AdminPrevidencia />} />
+                  <Route path="saude" element={<AdminSaude />} />
+                  <Route path="patrimonio" element={<AdminPatrimonio />} />
+                  <Route path="contabilidade" element={<AdminContabilidade />} />
+                  <Route path="rh" element={<AdminRH />} />
+                  <Route path="associados" element={<AdminAssociados />} />
+                  <Route path="associacoes/pre-cadastros" element={<AdminPreCadastros />} />
 
-                <Route path="dependentes" element={<AdminDependentes />} />
-                <Route path="limites" element={<AdminLimites />} />
-                <Route path="carencias" element={<AdminCarencias />} />
-                <Route path="clinicas" element={<AdminClinicas />} />
-                <Route path="informes" element={<AdminInformes />} />
-                <Route path="automacoes" element={<AdminAutomacoes />} />
-                <Route path="integracoes" element={<AdminIntegracoes />} />
-                <Route path="integracoes/inconsistencias" element={<AdminIntegracoes />} />
-                <Route path="integracoes/validacao-externa" element={<AdminValidacaoExterna />} />
+                  <Route path="dependentes" element={<AdminDependentes />} />
+                  <Route path="limites" element={<AdminLimites />} />
+                  <Route path="carencias" element={<AdminCarencias />} />
+                  <Route path="clinicas" element={<AdminClinicas />} />
+                  <Route path="informes" element={<AdminInformes />} />
+                  <Route path="automacoes" element={<AdminAutomacoes />} />
+                  <Route path="integracoes" element={<AdminIntegracoes />} />
+                  <Route path="integracoes/inconsistencias" element={<AdminIntegracoes />} />
+                  <Route path="integracoes/validacao-externa" element={<AdminValidacaoExterna />} />
 
 
-                <Route path="sincronizacao" element={<AdminSincronizacao />} />
-                <Route path="configuracoes" element={<AdminConfiguracoes />} />
-                <Route path="aniversariantes" element={<AdminAniversariantes />} />
-                <Route path="comunicados" element={<AdminComunicados />} />
-                <Route path="importar" element={<AdminImportar />} />
-                <Route path="auditoria" element={<AdminAuditoria />} />
-                <Route path="peculio" element={<AdminPeculio />} />
-                <Route path="seguranca" element={<AdminSeguranca />} />
-                <Route path="notificacoes" element={<AdminNotificacoes />} />
-                <Route path="solicitacoes" element={<AdminSolicitacoes />} />
-                <Route path="documentos" element={<AdminDocumentos />} />
-                <Route path="financeiro" element={<AdminFinanceiro />} />
-                <Route path="financeiro/cheques/*" element={<ChequesRoutes />} />
-                <Route path="eventos" element={<AdminEventos />} />
-                <Route path="faq" element={<AdminFAQ />} />
-                <Route path="avaliacoes" element={<AdminAvaliacoes />} />
-                <Route path="privacidade" element={<AdminPrivacidade />} />
-                <Route path="relatorios" element={<AdminRelatorios />} />
-                <Route path="analytics" element={<AdminAnalytics />} />
-                <Route path="componentes" element={<AdminComponentes />} />
-                <Route path="assinatura-icp" element={<AdminAssinaturaICP />} />
-                <Route path="sobre" element={<AdminSobre />} />
-                <Route path="tutoriais" element={<AdminTutoriais />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </AssociadoProvider>
+                  <Route path="sincronizacao" element={<AdminSincronizacao />} />
+                  <Route path="configuracoes" element={<AdminConfiguracoes />} />
+                  <Route path="aniversariantes" element={<AdminAniversariantes />} />
+                  <Route path="comunicados" element={<AdminComunicados />} />
+                  <Route path="importar" element={<AdminImportar />} />
+                  <Route path="auditoria" element={<AdminAuditoria />} />
+                  <Route path="peculio" element={<AdminPeculio />} />
+                  <Route path="seguranca" element={<AdminSeguranca />} />
+                  <Route path="notificacoes" element={<AdminNotificacoes />} />
+                  <Route path="solicitacoes" element={<AdminSolicitacoes />} />
+                  <Route path="documentos" element={<AdminDocumentos />} />
+                  <Route path="financeiro" element={<AdminFinanceiro />} />
+                  <Route path="financeiro/cheques/*" element={<ChequesRoutes />} />
+                  <Route path="eventos" element={<AdminEventos />} />
+                  <Route path="faq" element={<AdminFAQ />} />
+                  <Route path="avaliacoes" element={<AdminAvaliacoes />} />
+                  <Route path="privacidade" element={<AdminPrivacidade />} />
+                  <Route path="relatorios" element={<AdminRelatorios />} />
+                  <Route path="analytics" element={<AdminAnalytics />} />
+                  <Route path="componentes" element={<AdminComponentes />} />
+                  <Route path="assinatura-icp" element={<AdminAssinaturaICP />} />
+                  <Route path="sobre" element={<AdminSobre />} />
+                  <Route path="tutoriais" element={<AdminTutoriais />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </AssociadoProvider>
       </A11yProvider>
     </TooltipProvider>
   </QueryClientProvider>
