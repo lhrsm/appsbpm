@@ -30,6 +30,7 @@ export default function AdminFinanceiro() {
           <TabsTrigger value="receber">Contas a receber</TabsTrigger>
           <TabsTrigger value="mensalidades">Mensalidades</TabsTrigger>
           <TabsTrigger value="cadastros">Cadastros</TabsTrigger>
+          <TabsTrigger value="cheques">Cheques</TabsTrigger>
           <TabsTrigger value="relatorios">Relatórios</TabsTrigger>
         </TabsList>
 
