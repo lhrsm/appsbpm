@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Card, Text, Button, icons, useToast } from "@/design-system";
+import { Card, Text, Button, icons } from "@/design-system";
+import { useToast } from "@/hooks/use-toast";
+
 
 export default function ModelosImpressao() {
   const { toast } = useToast();
