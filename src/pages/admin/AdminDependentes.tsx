@@ -37,7 +37,7 @@ export default function AdminDependentes() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterTipo, setFilterTipo] = useState("");
-  const [filterAtivo, setFilterAtivo] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const [editing, setEditing] = useState<Dependente | null>(null);
   const [open, setOpen] = useState(false);
 
