@@ -105,7 +105,7 @@ export default function ExternalPortalLayout({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div className="flex min-h-dvh w-full flex-col bg-background">
+      <div key="portal-layout-root" className="flex min-h-dvh w-full flex-col bg-background">
         <SkipLinks />
 
 
