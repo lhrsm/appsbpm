@@ -242,8 +242,11 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       if (mappedIdentity.resolved && mappedIdentity.associateId && mappedIdentity.reasonCode === 'READY') {
         console.log("[PortalIdentity] Calling portalCall('perfil')...");
         try {
-          const payload = await portalCall<any>('perfil');
-          console.log("[PortalIdentity] portalCall('perfil') result:", payload);
+          const rawPayload = await portalCall<any>('perfil');
+          console.log("[PortalIdentity] portalCall('perfil') raw result:", rawPayload);
+          
+          // Se a RPC retornar um array, pega o primeiro item (normalização do adapter do backend)
+          const payload = Array.isArray(rawPayload) ? rawPayload[0] : rawPayload;
           
           if (payload?.associado) {
             setAssociado(payload.associado);
