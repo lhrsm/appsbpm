@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, icons, Form } from "@/design-system";
+import { Card, Text, Button, icons } from "@/design-system";
+import { IconButton } from "@/design-system/components/Button";
 import { useNavigate } from "react-router-dom";
 import { valorPorExtenso } from "@/lib/financeiro/valorPorExtenso";
 
@@ -16,7 +17,7 @@ export default function EmitirCheque() {
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
       <header className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)} icon={icons.anterior} label="Voltar" />
+        <IconButton variant="ghost" onClick={() => navigate(-1)} icon={icons.anterior} label="Voltar" />
         <div>
           <Text variant="h4">Nova Emissão de Cheque</Text>
           <Text variant="caption">Etapa {etapa} de 3</Text>
