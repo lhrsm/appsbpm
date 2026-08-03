@@ -59,11 +59,13 @@ interface Associado {
 }
 
 const onlyDigits = (v: string) => (v ?? "").replace(/\D/g, "");
+
 const formatCep = (v: string) => {
   const d = onlyDigits(v).slice(0, 8);
-  return d.length > 5 ? `${d.slice(0, 5)}-${d.slice(5)}` : d;
+  if (d.length <= 5) return d;
+  return `${d.slice(0, 5)}-${d.slice(5)}`;
 };
-// Máscara dd/mm/aaaa
+
 const formatDateBR = (v: string) => {
   const d = onlyDigits(v).slice(0, 8);
   if (d.length <= 2) return d;

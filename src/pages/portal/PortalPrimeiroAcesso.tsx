@@ -353,7 +353,10 @@ export default function PortalPrimeiroAcesso() {
                     inputMode="numeric"
                     maxLength={6}
                     value={codigo}
-                    onChange={(e) => setCodigo(e.target.value.replace(/\D/g, ''))}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+                      setCodigo(digits);
+                    }}
                     className="h-12 text-center text-2xl tracking-[0.5em]"
                   />
                 </div>
