@@ -65,8 +65,8 @@ export async function registerPWA() {
   const refuse =
     !import.meta.env.PROD ||
     inIframe ||
-    swOff ||
-    isBlockedHost(hostname);
+    swOff;
+    // Removido bloqueio de host para permitir teste/funcionamento em preview se o SW existir
 
   if (refuse) {
     await unregisterAppSW();
