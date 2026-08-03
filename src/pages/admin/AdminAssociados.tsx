@@ -132,7 +132,7 @@ export default function AdminAssociados() {
   }, [open]);
 
   const openNew = () => {
-    setEditing({ ativo: true });
+    setEditing({ status: "regular" });
     setOpen(true);
   };
 
