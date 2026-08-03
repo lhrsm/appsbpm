@@ -47,7 +47,7 @@ export default function Vinculo() {
   }, [associado?.id]);
 
   const atual = dados ?? associado;
-  const status = useMemo(() => (atual?.ativo === false ? "inativo" : atual ? "ativo" : "nao_disponivel"), [atual]);
+  const status = useMemo(() => (atual?.status !== 'regular' ? "inativo" : atual ? "ativo" : "nao_disponivel"), [atual]);
 
   return (
     <div className="space-y-6">
