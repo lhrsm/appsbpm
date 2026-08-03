@@ -44,7 +44,6 @@ export default function ChequesDashboard() {
           title="Aguardando Aprovação" 
           value="0" 
           icon={icons.alerta} 
-          tone="warning"
           hint="Revisão necessária"
         />
         <StatCard 
@@ -57,7 +56,6 @@ export default function ChequesDashboard() {
           title="Compensados" 
           value="R$ 0,00" 
           icon={icons.sucesso} 
-          tone="success"
           hint="Este mês"
         />
       </div>
