@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, Text, Button, icons, useToast } from "@/design-system";
+import { Card, Text, Button, icons, Badge } from "@/design-system";
+import { useToast } from "@/hooks/use-toast";
 import { IconButton } from "@/design-system/components/Button";
 import { useNavigate } from "react-router-dom";
 import { valorPorExtenso } from "@/lib/financeiro/valorPorExtenso";
 import { supabase } from "@/integrations/supabase/client";
+
 
 export default function EmitirCheque() {
   const navigate = useNavigate();
