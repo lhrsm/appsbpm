@@ -165,33 +165,63 @@ async function sincronizarEmailCadastro(admin: any, cpfDigits: string, email: st
 
 /** Dados do portal para a sessão recém-criada (mesma resposta do login antigo). */
 async function portalPayload(admin: any, cpfDigits: string) {
+  // Busca o vínculo de conta para obter os IDs institucionais corretos
+  const { data: link } = await admin
+    .from('external_account_links')
+    .select('associado_id, dependente_id, person_type')
+    .eq('cpf_reference', cpfDigits)
+    .maybeSingle();
+
   let associado: any = null;
   let dependente: any = null;
 
-  const { data: assoc } = await admin
-    .from('associados')
-    .select(CAMPOS_ASSOCIADO)
-    .in('cpf', cpfVariants(cpfDigits))
-    .eq('ativo', true)
-    .maybeSingle();
+  if (link?.associado_id) {
+    const { data: assoc } = await admin
+      .from('associados')
+      .select(CAMPOS_ASSOCIADO)
+      .eq('id', link.associado_id)
+      .eq('ativo', true)
+      .maybeSingle();
+    associado = assoc;
+  }
 
-  if (assoc) associado = assoc;
-  else {
+  if (link?.dependente_id) {
     const { data: dep } = await admin
       .from('dependentes')
       .select(CAMPOS_DEPENDENTE)
+      .eq('id', link.dependente_id)
+      .eq('ativo', true)
+      .maybeSingle();
+    dependente = dep;
+  }
+
+  // Fallback para login via CPF/Matrícula se o link ainda não tiver IDs (legado)
+  if (!associado && !dependente) {
+    const { data: assoc } = await admin
+      .from('associados')
+      .select(CAMPOS_ASSOCIADO)
       .in('cpf', cpfVariants(cpfDigits))
       .eq('ativo', true)
       .maybeSingle();
-    if (dep) {
-      const { data: titular } = await admin
-        .from('associados')
-        .select(CAMPOS_ASSOCIADO)
-        .eq('id', dep.associado_id)
+
+    if (assoc) associado = assoc;
+    else {
+      const { data: dep } = await admin
+        .from('dependentes')
+        .select(CAMPOS_DEPENDENTE)
+        .in('cpf', cpfVariants(cpfDigits))
+        .eq('ativo', true)
         .maybeSingle();
-      if (titular) {
-        associado = titular;
-        dependente = dep;
+      if (dep) {
+        const { data: titular } = await admin
+          .from('associados')
+          .select(CAMPOS_ASSOCIADO)
+          .eq('id', dep.associado_id)
+          .maybeSingle();
+        if (titular) {
+          associado = titular;
+          dependente = dep;
+        }
       }
     }
   }
