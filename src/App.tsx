@@ -102,6 +102,7 @@ const AdminNotificacoes = lazy(() => import("./pages/admin/AdminNotificacoes"));
 const AdminSolicitacoes = lazy(() => import("./pages/admin/AdminSolicitacoes"));
 const AdminDocumentos = lazy(() => import("./pages/admin/AdminDocumentos"));
 const AdminFinanceiro = lazy(() => import("./pages/admin/AdminFinanceiro"));
+const ChequesRoutes = lazy(() => import("./pages/admin/financeiro/cheques/routes").then(m => ({ default: m.ChequesRoutes })));
 const AdminEventos = lazy(() => import("./pages/admin/AdminEventos"));
 const AdminFAQ = lazy(() => import("./pages/admin/AdminFAQ"));
 const AdminAvaliacoes = lazy(() => import("./pages/admin/AdminAvaliacoes"));
