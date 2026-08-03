@@ -16,6 +16,8 @@ import BackToTop from "./components/BackToTop";
 import PWAUpdatePrompt from "./components/PWAUpdatePrompt";
 import PageSkeleton from "./components/PageSkeleton";
 import { initWebVitals } from "@/lib/observability/webVitals";
+import { A11yProvider } from "@/a11y/preferences";
+import RouteAnnouncer from "@/a11y/RouteAnnouncer";
 
 // Lazy: chunks por área — o portal externo nunca baixa código administrativo.
 const ChatbotWidget = lazy(() => import("./components/ChatbotWidget"));
@@ -150,10 +152,12 @@ const PortalAlias = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <A11yProvider>
       <AssociadoProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <RouteAnnouncer />
           <CookieConsent />
           <AccessibilityWidget />
           <ChatbotGate />
@@ -268,6 +272,7 @@ const App = () => (
           </Suspense>
         </BrowserRouter>
       </AssociadoProvider>
+      </A11yProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
