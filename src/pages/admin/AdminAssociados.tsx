@@ -242,12 +242,13 @@ export default function AdminAssociados() {
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          value={filterAtivo}
-          onChange={(e) => setFilterAtivo(e.target.value)}
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <option value="">Ativos e inativos</option>
-          <option value="true">Somente ativos</option>
-          <option value="false">Somente inativos</option>
+          <option value="">Todos os status</option>
+          {STATUS_ASSOCIAÇÃO.map((s) => (
+            <option key={s.value} value={s.value}>{s.label}</option>
+          ))}
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
