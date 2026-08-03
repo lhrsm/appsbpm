@@ -177,61 +177,145 @@ export type Database = {
         Row: {
           assinatura_url: string | null
           ativo: boolean
+          bairro_residencia: string | null
+          cams_last_sync: string | null
           cep: string | null
+          cep_residencia: string | null
           cidade: string | null
+          cidade_residencia: string | null
+          complemento_residencia: string | null
           cpf: string
           created_at: string
           data_admissao: string
           data_nascimento: string | null
           email: string | null
           endereco: string | null
+          estado_civil: string | null
+          estado_residencia: string | null
           foto_url: string | null
           id: string
           matricula: string
+          naturalidade: string | null
           nome: string
+          nome_mae: string | null
+          nome_pai: string | null
+          numero_residencia: string | null
+          orgao_emissor: string | null
           patente: string | null
+          posto_graduacao_id: string | null
+          rg_civil: string | null
+          rg_militar: string | null
+          sexo: string | null
+          situacao_associativa:
+            | Database["public"]["Enums"]["cams_situacao_associativa"]
+            | null
+          situacao_funcional:
+            | Database["public"]["Enums"]["cams_situacao_funcional"]
+            | null
           telefone: string | null
+          unidade_id: string | null
           updated_at: string
         }
         Insert: {
           assinatura_url?: string | null
           ativo?: boolean
+          bairro_residencia?: string | null
+          cams_last_sync?: string | null
           cep?: string | null
+          cep_residencia?: string | null
           cidade?: string | null
+          cidade_residencia?: string | null
+          complemento_residencia?: string | null
           cpf: string
           created_at?: string
           data_admissao?: string
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          estado_civil?: string | null
+          estado_residencia?: string | null
           foto_url?: string | null
           id?: string
           matricula: string
+          naturalidade?: string | null
           nome: string
+          nome_mae?: string | null
+          nome_pai?: string | null
+          numero_residencia?: string | null
+          orgao_emissor?: string | null
           patente?: string | null
+          posto_graduacao_id?: string | null
+          rg_civil?: string | null
+          rg_militar?: string | null
+          sexo?: string | null
+          situacao_associativa?:
+            | Database["public"]["Enums"]["cams_situacao_associativa"]
+            | null
+          situacao_funcional?:
+            | Database["public"]["Enums"]["cams_situacao_funcional"]
+            | null
           telefone?: string | null
+          unidade_id?: string | null
           updated_at?: string
         }
         Update: {
           assinatura_url?: string | null
           ativo?: boolean
+          bairro_residencia?: string | null
+          cams_last_sync?: string | null
           cep?: string | null
+          cep_residencia?: string | null
           cidade?: string | null
+          cidade_residencia?: string | null
+          complemento_residencia?: string | null
           cpf?: string
           created_at?: string
           data_admissao?: string
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          estado_civil?: string | null
+          estado_residencia?: string | null
           foto_url?: string | null
           id?: string
           matricula?: string
+          naturalidade?: string | null
           nome?: string
+          nome_mae?: string | null
+          nome_pai?: string | null
+          numero_residencia?: string | null
+          orgao_emissor?: string | null
           patente?: string | null
+          posto_graduacao_id?: string | null
+          rg_civil?: string | null
+          rg_militar?: string | null
+          sexo?: string | null
+          situacao_associativa?:
+            | Database["public"]["Enums"]["cams_situacao_associativa"]
+            | null
+          situacao_funcional?:
+            | Database["public"]["Enums"]["cams_situacao_funcional"]
+            | null
           telefone?: string | null
+          unidade_id?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "associados_posto_graduacao_id_fkey"
+            columns: ["posto_graduacao_id"]
+            isOneToOne: false
+            referencedRelation: "cams_postos_graduacoes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "associados_unidade_id_fkey"
+            columns: ["unidade_id"]
+            isOneToOne: false
+            referencedRelation: "cams_unidades"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       association_contacts: {
         Row: {
@@ -534,6 +618,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cams_postos_graduacoes: {
+        Row: {
+          created_at: string | null
+          hierarquia: number
+          id: string
+          nome: string
+          sigla: string
+        }
+        Insert: {
+          created_at?: string | null
+          hierarquia: number
+          id?: string
+          nome: string
+          sigla: string
+        }
+        Update: {
+          created_at?: string | null
+          hierarquia?: number
+          id?: string
+          nome?: string
+          sigla?: string
+        }
+        Relationships: []
+      }
+      cams_unidades: {
+        Row: {
+          cidade: string | null
+          created_at: string | null
+          id: string
+          nome: string
+          sigla: string
+          tipo: string | null
+        }
+        Insert: {
+          cidade?: string | null
+          created_at?: string | null
+          id?: string
+          nome: string
+          sigla: string
+          tipo?: string | null
+        }
+        Update: {
+          cidade?: string | null
+          created_at?: string | null
+          id?: string
+          nome?: string
+          sigla?: string
+          tipo?: string | null
+        }
+        Relationships: []
       }
       carencias: {
         Row: {
@@ -1449,52 +1584,76 @@ export type Database = {
           assinatura_url: string | null
           associado_id: string
           ativo: boolean
+          bairro_residencia: string | null
+          cams_last_sync: string | null
+          cep_residencia: string | null
+          cidade_residencia: string | null
+          complemento_residencia: string | null
           cpf: string | null
           created_at: string
           data_nascimento: string | null
           email: string | null
           endereco: string | null
+          estado_residencia: string | null
           foto_url: string | null
           id: string
           nome: string
+          numero_residencia: string | null
           status: string
           telefone: string | null
           tipo: Database["public"]["Enums"]["tipo_dependente"]
           updated_at: string
+          utiliza_endereco_titular: boolean | null
         }
         Insert: {
           assinatura_url?: string | null
           associado_id: string
           ativo?: boolean
+          bairro_residencia?: string | null
+          cams_last_sync?: string | null
+          cep_residencia?: string | null
+          cidade_residencia?: string | null
+          complemento_residencia?: string | null
           cpf?: string | null
           created_at?: string
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          estado_residencia?: string | null
           foto_url?: string | null
           id?: string
           nome: string
+          numero_residencia?: string | null
           status?: string
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
+          utiliza_endereco_titular?: boolean | null
         }
         Update: {
           assinatura_url?: string | null
           associado_id?: string
           ativo?: boolean
+          bairro_residencia?: string | null
+          cams_last_sync?: string | null
+          cep_residencia?: string | null
+          cidade_residencia?: string | null
+          complemento_residencia?: string | null
           cpf?: string | null
           created_at?: string
           data_nascimento?: string | null
           email?: string | null
           endereco?: string | null
+          estado_residencia?: string | null
           foto_url?: string | null
           id?: string
           nome?: string
+          numero_residencia?: string | null
           status?: string
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
+          utiliza_endereco_titular?: boolean | null
         }
         Relationships: [
           {
@@ -6280,6 +6439,13 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      cams_situacao_associativa:
+        | "regular"
+        | "suspenso"
+        | "excluido"
+        | "falecido"
+        | "licenciado"
+      cams_situacao_funcional: "ativo" | "reserva" | "reformado" | "civil"
       ctb_conta_tipo:
         | "ativo"
         | "passivo"
@@ -6588,6 +6754,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      cams_situacao_associativa: [
+        "regular",
+        "suspenso",
+        "excluido",
+        "falecido",
+        "licenciado",
+      ],
+      cams_situacao_funcional: ["ativo", "reserva", "reformado", "civil"],
       ctb_conta_tipo: [
         "ativo",
         "passivo",

@@ -158,7 +158,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
     { id: "clinicas", icon: icons.saude, title: "Rede credenciada", description: "Clínicas e parceiros", route: "/dashboard/clinicas", profiles: ["associate", "dependent"] },
     { id: "notificacoes", icon: icons.notificacao, title: "Notificações", description: "Avisos da SBPM", route: "/dashboard/notificacoes", badge: naoLidas || undefined, profiles: ["associate", "dependent"] },
     { id: "meu-titular", icon: icons.associados, title: "Meu titular", description: "Vínculo responsável", route: "/dashboard/meu-titular", profiles: ["dependent"] },
-    { id: "perfil", icon: icons.perfil, title: "Meus dados", description: "Cadastro e contato", route: "/dashboard/meus-dados", profiles: ["associate", "dependent"] },
+    { id: "perfil", icon: icons.perfil, title: "Meus dados", description: "Cadastro e contato", route: "/dashboard/perfil", profiles: ["associate", "dependent"] },
     { id: "faq", icon: icons.ajuda, title: "Ajuda", description: "Perguntas frequentes", route: "/dashboard/faq", profiles: ["associate", "dependent"] },
   ].filter((a) => a.profiles.includes(profileType) && podeVer(a.route)) as QuickAction[];
 

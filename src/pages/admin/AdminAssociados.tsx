@@ -12,18 +12,21 @@ import { Pencil, Trash2, Plus, Search, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { logAudit } from "@/lib/audit";
 
-const PATENTES = [
-  "Coronel",
-  "Tenente-Coronel",
-  "Major",
-  "Capitão",
-  "Tenente",
-  "Aspirante a Oficial",
-  "Subtenente",
-  "Sargento",
-  "Cabo",
-  "Soldado",
+const SITUACOES_FUNCIONAIS = [
+  { value: "ativo", label: "Ativo" },
+  { value: "reserva", label: "Reserva" },
+  { value: "reformado", label: "Reformado" },
+  { value: "civil", label: "Civil" },
 ];
+
+const SITUACOES_ASSOCIATIVAS = [
+  { value: "regular", label: "Regular" },
+  { value: "suspenso", label: "Suspenso" },
+  { value: "excluido", label: "Excluído" },
+  { value: "falecido", label: "Falecido" },
+  { value: "licenciado", label: "Licenciado" },
+];
+
 
 interface Associado {
   id?: string;
@@ -33,13 +36,25 @@ interface Associado {
   email?: string;
   telefone?: string;
   patente?: string;
+  posto_graduacao_id?: string;
+  unidade_id?: string;
+  situacao_funcional?: string;
+  situacao_associativa?: string;
   data_nascimento?: string;
   data_admissao?: string;
   cep?: string;
+  cep_residencia?: string;
   endereco?: string;
+  numero_residencia?: string;
+  complemento_residencia?: string;
+  bairro_residencia?: string;
   cidade?: string;
+  cidade_residencia?: string;
+  estado_residencia?: string;
   foto_url?: string;
   ativo?: boolean;
+  cams_last_sync?: string;
+
 }
 
 const onlyDigits = (v: string) => (v ?? "").replace(/\D/g, "");
@@ -83,6 +98,14 @@ export default function AdminAssociados() {
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
+  const [postos, setPostos] = useState<any[]>([]);
+  const [unidades, setUnidades] = useState<any[]>([]);
+
+  useEffect(() => {
+    supabase.from("cams_postos_graduacoes").select("*").order("hierarquia").then(({ data }) => setPostos(data || []));
+    supabase.from("cams_unidades").select("*").order("nome").then(({ data }) => setUnidades(data || []));
+  }, []);
+
 
   const load = async () => {
     setLoading(true);
@@ -210,8 +233,9 @@ export default function AdminAssociados() {
           value={filterPatente}
           onChange={(e) => setFilterPatente(e.target.value)}
         >
-          <option value="">Todas as patentes</option>
-          {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+          <option value="">Todas os postos</option>
+          {postos.map((p) => <option key={p.id} value={p.nome}>{p.sigla} - {p.nome}</option>)}
+
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
@@ -268,8 +292,9 @@ export default function AdminAssociados() {
                 <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">E-mail:</span> {r.email ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">Telefone:</span> {r.telefone ?? "—"}</div>
-                {r.cidade && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade}</div>}
+                {r.cidade_residencia && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade_residencia}</div>}
                 {r.data_admissao && <div className="truncate"><span className="font-medium text-foreground">Admissão:</span> {isoToBR(r.data_admissao)}</div>}
+
               </div>
               <div className="flex justify-end gap-1 pt-2 border-t">
                 <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
@@ -301,16 +326,51 @@ export default function AdminAssociados() {
               <Input value={editing?.cpf ?? ""} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
             </div>
             <div>
-              <Label>Patente</Label>
+              <Label>Posto / Graduação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={editing?.patente ?? ""}
-                onChange={(e) => setEditing({ ...editing, patente: e.target.value })}
+                value={editing?.posto_graduacao_id ?? ""}
+                onChange={(e) => {
+                  const p = postos.find(x => x.id === e.target.value);
+                  setEditing({ ...editing, posto_graduacao_id: e.target.value, patente: p?.nome });
+                }}
               >
                 <option value="">Selecione...</option>
-                {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+                {postos.map((p) => <option key={p.id} value={p.id}>{p.sigla} - {p.nome}</option>)}
               </select>
             </div>
+            <div>
+              <Label>Unidade / OPM</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.unidade_id ?? ""}
+                onChange={(e) => setEditing({ ...editing, unidade_id: e.target.value })}
+              >
+                <option value="">Selecione...</option>
+                {unidades.map((u) => <option key={u.id} value={u.id}>{u.sigla} - {u.nome}</option>)}
+              </select>
+            </div>
+            <div>
+              <Label>Situação Funcional</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.situacao_funcional ?? "ativo"}
+                onChange={(e) => setEditing({ ...editing, situacao_funcional: e.target.value })}
+              >
+                {SITUACOES_FUNCIONAIS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <Label>Situação Associativa</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.situacao_associativa ?? "regular"}
+                onChange={(e) => setEditing({ ...editing, situacao_associativa: e.target.value })}
+              >
+                {SITUACOES_ASSOCIATIVAS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+
             <div>
               <Label>E-mail</Label>
               <Input type="email" value={editing?.email ?? ""} onChange={(e) => setEditing({ ...editing, email: e.target.value })} />

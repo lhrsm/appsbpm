@@ -15,9 +15,16 @@ const BodySchema = z.object({
     email: optionalStr(200),
     telefone: optionalStr(30),
     endereco: optionalStr(500),
+    cep_residencia: optionalStr(10),
+    numero_residencia: optionalStr(20),
+    complemento_residencia: optionalStr(100),
+    bairro_residencia: optionalStr(100),
+    cidade_residencia: optionalStr(100),
+    estado_residencia: optionalStr(2),
     foto_url: optionalStr(1000),
     assinatura_url: optionalStr(1000),
   }),
+
 });
 
 
@@ -75,14 +82,22 @@ Deno.serve(async (req) => {
       if (campos.email !== undefined) update.email = campos.email || null;
       if (campos.telefone !== undefined) update.telefone = campos.telefone || null;
       if (campos.endereco !== undefined) update.endereco = campos.endereco || null;
+      if (campos.cep_residencia !== undefined) update.cep_residencia = campos.cep_residencia || null;
+      if (campos.numero_residencia !== undefined) update.numero_residencia = campos.numero_residencia || null;
+      if (campos.complemento_residencia !== undefined) update.complemento_residencia = campos.complemento_residencia || null;
+      if (campos.bairro_residencia !== undefined) update.bairro_residencia = campos.bairro_residencia || null;
+      if (campos.cidade_residencia !== undefined) update.cidade_residencia = campos.cidade_residencia || null;
+      if (campos.estado_residencia !== undefined) update.estado_residencia = campos.estado_residencia || null;
       if (campos.foto_url !== undefined) update.foto_url = campos.foto_url || null;
       if (campos.assinatura_url !== undefined) update.assinatura_url = campos.assinatura_url || null;
+
 
       const { data, error } = await supabase
         .from('associados')
         .update(update)
         .eq('id', id)
-        .select('id, email, telefone, endereco, foto_url, assinatura_url')
+        .select('id, email, telefone, endereco, cep_residencia, numero_residencia, complemento_residencia, bairro_residencia, cidade_residencia, estado_residencia, foto_url, assinatura_url')
+
         .maybeSingle();
 
       if (error) throw error;
@@ -120,12 +135,20 @@ Deno.serve(async (req) => {
     if (campos.email !== undefined) update.email = campos.email || null;
     if (campos.telefone !== undefined) update.telefone = campos.telefone || null;
     if (campos.endereco !== undefined) update.endereco = campos.endereco || null;
+    if (campos.cep_residencia !== undefined) update.cep_residencia = campos.cep_residencia || null;
+    if (campos.numero_residencia !== undefined) update.numero_residencia = campos.numero_residencia || null;
+    if (campos.complemento_residencia !== undefined) update.complemento_residencia = campos.complemento_residencia || null;
+    if (campos.bairro_residencia !== undefined) update.bairro_residencia = campos.bairro_residencia || null;
+    if (campos.cidade_residencia !== undefined) update.cidade_residencia = campos.cidade_residencia || null;
+    if (campos.estado_residencia !== undefined) update.estado_residencia = campos.estado_residencia || null;
+
 
     const { data, error } = await supabase
       .from('dependentes')
       .update(update)
       .eq('id', id)
-      .select('id, foto_url, assinatura_url, email, telefone, endereco')
+      .select('id, foto_url, assinatura_url, email, telefone, endereco, cep_residencia, numero_residencia, complemento_residencia, bairro_residencia, cidade_residencia, estado_residencia')
+
       .maybeSingle();
 
 

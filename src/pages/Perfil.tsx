@@ -41,7 +41,16 @@ export default function Perfil() {
 
   const [email, setEmail] = useState(alvo?.email || '');
   const [telefone, setTelefone] = useState(alvo?.telefone || '');
+  
+  // Endereço e seus componentes
+  const [cep, setCep] = useState(('cep_residencia' in alvo ? (alvo as any).cep_residencia : '') || '');
   const [endereco, setEndereco] = useState(alvo?.endereco || '');
+  const [numero, setNumero] = useState(('numero_residencia' in alvo ? (alvo as any).numero_residencia : '') || '');
+  const [complemento, setComplemento] = useState(('complemento_residencia' in alvo ? (alvo as any).complemento_residencia : '') || '');
+  const [bairro, setBairro] = useState(('bairro_residencia' in alvo ? (alvo as any).bairro_residencia : '') || '');
+  const [cidade, setCidade] = useState(('cidade_residencia' in alvo ? (alvo as any).cidade_residencia : '') || '');
+  const [estado, setEstado] = useState(('estado_residencia' in alvo ? (alvo as any).estado_residencia : '') || '');
+
   const [saving, setSaving] = useState(false);
   const [acessos, setAcessos] = useState<AcessoRegistro[]>([]);
   const [loadingAcessos, setLoadingAcessos] = useState(true);
@@ -115,6 +124,13 @@ export default function Perfil() {
             email: email.trim(),
             telefone: telefone.trim(),
             endereco: endereco.trim(),
+            cep_residencia: cep.trim(),
+            numero_residencia: numero.trim(),
+            complemento_residencia: complemento.trim(),
+            bairro_residencia: bairro.trim(),
+            cidade_residencia: cidade.trim(),
+            estado_residencia: estado.trim(),
+
           },
         },
       });
@@ -127,6 +143,13 @@ export default function Perfil() {
           email: email.trim() || null,
           telefone: telefone.trim() || null,
           endereco: endereco.trim() || null,
+          cep_residencia: cep.trim() || null,
+          numero_residencia: numero.trim() || null,
+          complemento_residencia: complemento.trim() || null,
+          bairro_residencia: bairro.trim() || null,
+          cidade_residencia: cidade.trim() || null,
+          estado_residencia: estado.trim() || null,
+
         };
         setDependenteLogado(atualizado);
         setDependentes(dependentes.map((d) => (d.id === atualizado.id ? atualizado : d)));
@@ -136,6 +159,13 @@ export default function Perfil() {
           email: email.trim() || null,
           telefone: telefone.trim() || null,
           endereco: endereco.trim() || null,
+          cep_residencia: cep.trim() || null,
+          numero_residencia: numero.trim() || null,
+          complemento_residencia: complemento.trim() || null,
+          bairro_residencia: bairro.trim() || null,
+          cidade_residencia: cidade.trim() || null,
+          estado_residencia: estado.trim() || null,
+
         });
       }
       toast.success('Perfil atualizado com sucesso!');
@@ -225,29 +255,41 @@ export default function Perfil() {
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> Nome completo</Label>
-                <Input value={alvo.nome} disabled />
+                <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Nome completo</Label>
+                <Input value={alvo.nome} disabled className="bg-muted/50" />
               </div>
               <div className="space-y-2">
-                <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> CPF</Label>
-                <Input value={maskCPF(('cpf' in alvo && alvo.cpf) || '')} disabled />
+                <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> CPF</Label>
+                <Input value={maskCPF(('cpf' in alvo && alvo.cpf) || '')} disabled className="bg-muted/50" />
               </div>
 
               {!isDependente && (
                 <>
                   <div className="space-y-2">
-                    <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> Matrícula</Label>
-                    <Input value={associado.matricula} disabled />
+                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Matrícula</Label>
+                    <Input value={associado.matricula} disabled className="bg-muted/50" />
                   </div>
                   <div className="space-y-2">
-                    <Label className="flex items-center gap-1"><Lock className="h-3 w-3" /> Data de admissão</Label>
-                    <Input value={associado.data_admissao || ''} disabled />
+                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Graduação / Patente</Label>
+                    <Input value={(associado as any).patente || 'Não informada'} disabled className="bg-muted/50" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Situação Funcional</Label>
+                    <Input 
+                      value={(associado as any).situacao_funcional === 'ativo' ? 'Ativo' : (associado as any).situacao_funcional || 'Não informado'} 
+                      disabled 
+                      className="bg-muted/50 capitalize" 
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Data de admissão</Label>
+                    <Input value={associado.data_admissao || ''} disabled className="bg-muted/50" />
                   </div>
                 </>
               )}
 
-              <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="email">E-mail</Label>
+              <div className="space-y-2 md:col-span-2 pt-2 border-t mt-2">
+                <Label htmlFor="email">E-mail de contato</Label>
                 <Input
                   id="email"
                   type="email"
@@ -258,7 +300,7 @@ export default function Perfil() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="telefone">Telefone</Label>
+                <Label htmlFor="telefone">Telefone / WhatsApp</Label>
                 <Input
                   id="telefone"
                   value={telefone}
@@ -267,18 +309,95 @@ export default function Perfil() {
                   placeholder="(71) 9 9999-9999"
                 />
               </div>
+
+              <div className="space-y-2 md:col-span-2 pt-2 border-t mt-2">
+                <div className="flex items-center justify-between mb-2">
+                   <Label className="text-base font-semibold">Endereço de Residência</Label>
+                   <span className="text-[10px] text-muted-foreground italic">Campos editáveis para correspondência</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="cep">CEP</Label>
+                <Input
+                  id="cep"
+                  value={cep}
+                  onChange={(e) => setCep(e.target.value)}
+                  maxLength={10}
+                  placeholder="40000-000"
+                />
+              </div>
+
               <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="endereco">Endereço</Label>
-                <Textarea
+                <Label htmlFor="endereco">Logradouro (Rua, Avenida, etc.)</Label>
+                <Input
                   id="endereco"
                   value={endereco}
                   onChange={(e) => setEndereco(e.target.value)}
                   maxLength={500}
-                  rows={2}
-                  placeholder="Rua, número, bairro, cidade — UF, CEP"
+                  placeholder="Rua Exemplo"
                 />
               </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="numero">Número</Label>
+                <Input
+                  id="numero"
+                  value={numero}
+                  onChange={(e) => setNumero(e.target.value)}
+                  maxLength={20}
+                  placeholder="123"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="complemento">Complemento</Label>
+                <Input
+                  id="complemento"
+                  value={complemento}
+                  onChange={(e) => setComplemento(e.target.value)}
+                  maxLength={100}
+                  placeholder="Apto 101, Bloco A"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="bairro">Bairro</Label>
+                <Input
+                  id="bairro"
+                  value={bairro}
+                  onChange={(e) => setBairro(e.target.value)}
+                  maxLength={100}
+                  placeholder="Bairro Exemplo"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="grid grid-cols-3 gap-2">
+                   <div className="col-span-2">
+                      <Label htmlFor="cidade">Cidade</Label>
+                      <Input
+                        id="cidade"
+                        value={cidade}
+                        onChange={(e) => setCidade(e.target.value)}
+                        maxLength={100}
+                        placeholder="Salvador"
+                      />
+                   </div>
+                   <div>
+                      <Label htmlFor="estado">UF</Label>
+                      <Input
+                        id="estado"
+                        value={estado}
+                        onChange={(e) => setEstado(e.target.value.toUpperCase())}
+                        maxLength={2}
+                        placeholder="BA"
+                      />
+                   </div>
+                </div>
+              </div>
             </div>
+
 
             <div className="flex justify-end pt-2">
               <Button type="submit" disabled={saving} className="gap-2">
