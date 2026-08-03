@@ -146,7 +146,7 @@ const BodySchema = z.discriminatedUnion('action', [
 ]);
 
 const CAMPOS_ASSOCIADO =
-  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, ativo, patente, cep, cidade';
+  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, status, patente, cep, cidade';
 
 const CAMPOS_DEPENDENTE =
   'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, ativo, status';
@@ -292,7 +292,7 @@ Deno.serve(async (req) => {
         .from('associados')
         .select(CAMPOS_ASSOCIADO)
         .eq('id', sessao.aid)
-        .eq('ativo', true)
+        .eq('status', 'regular')
         .maybeSingle();
       if (!associado) return json({ error: 'Cadastro indisponível' }, 401);
 
