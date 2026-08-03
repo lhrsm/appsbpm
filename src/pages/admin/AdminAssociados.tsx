@@ -94,7 +94,7 @@ export default function AdminAssociados() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterPatente, setFilterPatente] = useState<string>("");
-  const [filterAtivo, setFilterAtivo] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string>("");
   const [filterCidade, setFilterCidade] = useState<string>("");
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
