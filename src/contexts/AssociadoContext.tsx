@@ -154,15 +154,32 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       };
     }
 
+    // A RPC retorna campos em snake_case. Mapeamos para camelCase.
+    // Campos da RPC: auth_id, link_id, associado_id, dependente_id, cpf_ref, link_status, person_type, associado_nome, associado_status
+    const resolved = Boolean(row.auth_id);
+    const linkStatus = row.link_status || null;
+    const associationStatus = row.associado_status || null;
+    
+    // Lógica de nível de acesso no frontend baseada nos status retornados
+    let accessLevel: PortalIdentity['accessLevel'] = 'read_only';
+    let reasonCode = 'READY';
+
+    if (!row.link_id) {
+      reasonCode = 'PROFILE_LINK_MISSING';
+      accessLevel = 'blocked';
+    } else if (linkStatus === 'active' && (row.person_type === 'dependent' || associationStatus === 'regular')) {
+      accessLevel = 'full';
+    }
+
     return {
-      resolved: row.resolved === true,
-      associateId: row.associate_id ?? null,
-      dependentId: row.dependent_id ?? null,
-      profileType: row.profile_type ?? null,
-      associationStatus: row.association_status ?? null,
-      linkStatus: row.link_status ?? null,
-      accessLevel: row.access_level ?? null,
-      reasonCode: row.reason_code ?? null
+      resolved,
+      associateId: row.associado_id || null,
+      dependentId: row.dependente_id || null,
+      profileType: (row.person_type as any) || null,
+      associationStatus,
+      linkStatus,
+      accessLevel,
+      reasonCode
     };
   };
 
