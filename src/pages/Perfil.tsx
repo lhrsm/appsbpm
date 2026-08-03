@@ -169,11 +169,7 @@ export default function Perfil() {
     }
   };
 
-  const getFieldSetting = (key: string) => settings?.find(s => s.field_key === key);
-
   const getStatus = (fieldKey: string): any => {
-    // Logic to determine sync status for a specific field
-    // For now returning 'updated' or the record's sync_status
     return (alvo as any).sync_status || 'updated';
   };
 
@@ -184,6 +180,34 @@ export default function Perfil() {
       fieldName: name,
       currentValue: String(val || '')
     });
+  };
+
+  const handleExportData = () => {
+    const payload = {
+      exportado_em: new Date().toISOString(),
+      tipo: isDependente ? 'dependente' : 'titular',
+      titular: {
+        nome: associado.nome,
+        matricula: associado.matricula,
+        cpf: associado.cpf,
+        email: associado.email,
+        telefone: associado.telefone,
+        endereco: associado.endereco,
+        data_admissao: associado.data_admissao,
+      },
+      dependente_logado: isDependente ? dependenteLogado : null,
+      dependentes: isDependente ? [] : dependentes,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `meus-dados-sbpm-${alvo.nome.replace(/\s+/g, '_')}-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Seus dados foram exportados.');
   };
 
   return (
@@ -221,7 +245,7 @@ export default function Perfil() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => toast.info('Funcionalidade em breve')} className="gap-2">
+          <Button variant="outline" size="sm" onClick={handleExportData} className="gap-2">
              <Download className="h-4 w-4" /> Exportar
           </Button>
         </div>
@@ -305,7 +329,6 @@ export default function Perfil() {
                   <ProfileFieldDisplay label="Data de Admissão" value={associado.data_admissao} />
                   <ProfileFieldDisplay label="Posto / Graduação" value={associado.patente} onCorrectionRequest={() => openCorrection('posto_graduacao_id', 'Posto/Graduação', associado.patente)} />
                   
-                  {/* Unidade Operacional - Condicional Seção 8 */}
                   {((associado as any).situacao_funcional === 'ativo' || (associado as any).situacao_funcional === 'servico_ativo') && (
                     <div className="md:col-span-2 space-y-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
                       <div className="flex items-center justify-between">
@@ -425,7 +448,10 @@ export default function Perfil() {
                 currentSignatureUrl={alvo.assinatura_url}
                 userId={alvo.id}
                 userType={isDependente ? 'dependente' : 'associado'}
-                onSaved={(url) => setAssociado({ ...associado, assinatura_url: url })}
+                onSaved={(url) => {
+                   if (isDependente && dependenteLogado) setDependenteLogado({...dependenteLogado, assinatura_url: url});
+                   else setAssociado({ ...associado, assinatura_url: url });
+                }}
               />
             </CardContent>
           </Card>
@@ -455,66 +481,6 @@ export default function Perfil() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
-  );
-}
-
-          </CardTitle>
-          <CardDescription>
-            Direito de portabilidade (LGPD, art. 18). Baixe uma cópia dos seus dados cadastrais
-            disponíveis neste portal em formato JSON.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button variant="outline" onClick={handleExportData} className="gap-2">
-            <Download className="h-4 w-4" /> Baixar meus dados (JSON)
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Meus acessos */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5" /> Meus acessos recentes
-          </CardTitle>
-          <CardDescription>
-            Últimos 10 acessos à sua conta. Se notar algum acesso que não reconheça, entre em contato
-            com a SBPM.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loadingAcessos ? (
-            <p className="text-sm text-muted-foreground">Carregando...</p>
-          ) : acessos.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
-          ) : (
-            <ul className="divide-y">
-              {acessos.map((a) => (
-                <li key={a.id} className="py-2 flex items-center justify-between text-sm">
-                  <div>
-                    <p className="font-medium">
-                      {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {parseDevice(a.user_agent)} · Login por {a.metodo_login === 'cpf' ? 'CPF' : 'Matrícula'}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      a.sucesso
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
-                        : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
-                    }`}
-                  >
-                    {a.sucesso ? 'Sucesso' : 'Falha'}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
     </div>
   );
 }
