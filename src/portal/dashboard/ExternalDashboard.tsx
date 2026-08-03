@@ -275,13 +275,13 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
             people={
               isDependente
                 ? associado
-                  ? [{ id: associado.id, nome: associado.nome, parentesco: "Associado titular", ativo: associado.ativo }]
+                  ? [{ id: associado.id, nome: associado.nome, parentesco: "Associado titular", ativo: associado.status === 'regular' }]
                   : []
                 : dependentes.slice(0, 6).map((d) => ({
                     id: d.id,
                     nome: d.nome,
                     parentesco: tipoLabel[d.tipo],
-                    ativo: d.ativo,
+                    ativo: d.status === 'regular',
                     fotoUrl: d.foto_url,
                   }))
             }
