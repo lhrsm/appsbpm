@@ -164,8 +164,8 @@ export default function AdminAssociados() {
     if (!editing) return;
 
     // Validação de duplicidade (matrícula e CPF)
-    const matricula = (editing.matricula ?? "").trim();
-    const cpf = (editing.cpf ?? "").trim();
+    const matricula = padRegistrationNumber(editing.matricula) || "";
+    const cpf = padCpf(editing.cpf) || "";
     if (!matricula) return toast.error("Matrícula é obrigatória");
     if (!cpf) return toast.error("CPF é obrigatório");
 
@@ -179,7 +179,11 @@ export default function AdminAssociados() {
     if (cpfDup && cpfDup.id !== editing.id) return toast.error("Já existe um associado com esse CPF");
 
     // Validação/conversão de datas
-    const payload: any = { ...editing };
+    const payload: any = { 
+      ...editing,
+      cpf,
+      matricula
+    };
     
     // Removendo explicitamente o campo redundante 'ativo'
     delete payload.ativo;
