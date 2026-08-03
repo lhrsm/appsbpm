@@ -105,11 +105,13 @@ export default function Dashboard() {
                 associationStatus: identity.associationStatus,
                 accessLevel: identity.accessLevel,
                 reasonCode: identity.reasonCode,
-                associateId: identity.associateId
+                associateId: identity.associateId,
+                version: "identity-v3-2026-08-03"
               }
             }, null, 2)}</pre>
           </div>
         )}
+
       </div>
     );
   }
