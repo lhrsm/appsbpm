@@ -42,7 +42,7 @@ interface Associado {
   posto_graduacao_id?: string;
   unidade_id?: string;
   situacao_funcional?: string;
-  situacao_associativa?: string;
+  status?: string;
   data_nascimento?: string;
   data_admissao?: string;
   cep?: string;
@@ -55,9 +55,7 @@ interface Associado {
   cidade_residencia?: string;
   estado_residencia?: string;
   foto_url?: string;
-  ativo?: boolean;
   cams_last_sync?: string;
-
 }
 
 const onlyDigits = (v: string) => (v ?? "").replace(/\D/g, "");
