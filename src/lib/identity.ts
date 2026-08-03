@@ -78,21 +78,51 @@ export function validateRegistrationNumberFormat(reg: string | null | undefined)
 }
 
 /**
+ * Status da Associação unificado.
+ */
+export type AssociadoStatus = 'regular' | 'inativo' | 'suspenso' | 'em_analise' | 'aguardando_reativacao' | 'falecido';
+
+/**
  * Mapeia os status institucionais para o padrão do sistema.
  */
-export function mapInstitutionalStatus(status: string | null | undefined): 'active' | 'inactive' | 'suspended' | 'deceased' {
-  if (!status) return 'inactive';
+export function mapInstitutionalStatus(status: string | null | undefined): AssociadoStatus {
+  if (!status) return 'inativo';
   const s = status.trim().toLowerCase();
   
-  const map: Record<string, 'active' | 'inactive' | 'suspended' | 'deceased'> = {
-    'regular': 'active',
-    'ativo': 'active',
-    'inativo': 'inactive',
-    'suspenso': 'suspended',
-    'falecido': 'deceased'
+  const map: Record<string, AssociadoStatus> = {
+    'regular': 'regular',
+    'ativo': 'regular',
+    'inativo': 'inativo',
+    'excluido': 'inativo',
+    'licenciado': 'inativo',
+    'suspenso': 'suspenso',
+    'em_analise': 'em_analise',
+    'em análise': 'em_analise',
+    'aguardando_reativacao': 'aguardando_reativacao',
+    'aguardando reativação': 'aguardando_reativacao',
+    'falecido': 'falecido'
   };
 
-  return map[s] || 'inactive';
+  return map[s] || 'inativo';
+}
+
+/**
+ * Verifica se o status permite acesso básico ao portal.
+ */
+export function isStatusAtivo(status: AssociadoStatus | string | null | undefined): boolean {
+  if (!status) return false;
+  return status === 'regular' || status === 'aguardando_reativacao' || status === 'inativo';
+}
+
+/**
+ * Define o nível de acesso baseado no status.
+ */
+export function getAccessLevel(status: AssociadoStatus | string | null | undefined): PortalIdentity['portal_access_level'] {
+  const s = status as AssociadoStatus;
+  if (s === 'regular') return 'full';
+  if (s === 'inativo' || s === 'aguardando_reativacao') return 'read_only';
+  if (s === 'suspenso' || s === 'em_analise') return 'blocked';
+  return 'blocked'; // Falecido ou desconhecido
 }
 
 /**
@@ -106,7 +136,7 @@ export interface PortalIdentity {
   profile_type: 'associate' | 'dependent';
   cpf_normalized: string;
   registration_number: string | null;
-  membership_status: string;
+  membership_status: AssociadoStatus;
   functional_status: string | null;
   portal_access_level: 'full' | 'read_only' | 'blocked' | 'manual_review';
   holder_member_id?: string | null; // Para dependentes

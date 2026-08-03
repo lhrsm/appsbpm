@@ -88,11 +88,11 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
       id: "vinculo",
       icon: icons.carteirinha,
       title: "Situação do vínculo",
-      value: (isDependente ? dependenteLogado?.ativo : associado?.ativo) === false ? "Inativo" : "Ativo",
+      value: (isDependente ? dependenteLogado?.status : associado?.status) !== 'regular' ? "Inativo" : "Ativo",
       context: isDependente ? "Dependente vinculado ao titular" : "Associado titular",
       status: {
-        label: (isDependente ? dependenteLogado?.ativo : associado?.ativo) === false ? "Regularizar" : "Em dia",
-        tone: (isDependente ? dependenteLogado?.ativo : associado?.ativo) === false ? "warning" : "success",
+        label: (isDependente ? dependenteLogado?.status : associado?.status) !== 'regular' ? "Regularizar" : "Em dia",
+        tone: (isDependente ? dependenteLogado?.status : associado?.status) !== 'regular' ? "warning" : "success",
       },
       route: "/dashboard/carteirinha",
       actionLabel: "Ver carteirinha",
@@ -114,7 +114,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           id: "dependentes",
           icon: icons.dependentes,
           title: "Dependentes ativos",
-          value: dependentes.filter((d) => d.ativo !== false).length,
+          value: dependentes.filter((d) => d.status === 'regular').length,
           context: dependentes.length ? `${dependentes.length} cadastrado(s)` : "Nenhum dependente cadastrado",
           route: "/dashboard/dependentes",
           actionLabel: "Gerenciar",
@@ -226,7 +226,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url,
           matricula: associado?.matricula,
           titularNome: associado?.nome,
-          vinculoAtivo: isDependente ? dependenteLogado?.ativo !== false : associado?.ativo !== false,
+          vinculoAtivo: isDependente ? dependenteLogado?.status === 'regular' : associado?.status === 'regular',
           associadoDesde: associado?.data_admissao,
           parentesco: isDependente && dependenteLogado ? tipoLabel[dependenteLogado.tipo] : null,
         }}
@@ -275,13 +275,13 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
             people={
               isDependente
                 ? associado
-                  ? [{ id: associado.id, nome: associado.nome, parentesco: "Associado titular", ativo: associado.ativo }]
+                  ? [{ id: associado.id, nome: associado.nome, parentesco: "Associado titular", ativo: associado.status === 'regular' }]
                   : []
                 : dependentes.slice(0, 6).map((d) => ({
                     id: d.id,
                     nome: d.nome,
                     parentesco: tipoLabel[d.tipo],
-                    ativo: d.ativo,
+                    ativo: d.status === 'regular',
                     fotoUrl: d.foto_url,
                   }))
             }

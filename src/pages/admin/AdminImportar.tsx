@@ -23,12 +23,12 @@ const TABLES: Record<TargetTable, { label: string; required: string[]; sample: s
   associados: {
     label: "Associados",
     required: ["matricula", "nome", "cpf"],
-    sample: "matricula,nome,cpf,email,telefone,data_nascimento,data_admissao,ativo\n001,João da Silva,12345678900,joao@email.com,71999990000,1980-05-10,2015-01-01,true",
+    sample: "matricula,nome,cpf,email,telefone,data_nascimento,data_admissao,status\n001,João da Silva,12345678900,joao@email.com,71999990000,1980-05-10,2015-01-01,regular",
   },
   dependentes: {
     label: "Dependentes",
     required: ["associado_matricula", "nome", "cpf"],
-    sample: "associado_matricula,nome,cpf,tipo,data_nascimento,ativo\n001,Maria Silva,98765432100,Cônjuge,1985-03-20,true",
+    sample: "associado_matricula,nome,cpf,tipo,data_nascimento,status\n001,Maria Silva,98765432100,conjuge,1985-03-20,regular",
   },
   clinicas_parceiros: {
     label: "Clínicas & Parceiros",
@@ -125,32 +125,32 @@ export default function AdminImportar() {
       let subtitle = "";
 
       if (target === "associados") {
-        let q = supabase.from("associados").select("nome,matricula,cpf,patente,ativo,cidade").order("nome");
+        let q = supabase.from("associados").select("nome,matricula,cpf,patente,status,cidade").order("nome");
         if (filtroPatente !== "todos") q = q.eq("patente", filtroPatente);
-        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus as any);
         if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "Matrícula", "CPF", "Patente", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.matricula, r.cpf, r.patente ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.matricula, r.cpf, r.patente ?? "-", r.status || "Inativo"]);
         subtitle = `Patente: ${filtroPatente === "todos" ? "Todas" : filtroPatente} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus} · Cidade: ${filtroCidade || "Todas"}`;
       } else if (target === "dependentes") {
-        let q = supabase.from("dependentes").select("nome,cpf,tipo,ativo,associados(nome,matricula)").order("nome");
+        let q = supabase.from("dependentes").select("nome,cpf,tipo,status,associados(nome,matricula)").order("nome");
         if (filtroTipo !== "todos") q = q.eq("tipo", filtroTipo as any);
-        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroStatus !== "todos") q = q.eq("status", filtroStatus as any);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "CPF", "Parentesco", "Titular", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.cpf, PARENTESCOS.find(p => p.value === r.tipo)?.label ?? r.tipo, r.associados ? `${r.associados.nome} (${r.associados.matricula})` : "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.cpf, PARENTESCOS.find(p => p.value === r.tipo)?.label ?? r.tipo, r.associados ? `${r.associados.nome} (${r.associados.matricula})` : "-", r.status || "Inativo"]);
         subtitle = `Parentesco: ${filtroTipo === "todos" ? "Todos" : PARENTESCOS.find(p => p.value === filtroTipo)?.label} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
       } else if (target === "clinicas_parceiros") {
         let q = supabase.from("clinicas_parceiros").select("nome,categoria,cidade,estado,telefone,ativo").order("nome");
-        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "ativo");
+        if (filtroStatus !== "todos") q = q.eq("ativo", filtroStatus === "regular");
         if (filtroCidade.trim()) q = q.ilike("cidade", `%${filtroCidade.trim()}%`);
         const { data, error } = await q;
         if (error) throw error;
         head = [["Nome", "Categoria", "Cidade/UF", "Telefone", "Status"]];
-        body = (data ?? []).map((r: any) => [r.nome, r.categoria ?? "-", `${r.cidade ?? "-"}/${r.estado ?? "-"}`, r.telefone ?? "-", r.ativo ? "Ativo" : "Inativo"]);
+        body = (data ?? []).map((r: any) => [r.nome, r.categoria ?? "-", `${r.cidade ?? "-"}/${r.estado ?? "-"}`, r.telefone ?? "-", r.ativo ? "Regular" : "Inativo"]);
         subtitle = `Cidade: ${filtroCidade || "Todas"} · Status: ${filtroStatus === "todos" ? "Todos" : filtroStatus}`;
       } else {
         toast.info("Exportação em PDF disponível para Associados, Dependentes e Clínicas.");
@@ -278,14 +278,16 @@ export default function AdminImportar() {
                   </select>
                 </div>
               )}
-              <div>
                 <Label className="text-xs">Status</Label>
                 <select className="mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm" value={filtroStatus} onChange={(e) => setFiltroStatus(e.target.value)}>
                   <option value="todos">Todos</option>
-                  <option value="ativo">Ativos</option>
-                  <option value="inativo">Inativos</option>
+                  <option value="regular">Regular</option>
+                  <option value="inativo">Inativo</option>
+                  <option value="suspenso">Suspenso</option>
+                  <option value="em_analise">Em análise</option>
+                  <option value="aguardando_reativacao">Aguardando reativação</option>
+                  <option value="falecido">Falecido</option>
                 </select>
-              </div>
               {(target === "associados" || target === "clinicas_parceiros") && (
                 <div>
                   <Label className="text-xs">Cidade (contém)</Label>

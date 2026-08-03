@@ -268,7 +268,7 @@ export default function Dependentes() {
       {dependentes.length > 0 ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {dependentes.map((dependente) => {
-            const s = (dependente.status || (dependente.ativo ? 'ativo' : 'inativo')).toLowerCase();
+            const s = (dependente.status || (dependente.status === 'regular' ? 'ativo' : 'inativo')).toLowerCase();
             const styles: Record<string, string> = {
               ativo: 'bg-green-100 text-green-700 border-green-200',
               inativo: 'bg-red-100 text-red-700 border-red-200',

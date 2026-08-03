@@ -26,7 +26,7 @@ interface Dependente {
   data_nascimento?: string;
   tipo?: string;
   foto_url?: string;
-  ativo?: boolean;
+  status?: string;
 }
 
 interface AssocOpt { id: string; nome: string; matricula: string; }
@@ -37,7 +37,7 @@ export default function AdminDependentes() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterTipo, setFilterTipo] = useState("");
-  const [filterAtivo, setFilterAtivo] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
   const [editing, setEditing] = useState<Dependente | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -58,17 +58,16 @@ export default function AdminDependentes() {
     let q = supabase.from("dependentes").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
     if (filterTipo) q = q.eq("tipo", filterTipo as any);
-    if (filterAtivo === "true") q = q.eq("ativo", true);
-    if (filterAtivo === "false") q = q.eq("ativo", false);
+    if (filterStatus) q = q.eq("status", filterStatus as any);
     const { data, error } = await q;
     if (error) toast.error(error.message);
     else setRows((data as Dependente[]) ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterTipo, filterAtivo]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterTipo, filterStatus]);
 
-  const openNew = () => { setEditing({ ativo: true, tipo: "outro" }); setOpen(true); };
+  const openNew = () => { setEditing({ status: "regular", tipo: "outro" }); setOpen(true); };
 
   const save = async () => {
     if (!editing) return;
@@ -117,15 +116,19 @@ export default function AdminDependentes() {
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          value={filterAtivo}
-          onChange={(e) => setFilterAtivo(e.target.value)}
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <option value="">Ativos e inativos</option>
-          <option value="true">Somente ativos</option>
-          <option value="false">Somente inativos</option>
+          <option value="">Todos os status</option>
+          <option value="regular">Regular</option>
+          <option value="inativo">Inativo</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="em_analise">Em análise</option>
+          <option value="aguardando_reativacao">Aguardando reativação</option>
+          <option value="falecido">Falecido</option>
         </select>
-        {(filterTipo || filterAtivo) && (
-          <Button variant="outline" size="sm" onClick={() => { setFilterTipo(""); setFilterAtivo(""); }}>
+        {(filterTipo || filterStatus) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterTipo(""); setFilterStatus(""); }}>
             Limpar filtros
           </Button>
         )}
@@ -155,8 +158,8 @@ export default function AdminDependentes() {
                     <div className="font-semibold truncate">{r.nome}</div>
                     <div className="text-xs text-muted-foreground">{tipoLabel(r.tipo)}</div>
                   </div>
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${r.ativo ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}>
-                    {r.ativo ? "Ativo" : "Inativo"}
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full text-white ${r.status === "regular" ? "bg-green-500" : "bg-gray-500"}`}>
+                    {r.status === "regular" ? "Ativo" : r.status || "Inativo"}
                   </span>
                 </div>
                 <div className="text-xs space-y-1 text-muted-foreground">
@@ -229,14 +232,18 @@ export default function AdminDependentes() {
               <Input value={editing?.foto_url ?? ""} onChange={(e) => setEditing({ ...editing, foto_url: e.target.value })} />
             </div>
             <div>
-              <Label>Ativo</Label>
+              <Label>Status da Associação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={String(editing?.ativo ?? "true")}
-                onChange={(e) => setEditing({ ...editing, ativo: e.target.value === "true" })}
+                value={editing?.status ?? "regular"}
+                onChange={(e) => setEditing({ ...editing, status: e.target.value })}
               >
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
+                <option value="regular">Regular</option>
+                <option value="inativo">Inativo</option>
+                <option value="suspenso">Suspenso</option>
+                <option value="em_analise">Em análise</option>
+                <option value="aguardando_reativacao">Aguardando reativação</option>
+                <option value="falecido">Falecido</option>
               </select>
             </div>
           </div>

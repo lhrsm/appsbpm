@@ -103,7 +103,7 @@ export default function Dashboard() {
         fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado.foto_url,
         matricula: associado.matricula,
         titularNome: associado.nome,
-        ativo: associado.ativo,
+        ativo: associado.status === 'regular',
       }}
       onLogout={handleLogout}
       banner={

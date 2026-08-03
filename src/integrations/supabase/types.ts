@@ -176,7 +176,6 @@ export type Database = {
       associados: {
         Row: {
           assinatura_url: string | null
-          ativo: boolean
           bairro_residencia: string | null
           cams_last_sync: string | null
           cep: string | null
@@ -206,19 +205,16 @@ export type Database = {
           rg_civil: string | null
           rg_militar: string | null
           sexo: string | null
-          situacao_associativa:
-            | Database["public"]["Enums"]["cams_situacao_associativa"]
-            | null
           situacao_funcional:
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
+          status: Database["public"]["Enums"]["associado_status"]
           telefone: string | null
           unidade_id: string | null
           updated_at: string
         }
         Insert: {
           assinatura_url?: string | null
-          ativo?: boolean
           bairro_residencia?: string | null
           cams_last_sync?: string | null
           cep?: string | null
@@ -248,19 +244,16 @@ export type Database = {
           rg_civil?: string | null
           rg_militar?: string | null
           sexo?: string | null
-          situacao_associativa?:
-            | Database["public"]["Enums"]["cams_situacao_associativa"]
-            | null
           situacao_funcional?:
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
+          status?: Database["public"]["Enums"]["associado_status"]
           telefone?: string | null
           unidade_id?: string | null
           updated_at?: string
         }
         Update: {
           assinatura_url?: string | null
-          ativo?: boolean
           bairro_residencia?: string | null
           cams_last_sync?: string | null
           cep?: string | null
@@ -290,12 +283,10 @@ export type Database = {
           rg_civil?: string | null
           rg_militar?: string | null
           sexo?: string | null
-          situacao_associativa?:
-            | Database["public"]["Enums"]["cams_situacao_associativa"]
-            | null
           situacao_funcional?:
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
+          status?: Database["public"]["Enums"]["associado_status"]
           telefone?: string | null
           unidade_id?: string | null
           updated_at?: string
@@ -1583,7 +1574,6 @@ export type Database = {
         Row: {
           assinatura_url: string | null
           associado_id: string
-          ativo: boolean
           bairro_residencia: string | null
           cams_last_sync: string | null
           cep_residencia: string | null
@@ -1599,7 +1589,7 @@ export type Database = {
           id: string
           nome: string
           numero_residencia: string | null
-          status: string
+          status: Database["public"]["Enums"]["associado_status"]
           telefone: string | null
           tipo: Database["public"]["Enums"]["tipo_dependente"]
           updated_at: string
@@ -1608,7 +1598,6 @@ export type Database = {
         Insert: {
           assinatura_url?: string | null
           associado_id: string
-          ativo?: boolean
           bairro_residencia?: string | null
           cams_last_sync?: string | null
           cep_residencia?: string | null
@@ -1624,7 +1613,7 @@ export type Database = {
           id?: string
           nome: string
           numero_residencia?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["associado_status"]
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
@@ -1633,7 +1622,6 @@ export type Database = {
         Update: {
           assinatura_url?: string | null
           associado_id?: string
-          ativo?: boolean
           bairro_residencia?: string | null
           cams_last_sync?: string | null
           cep_residencia?: string | null
@@ -1649,7 +1637,7 @@ export type Database = {
           id?: string
           nome?: string
           numero_residencia?: string | null
-          status?: string
+          status?: Database["public"]["Enums"]["associado_status"]
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
@@ -6439,6 +6427,13 @@ export type Database = {
     }
     Enums: {
       app_role: "admin"
+      associado_status:
+        | "regular"
+        | "inativo"
+        | "suspenso"
+        | "em_analise"
+        | "aguardando_reativacao"
+        | "falecido"
       cams_situacao_associativa:
         | "regular"
         | "suspenso"
@@ -6754,6 +6749,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin"],
+      associado_status: [
+        "regular",
+        "inativo",
+        "suspenso",
+        "em_analise",
+        "aguardando_reativacao",
+        "falecido",
+      ],
       cams_situacao_associativa: [
         "regular",
         "suspenso",

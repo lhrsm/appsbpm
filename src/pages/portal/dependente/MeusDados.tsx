@@ -109,7 +109,7 @@ export default function MeusDadosDependente() {
           { label: "CPF", value: dependenteLogado.cpf ? maskCPF(dependenteLogado.cpf) : "—" },
           { label: "Data de nascimento", value: dataBR(dependenteLogado.data_nascimento) },
           { label: "Grau de parentesco", value: parentescoLabel[dependenteLogado.tipo] ?? "Outro" },
-          { label: "Situação do vínculo", value: dependenteLogado.ativo === false ? "Inativo" : "Ativo" },
+          { label: "Situação do vínculo", value: dependenteLogado.status === 'regular' ? "Ativo" : "Inativo" },
         ]}
       />
 

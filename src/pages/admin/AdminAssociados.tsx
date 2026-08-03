@@ -21,12 +21,13 @@ const SITUACOES_FUNCIONAIS = [
   { value: "civil", label: "Civil" },
 ];
 
-const SITUACOES_ASSOCIATIVAS = [
-  { value: "regular", label: "Regular" },
-  { value: "suspenso", label: "Suspenso" },
-  { value: "excluido", label: "Excluído" },
-  { value: "falecido", label: "Falecido" },
-  { value: "licenciado", label: "Licenciado" },
+const STATUS_ASSOCIAÇÃO = [
+  { value: "regular", label: "Regular", color: "bg-green-500" },
+  { value: "inativo", label: "Inativo", color: "bg-red-500" },
+  { value: "suspenso", label: "Suspenso", color: "bg-orange-500" },
+  { value: "em_analise", label: "Em análise", color: "bg-yellow-500" },
+  { value: "aguardando_reativacao", label: "Aguardando reativação", color: "bg-blue-500" },
+  { value: "falecido", label: "Falecido", color: "bg-slate-900" },
 ];
 
 
@@ -41,7 +42,7 @@ interface Associado {
   posto_graduacao_id?: string;
   unidade_id?: string;
   situacao_funcional?: string;
-  situacao_associativa?: string;
+  status?: string;
   data_nascimento?: string;
   data_admissao?: string;
   cep?: string;
@@ -54,9 +55,7 @@ interface Associado {
   cidade_residencia?: string;
   estado_residencia?: string;
   foto_url?: string;
-  ativo?: boolean;
   cams_last_sync?: string;
-
 }
 
 const onlyDigits = (v: string) => (v ?? "").replace(/\D/g, "");
@@ -95,7 +94,7 @@ export default function AdminAssociados() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterPatente, setFilterPatente] = useState<string>("");
-  const [filterAtivo, setFilterAtivo] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string>("");
   const [filterCidade, setFilterCidade] = useState<string>("");
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
@@ -114,8 +113,7 @@ export default function AdminAssociados() {
     let q = supabase.from("associados").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
     if (filterPatente) q = q.eq("patente", filterPatente);
-    if (filterAtivo === "true") q = q.eq("ativo", true);
-    if (filterAtivo === "false") q = q.eq("ativo", false);
+    if (filterStatus) q = q.eq("status", filterStatus as any);
     if (filterCidade) q = q.eq("cidade", filterCidade);
     const { data, error } = await q;
     if (error) toast.error(error.message);
@@ -123,7 +121,7 @@ export default function AdminAssociados() {
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterPatente, filterAtivo, filterCidade]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterPatente, filterStatus, filterCidade]);
 
   const [cidadesDisponiveis, setCidadesDisponiveis] = useState<string[]>([]);
   useEffect(() => {
@@ -134,7 +132,7 @@ export default function AdminAssociados() {
   }, [open]);
 
   const openNew = () => {
-    setEditing({ ativo: true });
+    setEditing({ status: "regular" });
     setOpen(true);
   };
 
@@ -244,12 +242,13 @@ export default function AdminAssociados() {
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          value={filterAtivo}
-          onChange={(e) => setFilterAtivo(e.target.value)}
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <option value="">Ativos e inativos</option>
-          <option value="true">Somente ativos</option>
-          <option value="false">Somente inativos</option>
+          <option value="">Todos os status</option>
+          {STATUS_ASSOCIAÇÃO.map((s) => (
+            <option key={s.value} value={s.value}>{s.label}</option>
+          ))}
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
@@ -259,8 +258,8 @@ export default function AdminAssociados() {
           <option value="">Todas as cidades</option>
           {cidadesDisponiveis.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
-        {(filterPatente || filterAtivo || filterCidade) && (
-          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterAtivo(""); setFilterCidade(""); }}>
+        {(filterPatente || filterStatus || filterCidade) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterPatente(""); setFilterStatus(""); setFilterCidade(""); }}>
             Limpar filtros
           </Button>
         )}
@@ -289,8 +288,8 @@ export default function AdminAssociados() {
                   <div className="text-xs text-muted-foreground">Matrícula: {r.matricula}</div>
                   {r.patente && <div className="text-xs text-muted-foreground truncate">{r.patente}</div>}
                 </div>
-                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${r.ativo ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}>
-                  {r.ativo ? "Ativo" : "Inativo"}
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full text-white ${STATUS_ASSOCIAÇÃO.find(s => s.value === r.status)?.color ?? "bg-gray-500"}`}>
+                  {STATUS_ASSOCIAÇÃO.find(s => s.value === r.status)?.label ?? r.status}
                 </span>
               </div>
               <div className="text-xs space-y-1 text-muted-foreground">
@@ -372,20 +371,19 @@ export default function AdminAssociados() {
               </select>
             </div>
             <div>
-              <Label>Situação Associativa</Label>
+              <Label>Status da Associação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={editing?.situacao_associativa ?? "regular"}
+                value={editing?.status ?? "regular"}
                 onChange={(e) => {
                   const val = e.target.value;
                   setEditing({ 
                     ...editing, 
-                    situacao_associativa: val,
-                    ativo: val === "regular" 
+                    status: val
                   });
                 }}
               >
-                {SITUACOES_ASSOCIATIVAS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                {STATUS_ASSOCIAÇÃO.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
             </div>
 
@@ -447,17 +445,6 @@ export default function AdminAssociados() {
                 value={editing?.endereco ?? ""}
                 onChange={(e) => setEditing({ ...editing, endereco: e.target.value })}
               />
-            </div>
-            <div>
-              <Label>Ativo</Label>
-              <select
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={String(editing?.ativo ?? "true")}
-                onChange={(e) => setEditing({ ...editing, ativo: e.target.value === "true" })}
-              >
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
-              </select>
             </div>
           </div>
           <DialogFooter>

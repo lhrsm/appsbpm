@@ -25,7 +25,7 @@ export interface PreCadastroInput {
   registration?: string;
   rankId?: string;
   rankOther?: string;
-  functionalStatus: 'ativo' | 'inativo';
+  functionalStatus: 'regular' | 'inativo';
   email: string;
   phone: string;
 }

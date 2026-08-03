@@ -15,8 +15,7 @@ export interface Dependente {
   email?: string | null;
   telefone?: string | null;
   endereco?: string | null;
-  ativo: boolean;
-  status?: string;
+  status: string;
   cep_residencia?: string | null;
   numero_residencia?: string | null;
   complemento_residencia?: string | null;
@@ -24,7 +23,6 @@ export interface Dependente {
   cidade_residencia?: string | null;
   estado_residencia?: string | null;
   utiliza_endereco_titular?: boolean;
-
 }
 
 
@@ -67,10 +65,9 @@ export interface Associado {
   foto_url: string | null;
   assinatura_url?: string | null;
   data_admissao: string;
-  ativo: boolean;
+  status: string;
   patente?: string | null;
   situacao_funcional?: string | null;
-  situacao_associativa?: string | null;
   cep_residencia?: string | null;
   numero_residencia?: string | null;
   complemento_residencia?: string | null;

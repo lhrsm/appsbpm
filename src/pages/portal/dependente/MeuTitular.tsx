@@ -22,7 +22,7 @@ export default function MeuTitular() {
 
   if (!associado) return null;
 
-  const vinculoAtivo = associado.ativo !== false;
+  const vinculoAtivo = associado.status === 'regular';
 
   return (
     <div className="space-y-6">
