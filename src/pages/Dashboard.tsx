@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
@@ -34,8 +34,6 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     return this.props.children;
   }
 }
-
-import React from 'react';
 
 /** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
 const rotasProvaveis = [
@@ -125,7 +123,6 @@ export default function Dashboard() {
             "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."
           }
           onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING' || error === 'IDENTITY_INCONSISTENCY')} 
-
         />
         
         {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
@@ -148,7 +145,6 @@ export default function Dashboard() {
             }, null, 2)}</pre>
           </div>
         )}
-
       </div>
     );
   }
@@ -167,7 +163,7 @@ export default function Dashboard() {
     );
   }
 
-  const nomeExibir = isDependente && dependenteLogado ? dependenteLogado.nome : associado.nome;
+  const nomeExibir = isDependente && dependenteLogado ? dependenteLogado.nome : (associado?.nome || "Associado");
   const profileType = isDependente ? 'dependent' : 'associate';
 
   return (
@@ -175,10 +171,10 @@ export default function Dashboard() {
       profileType={profileType}
       user={{
         nome: nomeExibir,
-        fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado.foto_url,
-        matricula: associado.matricula,
-        titularNome: associado.nome,
-        ativo: associado.status === 'regular',
+        fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url,
+        matricula: associado?.matricula || "",
+        titularNome: associado?.nome || "",
+        ativo: associado?.status === 'regular',
       }}
       onLogout={handleLogout}
       banner={
