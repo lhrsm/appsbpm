@@ -21,12 +21,13 @@ const SITUACOES_FUNCIONAIS = [
   { value: "civil", label: "Civil" },
 ];
 
-const SITUACOES_ASSOCIATIVAS = [
-  { value: "regular", label: "Regular" },
-  { value: "suspenso", label: "Suspenso" },
-  { value: "excluido", label: "Excluído" },
-  { value: "falecido", label: "Falecido" },
-  { value: "licenciado", label: "Licenciado" },
+const STATUS_ASSOCIAÇÃO = [
+  { value: "regular", label: "Regular", color: "bg-green-500" },
+  { value: "inativo", label: "Inativo", color: "bg-red-500" },
+  { value: "suspenso", label: "Suspenso", color: "bg-orange-500" },
+  { value: "em_analise", label: "Em análise", color: "bg-yellow-500" },
+  { value: "aguardando_reativacao", label: "Aguardando reativação", color: "bg-blue-500" },
+  { value: "falecido", label: "Falecido", color: "bg-slate-900" },
 ];
 
 
