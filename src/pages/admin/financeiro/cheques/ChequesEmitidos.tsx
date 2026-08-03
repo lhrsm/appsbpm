@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, Text, Button, icons, Badge } from "@/design-system";
+import { IconButton } from "@/design-system/components/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function ChequesEmitidos() {
@@ -49,8 +50,8 @@ export default function ChequesEmitidos() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-1">
-                      <Button variant="ghost" size="sm" icon={icons.buscar} label="Ver" />
-                      <Button variant="ghost" size="sm" icon={icons.imprimir} label="Imprimir" disabled={c.status === 'Compensado'} />
+                      <IconButton variant="ghost" size="sm" icon={icons.buscar} label="Ver" />
+                      <IconButton variant="ghost" size="sm" icon={icons.imprimir} label="Imprimir" disabled={c.status === 'Compensado'} />
                     </div>
                   </td>
                 </tr>
