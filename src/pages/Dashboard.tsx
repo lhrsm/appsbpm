@@ -78,7 +78,10 @@ export default function Dashboard() {
 
   useInactivityLock(!!associado, handleLogout);
 
-  if (initializing) return <PortalLoadingState />;
+  if (initializing) {
+    console.info("[Dashboard] Render stage: initializing");
+    return <PortalLoadingState />;
+  }
   
   if (error) {
     console.error("[Dashboard] Interrompido por erro:", error, identity);

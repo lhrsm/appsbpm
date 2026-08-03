@@ -279,11 +279,14 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     let mounted = true;
 
     const checkInitialSession = async () => {
+      console.log("[PortalIdentity] checkInitialSession...");
       const { data: { session } } = await supabase.auth.getSession();
       if (mounted) {
         if (session) {
+          console.log("[PortalIdentity] Session found in checkInitialSession:", session.user.id);
           refreshProfile();
         } else {
+          console.log("[PortalIdentity] No session found in checkInitialSession.");
           setInitializing(false);
         }
       }
@@ -291,11 +294,14 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
     checkInitialSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("[PortalIdentity] onAuthStateChange event:", event);
       if (mounted) {
         if (session) {
+          console.log("[PortalIdentity] onAuthStateChange session found:", session.user.id);
           refreshProfile();
         } else {
+          console.log("[PortalIdentity] onAuthStateChange: clear profile");
           setAssociado(null);
           setIdentity(null);
           setInitializing(false);
