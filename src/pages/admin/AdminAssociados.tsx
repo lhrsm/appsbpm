@@ -225,8 +225,9 @@ export default function AdminAssociados() {
           value={filterPatente}
           onChange={(e) => setFilterPatente(e.target.value)}
         >
-          <option value="">Todas as patentes</option>
-          {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+          <option value="">Todas os postos</option>
+          {postos.map((p) => <option key={p.id} value={p.nome}>{p.sigla} - {p.nome}</option>)}
+
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
@@ -316,16 +317,51 @@ export default function AdminAssociados() {
               <Input value={editing?.cpf ?? ""} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
             </div>
             <div>
-              <Label>Patente</Label>
+              <Label>Posto / Graduação</Label>
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={editing?.patente ?? ""}
-                onChange={(e) => setEditing({ ...editing, patente: e.target.value })}
+                value={editing?.posto_graduacao_id ?? ""}
+                onChange={(e) => {
+                  const p = postos.find(x => x.id === e.target.value);
+                  setEditing({ ...editing, posto_graduacao_id: e.target.value, patente: p?.nome });
+                }}
               >
                 <option value="">Selecione...</option>
-                {PATENTES.map((p) => <option key={p} value={p}>{p}</option>)}
+                {postos.map((p) => <option key={p.id} value={p.id}>{p.sigla} - {p.nome}</option>)}
               </select>
             </div>
+            <div>
+              <Label>Unidade / OPM</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.unidade_id ?? ""}
+                onChange={(e) => setEditing({ ...editing, unidade_id: e.target.value })}
+              >
+                <option value="">Selecione...</option>
+                {unidades.map((u) => <option key={u.id} value={u.id}>{u.sigla} - {u.nome}</option>)}
+              </select>
+            </div>
+            <div>
+              <Label>Situação Funcional</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.situacao_funcional ?? "ativo"}
+                onChange={(e) => setEditing({ ...editing, situacao_funcional: e.target.value })}
+              >
+                {SITUACOES_FUNCIONAIS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <Label>Situação Associativa</Label>
+              <select
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={editing?.situacao_associativa ?? "regular"}
+                onChange={(e) => setEditing({ ...editing, situacao_associativa: e.target.value })}
+              >
+                {SITUACOES_ASSOCIATIVAS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+              </select>
+            </div>
+
             <div>
               <Label>E-mail</Label>
               <Input type="email" value={editing?.email ?? ""} onChange={(e) => setEditing({ ...editing, email: e.target.value })} />
