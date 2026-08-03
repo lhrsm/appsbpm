@@ -226,8 +226,22 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // Se não resolveu ou não está READY
       if (!mappedIdentity.resolved) {
+        // Invariante institucional: se reasonCode é READY, resolved DEVE ser true
+        if (mappedIdentity.reasonCode === 'READY') {
+          console.error("[PortalIdentity] Inconsistência Crítica: reasonCode READY mas resolved false", mappedIdentity);
+          setError('IDENTITY_INCONSISTENCY');
+          return;
+        }
+
         setError('PROFILE_LINK_MISSING');
       } else {
+        // Invariante institucional: se resolved é true mas associateId está nulo
+        if (!mappedIdentity.associateId) {
+          console.error("[PortalIdentity] Inconsistência Crítica: resolved true mas associateId ausente", mappedIdentity);
+          setError('ADAPTER_ERROR');
+          return;
+        }
+        
         setError(mappedIdentity.reasonCode || 'ACCESS_DENIED');
       }
     } catch (err: any) {
