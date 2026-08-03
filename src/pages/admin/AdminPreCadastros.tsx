@@ -136,7 +136,7 @@ export default function AdminPreCadastros() {
         i.protocol,
         i.full_name,
         i.association_ranks?.nome ?? i.rank_other ?? '',
-        i.functional_status,
+        i.functional_status === 'regular' ? 'Ativo' : 'Inativo',
         i.email,
         formatPhone(i.phone),
         rotuloStatus(i.status),

@@ -22,7 +22,7 @@ export default defineTool({
     const { data, error } = await supabase
       .from("clinicas_parceiros")
       .select("cidade")
-      .eq("ativo", true);
+      .eq("status", "ativo");
 
     if (error) {
       return {

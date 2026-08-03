@@ -179,8 +179,8 @@ export function parseData(v: any): string | null {
 export function parseBooleano(v: any): boolean | null {
   if (v === "" || v == null) return null;
   const s = String(v).trim().toLowerCase();
-  if (["1", "true", "sim", "s", "ativo", "yes", "y"].includes(s)) return true;
-  if (["0", "false", "nao", "não", "n", "inativo", "no"].includes(s)) return false;
+  if (["1", "true", "sim", "s", "ativo", "regular", "yes", "y"].includes(s)) return true;
+  if (["0", "false", "nao", "não", "n", "inativo", "no", "desativado"].includes(s)) return false;
   return null;
 }
 

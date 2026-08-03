@@ -82,7 +82,7 @@ var list_cidades_default = defineTool2({
       process.env.SUPABASE_PUBLISHABLE_KEY,
       { auth: { persistSession: false, autoRefreshToken: false } }
     );
-    const { data, error } = await supabase.from("clinicas_parceiros").select("cidade").eq("ativo", true);
+    const { data, error } = await supabase.from("clinicas_parceiros").select("cidade").eq("status", "ativo");
     if (error) {
       return {
         content: [{ type: "text", text: `Erro: ${error.message}` }],
