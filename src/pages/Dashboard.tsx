@@ -79,9 +79,13 @@ export default function Dashboard() {
   if (initializing) return <PortalLoadingState />;
   
   if (error) {
+    console.error("[Dashboard] Interrompido por erro de perfil:", error);
     return (
-      <div className="flex min-h-screen items-center justify-center p-6">
-        <PortalProfileNotFound onRetry={refreshProfile} />
+      <div className="flex min-h-screen items-center justify-center p-6 bg-background">
+        <PortalProfileNotFound onRetry={() => {
+          console.log("[Dashboard] Tentando revalidar perfil...");
+          refreshProfile();
+        }} />
       </div>
     );
   }

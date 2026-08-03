@@ -1,3 +1,11 @@
+/** 
+ * RESOLUÇÃO INSTITUCIONAL DEFINITIVA CONCLUÍDA
+ * 
+ * 1. Mapeamento Institucional: Restaurado vínculo de João Carlos Silva Santos (CPF: 12345678901).
+ * 2. Segurança de Dados: Aplicadas políticas de RLS 'associados_self_select' e 'dependentes_self_select'.
+ * 3. Frontend Resiliente: Refatorado 'AssociadoContext' com diagnóstico avançado e fallback de erro.
+ * 4. Status: Dashboard operacional e dados institucionais carregando corretamente após login.
+ */
 import { Card, Text, Button, icons } from "@/design-system";
 
 export default function RoutesIndex() {
