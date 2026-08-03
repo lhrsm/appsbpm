@@ -44,7 +44,7 @@ export default function PortalEntrar() {
       return;
     }
     setLoading(true);
-    const res = await loginComSenha(credential.trim(), password);
+    const res = await loginComSenha(normalized, password);
     setLoading(false);
 
     if (!res?.success || !res.portal) {

@@ -72,6 +72,9 @@ export default function AdminDependentes() {
   const save = async () => {
     if (!editing) return;
     const payload: any = { ...editing };
+    // Remover campo redundante ativo
+    delete payload.ativo;
+    
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
     const isNew = !payload.id;
     const { data, error } = isNew

@@ -179,6 +179,10 @@ export default function AdminAssociados() {
 
     // Validação/conversão de datas
     const payload: any = { ...editing };
+    
+    // Removendo explicitamente o campo redundante 'ativo'
+    delete payload.ativo;
+    
     for (const k of ["data_nascimento", "data_admissao"] as const) {
       const v = payload[k];
       if (v) {
@@ -287,7 +291,7 @@ export default function AdminAssociados() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold truncate">{r.nome}</div>
-                  <div className="text-xs text-muted-foreground">Matrícula: {r.matricula}</div>
+                  <div className="text-xs text-muted-foreground">Matrícula: {r.matricula?.replace(/^(\d{8})(\d{1})/, '$1-$2')}</div>
                   {r.patente && <div className="text-xs text-muted-foreground truncate">{r.patente}</div>}
                 </div>
                 <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full text-white ${STATUS_ASSOCIAÇÃO.find(s => s.value === r.status)?.color ?? "bg-gray-500"}`}>
@@ -295,7 +299,7 @@ export default function AdminAssociados() {
                 </span>
               </div>
               <div className="text-xs space-y-1 text-muted-foreground">
-                <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf ?? "—"}</div>
+                <div className="truncate"><span className="font-medium text-foreground">CPF:</span> {r.cpf?.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4") ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">E-mail:</span> {r.email ?? "—"}</div>
                 <div className="truncate"><span className="font-medium text-foreground">Telefone:</span> {r.telefone ?? "—"}</div>
                 {r.cidade_residencia && <div className="truncate"><span className="font-medium text-foreground">Cidade:</span> {r.cidade_residencia}</div>}

@@ -7,7 +7,7 @@ export function normalizeCpf(cpf: string | null | undefined): string | null {
   if (!cpf) return null;
   const digits = cpf.replace(/\D/g, '');
   if (digits.length === 0) return null;
-  return digits.padStart(11, '0').slice(0, 11);
+  return digits.padStart(11, '0').slice(-11);
 }
 
 /**
@@ -60,7 +60,8 @@ export function normalizeRegistrationNumber(reg: string | null | undefined): str
   if (!reg) return null;
   const digits = reg.replace(/\D/g, '');
   if (digits.length === 0) return null;
-  return digits.padStart(9, '0').slice(0, 9);
+  // Preserva zeros à esquerda e limita a 9 dígitos
+  return digits.padStart(9, '0').slice(-9);
 }
 
 /**
@@ -114,14 +115,15 @@ export function mapInstitutionalStatus(status: string | null | undefined): Assoc
 
 /**
  * Verifica se o status permite acesso básico ao portal.
+ * Regra: somente 'regular' tem acesso completo.
  */
 export function isStatusAtivo(status: AssociadoStatus | string | null | undefined): boolean {
   if (!status) return false;
-  return status === 'regular' || status === 'aguardando_reativacao' || status === 'inativo';
+  return status === 'regular';
 }
 
 /**
- * Define o nível de acesso baseado no status.
+ * Define o nível de acesso baseado no status da associação.
  */
 export function getAccessLevel(status: AssociadoStatus | string | null | undefined): PortalIdentity['portal_access_level'] {
   const s = status as AssociadoStatus;

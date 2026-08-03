@@ -77,10 +77,10 @@ export default function PortalPrimeiroAcesso() {
     setErro(null);
     setLoading(true);
     const res = await validarIdentidade({
-      cpf,
+      cpf: cpf.replace(/\D/g, ''),
       birthDate: nascimento,
       personType,
-      registration: extras.registration,
+      registration: extras.registration ? extras.registration.replace(/\D/g, '') : undefined,
       fullName: extras.fullName,
       motherName: extras.motherName,
     });
