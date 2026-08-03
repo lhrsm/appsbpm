@@ -131,14 +131,23 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       if (isRepairAttempt) {
         setError(null);
         setInitializing(true);
-        const { data: repairResult, error: rpcError } = await supabase.rpc('repair_portal_identity');
+        const { data: repairResult, error: rpcError } = await (supabase.rpc as any)('repair_portal_identity');
         
         if (rpcError) {
           console.error("[PortalIdentity] Erro RPC no reparo:", rpcError);
           throw new Error("Falha técnica ao tentar reparar o vínculo.");
         }
         
-        if (!repairResult?.success) {
+        const result = repairResult as { success: boolean; reason_code?: string; data?: any };
+        
+        if (!result?.success) {
+          console.warn("[PortalIdentity] Reparo não obteve sucesso:", result?.reason_code);
+          setError(`Não foi possível vincular seu cadastro. Código: ${result?.reason_code || 'UNKNOWN'}`);
+          setInitializing(false);
+          return;
+        }
+        console.log("[PortalIdentity] Reparo concluído com sucesso:", result.data);
+      }
           console.warn("[PortalIdentity] Reparo não obteve sucesso:", repairResult?.reason_code);
           setError(`Não foi possível vincular seu cadastro. Código: ${repairResult?.reason_code || 'UNKNOWN'}`);
           setInitializing(false);
