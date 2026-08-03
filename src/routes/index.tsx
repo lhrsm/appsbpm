@@ -1,4 +1,4 @@
-import { Card, Text, Button, icons, tokens } from "@/design-system";
+import { Card, Text, Button, icons } from "@/design-system";
 
 export default function RoutesIndex() {
   return (
@@ -26,7 +26,7 @@ export default function RoutesIndex() {
               "Transições Suaves de Cores e Sombras"
             ].map((item) => (
               <li key={item} className="flex items-center gap-2 text-sm font-medium text-muted-foreground bg-muted/50 p-2 rounded-md">
-                <icons.check className="h-4 w-4 text-[hsl(var(--success))]" />
+                <icons.confirmar className="h-4 w-4 text-[hsl(var(--success))]" />
                 {item}
               </li>
             ))}
@@ -34,7 +34,7 @@ export default function RoutesIndex() {
         </div>
 
         <footer className="mt-6 flex justify-end">
-          <Button variant="primary" leftIcon={icons.check}>
+          <Button variant="primary" leftIcon={icons.confirmar}>
             Confirmar Implementação
           </Button>
         </footer>
