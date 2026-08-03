@@ -1,3 +1,4 @@
+// PORTAL_FRONTEND_VERSION = "portal-auth-dashboard-v4-2026-08-03"
 // Guarded service worker registration. Only registers in production on the
 // deployed app — never in Lovable preview, iframes, or dev.
 
