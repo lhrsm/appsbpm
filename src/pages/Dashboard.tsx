@@ -86,11 +86,18 @@ export default function Dashboard() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background gap-8">
         <PortalProfileNotFound 
-          title={error === 'PROFILE_LINK_MISSING' ? "Estamos vinculando seu cadastro" : "Não foi possível carregar seu cadastro"}
-          description={error === 'PROFILE_LINK_MISSING' 
-            ? "Identificamos sua conta, mas precisamos sincronizar seu vínculo institucional para liberar o acesso." 
-            : "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."}
-          onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING')} 
+          title={
+            error === 'PROFILE_LINK_MISSING' ? "Estamos vinculando seu cadastro" : 
+            error === 'IDENTITY_INCONSISTENCY' ? "Inconsistência de Identidade" :
+            "Não foi possível carregar seu cadastro"
+          }
+          description={
+            error === 'PROFILE_LINK_MISSING' ? "Identificamos sua conta, mas precisamos sincronizar seu vínculo institucional para liberar o acesso." : 
+            error === 'IDENTITY_INCONSISTENCY' ? "Detectamos um problema na configuração do seu perfil institucional. Por favor, tente novamente ou contate o suporte." :
+            "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."
+          }
+          onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING' || error === 'IDENTITY_INCONSISTENCY')} 
+
         />
         
         {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
