@@ -193,12 +193,14 @@ export type Database = {
           estado_residencia: string | null
           foto_url: string | null
           id: string
+          last_sync_at: string | null
           matricula: string
           naturalidade: string | null
           nome: string
           nome_mae: string | null
           nome_pai: string | null
           numero_residencia: string | null
+          official_data: Json | null
           orgao_emissor: string | null
           patente: string | null
           posto_graduacao_id: string | null
@@ -209,6 +211,7 @@ export type Database = {
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
           status: Database["public"]["Enums"]["associado_status"]
+          sync_status: Database["public"]["Enums"]["sync_status"] | null
           telefone: string | null
           unidade_id: string | null
           updated_at: string
@@ -232,12 +235,14 @@ export type Database = {
           estado_residencia?: string | null
           foto_url?: string | null
           id?: string
+          last_sync_at?: string | null
           matricula: string
           naturalidade?: string | null
           nome: string
           nome_mae?: string | null
           nome_pai?: string | null
           numero_residencia?: string | null
+          official_data?: Json | null
           orgao_emissor?: string | null
           patente?: string | null
           posto_graduacao_id?: string | null
@@ -248,6 +253,7 @@ export type Database = {
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
           status?: Database["public"]["Enums"]["associado_status"]
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
           telefone?: string | null
           unidade_id?: string | null
           updated_at?: string
@@ -271,12 +277,14 @@ export type Database = {
           estado_residencia?: string | null
           foto_url?: string | null
           id?: string
+          last_sync_at?: string | null
           matricula?: string
           naturalidade?: string | null
           nome?: string
           nome_mae?: string | null
           nome_pai?: string | null
           numero_residencia?: string | null
+          official_data?: Json | null
           orgao_emissor?: string | null
           patente?: string | null
           posto_graduacao_id?: string | null
@@ -287,6 +295,7 @@ export type Database = {
             | Database["public"]["Enums"]["cams_situacao_funcional"]
             | null
           status?: Database["public"]["Enums"]["associado_status"]
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
           telefone?: string | null
           unidade_id?: string | null
           updated_at?: string
@@ -636,25 +645,34 @@ export type Database = {
       }
       cams_unidades: {
         Row: {
+          active: boolean | null
           cidade: string | null
           created_at: string | null
+          display_order: number | null
           id: string
+          instituicao: string | null
           nome: string
           sigla: string
           tipo: string | null
         }
         Insert: {
+          active?: boolean | null
           cidade?: string | null
           created_at?: string | null
+          display_order?: number | null
           id?: string
+          instituicao?: string | null
           nome: string
           sigla: string
           tipo?: string | null
         }
         Update: {
+          active?: boolean | null
           cidade?: string | null
           created_at?: string | null
+          display_order?: number | null
           id?: string
+          instituicao?: string | null
           nome?: string
           sigla?: string
           tipo?: string | null
@@ -861,6 +879,44 @@ export type Database = {
             columns: ["dependente_id"]
             isOneToOne: false
             referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      correction_request_documents: {
+        Row: {
+          content_type: string | null
+          created_at: string | null
+          file_name: string
+          file_path: string
+          id: string
+          request_id: string
+          size_bytes: number | null
+        }
+        Insert: {
+          content_type?: string | null
+          created_at?: string | null
+          file_name: string
+          file_path: string
+          id?: string
+          request_id: string
+          size_bytes?: number | null
+        }
+        Update: {
+          content_type?: string | null
+          created_at?: string | null
+          file_name?: string
+          file_path?: string
+          id?: string
+          request_id?: string
+          size_bytes?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "correction_request_documents_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "data_correction_requests"
             referencedColumns: ["id"]
           },
         ]
@@ -1570,6 +1626,84 @@ export type Database = {
           },
         ]
       }
+      data_correction_requests: {
+        Row: {
+          admin_notes: string | null
+          associado_id: string | null
+          current_value: string | null
+          dependente_id: string | null
+          field_key: string
+          id: string
+          justification: string | null
+          new_value: string
+          processed_at: string | null
+          processed_by: string | null
+          protocol: string
+          requested_at: string | null
+          status:
+            | Database["public"]["Enums"]["correction_request_status"]
+            | null
+          sync_status: Database["public"]["Enums"]["sync_status"] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          associado_id?: string | null
+          current_value?: string | null
+          dependente_id?: string | null
+          field_key: string
+          id?: string
+          justification?: string | null
+          new_value: string
+          processed_at?: string | null
+          processed_by?: string | null
+          protocol: string
+          requested_at?: string | null
+          status?:
+            | Database["public"]["Enums"]["correction_request_status"]
+            | null
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          associado_id?: string | null
+          current_value?: string | null
+          dependente_id?: string | null
+          field_key?: string
+          id?: string
+          justification?: string | null
+          new_value?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          protocol?: string
+          requested_at?: string | null
+          status?:
+            | Database["public"]["Enums"]["correction_request_status"]
+            | null
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "data_correction_requests_associado_id_fkey"
+            columns: ["associado_id"]
+            isOneToOne: false
+            referencedRelation: "associados"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "data_correction_requests_dependente_id_fkey"
+            columns: ["dependente_id"]
+            isOneToOne: false
+            referencedRelation: "dependentes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       dependentes: {
         Row: {
           assinatura_url: string | null
@@ -1587,9 +1721,12 @@ export type Database = {
           estado_residencia: string | null
           foto_url: string | null
           id: string
+          last_sync_at: string | null
           nome: string
           numero_residencia: string | null
+          official_data: Json | null
           status: Database["public"]["Enums"]["associado_status"]
+          sync_status: Database["public"]["Enums"]["sync_status"] | null
           telefone: string | null
           tipo: Database["public"]["Enums"]["tipo_dependente"]
           updated_at: string
@@ -1611,9 +1748,12 @@ export type Database = {
           estado_residencia?: string | null
           foto_url?: string | null
           id?: string
+          last_sync_at?: string | null
           nome: string
           numero_residencia?: string | null
+          official_data?: Json | null
           status?: Database["public"]["Enums"]["associado_status"]
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
@@ -1635,9 +1775,12 @@ export type Database = {
           estado_residencia?: string | null
           foto_url?: string | null
           id?: string
+          last_sync_at?: string | null
           nome?: string
           numero_residencia?: string | null
+          official_data?: Json | null
           status?: Database["public"]["Enums"]["associado_status"]
+          sync_status?: Database["public"]["Enums"]["sync_status"] | null
           telefone?: string | null
           tipo?: Database["public"]["Enums"]["tipo_dependente"]
           updated_at?: string
@@ -4443,6 +4586,63 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_field_settings: {
+        Row: {
+          active: boolean | null
+          correction_request_allowed: boolean | null
+          created_at: string | null
+          directly_editable: boolean | null
+          display_order: number | null
+          document_required: boolean | null
+          entity_type: Database["public"]["Enums"]["profile_entity_type"]
+          field_key: string
+          id: string
+          section: string | null
+          source_of_truth: string | null
+          sync_enabled: boolean | null
+          updated_at: string | null
+          visible_admin: boolean | null
+          visible_associate: boolean | null
+          visible_dependent: boolean | null
+        }
+        Insert: {
+          active?: boolean | null
+          correction_request_allowed?: boolean | null
+          created_at?: string | null
+          directly_editable?: boolean | null
+          display_order?: number | null
+          document_required?: boolean | null
+          entity_type: Database["public"]["Enums"]["profile_entity_type"]
+          field_key: string
+          id?: string
+          section?: string | null
+          source_of_truth?: string | null
+          sync_enabled?: boolean | null
+          updated_at?: string | null
+          visible_admin?: boolean | null
+          visible_associate?: boolean | null
+          visible_dependent?: boolean | null
+        }
+        Update: {
+          active?: boolean | null
+          correction_request_allowed?: boolean | null
+          created_at?: string | null
+          directly_editable?: boolean | null
+          display_order?: number | null
+          document_required?: boolean | null
+          entity_type?: Database["public"]["Enums"]["profile_entity_type"]
+          field_key?: string
+          id?: string
+          section?: string | null
+          source_of_truth?: string | null
+          sync_enabled?: boolean | null
+          updated_at?: string | null
+          visible_admin?: boolean | null
+          visible_associate?: boolean | null
+          visible_dependent?: boolean | null
+        }
+        Relationships: []
+      }
       push_tokens: {
         Row: {
           associado_id: string | null
@@ -6361,6 +6561,7 @@ export type Database = {
           tipo: string
         }[]
       }
+      generate_protocol: { Args: never; Returns: string }
       get_my_portal_identity: {
         Args: never
         Returns: {
@@ -6463,6 +6664,14 @@ export type Database = {
         | "falecido"
         | "licenciado"
       cams_situacao_funcional: "ativo" | "reserva" | "reformado" | "civil"
+      correction_request_status:
+        | "sent"
+        | "analyzing"
+        | "complement_requested"
+        | "approved"
+        | "rejected"
+        | "waiting_sync"
+        | "synced"
       ctb_conta_tipo:
         | "ativo"
         | "passivo"
@@ -6589,6 +6798,7 @@ export type Database = {
         | "aprovar"
         | "exportar"
         | "configurar"
+      profile_entity_type: "associate" | "dependent"
       rh_folha_status:
         | "rascunho"
         | "em_calculo"
@@ -6642,6 +6852,13 @@ export type Database = {
         | "cedido"
       rh_verba_tipo: "provento" | "desconto" | "informativa"
       status_carencia: "liberado" | "em_carencia"
+      sync_status:
+        | "updated"
+        | "waiting_validation"
+        | "waiting_sync"
+        | "needs_revision"
+        | "divergent"
+        | "rejected"
       tipo_dependente: "conjuge" | "filho" | "pai_mae" | "outro"
     }
     CompositeTypes: {
@@ -6787,6 +7004,15 @@ export const Constants = {
         "licenciado",
       ],
       cams_situacao_funcional: ["ativo", "reserva", "reformado", "civil"],
+      correction_request_status: [
+        "sent",
+        "analyzing",
+        "complement_requested",
+        "approved",
+        "rejected",
+        "waiting_sync",
+        "synced",
+      ],
       ctb_conta_tipo: [
         "ativo",
         "passivo",
@@ -6928,6 +7154,7 @@ export const Constants = {
         "exportar",
         "configurar",
       ],
+      profile_entity_type: ["associate", "dependent"],
       rh_folha_status: [
         "rascunho",
         "em_calculo",
@@ -6988,6 +7215,14 @@ export const Constants = {
       ],
       rh_verba_tipo: ["provento", "desconto", "informativa"],
       status_carencia: ["liberado", "em_carencia"],
+      sync_status: [
+        "updated",
+        "waiting_validation",
+        "waiting_sync",
+        "needs_revision",
+        "divergent",
+        "rejected",
+      ],
       tipo_dependente: ["conjuge", "filho", "pai_mae", "outro"],
     },
   },

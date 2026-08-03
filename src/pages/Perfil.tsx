@@ -7,15 +7,23 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfilePhotoUpload from '@/components/ProfilePhotoUpload';
 import SignaturePad from '@/components/SignaturePad';
-import { Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download, History } from 'lucide-react';
+import { 
+  Loader2, Save, User as UserIcon, Lock, Bell, PenTool, Download, 
+  History, MapPin, Shield, Users, FileText, CheckCircle2, AlertCircle,
+  Clock, Info
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { PushNotificationToggle } from '@/components/PushNotificationToggle';
-import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { maskCPF } from '@/lib/format';
+import { useProfileSettings } from '@/portal/profile/hooks/useProfileSettings';
+import { ProfileFieldDisplay } from '@/portal/profile/ProfileFieldDisplay';
+import { ProfileSection } from '@/portal/profile/ProfileSection';
+import { CorrectionRequestModal } from '@/portal/profile/CorrectionRequestModal';
+import { UnitChangeModal } from '@/portal/profile/UnitChangeModal';
+import { Badge } from '@/components/ui/badge';
 
 interface AcessoRegistro {
   id: string;
@@ -37,12 +45,15 @@ export default function Perfil() {
     setDependenteLogado,
   } = useAssociado();
 
+  const entityType = isDependente ? 'dependent' : 'associate';
   const alvo = isDependente ? dependenteLogado : associado;
+  const { data: settings, isLoading: loadingSettings } = useProfileSettings(entityType);
 
+  // States for Editing
+  const [isEditingContact, setIsEditingContact] = useState(false);
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [email, setEmail] = useState(alvo?.email || '');
   const [telefone, setTelefone] = useState(alvo?.telefone || '');
-  
-  // Endereço e seus componentes
   const [cep, setCep] = useState(('cep_residencia' in alvo ? (alvo as any).cep_residencia : '') || '');
   const [endereco, setEndereco] = useState(alvo?.endereco || '');
   const [numero, setNumero] = useState(('numero_residencia' in alvo ? (alvo as any).numero_residencia : '') || '');
@@ -51,41 +62,59 @@ export default function Perfil() {
   const [cidade, setCidade] = useState(('cidade_residencia' in alvo ? (alvo as any).cidade_residencia : '') || '');
   const [estado, setEstado] = useState(('estado_residencia' in alvo ? (alvo as any).estado_residencia : '') || '');
 
+  // Correction Modal State
+  const [correctionModal, setCorrectionModal] = useState<{
+    isOpen: boolean;
+    fieldKey: string;
+    fieldName: string;
+    currentValue: string;
+  }>({
+    isOpen: false,
+    fieldKey: '',
+    fieldName: '',
+    currentValue: ''
+  });
+
+  const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
+
   const [saving, setSaving] = useState(false);
+
   const [acessos, setAcessos] = useState<AcessoRegistro[]>([]);
   const [loadingAcessos, setLoadingAcessos] = useState(true);
+
+  useEffect(() => {
+    if (!alvo) return;
+    setEmail(alvo.email || '');
+    setTelefone(alvo.telefone || '');
+    setCep(('cep_residencia' in alvo ? (alvo as any).cep_residencia : '') || '');
+    setEndereco(alvo.endereco || '');
+    setNumero(('numero_residencia' in alvo ? (alvo as any).numero_residencia : '') || '');
+    setComplemento(('complemento_residencia' in alvo ? (alvo as any).complemento_residencia : '') || '');
+    setBairro(('bairro_residencia' in alvo ? (alvo as any).bairro_residencia : '') || '');
+    setCidade(('cidade_residencia' in alvo ? (alvo as any).cidade_residencia : '') || '');
+    setEstado(('estado_residencia' in alvo ? (alvo as any).estado_residencia : '') || '');
+  }, [alvo]);
 
   useEffect(() => {
     (async () => {
       if (!alvo) return;
       setLoadingAcessos(true);
       const { itens } = await portalCall<{ itens: AcessoRegistro[] }>('acessos').catch(() => ({ itens: [] }));
-      setAcessos((itens || []).slice(0, 10));
-
+      setAcessos((itens || []).slice(0, 5));
       setLoadingAcessos(false);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alvo?.id]);
 
   if (!alvo || !associado) {
     return (
       <Card>
         <CardContent className="py-12 text-center text-muted-foreground">
-          Nenhum perfil carregado.
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          Carregando perfil...
         </CardContent>
       </Card>
     );
   }
-
-  const parseDevice = (ua: string | null) => {
-    if (!ua) return 'Dispositivo desconhecido';
-    if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS';
-    if (/Android/i.test(ua)) return 'Android';
-    if (/Windows/i.test(ua)) return 'Windows';
-    if (/Macintosh|Mac OS/i.test(ua)) return 'macOS';
-    if (/Linux/i.test(ua)) return 'Linux';
-    return 'Outro';
-  };
 
   const handlePhotoUpdated = (newUrl: string) => {
     if (isDependente && dependenteLogado) {
@@ -97,32 +126,13 @@ export default function Perfil() {
     }
   };
 
-  const handleSignatureUpdated = (newUrl: string) => {
-    if (isDependente && dependenteLogado) {
-      const atualizado = { ...dependenteLogado, assinatura_url: newUrl };
-      setDependenteLogado(atualizado);
-      setDependentes(dependentes.map((d) => (d.id === atualizado.id ? atualizado : d)));
-    } else if (associado) {
-      setAssociado({ ...associado, assinatura_url: newUrl });
-    }
-  };
-
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = async (section: 'contact' | 'address') => {
     setSaving(true);
     try {
-      const cpfEnvio = isDependente ? dependenteLogado?.cpf || undefined : associado.cpf;
       const idEnvio = isDependente ? dependenteLogado!.id : associado.id;
-      const { data, error } = await supabase.functions.invoke('update-perfil', {
-        body: {
-          tipo: isDependente ? 'dependente' : 'associado',
-          id: idEnvio,
-          matricula_titular: associado.matricula,
-          cpf: cpfEnvio,
-          campos: {
-            email: email.trim(),
-            telefone: telefone.trim(),
+      const campos = section === 'contact' 
+        ? { email: email.trim(), telefone: telefone.trim() }
+        : { 
             endereco: endereco.trim(),
             cep_residencia: cep.trim(),
             numero_residencia: numero.trim(),
@@ -130,50 +140,51 @@ export default function Perfil() {
             bairro_residencia: bairro.trim(),
             cidade_residencia: cidade.trim(),
             estado_residencia: estado.trim(),
+          };
 
-          },
+      const { data, error } = await supabase.functions.invoke('update-perfil', {
+        body: {
+          tipo: isDependente ? 'dependente' : 'associado',
+          id: idEnvio,
+          matricula_titular: associado.matricula,
+          cpf: isDependente ? dependenteLogado?.cpf : associado.cpf,
+          campos,
         },
       });
-      if (error) throw new Error(error.message);
+
+      if (error) throw error;
       if (!data?.ok) throw new Error(data?.error || 'Falha ao salvar');
 
+      // Update local state
+      const updateData = (prev: any) => ({ ...prev, ...campos });
       if (isDependente && dependenteLogado) {
-        const atualizado = {
-          ...dependenteLogado,
-          email: email.trim() || null,
-          telefone: telefone.trim() || null,
-          endereco: endereco.trim() || null,
-          cep_residencia: cep.trim() || null,
-          numero_residencia: numero.trim() || null,
-          complemento_residencia: complemento.trim() || null,
-          bairro_residencia: bairro.trim() || null,
-          cidade_residencia: cidade.trim() || null,
-          estado_residencia: estado.trim() || null,
-
-        };
-        setDependenteLogado(atualizado);
-        setDependentes(dependentes.map((d) => (d.id === atualizado.id ? atualizado : d)));
+        setDependenteLogado(updateData(dependenteLogado));
+        setDependentes(dependentes.map(d => d.id === dependenteLogado.id ? updateData(d) : d));
       } else {
-        setAssociado({
-          ...associado,
-          email: email.trim() || null,
-          telefone: telefone.trim() || null,
-          endereco: endereco.trim() || null,
-          cep_residencia: cep.trim() || null,
-          numero_residencia: numero.trim() || null,
-          complemento_residencia: complemento.trim() || null,
-          bairro_residencia: bairro.trim() || null,
-          cidade_residencia: cidade.trim() || null,
-          estado_residencia: estado.trim() || null,
-
-        });
+        setAssociado(updateData(associado));
       }
+
       toast.success('Perfil atualizado com sucesso!');
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Erro ao salvar perfil');
+      if (section === 'contact') setIsEditingContact(false);
+      else setIsEditingAddress(false);
+    } catch (err: any) {
+      toast.error(err.message || 'Erro ao salvar perfil');
     } finally {
       setSaving(false);
     }
+  };
+
+  const getStatus = (fieldKey: string): any => {
+    return (alvo as any).sync_status || 'updated';
+  };
+
+  const openCorrection = (key: string, name: string, val: any) => {
+    setCorrectionModal({
+      isOpen: true,
+      fieldKey: key,
+      fieldName: name,
+      currentValue: String(val || '')
+    });
   };
 
   const handleExportData = () => {
@@ -205,313 +216,286 @@ export default function Perfil() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-fade-in">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in pb-10">
+      <CorrectionRequestModal 
+        {...correctionModal} 
+        onClose={() => setCorrectionModal(prev => ({ ...prev, isOpen: false }))} 
+      />
+      
+      {!isDependente && (
+        <UnitChangeModal
+          isOpen={isUnitModalOpen}
+          onClose={() => setIsUnitModalOpen(false)}
+          currentUnitId={associado.unidade_id}
+          associadoId={associado.id}
+        />
+      )}
 
-      <div>
-        <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
-          <UserIcon className="h-8 w-8 text-primary" />
-          Meu Perfil
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          Atualize sua foto, e-mail, telefone e endereço.
-        </p>
+      {/* Header / Resumo */}
 
+      <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-card rounded-xl border shadow-sm">
+        <ProfilePhotoUpload
+          currentPhotoUrl={alvo.foto_url}
+          userId={alvo.id}
+          userType={isDependente ? 'dependente' : 'associado'}
+          userName={alvo.nome}
+          size="lg"
+          onPhotoUpdated={handlePhotoUpdated}
+        />
+        <div className="flex-1 text-center md:text-left space-y-1">
+          <h1 className="text-2xl font-bold">{alvo.nome}</h1>
+          <div className="flex flex-wrap justify-center md:justify-start gap-2">
+            {!isDependente && (
+              <>
+                <Badge variant="outline">{associado.matricula}</Badge>
+                <Badge variant="secondary">{associado.patente || 'Sem Patente'}</Badge>
+                <Badge className={associado.status === 'Regular' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                  {associado.status}
+                </Badge>
+              </>
+            )}
+            {isDependente && (
+              <Badge variant="outline">Dependente de {associado.nome}</Badge>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" onClick={handleExportData} className="gap-2">
+             <Download className="h-4 w-4" /> Exportar
+          </Button>
+        </div>
       </div>
 
-      {/* Foto */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Foto de perfil</CardTitle>
-          <CardDescription>Clique no ícone da câmera para trocar a foto.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center gap-6">
-          <ProfilePhotoUpload
-            currentPhotoUrl={alvo.foto_url}
-            userId={alvo.id}
-            userType={isDependente ? 'dependente' : 'associado'}
-            userName={alvo.nome}
-            size="lg"
-            onPhotoUpdated={handlePhotoUpdated}
-          />
-          <div>
-            <p className="font-semibold text-lg">{alvo.nome}</p>
-            <p className="text-sm text-muted-foreground">
-              {isDependente ? 'Dependente' : `Matrícula ${associado.matricula}`}
-            </p>
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-auto p-1 bg-muted/50">
+          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+          <TabsTrigger value="personal">Dados Pessoais</TabsTrigger>
+          <TabsTrigger value="functional">Funcional</TabsTrigger>
+          <TabsTrigger value="contact">Contato/Endereço</TabsTrigger>
+          <TabsTrigger value="documents">Documentos</TabsTrigger>
+          <TabsTrigger value="security">Segurança</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <ProfileSection title="Informações Essenciais">
+              <div className="space-y-4">
+                 <ProfileFieldDisplay 
+                    label="Nome Completo" 
+                    value={alvo.nome} 
+                    onCorrectionRequest={() => openCorrection('nome', 'Nome Completo', alvo.nome)}
+                 />
+                 <ProfileFieldDisplay 
+                    label="CPF" 
+                    value={maskCPF(alvo.cpf || '')} 
+                    onCorrectionRequest={() => openCorrection('cpf', 'CPF', alvo.cpf)}
+                 />
+                 {!isDependente && (
+                   <>
+                    <ProfileFieldDisplay label="Matrícula" value={associado.matricula} />
+                    <ProfileFieldDisplay label="Graduação/Patente" value={associado.patente} />
+                   </>
+                 )}
+              </div>
+            </ProfileSection>
+
+            <ProfileSection title="Acessos Recentes">
+               {loadingAcessos ? (
+                 <div className="flex justify-center p-4"><Loader2 className="h-6 w-6 animate-spin" /></div>
+               ) : (
+                 <div className="space-y-3">
+                   {acessos.map(acesso => (
+                     <div key={acesso.id} className="flex items-center justify-between text-sm p-2 bg-muted/30 rounded border-l-2 border-primary">
+                        <div className="flex flex-col">
+                           <span className="font-medium text-xs text-muted-foreground">{acesso.metodo_login || 'Portal'}</span>
+                           <span>{new Date(acesso.created_at).toLocaleString('pt-BR')}</span>
+                        </div>
+                        <Badge variant={acesso.sucesso ? 'default' : 'destructive'} className="text-[10px]">
+                          {acesso.sucesso ? 'Sucesso' : 'Falhou'}
+                        </Badge>
+                     </div>
+                   ))}
+                   {acessos.length === 0 && <p className="text-center text-muted-foreground text-sm">Nenhum acesso registrado.</p>}
+                 </div>
+               )}
+            </ProfileSection>
           </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
 
-      {/* Dados cadastrais */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Dados cadastrais</CardTitle>
-          <CardDescription>
-            Campos bloqueados são sincronizados com o sistema interno da SBPM e só podem ser
-            alterados pelo setor responsável.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSave} className="space-y-4">
+        <TabsContent value="personal" className="space-y-6">
+          <ProfileSection title="Dados Pessoais" description="Dados sincronizados com a fonte oficial CAMS">
             <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Nome completo</Label>
-                <Input value={alvo.nome} disabled className="bg-muted/50" />
-              </div>
-              <div className="space-y-2">
-                <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> CPF</Label>
-                <Input value={maskCPF(('cpf' in alvo && alvo.cpf) || '')} disabled className="bg-muted/50" />
-              </div>
+              <ProfileFieldDisplay label="Nome Completo" value={alvo.nome} />
+              <ProfileFieldDisplay label="CPF" value={maskCPF(alvo.cpf || '')} />
+              <ProfileFieldDisplay label="RG" value={(alvo as any).rg_civil} onCorrectionRequest={() => openCorrection('rg_civil', 'RG', (alvo as any).rg_civil)} />
+              <ProfileFieldDisplay label="Data de Nascimento" value={alvo.data_nascimento} onCorrectionRequest={() => openCorrection('data_nascimento', 'Data de Nascimento', alvo.data_nascimento)} />
+              <ProfileFieldDisplay label="Estado Civil" value={(alvo as any).estado_civil} onCorrectionRequest={() => openCorrection('estado_civil', 'Estado Civil', (alvo as any).estado_civil)} />
+              <ProfileFieldDisplay label="Sexo" value={(alvo as any).sexo} />
+            </div>
+          </ProfileSection>
+        </TabsContent>
 
-              {!isDependente && (
-                <>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Matrícula</Label>
-                    <Input value={associado.matricula} disabled className="bg-muted/50" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Graduação / Patente</Label>
-                    <Input value={(associado as any).patente || 'Não informada'} disabled className="bg-muted/50" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Situação Funcional</Label>
-                    <Input 
-                      value={(associado as any).situacao_funcional === 'ativo' ? 'Ativo' : (associado as any).situacao_funcional || 'Não informado'} 
-                      disabled 
-                      className="bg-muted/50 capitalize" 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1 text-muted-foreground"><Lock className="h-3 w-3" /> Data de admissão</Label>
-                    <Input value={associado.data_admissao || ''} disabled className="bg-muted/50" />
-                  </div>
-                </>
-              )}
+        <TabsContent value="functional" className="space-y-6">
+          <ProfileSection title="Dados Funcionais">
+             {!isDependente ? (
+               <div className="grid md:grid-cols-2 gap-4">
+                  <ProfileFieldDisplay label="Matrícula" value={associado.matricula} />
+                  <ProfileFieldDisplay label="Situação Funcional" value={(associado as any).situacao_funcional} />
+                  <ProfileFieldDisplay label="Data de Admissão" value={associado.data_admissao} />
+                  <ProfileFieldDisplay label="Posto / Graduação" value={associado.patente} onCorrectionRequest={() => openCorrection('posto_graduacao_id', 'Posto/Graduação', associado.patente)} />
+                  
+                  {((associado as any).situacao_funcional === 'ativo' || (associado as any).situacao_funcional === 'servico_ativo') && (
+                    <div className="md:col-span-2 space-y-3 p-4 bg-primary/5 rounded-lg border border-primary/20">
+                      <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2">
+                           <Shield className="h-5 w-5 text-primary" />
+                           <span className="font-semibold">Unidade Operacional</span>
+                         </div>
+                         <Button variant="outline" size="sm" className="h-8" onClick={() => setIsUnitModalOpen(true)}>Alterar Unidade</Button>
+                      </div>
+                      <p className="text-sm">Sua lotação atual é registrada como: <strong>{ (associado as any).unidade_id || 'Não informada' }</strong></p>
+                    </div>
+                  )}
+               </div>
+             ) : (
+               <div className="p-12 text-center text-muted-foreground border-2 border-dashed rounded-lg">
+                  <Users className="h-10 w-10 mx-auto mb-4 opacity-20" />
+                  <p>Dados funcionais são aplicáveis apenas ao associado titular.</p>
+               </div>
+             )}
+          </ProfileSection>
+        </TabsContent>
 
-              <div className="space-y-2 md:col-span-2 pt-2 border-t mt-2">
-                <Label htmlFor="email">E-mail de contato</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  maxLength={200}
-                  placeholder="seu@email.com"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="telefone">Telefone / WhatsApp</Label>
-                <Input
-                  id="telefone"
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
-                  maxLength={30}
-                  placeholder="(71) 9 9999-9999"
-                />
-              </div>
-
-              <div className="space-y-2 md:col-span-2 pt-2 border-t mt-2">
-                <div className="flex items-center justify-between mb-2">
-                   <Label className="text-base font-semibold">Endereço de Residência</Label>
-                   <span className="text-[10px] text-muted-foreground italic">Campos editáveis para correspondência</span>
+        <TabsContent value="contact" className="space-y-6">
+          <ProfileSection 
+            title="Informações de Contato" 
+            isEditable 
+            isEditing={isEditingContact}
+            onEditToggle={() => setIsEditingContact(true)}
+            onCancel={() => setIsEditingContact(false)}
+            onSave={() => handleSave('contact')}
+            loading={saving}
+          >
+            {isEditingContact ? (
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label>E-mail</Label>
+                  <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label>WhatsApp / Telefone</Label>
+                  <Input value={telefone} onChange={(e) => setTelefone(e.target.value)} />
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="cep">CEP</Label>
-                <Input
-                  id="cep"
-                  value={cep}
-                  onChange={(e) => setCep(e.target.value)}
-                  maxLength={10}
-                  placeholder="40000-000"
-                />
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                <ProfileFieldDisplay label="E-mail" value={alvo.email} isLocked={false} />
+                <ProfileFieldDisplay label="WhatsApp / Telefone" value={alvo.telefone} isLocked={false} />
               </div>
+            )}
+          </ProfileSection>
 
-              <div className="space-y-2 md:col-span-2">
-                <Label htmlFor="endereco">Logradouro (Rua, Avenida, etc.)</Label>
-                <Input
-                  id="endereco"
-                  value={endereco}
-                  onChange={(e) => setEndereco(e.target.value)}
-                  maxLength={500}
-                  placeholder="Rua Exemplo"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="numero">Número</Label>
-                <Input
-                  id="numero"
-                  value={numero}
-                  onChange={(e) => setNumero(e.target.value)}
-                  maxLength={20}
-                  placeholder="123"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="complemento">Complemento</Label>
-                <Input
-                  id="complemento"
-                  value={complemento}
-                  onChange={(e) => setComplemento(e.target.value)}
-                  maxLength={100}
-                  placeholder="Apto 101, Bloco A"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="bairro">Bairro</Label>
-                <Input
-                  id="bairro"
-                  value={bairro}
-                  onChange={(e) => setBairro(e.target.value)}
-                  maxLength={100}
-                  placeholder="Bairro Exemplo"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <div className="grid grid-cols-3 gap-2">
-                   <div className="col-span-2">
-                      <Label htmlFor="cidade">Cidade</Label>
-                      <Input
-                        id="cidade"
-                        value={cidade}
-                        onChange={(e) => setCidade(e.target.value)}
-                        maxLength={100}
-                        placeholder="Salvador"
-                      />
-                   </div>
-                   <div>
-                      <Label htmlFor="estado">UF</Label>
-                      <Input
-                        id="estado"
-                        value={estado}
-                        onChange={(e) => setEstado(e.target.value.toUpperCase())}
-                        maxLength={2}
-                        placeholder="BA"
-                      />
-                   </div>
-                </div>
-              </div>
-            </div>
-
-
-            <div className="flex justify-end pt-2">
-              <Button type="submit" disabled={saving} className="gap-2">
-                {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Salvar alterações
-              </Button>
-            </div>
-
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* Assinatura digital */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <PenTool className="h-5 w-5" /> Assinatura digital
-          </CardTitle>
-          <CardDescription>
-            Sua assinatura aparecerá impressa na sua carteirinha. Você pode desenhá-la abaixo com o
-            mouse/dedo ou enviar uma imagem transparente (PNG) da assinatura já escaneada.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <SignaturePad
-            currentSignatureUrl={alvo.assinatura_url}
-            userId={alvo.id}
-            userType={isDependente ? 'dependente' : 'associado'}
-            onSaved={handleSignatureUpdated}
-          />
-        </CardContent>
-      </Card>
-
-
-
-      {/* Notificações push */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Bell className="h-5 w-5" /> Notificações push
-          </CardTitle>
-          <CardDescription>
-            Receba avisos importantes da SBPM diretamente neste dispositivo, mesmo com o app fechado.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <PushNotificationToggle
-            associadoId={isDependente ? null : associado.id}
-            dependenteId={isDependente && dependenteLogado ? dependenteLogado.id : null}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Portabilidade de dados (LGPD) */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Download className="h-5 w-5" /> Exportar meus dados
-          </CardTitle>
-          <CardDescription>
-            Direito de portabilidade (LGPD, art. 18). Baixe uma cópia dos seus dados cadastrais
-            disponíveis neste portal em formato JSON.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button variant="outline" onClick={handleExportData} className="gap-2">
-            <Download className="h-4 w-4" /> Baixar meus dados (JSON)
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Meus acessos */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <History className="h-5 w-5" /> Meus acessos recentes
-          </CardTitle>
-          <CardDescription>
-            Últimos 10 acessos à sua conta. Se notar algum acesso que não reconheça, entre em contato
-            com a SBPM.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {loadingAcessos ? (
-            <p className="text-sm text-muted-foreground">Carregando...</p>
-          ) : acessos.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nenhum acesso registrado ainda.</p>
-          ) : (
-            <ul className="divide-y">
-              {acessos.map((a) => (
-                <li key={a.id} className="py-2 flex items-center justify-between text-sm">
-                  <div>
-                    <p className="font-medium">
-                      {format(new Date(a.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {parseDevice(a.user_agent)} · Login por {a.metodo_login === 'cpf' ? 'CPF' : 'Matrícula'}
-                    </p>
+          <ProfileSection 
+            title="Endereço de Residência" 
+            isEditable 
+            isEditing={isEditingAddress}
+            onEditToggle={() => setIsEditingAddress(true)}
+            onCancel={() => setIsEditingAddress(false)}
+            onSave={() => handleSave('address')}
+            loading={saving}
+          >
+            {isEditingAddress ? (
+               <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>CEP</Label>
+                    <Input value={cep} onChange={(e) => setCep(e.target.value)} />
                   </div>
-                  <span
-                    className={`text-xs px-2 py-0.5 rounded-full ${
-                      a.sucesso
-                        ? 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300'
-                        : 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300'
-                    }`}
-                  >
-                    {a.sucesso ? 'Sucesso' : 'Falha'}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+                  <div className="space-y-2 md:col-span-2">
+                    <Label>Logradouro</Label>
+                    <Input value={endereco} onChange={(e) => setEndereco(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Número</Label>
+                    <Input value={numero} onChange={(e) => setNumero(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Complemento</Label>
+                    <Input value={complemento} onChange={(e) => setComplemento(e.target.value)} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Bairro</Label>
+                    <Input value={bairro} onChange={(e) => setBairro(e.target.value)} />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                      <Label>Cidade</Label>
+                      <Input value={cidade} onChange={(e) => setCidade(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>UF</Label>
+                      <Input value={estado} onChange={(e) => setEstado(e.target.value)} />
+                    </div>
+                  </div>
+               </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                <ProfileFieldDisplay label="CEP" value={cep} isLocked={false} />
+                <ProfileFieldDisplay label="Logradouro" value={endereco} isLocked={false} />
+                <ProfileFieldDisplay label="Número" value={numero} isLocked={false} />
+                <ProfileFieldDisplay label="Bairro" value={bairro} isLocked={false} />
+                <ProfileFieldDisplay label="Cidade" value={cidade} isLocked={false} />
+                <ProfileFieldDisplay label="Estado" value={estado} isLocked={false} />
+              </div>
+            )}
+          </ProfileSection>
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PenTool className="h-5 w-5" /> Assinatura digital
+              </CardTitle>
+              <CardDescription>Aparecerá na sua carteirinha digital.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SignaturePad
+                currentSignatureUrl={alvo.assinatura_url}
+                userId={alvo.id}
+                userType={isDependente ? 'dependente' : 'associado'}
+                onSaved={(url) => {
+                   if (isDependente && dependenteLogado) setDependenteLogado({...dependenteLogado, assinatura_url: url});
+                   else setAssociado({ ...associado, assinatura_url: url });
+                }}
+              />
+            </CardContent>
+          </Card>
+          
+          <ProfileSection title="Documentos Enviados" description="Histórico de documentos anexados ao portal">
+             <div className="flex flex-col items-center justify-center p-12 text-center text-muted-foreground border-2 border-dashed rounded-lg">
+                <FileText className="h-10 w-10 mb-4 opacity-20" />
+                <p>Nenhum documento encontrado.</p>
+             </div>
+          </ProfileSection>
+        </TabsContent>
+
+        <TabsContent value="security" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5" /> Notificações push
+              </CardTitle>
+              <CardDescription>Receba avisos importantes da SBPM diretamente neste dispositivo.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <PushNotificationToggle
+                associadoId={isDependente ? null : associado.id}
+                dependenteId={isDependente && dependenteLogado ? dependenteLogado.id : null}
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
