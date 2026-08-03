@@ -283,7 +283,7 @@ Deno.serve(async (req) => {
         return json({ success: false, status: 'rate_limited', message: MENSAGENS.rate_limited }, 429);
       }
 
-      const cpf = soNumeros(body.cpf);
+      const cpf = soNumeros(body.cpf).padStart(11, '0').slice(-11);
       if (cpf.length !== 11) return json({ success: false, status: 'not_matched', message: MENSAGENS.not_matched });
 
       const jaExiste = await admin
