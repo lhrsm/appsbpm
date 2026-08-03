@@ -279,16 +279,21 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     let mounted = true;
 
     const checkInitialSession = async () => {
-      console.log("[PortalIdentity] checkInitialSession...");
-      const { data: { session } } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          console.log("[PortalIdentity] Session found in checkInitialSession:", session.user.id);
-          refreshProfile();
-        } else {
-          console.log("[PortalIdentity] No session found in checkInitialSession.");
-          setInitializing(false);
+      console.log("[PortalIdentity] checkInitialSession start");
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (mounted) {
+          if (session) {
+            console.log("[PortalIdentity] Session found in checkInitialSession:", session.user.id);
+            refreshProfile();
+          } else {
+            console.log("[PortalIdentity] No session found in checkInitialSession.");
+            setInitializing(false);
+          }
         }
+      } catch (err) {
+        console.error("[PortalIdentity] Error in checkInitialSession:", err);
+        if (mounted) setInitializing(false);
       }
     };
 

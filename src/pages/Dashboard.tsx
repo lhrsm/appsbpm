@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
@@ -10,7 +10,32 @@ import ExternalPortalLayout from '@/portal/ExternalPortalLayout';
 import { deprecatedPortalRoutes } from '@/portal/navigation';
 import ExternalDashboard from '@/portal/dashboard/ExternalDashboard';
 import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
-import { PortalLoadingState, PortalProfileNotFound } from '@/portal/components/PortalStates';
+import { PortalLoadingState, PortalProfileNotFound, PortalErrorState } from '@/portal/components/PortalStates';
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
+  componentDidCatch(error: any, errorInfo: any) { console.error("[DashboardErrorBoundary]", error, errorInfo); }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8">
+          <PortalErrorState 
+            title="Não foi possível carregar este módulo" 
+            description={this.state.error?.message || "Ocorreu um erro interno na renderização desta seção."}
+            onRetry={() => this.setState({ hasError: false, error: null })}
+          />
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+import React from 'react';
 
 /** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
 const rotasProvaveis = [
@@ -163,7 +188,11 @@ export default function Dashboard() {
         </>
       }
     >
-      {location.pathname === '/dashboard' ? <ExternalDashboard profileType={profileType} /> : <Outlet />}
+      {location.pathname === '/dashboard' ? (
+        <ErrorBoundary key={location.pathname}>
+          <ExternalDashboard profileType={profileType} />
+        </ErrorBoundary>
+      ) : <Outlet />}
     </ExternalPortalLayout>
   );
 }
