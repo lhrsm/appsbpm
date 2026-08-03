@@ -180,6 +180,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshProfile = async (isRepairAttempt: boolean = false) => {
+    console.info("[PortalIdentity] refreshProfile start", { isRepairAttempt });
     setInitializing(true);
     setError(null);
     
@@ -210,23 +211,26 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // 2. Chamar RPC Institucional
       console.log("[PortalIdentity] Chamando get_my_portal_identity...");
-      const { data, error: rpcError, status, statusText } = await supabase.rpc('get_my_portal_identity');
+      const { data: rpcResponse, error: rpcError, status, statusText } = await supabase.rpc('get_my_portal_identity');
       
       console.log("IDENTITY RPC STATUS", status, statusText);
       
       if (rpcError) {
         console.error("[PortalIdentity] Erro na RPC:", rpcError);
         setError('RPC_ERROR');
+        setInitializing(false);
         return;
       }
 
-      if (!data || (Array.isArray(data) && data.length === 0)) {
+      const row = Array.isArray(rpcResponse) ? rpcResponse[0] : rpcResponse;
+      
+      if (!row) {
         console.error("[PortalIdentity] Resposta da RPC vazia.");
         setError('RPC_EMPTY_RESPONSE');
+        setInitializing(false);
         return;
       }
 
-      const row = Array.isArray(data) ? data[0] : data;
       console.log("IDENTITY RPC ROW", row);
       
       const mappedIdentity = mapPortalIdentityResponse(row);
@@ -236,27 +240,41 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // 3. Avaliar Acesso
       if (mappedIdentity.resolved && mappedIdentity.associateId && mappedIdentity.reasonCode === 'READY') {
-        const payload = await portalCall<any>('perfil');
-        
-        if (payload?.associado) {
-          setAssociado(payload.associado);
-          setDependentes(payload.dependentes || []);
-          setLimite(payload.limite || null);
-          setHistoricoLimite(payload.historico || []);
-          setInformes(payload.informes || []);
-          setIsDependente(Boolean(payload.dependente));
-          setDependenteLogado(payload.dependente || null);
-          setError(null);
-        } else {
-          setError(payload?.error || 'Erro ao carregar dados do painel.');
+        console.log("[PortalIdentity] Calling portalCall('perfil')...");
+        try {
+          const rawPayload = await portalCall<any>('perfil');
+          console.log("[PortalIdentity] portalCall('perfil') raw result:", rawPayload);
+          
+          // Se a RPC retornar um array, pega o primeiro item (normalização do adapter do backend)
+          const payload = Array.isArray(rawPayload) ? rawPayload[0] : rawPayload;
+          
+          if (payload?.associado) {
+            setAssociado(payload.associado);
+            setDependentes(payload.dependentes || []);
+            setLimite(payload.limite || null);
+            setHistoricoLimite(payload.historico || []);
+            setInformes(payload.informes || []);
+            setIsDependente(Boolean(payload.dependente));
+            setDependenteLogado(payload.dependente || null);
+            setError(null);
+            console.log("[PortalIdentity] Context updated successfully.");
+          } else {
+            console.error("[PortalIdentity] portalCall returned no associado:", payload);
+            setError(payload?.error || 'Erro ao carregar dados do painel.');
+          }
+        } catch (callErr: any) {
+          console.error("[PortalIdentity] portalCall('perfil') failed:", callErr);
+          setError(callErr.message || 'Falha na comunicação com o backend.');
         }
       } else {
+        console.warn("[PortalIdentity] Identity not ready:", mappedIdentity.reasonCode);
         setError(mappedIdentity.reasonCode || 'PROFILE_LINK_MISSING');
       }
     } catch (err: any) {
       console.error("[PortalIdentity] Erro crítico:", err);
       setError(err.message || 'Erro de conexão.');
     } finally {
+      console.info("[PortalIdentity] refreshProfile finished.");
       setInitializing(false);
     }
   };
@@ -265,23 +283,34 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     let mounted = true;
 
     const checkInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (mounted) {
-        if (session) {
-          refreshProfile();
-        } else {
-          setInitializing(false);
+      console.log("[PortalIdentity] checkInitialSession start");
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (mounted) {
+          if (session) {
+            console.log("[PortalIdentity] Session found in checkInitialSession:", session.user.id);
+            refreshProfile();
+          } else {
+            console.log("[PortalIdentity] No session found in checkInitialSession.");
+            setInitializing(false);
+          }
         }
+      } catch (err) {
+        console.error("[PortalIdentity] Error in checkInitialSession:", err);
+        if (mounted) setInitializing(false);
       }
     };
 
     checkInitialSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("[PortalIdentity] onAuthStateChange event:", event);
       if (mounted) {
         if (session) {
+          console.log("[PortalIdentity] onAuthStateChange session found:", session.user.id);
           refreshProfile();
         } else {
+          console.log("[PortalIdentity] onAuthStateChange: clear profile");
           setAssociado(null);
           setIdentity(null);
           setInitializing(false);

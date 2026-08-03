@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { portalCall } from '@/lib/portal';
 import { useAssociado } from '@/contexts/AssociadoContext';
@@ -10,7 +10,30 @@ import ExternalPortalLayout from '@/portal/ExternalPortalLayout';
 import { deprecatedPortalRoutes } from '@/portal/navigation';
 import ExternalDashboard from '@/portal/dashboard/ExternalDashboard';
 import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
-import { PortalLoadingState, PortalProfileNotFound } from '@/portal/components/PortalStates';
+import { PortalLoadingState, PortalProfileNotFound, PortalErrorState } from '@/portal/components/PortalStates';
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error: any) { return { hasError: true, error }; }
+  componentDidCatch(error: any, errorInfo: any) { console.error("[DashboardErrorBoundary]", error, errorInfo); }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8">
+          <PortalErrorState 
+            title="Não foi possível carregar este módulo" 
+            description={this.state.error?.message || "Ocorreu um erro interno na renderização desta seção."}
+            onRetry={() => this.setState({ hasError: false, error: null })}
+          />
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 /** Rotas mais prováveis após o dashboard — apenas o chunk, nunca documentos. */
 const rotasProvaveis = [
@@ -78,7 +101,10 @@ export default function Dashboard() {
 
   useInactivityLock(!!associado, handleLogout);
 
-  if (initializing) return <PortalLoadingState />;
+  if (initializing) {
+    console.info("[Dashboard] Render stage: initializing");
+    return <PortalLoadingState />;
+  }
   
   if (error) {
     console.error("[Dashboard] Interrompido por erro:", error, identity);
@@ -97,7 +123,6 @@ export default function Dashboard() {
             "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."
           }
           onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING' || error === 'IDENTITY_INCONSISTENCY')} 
-
         />
         
         {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
@@ -120,14 +145,25 @@ export default function Dashboard() {
             }, null, 2)}</pre>
           </div>
         )}
-
       </div>
     );
   }
 
-  if (!associado) return null;
+  if (!associado) {
+    console.warn("[Dashboard] Render blocked: associado is null", { initializing, error, identity });
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background gap-4">
+        <PortalLoadingState message="Aguardando dados do perfil..." />
+        {identity && (
+           <div className="max-w-md w-full p-4 bg-muted/30 rounded border text-[10px] font-mono text-muted-foreground">
+             Identity Resolved: {String(identity.resolved)} | Status: {identity.reasonCode}
+           </div>
+        )}
+      </div>
+    );
+  }
 
-  const nomeExibir = isDependente && dependenteLogado ? dependenteLogado.nome : associado.nome;
+  const nomeExibir = isDependente && dependenteLogado ? dependenteLogado.nome : (associado?.nome || "Associado");
   const profileType = isDependente ? 'dependent' : 'associate';
 
   return (
@@ -135,10 +171,10 @@ export default function Dashboard() {
       profileType={profileType}
       user={{
         nome: nomeExibir,
-        fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado.foto_url,
-        matricula: associado.matricula,
-        titularNome: associado.nome,
-        ativo: associado.status === 'regular',
+        fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url,
+        matricula: associado?.matricula || "",
+        titularNome: associado?.nome || "",
+        ativo: associado?.status === 'regular',
       }}
       onLogout={handleLogout}
       banner={
@@ -148,7 +184,11 @@ export default function Dashboard() {
         </>
       }
     >
-      {location.pathname === '/dashboard' ? <ExternalDashboard profileType={profileType} /> : <Outlet />}
+      {location.pathname === '/dashboard' ? (
+        <ErrorBoundary key={location.pathname}>
+          <ExternalDashboard profileType={profileType} />
+        </ErrorBoundary>
+      ) : <Outlet />}
     </ExternalPortalLayout>
   );
 }
