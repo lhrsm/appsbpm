@@ -173,9 +173,9 @@ export default function AdminVisaoGeral() {
       const hoje = new Date().toISOString().slice(0, 10);
 
       const [assocAtivos, assocTodos, deps, solicPend, syncLogs, mensal, peculio, audit] = await Promise.all([
-        supabase.from("associados").select("id", { count: "exact", head: true }).eq("ativo", true),
-        supabase.from("associados").select("id,cpf,matricula,nome,data_nascimento,ativo"),
-        supabase.from("dependentes").select("id", { count: "exact", head: true }).eq("ativo", true),
+        supabase.from("associados").select("id", { count: "exact", head: true }).eq("status", "regular"),
+        supabase.from("associados").select("id,cpf,matricula,nome,data_nascimento,status"),
+        supabase.from("dependentes").select("id", { count: "exact", head: true }).eq("status", "regular"),
         supabase.from("solicitacoes").select("id", { count: "exact", head: true }).in("status", ["aberto", "em_andamento"]),
         supabase.from("sync_logs").select("id", { count: "exact", head: true }).eq("status", "pendente"),
         supabase.from("mensalidades").select("id", { count: "exact", head: true }).eq("status", "pendente").lt("vencimento", hoje),
