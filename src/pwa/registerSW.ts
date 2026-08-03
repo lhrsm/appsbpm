@@ -3,7 +3,7 @@
 
 import { emFluxoCritico } from "./criticalFlow";
 
-const APP_SW_PATH = "/dev-sw.js?dev-sw"; // Fallback para desenvolvimento/preview se o sw.js não existir
+const APP_SW_PATH = "/sw.js";
 
 export const PWA_UPDATE_EVENT = "sbpm:pwa-update";
 
@@ -36,9 +36,16 @@ let registration: ServiceWorkerRegistration | null = null;
 
 /** Aplica a versão nova; recusa durante fluxos críticos. */
 export async function aplicarAtualizacaoPWA(): Promise<boolean> {
-  if (emFluxoCritico() || !registration?.waiting) return false;
-  registration.waiting.postMessage({ type: "SKIP_WAITING" });
-  await new Promise((r) => setTimeout(r, 150));
+  console.log("Aplicando atualização PWA...", { registration });
+  
+  if (registration?.waiting) {
+    registration.waiting.postMessage({ type: "SKIP_WAITING" });
+    await new Promise((r) => setTimeout(r, 200));
+    window.location.reload();
+    return true;
+  }
+  
+  // Se não houver worker esperando mas o comando foi chamado, recarrega para limpar cache
   window.location.reload();
   return true;
 }
