@@ -118,6 +118,7 @@ interface AssociadoContextType {
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
 
 export function AssociadoProvider({ children }: { children: ReactNode }) {
+  const PORTAL_IDENTITY_FRONTEND_VERSION = "identity-v3-2026-08-03";
   const queryClient = useQueryClient();
   const [associado, setAssociado] = useState<Associado | null>(null);
   const [dependentes, setDependentes] = useState<Dependente[]>([]);
@@ -130,6 +131,14 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [identity, setIdentity] = useState<PortalIdentity | null>(null);
   const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    console.info(
+      "Portal Identity Frontend Version:",
+      PORTAL_IDENTITY_FRONTEND_VERSION
+    );
+  }, []);
+
 
   const mapPortalIdentityResponse = (row: any): PortalIdentity => {
     if (!row) {
@@ -162,6 +171,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     setError(null);
     
     try {
+      console.log(`[PortalIdentity] ACTIVE PROVIDER FILE: src/contexts/AssociadoContext.tsx`);
       console.log(`[PortalIdentity] ${isRepairAttempt ? 'Iniciando reparo' : 'Resolvendo identidade'} via get_my_portal_identity()...`);
       
       if (isRepairAttempt) {
@@ -178,14 +188,17 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      console.log("RPC RESPONSE DATA", rpcData);
+      console.log("RAW RPC DATA", rpcData);
       const row = Array.isArray(rpcData) ? rpcData[0] : rpcData;
       console.log("RPC ROW", row);
 
       const mappedIdentity = mapPortalIdentityResponse(row);
       console.log("MAPPED IDENTITY", mappedIdentity);
       
+      console.log("STATE BEFORE SET", identity);
       setIdentity(mappedIdentity);
+      console.log("STATE AFTER SET", mappedIdentity);
+
 
       if (
         mappedIdentity.resolved && 
@@ -213,8 +226,22 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // Se não resolveu ou não está READY
       if (!mappedIdentity.resolved) {
+        // Invariante institucional: se reasonCode é READY, resolved DEVE ser true
+        if (mappedIdentity.reasonCode === 'READY') {
+          console.error("[PortalIdentity] Inconsistência Crítica: reasonCode READY mas resolved false", mappedIdentity);
+          setError('IDENTITY_INCONSISTENCY');
+          return;
+        }
+
         setError('PROFILE_LINK_MISSING');
       } else {
+        // Invariante institucional: se resolved é true mas associateId está nulo
+        if (!mappedIdentity.associateId) {
+          console.error("[PortalIdentity] Inconsistência Crítica: resolved true mas associateId ausente", mappedIdentity);
+          setError('ADAPTER_ERROR');
+          return;
+        }
+        
         setError(mappedIdentity.reasonCode || 'ACCESS_DENIED');
       }
     } catch (err: any) {
