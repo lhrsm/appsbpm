@@ -32,7 +32,7 @@ export default function PortalQueroMeAssociar() {
   const [matricula, setMatricula] = useState('');
   const [postoId, setPostoId] = useState('');
   const [postoOutro, setPostoOutro] = useState('');
-  const [situacao, setSituacao] = useState<'ativo' | 'inativo'>('ativo');
+  const [situacao, setSituacao] = useState<'regular' | 'inativo'>('regular');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [consent, setConsent] = useState(false);
