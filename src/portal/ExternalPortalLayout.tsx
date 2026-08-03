@@ -11,7 +11,7 @@ import PortalBottomNav from "./components/PortalBottomNav";
 import PortalBreadcrumbs from "./components/PortalBreadcrumbs";
 import PortalFooter from "./components/PortalFooter";
 import PortalPageContainer from "./components/PortalPageContainer";
-import { PortalAccessDenied, PortalErrorState } from "./components/PortalStates";
+import { PortalAccessRestricted, PortalErrorState } from "./components/PortalStates";
 import { PageHeaderSkeleton, ContentSkeleton } from "./components/PortalSkeletons";
 import type { PortalUser } from "./components/PortalUserMenu";
 import { isRouteAllowed, type PortalProfile } from "./navigation";
@@ -85,9 +85,9 @@ export default function ExternalPortalLayout({
       </>
     );
   } else if (error) {
-    content = <PortalErrorState description={error} onRetry={onRetry} />;
+    content = <PortalErrorState title="Falha ao carregar portal" description={error} onRetry={onRetry} />;
   } else if (!allowed) {
-    content = <PortalAccessDenied />;
+    content = <PortalAccessRestricted />;
   } else {
     content = children;
   }

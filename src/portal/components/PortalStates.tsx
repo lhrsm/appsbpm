@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/design-system/components/Button";
 import { icons } from "@/design-system/icons";
 
 export interface PortalErrorStateProps {
@@ -28,7 +28,7 @@ export function PortalErrorState({
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         {onRetry && <Button onClick={onRetry}>Tentar novamente</Button>}
-        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+        <Button variant="secondary" onClick={() => navigate("/dashboard")}>
           Voltar ao início
         </Button>
         <Button variant="ghost" asChild>
@@ -54,6 +54,67 @@ export function PortalAccessDenied() {
         <h2 className="text-lg font-semibold text-foreground">Acesso restrito</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Este recurso não está disponível para o seu perfil de acesso.
+        </p>
+      </div>
+      <Button onClick={() => navigate("/dashboard")}>Voltar ao início</Button>
+    </div>
+  );
+}
+
+/** Estado de carregamento global do portal externo. */
+export function PortalLoadingState({ message = "Carregando seu portal..." }: { message?: string }) {
+  return (
+    <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4 p-8 text-center animate-fade-in">
+      <div className="relative">
+        <div className="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+        <icons.dashboard className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-primary opacity-50" />
+      </div>
+      <div className="space-y-1">
+        <h2 className="text-lg font-semibold text-foreground">{message}</h2>
+        <p className="text-sm text-muted-foreground italic">Garantindo a segurança dos seus dados...</p>
+      </div>
+    </div>
+  );
+}
+
+/** Estado exibido quando o perfil não é localizado após a autenticação. */
+export function PortalProfileNotFound({ onRetry }: { onRetry: () => void }) {
+  const navigate = useNavigate();
+  const UserSearch = icons.associados;
+  
+  return (
+    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted" aria-hidden>
+        <UserSearch className="h-6 w-6 text-muted-foreground" />
+      </span>
+      <div className="max-w-md">
+        <h2 className="text-lg font-semibold text-foreground">Não foi possível localizar seu cadastro</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Identificamos sua conta, mas não conseguimos carregar os dados vinculados ao seu perfil institucional.
+        </p>
+      </div>
+      <div className="flex flex-wrap justify-center gap-2">
+        <Button onClick={onRetry} leftIcon={icons.atualizar}>Tentar novamente</Button>
+        <Button variant="secondary" onClick={() => navigate("/")}>Voltar ao início</Button>
+      </div>
+    </div>
+  );
+}
+
+/** Estado de acesso restrito (LGPD/Segurança). */
+export function PortalAccessRestricted({ message }: { message?: string }) {
+  const navigate = useNavigate();
+  const Lock = icons.lgpd;
+  
+  return (
+    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-warning/10" aria-hidden>
+        <Lock className="h-6 w-6 text-warning" />
+      </span>
+      <div className="max-w-md">
+        <h2 className="text-lg font-semibold text-foreground">Acesso restrito</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {message || "Seu acesso a esta área está temporariamente restrito por motivos de segurança ou pendência cadastral."}
         </p>
       </div>
       <Button onClick={() => navigate("/dashboard")}>Voltar ao início</Button>
