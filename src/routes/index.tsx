@@ -1,4 +1,7 @@
-PARAR QUALQUER ALTERAÇÃO NO DASHBOARD.
+export default function RoutesIndex() {
+  return (
+    <div className="p-8 max-w-5xl mx-auto space-y-8 animate-fade-in whitespace-pre-wrap">
+      PARAR QUALQUER ALTERAÇÃO NO DASHBOARD.
 
 O erro atual não está relacionado ao Supabase, RLS, identidade institucional, RPC ou consulta do associado.
 
@@ -47,16 +50,16 @@ Especialmente verificar:
 
 Se ele espera:
 
-<Componente>
-    <Filho />
-</Componente>
+&lt;Componente&gt;
+    &lt;Filho /&gt;
+&lt;/Componente&gt;
 
 não renderizar:
 
-<Componente>
-    <Filho1 />
-    <Filho2 />
-</Componente>
+&lt;Componente&gt;
+    &lt;Filho1 /&gt;
+    &lt;Filho2 /&gt;
+&lt;/Componente&gt;
 
 Agrupar corretamente quando necessário ou reorganizar a árvore de renderização.
 
@@ -82,3 +85,6 @@ React.Children.only expected to receive a single React element child.
 - código antigo;
 - código corrigido;
 - motivo pelo qual havia mais de um child.
+    </div>
+  );
+}
