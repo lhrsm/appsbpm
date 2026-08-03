@@ -78,25 +78,30 @@ export default function ExternalPortalLayout({
 
   console.log("[Layout] Render Stage:", { loading, error, allowed, pathname });
 
-  let content: ReactNode;
-  if (loading) {
-    console.log("[Layout] Rendering loading skeleton...");
-    content = (
-      <>
-        <PageHeaderSkeleton />
-        <ContentSkeleton />
-      </>
-    );
-  } else if (error) {
-    console.error("[Layout] Rendering error state:", error);
-    content = <PortalErrorState title="Falha ao carregar portal" description={error} onRetry={onRetry} />;
-  } else if (!allowed) {
-    console.warn("[Layout] Access denied for route:", pathname);
-    content = <PortalAccessRestricted />;
-  } else {
+  const renderContent = () => {
+    if (loading) {
+      console.log("[Layout] Rendering loading skeleton...");
+      return (
+        <div key="loading">
+          <PageHeaderSkeleton />
+          <ContentSkeleton />
+        </div>
+      );
+    }
+    
+    if (error) {
+      console.error("[Layout] Rendering error state:", error);
+      return <PortalErrorState key="error" title="Falha ao carregar portal" description={error} onRetry={onRetry} />;
+    }
+    
+    if (!allowed) {
+      console.warn("[Layout] Access denied for route:", pathname);
+      return <PortalAccessRestricted key="denied" />;
+    }
+    
     console.log("[Layout] Rendering children content...");
-    content = children;
-  }
+    return <div key="children">{children}</div>;
+  };
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -147,7 +152,7 @@ export default function ExternalPortalLayout({
                 {pageTitle && !loading && !error && allowed && (
                   <PageHeader title={pageTitle} description={pageDescription} actions={actions} />
                 )}
-                {content}
+                {renderContent()}
               </PortalPageContainer>
             </main>
             <PortalFooter />
