@@ -114,14 +114,15 @@ export function mapInstitutionalStatus(status: string | null | undefined): Assoc
 
 /**
  * Verifica se o status permite acesso básico ao portal.
+ * Regra: somente 'regular' tem acesso completo.
  */
 export function isStatusAtivo(status: AssociadoStatus | string | null | undefined): boolean {
   if (!status) return false;
-  return status === 'regular' || status === 'aguardando_reativacao' || status === 'inativo';
+  return status === 'regular';
 }
 
 /**
- * Define o nível de acesso baseado no status.
+ * Define o nível de acesso baseado no status da associação.
  */
 export function getAccessLevel(status: AssociadoStatus | string | null | undefined): PortalIdentity['portal_access_level'] {
   const s = status as AssociadoStatus;

@@ -52,9 +52,9 @@ const randomCode = () => String(crypto.getRandomValues(new Uint32Array(1))[0] % 
 const cpfVariants = (d: string) => [d, d.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4')];
 
 const CAMPOS_ASSOCIADO =
-  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, ativo, patente, cep, cidade';
+  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, status, patente, cep, cidade';
 const CAMPOS_DEPENDENTE =
-  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, ativo, status';
+  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, status';
 
 const MENSAGENS: Record<string, string> = {
   not_matched: 'Não foi possível validar os dados informados. Confira as informações e tente novamente.',
@@ -180,7 +180,7 @@ async function portalPayload(admin: any, cpfDigits: string) {
       .from('associados')
       .select(CAMPOS_ASSOCIADO)
       .eq('id', link.associado_id)
-      .eq('ativo', true)
+      .eq('status', 'regular')
       .maybeSingle();
     associado = assoc;
   }
@@ -190,7 +190,7 @@ async function portalPayload(admin: any, cpfDigits: string) {
       .from('dependentes')
       .select(CAMPOS_DEPENDENTE)
       .eq('id', link.dependente_id)
-      .eq('ativo', true)
+      .eq('status', 'regular')
       .maybeSingle();
     dependente = dep;
   }
@@ -201,7 +201,7 @@ async function portalPayload(admin: any, cpfDigits: string) {
       .from('associados')
       .select(CAMPOS_ASSOCIADO)
       .in('cpf', cpfVariants(cpfDigits))
-      .eq('ativo', true)
+      .eq('status', 'regular')
       .maybeSingle();
 
     if (assoc) associado = assoc;
@@ -210,7 +210,7 @@ async function portalPayload(admin: any, cpfDigits: string) {
         .from('dependentes')
         .select(CAMPOS_DEPENDENTE)
         .in('cpf', cpfVariants(cpfDigits))
-        .eq('ativo', true)
+        .eq('status', 'regular')
         .maybeSingle();
       if (dep) {
         const { data: titular } = await admin
@@ -229,7 +229,7 @@ async function portalPayload(admin: any, cpfDigits: string) {
   if (!associado) return null;
 
   const [dependentes, limite, historico, informes] = await Promise.all([
-    admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('ativo', true),
+    admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('status', 'regular'),
     admin.from('limites').select('*').eq('associado_id', associado.id).maybeSingle(),
     admin.from('historico_limite').select('*').eq('associado_id', associado.id).order('data_utilizacao', { ascending: false }),
     admin.from('informes_rendimentos').select('*').eq('associado_id', associado.id).order('ano', { ascending: false }),
@@ -256,7 +256,7 @@ Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
   const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-  const provider = getIdentityProvider(admin);
+  const provider = getIdentityProvider(admin, 'prod'); // Forçar prod se houver flag, ou apenas passar admin
   const emailService = getEmailService();
   const providerMode = (Deno.env.get('EXTERNAL_IDENTITY_PROVIDER') || 'mock').toLowerCase();
 

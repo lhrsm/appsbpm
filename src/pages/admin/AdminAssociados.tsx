@@ -179,6 +179,10 @@ export default function AdminAssociados() {
 
     // Validação/conversão de datas
     const payload: any = { ...editing };
+    
+    // Removendo explicitamente o campo redundante 'ativo'
+    delete payload.ativo;
+    
     for (const k of ["data_nascimento", "data_admissao"] as const) {
       const v = payload[k];
       if (v) {
