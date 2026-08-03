@@ -88,6 +88,9 @@ export async function registerPWA() {
     return;
   }
 
+  // Limpa caches antigos na inicialização para evitar conflitos de versão
+  await unregisterOldCaches();
+
   try {
     registration = await navigator.serviceWorker.register(APP_SW_PATH, { scope: "/" });
 
