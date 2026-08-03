@@ -83,7 +83,7 @@ export default function PortalSidebar({ profile, permissions, collapsed, onToggl
       )}
       aria-label="Menu principal"
     >
-      <nav className="flex-1 overflow-y-auto overflow-x-hidden p-2">
+      <nav id="navegacao-principal" aria-label="Navegação principal" className="flex-1 overflow-y-auto overflow-x-hidden p-2">
         {sections.map((section) => (
           <div key={section.id} className="mb-3">
             {!collapsed && (

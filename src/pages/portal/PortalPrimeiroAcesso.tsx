@@ -373,7 +373,7 @@ export default function PortalPrimeiroAcesso() {
                     <button
                       type="button"
                       onClick={() => setVerSenha((v) => !v)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                      className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
                     >
                       {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}

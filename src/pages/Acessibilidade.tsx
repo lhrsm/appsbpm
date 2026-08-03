@@ -57,8 +57,9 @@ export default function Acessibilidade() {
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
               Trabalhamos continuamente para que o Portal do Associado SBPM
               atenda às recomendações das{' '}
-              <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.1
-              em nível AA e à Lei Brasileira de Inclusão (Lei nº 13.146/2015).
+              <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.2
+              em nível AA, ao Decreto nº 5.296/2004 e à Lei Brasileira de
+              Inclusão (Lei nº 13.146/2015).
             </p>
           </section>
 
@@ -73,6 +74,12 @@ export default function Acessibilidade() {
               <li>Rótulos (labels) em todos os campos de formulário.</li>
               <li>Zoom até 200% sem perda de conteúdo.</li>
               <li>Compatibilidade com leitores de tela (NVDA, VoiceOver, TalkBack).</li>
+              <li>Painel de preferências: tamanho do texto, alto contraste, redução de animações, destaque de foco, sublinhado de links e espaçamento confortável.</li>
+              <li>Tradutor de Libras (VLibras) opcional.</li>
+              <li>Atalhos "Ir para o conteúdo", "Ir para a navegação" e "Ir para a busca".</li>
+              <li>Anúncio automático da página aberta para leitores de tela.</li>
+              <li>Alvos de toque com no mínimo 44 x 44 pixels.</li>
+              <li>Dados sensíveis mascarados com leitura acessível (ex.: "matrícula final 456").</li>
             </ul>
           </section>
 

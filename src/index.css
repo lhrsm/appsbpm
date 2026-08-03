@@ -31,7 +31,7 @@
     --secondary-foreground: 220 20% 15%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 220 10% 50%;
+    --muted-foreground: 220 12% 40%;
 
     /* Azul Institucional */
     --accent: 210 85% 45%;
@@ -78,7 +78,7 @@
     --secondary-foreground: 0 0% 95%;
 
     --muted: 220 15% 20%;
-    --muted-foreground: 220 10% 60%;
+    --muted-foreground: 220 12% 72%;
 
     --accent: 210 85% 55%;
     --accent-foreground: 0 0% 100%;
@@ -304,4 +304,137 @@ html.a11y-reduce-motion *::after {
   .landscape-hide {
     display: none;
   }
+}
+
+/* ================================================================== *
+ * FASE 13 — Acessibilidade WCAG 2.2 AA
+ * ================================================================== */
+
+/* Skip links: primeiros elementos focáveis, visíveis somente no foco */
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  left: 0;
+  outline: 3px solid hsl(var(--foreground));
+  outline-offset: 2px;
+}
+.skip-links .skip-link:nth-child(2):focus {
+  left: 12rem;
+}
+.skip-links .skip-link:nth-child(3):focus {
+  left: 24rem;
+}
+
+/* Foco visível reforçado (preferência do usuário) */
+html.a11y-focus-highlight *:focus-visible {
+  outline: 3px solid hsl(var(--ring)) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px hsl(var(--ring) / 0.25) !important;
+  border-radius: 0.25rem;
+}
+
+/* Sublinhado de links (WCAG 1.4.1 — cor não é o único indicador) */
+html.a11y-underline-links main a,
+html.a11y-underline-links a[href]:not([role="button"]):not(.skip-link) {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Densidade confortável */
+html.a11y-comfortable body {
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+html.a11y-comfortable p,
+html.a11y-comfortable li {
+  margin-bottom: 0.35em;
+}
+
+/* Preferências do sistema respeitadas mesmo sem configuração no portal */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --muted-foreground: 220 20% 30%;
+    --border: 220 20% 45%;
+  }
+  .dark {
+    --muted-foreground: 0 0% 85%;
+    --border: 0 0% 65%;
+  }
+}
+
+/* Modo de cores forçadas (Windows High Contrast) */
+@media (forced-colors: active) {
+  *:focus-visible {
+    outline: 3px solid CanvasText !important;
+    outline-offset: 2px !important;
+  }
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  a[href] {
+    forced-color-adjust: auto;
+    border: 1px solid CanvasText;
+  }
+  [data-state="checked"],
+  [aria-current="page"],
+  [aria-selected="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+  /* Informação não pode depender de imagem de fundo */
+  .forced-colors-visible {
+    forced-color-adjust: none;
+  }
+}
+
+/* Tipografia mínima legível: nada abaixo de 0.8125rem em conteúdo funcional */
+@layer utilities {
+  .text-a11y-min {
+    font-size: max(0.875rem, 14px);
+  }
+  /* Aumenta a área de toque sem alterar o tamanho visual do ícone */
+  .tap-expand {
+    position: relative;
+  }
+  .tap-expand::after {
+    content: "";
+    position: absolute;
+    inset: 50% 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Alturas fixas não devem cortar texto ampliado */
+@layer base {
+  button,
+  .btn,
+  [role="tab"] {
+    min-height: 2.25rem;
+    height: auto;
+  }
+}
+
+/* Skeleton não deve ser lido nem piscar agressivamente */
+[aria-busy="true"] [aria-hidden="true"] {
+  pointer-events: none;
 }

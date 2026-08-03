@@ -57,6 +57,7 @@ export default function PortalGlobalSearch({ profile, permissions, variant = "ba
     <>
       {variant === "bar" ? (
         <button
+          id="busca-portal"
           type="button"
           onClick={() => setOpen(true)}
           className="hidden lg:flex h-10 w-full max-w-md items-center gap-2 rounded-lg border border-primary-foreground/20 bg-primary-foreground/10 px-3 text-sm text-primary-foreground/90 transition hover:bg-primary-foreground/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-foreground/60"
@@ -72,6 +73,7 @@ export default function PortalGlobalSearch({ profile, permissions, variant = "ba
         <Button
           variant="ghost"
           size="icon"
+          id="busca-portal-mobile"
           onClick={() => setOpen(true)}
           className="min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15 lg:hidden"
           aria-label="Pesquisar serviços, documentos e ajuda"
@@ -82,12 +84,13 @@ export default function PortalGlobalSearch({ profile, permissions, variant = "ba
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput
+          aria-label="Pesquisar serviços, documentos e ajuda"
           placeholder="Pesquisar serviços, documentos e ajuda"
           value={term}
           onValueChange={setTerm}
         />
         <CommandList>
-          {term !== debounced && <div className="px-4 py-3 text-sm text-muted-foreground">Buscando…</div>}
+          {term !== debounced && <div role="status" className="px-4 py-3 text-sm text-muted-foreground">Buscando…</div>}
           <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
           {sections.map((section, idx) => (
             <div key={section.id}>
