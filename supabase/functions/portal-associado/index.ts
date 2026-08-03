@@ -146,10 +146,10 @@ const BodySchema = z.discriminatedUnion('action', [
 ]);
 
 const CAMPOS_ASSOCIADO =
-  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, ativo, patente, cep, cidade';
+  'id, matricula, nome, cpf, data_nascimento, email, telefone, endereco, foto_url, assinatura_url, data_admissao, status, patente, cep, cidade';
 
 const CAMPOS_DEPENDENTE =
-  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, ativo, status';
+  'id, associado_id, nome, cpf, data_nascimento, tipo, foto_url, assinatura_url, email, telefone, endereco, status';
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
@@ -180,11 +180,11 @@ Deno.serve(async (req) => {
         .maybeSingle();
 
       if (link?.associado_id) {
-        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('ativo', true).maybeSingle();
+        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('status', 'regular').maybeSingle();
         associado = assoc;
       }
       if (link?.dependente_id) {
-        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('ativo', true).maybeSingle();
+        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('status', 'regular').maybeSingle();
         dependente = dep;
       }
 
@@ -194,7 +194,7 @@ Deno.serve(async (req) => {
           .from('associados')
           .select(CAMPOS_ASSOCIADO)
           .eq('matricula', credencial)
-          .eq('ativo', true)
+          .eq('status', 'regular')
           .maybeSingle();
 
         if (porMatricula) {
@@ -203,7 +203,7 @@ Deno.serve(async (req) => {
           const { data: porCpf } = await admin
             .from('associados')
             .select(CAMPOS_ASSOCIADO)
-            .eq('ativo', true)
+            .eq('status', 'regular')
             .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
             .maybeSingle();
 
@@ -213,12 +213,12 @@ Deno.serve(async (req) => {
             const { data: dep } = await admin
               .from('dependentes')
               .select(CAMPOS_DEPENDENTE)
-              .eq('ativo', true)
+              .eq('status', 'regular')
               .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
               .maybeSingle();
 
             if (dep) {
-              const { data: titular } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', dep.associado_id).eq('ativo', true).maybeSingle();
+              const { data: titular } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', dep.associado_id).eq('status', 'regular').maybeSingle();
               if (titular) {
                 associado = titular;
                 dependente = dep;
@@ -233,7 +233,7 @@ Deno.serve(async (req) => {
       }
 
       const [dependentes, limite, historico, informes] = await Promise.all([
-        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('ativo', true),
+        admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('associado_id', associado.id).eq('status', 'regular'),
         admin.from('limites').select('*').eq('associado_id', associado.id).maybeSingle(),
         admin
           .from('historico_limite')
@@ -292,7 +292,7 @@ Deno.serve(async (req) => {
         .from('associados')
         .select(CAMPOS_ASSOCIADO)
         .eq('id', sessao.aid)
-        .eq('ativo', true)
+        .eq('status', 'regular')
         .maybeSingle();
       if (!associado) return json({ error: 'Cadastro indisponível' }, 401);
 
@@ -310,6 +310,8 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'mensalidades') {
+      const { data: assoc } = await admin.from('associados').select('id, status').eq('id', sessao.aid).maybeSingle();
+      if (!assoc || assoc.status !== 'regular') return json({ itens: [] });
       if (sessao.did) return json({ itens: [] });
       const { data } = await admin
         .from('mensalidades')
@@ -320,14 +322,17 @@ Deno.serve(async (req) => {
     }
 
     if (body.action === 'documentos') {
+      const { data: assoc } = await admin.from('associados').select('id, status').eq('id', sessao.aid).maybeSingle();
+      if (!assoc || assoc.status !== 'regular') return json({ itens: [], total: 0 });
+
       const { pagina, tamanho, inicio, fim } = faixa(body.page, body.page_size);
       let q = admin
         .from('documentos_associado')
-        .select('id, titulo, categoria, visibilidade, publicado_em, arquivo_path, ativo, created_at', {
+        .select('id, titulo, categoria, visibilidade, publicado_em, arquivo_path, status, created_at', {
           count: 'exact',
         })
         .eq('associado_id', sessao.aid)
-        .eq('ativo', true);
+        .eq('status', 'regular');
       if (sessao.did) q = q.or(`visibilidade.eq.todos,dependente_id.eq.${sessao.did}`);
       const { data, count } = await q.order('publicado_em', { ascending: false }).range(inicio, fim);
       return json({ itens: data || [], total: count ?? 0, pagina, page_size: tamanho });
@@ -336,10 +341,10 @@ Deno.serve(async (req) => {
     if (body.action === 'documento_url') {
       const { data: doc } = await admin
         .from('documentos_associado')
-        .select('id, associado_id, dependente_id, visibilidade, arquivo_path, ativo')
+        .select('id, associado_id, dependente_id, visibilidade, arquivo_path, status')
         .eq('id', body.documento_id)
         .maybeSingle();
-      if (!doc || !doc.ativo || doc.associado_id !== sessao.aid) {
+      if (!doc || doc.status !== 'regular' || doc.associado_id !== sessao.aid) {
         return json({ error: 'Documento não disponível' }, 403);
       }
       if (sessao.did && doc.visibilidade !== 'todos' && doc.dependente_id !== sessao.did) {

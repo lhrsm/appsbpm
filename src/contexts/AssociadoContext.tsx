@@ -130,7 +130,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       console.log("[PortalIdentity] Resposta do backend:", {
         associadoEncontrado: !!data?.associado,
         dependenteEncontrado: !!data?.dependente,
-        totalDependentes: data?.dependentes?.length || 0
+        totalDependentes: data?.dependentes?.length || 0,
+        status: data?.associado?.status
       });
 
       if (data?.associado) {
@@ -143,9 +144,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         setDependenteLogado(data.dependente || null);
         setError(null);
       } else {
-        console.warn("[PortalIdentity] Cadastro institucional não retornado pelo backend.");
-        // Se temos token mas não temos associado, é um erro de vínculo ou RLS
-        setError('Cadastro institucional não localizado. Entre em contato com o suporte.');
+        console.error("[PortalIdentity] Cadastro institucional não localizado ou inativo (status regular exigido).");
+        setError('Cadastro institucional não localizado ou inativo. Entre em contato com o suporte.');
       }
     } catch (err: any) {
       console.error("[PortalIdentity] Erro na resolução:", err);
