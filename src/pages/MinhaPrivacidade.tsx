@@ -68,10 +68,10 @@ export default function MinhaPrivacidade() {
         endereco: associado.endereco,
         data_nascimento: associado.data_nascimento,
         data_admissao: associado.data_admissao,
-        ativo: associado.ativo,
+        ativo: associado.status === 'regular',
       },
       dependentes: dependentes.map((d) => ({
-        id: d.id, nome: d.nome, cpf: d.cpf, tipo: d.tipo, ativo: d.ativo,
+        id: d.id, nome: d.nome, cpf: d.cpf, tipo: d.tipo, ativo: d.status === 'regular',
       })),
       limite,
       historico_limite: historicoLimite,
