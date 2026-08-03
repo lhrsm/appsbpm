@@ -446,17 +446,6 @@ export default function AdminAssociados() {
                 onChange={(e) => setEditing({ ...editing, endereco: e.target.value })}
               />
             </div>
-            <div>
-              <Label>Ativo</Label>
-              <select
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={String(editing?.ativo ?? "true")}
-                onChange={(e) => setEditing({ ...editing, ativo: e.target.value === "true" })}
-              >
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
-              </select>
-            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
