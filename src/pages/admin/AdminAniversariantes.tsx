@@ -39,8 +39,8 @@ export default function AdminAniversariantes() {
   useEffect(() => {
     (async () => {
       const [a, d] = await Promise.all([
-        supabase.from("associados").select("id, nome, telefone, data_nascimento, matricula").eq("ativo", true),
-        supabase.from("dependentes").select("id, nome, data_nascimento, associado_id, ativo").eq("ativo", true),
+        supabase.from("associados").select("id, nome, telefone, data_nascimento, matricula").eq("status", "regular"),
+        supabase.from("dependentes").select("id, nome, data_nascimento, associado_id, status").eq("status", "regular"),
       ]);
       const assocList: Pessoa[] = (a.data || []).map((x: any) => ({ ...x, tipo: "associado" as const }));
       const depIds = (d.data || []).map((x: any) => x.associado_id);
