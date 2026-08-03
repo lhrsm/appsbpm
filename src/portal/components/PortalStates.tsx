@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/design-system/components/Button";
 import { icons } from "@/design-system/icons";
+import { useAssociado } from "@/contexts/AssociadoContext";
 
 export interface PortalErrorStateProps {
   title?: string;

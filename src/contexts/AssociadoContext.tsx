@@ -98,7 +98,7 @@ interface AssociadoContextType {
   setIsDependente: (isDependente: boolean) => void;
   setDependenteLogado: (dependente: Dependente | null) => void;
   logout: () => void;
-  refreshProfile: () => Promise<void>;
+  refreshProfile: (isRepairAttempt?: boolean) => Promise<void>;
 }
 
 const AssociadoContext = createContext<AssociadoContextType | undefined>(undefined);
@@ -116,7 +116,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const refreshProfile = async (isRepairAttempt = false) => {
+  const refreshProfile = async (isRepairAttempt: boolean = false) => {
     const token = getPortalToken();
     if (!token) {
       setInitializing(false);
