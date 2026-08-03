@@ -11,6 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning, ShieldQuestion } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
+import { RegistrationNumberInput } from '@/components/RegistrationNumberInput';
+import { CpfInput } from '@/components/CpfInput';
 import {
   CAMPOS_VALIDACAO,
   DesafioIdentidade,
@@ -19,7 +21,6 @@ import {
   criarConta,
   enviarCodigo,
   forcaSenha,
-  mascararCpf,
   responderPergunta,
   senhaValida,
   validarIdentidade,
@@ -214,10 +215,12 @@ export default function PortalPrimeiroAcesso() {
                   </RadioGroup>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input id="cpf" inputMode="numeric" value={cpf} onChange={(e) => setCpf(mascararCpf(e.target.value))} maxLength={14} className="h-11" />
-                </div>
+                <CpfInput 
+                  label="CPF" 
+                  value={cpf} 
+                  onChange={setCpf} 
+                  className="h-11" 
+                />
 
                 <div className="space-y-2">
                   <Label htmlFor="nasc">Data de nascimento</Label>
@@ -226,13 +229,24 @@ export default function PortalPrimeiroAcesso() {
 
                 {CAMPOS_VALIDACAO[personType].map((campo) => (
                   <div className="space-y-2" key={campo.key}>
-                    <Label htmlFor={campo.key}>{campo.label}</Label>
-                    <Input
-                      id={campo.key}
-                      value={extras[campo.key] ?? ''}
-                      onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
-                      className="h-11"
-                    />
+                    {campo.key === 'registration' ? (
+                      <RegistrationNumberInput
+                        label={campo.label}
+                        value={extras[campo.key] ?? ''}
+                        onChange={(v) => setExtras((p) => ({ ...p, [campo.key]: v }))}
+                        className="h-11"
+                      />
+                    ) : (
+                      <>
+                        <Label htmlFor={campo.key}>{campo.label}</Label>
+                        <Input
+                          id={campo.key}
+                          value={extras[campo.key] ?? ''}
+                          onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
+                          className="h-11"
+                        />
+                      </>
+                    )}
                     {campo.help && <p className="text-xs text-muted-foreground">{campo.help}</p>}
                   </div>
                 ))}

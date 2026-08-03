@@ -11,12 +11,88 @@ export function normalizeCpf(cpf: string | null | undefined): string | null {
 }
 
 /**
+ * Formata CPF para o padrão 000.000.000-00.
+ */
+export function formatCpf(cpf: string | null | undefined): string {
+  const normalized = normalizeCpf(cpf);
+  if (!normalized) return "";
+  return normalized.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+}
+
+/**
+ * Valida o formato e os dígitos verificadores do CPF.
+ */
+export function validateCpf(cpf: string | null | undefined): boolean {
+  const normalized = normalizeCpf(cpf);
+  if (!normalized || normalized.length !== 11) return false;
+  
+  // Rejeitar sequências repetidas
+  if (/^(\d)\1{10}$/.test(normalized)) return false;
+
+  let sum = 0;
+  let remainder;
+
+  for (let i = 1; i <= 9; i++) sum = sum + parseInt(normalized.substring(i - 1, i)) * (11 - i);
+  remainder = (sum * 10) % 11;
+
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(normalized.substring(9, 10))) return false;
+
+  sum = 0;
+  for (let i = 1; i <= 10; i++) sum = sum + parseInt(normalized.substring(i - 1, i)) * (12 - i);
+  remainder = (sum * 10) % 11;
+
+  if (remainder === 10 || remainder === 11) remainder = 0;
+  if (remainder !== parseInt(normalized.substring(10, 11))) return false;
+
+  return true;
+}
+
+/**
  * Normaliza Matrícula removendo espaços e tratando hífens.
- * Mantém zeros à esquerda e o dígito verificador se existir.
+ * Formato normalizado: 9 dígitos numéricos (oito principais + um verificador).
  */
 export function normalizeRegistrationNumber(reg: string | null | undefined): string | null {
   if (!reg) return null;
-  return reg.trim().toUpperCase();
+  const digits = reg.replace(/\D/g, '');
+  if (digits.length === 0) return null;
+  return digits.padStart(9, '0').slice(0, 9);
+}
+
+/**
+ * Formata Matrícula para o padrão 00000000-0.
+ */
+export function formatRegistrationNumber(reg: string | null | undefined): string {
+  const normalized = normalizeRegistrationNumber(reg);
+  if (!normalized) return "";
+  return normalized.replace(/(\d{8})(\d{1})/, "$1-$2");
+}
+
+/**
+ * Valida se a matrícula possui o formato institucional (9 dígitos no total).
+ */
+export function validateRegistrationNumberFormat(reg: string | null | undefined): boolean {
+  if (!reg) return false;
+  const digits = reg.replace(/\D/g, '');
+  return digits.length === 9;
+}
+
+/**
+ * Mapeia os status institucionais para o padrão do sistema.
+ */
+export function mapInstitutionalStatus(status: string | null | undefined): 'active' | 'inactive' | 'suspended' | 'deceased' {
+  if (!status) return 'inactive';
+  const s = status.trim().toLowerCase();
+  
+  const map: Record<string, 'active' | 'inactive' | 'suspended' | 'deceased'> = {
+    'regular': 'active',
+    'ativo': 'active',
+    'inativo': 'inactive',
+    'suspenso': 'suspended',
+    'falecido': 'deceased'
+  };
+
+  return map[s] || 'inactive';
 }
 
 /**

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { RegistrationNumberInput } from "@/components/RegistrationNumberInput";
+import { CpfInput } from "@/components/CpfInput";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -317,16 +319,22 @@ export default function AdminAssociados() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
             <div>
-              <Label>Matrícula *</Label>
-              <Input value={editing?.matricula ?? ""} onChange={(e) => setEditing({ ...editing, matricula: e.target.value })} />
+              <RegistrationNumberInput 
+                label="Matrícula *" 
+                value={editing?.matricula ?? ""} 
+                onChange={(v) => setEditing({ ...editing, matricula: v })} 
+              />
             </div>
             <div>
               <Label>Nome completo *</Label>
               <Input value={editing?.nome ?? ""} onChange={(e) => setEditing({ ...editing, nome: e.target.value })} />
             </div>
             <div>
-              <Label>CPF *</Label>
-              <Input value={editing?.cpf ?? ""} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
+              <CpfInput 
+                label="CPF *" 
+                value={editing?.cpf ?? ""} 
+                onChange={(v) => setEditing({ ...editing, cpf: v })} 
+              />
             </div>
             <div>
               <Label>Posto / Graduação</Label>

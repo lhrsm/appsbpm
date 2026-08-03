@@ -1,11 +1,10 @@
 /** 
- * RESOLUÇÃO INSTITUCIONAL DEFINITIVA CONCLUÍDA
- * 
- * 1. Mapeamento Institucional: Restaurado vínculo de João Carlos Silva Santos (CPF: 12345678901).
- * 2. Segurança de Dados: Aplicadas políticas de RLS 'associados_self_select' e 'dependentes_self_select'.
- * 3. Frontend Resiliente: Refatorado 'AssociadoContext' com diagnóstico avançado e fallback de erro.
- * 4. Status: Dashboard operacional e dados institucionais carregando corretamente após login.
- */
+1. Matrícula: Padrão 00000000-0 aplicado com RegistrationNumberInput. Normalização para 9 dígitos.
+2. CPF: Padrão 000.000.000-00 aplicado com CpfInput em todas as telas administrativas e de portal.
+3. Validação: backend agora normaliza CPF (11) e Matrícula (9) antes da comparação, aceitando "Regular" como ativo.
+4. UI: Máscaras progressivas e validação visual de CPF implementadas.
+5. Status: Concluído conforme roteiro institucional.
+*/
 import { Card, Text, Button, icons } from "@/design-system";
 
 export default function RoutesIndex() {

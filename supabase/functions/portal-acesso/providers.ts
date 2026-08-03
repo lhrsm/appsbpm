@@ -88,8 +88,8 @@ export class MockExternalIdentityProvider implements ExternalIdentityProvider {
     }
 
     if (input.personType === 'associate') {
-      const esperado = soNumeros(data.registration_number || '') || (data.registration_number || '').toLowerCase();
-      const informado = soNumeros(input.registration || '') || (input.registration || '').toLowerCase();
+      const esperado = soNumeros(data.registration_number || '').padStart(9, '0').slice(-9);
+      const informado = soNumeros(input.registration || '').padStart(9, '0').slice(-9);
       if (!informado || esperado !== informado) {
         return { success: false, status: 'not_matched', errorCode: 'GENERIC_VALIDATION_FAILED' };
       }
