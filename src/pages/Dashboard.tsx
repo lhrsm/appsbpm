@@ -165,8 +165,10 @@ export default function Dashboard() {
       <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background gap-4">
         <PortalLoadingState message="Aguardando dados do perfil..." />
         {identity && (
-           <div className="max-w-md w-full p-4 bg-muted/30 rounded border text-[10px] font-mono text-muted-foreground">
+           <div className="max-w-md w-full p-4 bg-muted/30 rounded border text-[10px] font-mono text-muted-foreground animate-pulse">
              Identity Resolved: {String(identity.resolved)} | Status: {identity.reasonCode}
+             <br />
+             Associate ID: {identity.associateId?.slice(0, 8)}...
            </div>
         )}
       </div>
