@@ -54,9 +54,9 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           asChild
           variant="ghost"
           className="h-11 gap-2 px-2 text-primary-foreground hover:bg-primary-foreground/15"
+        >
           <button
             type="button"
-            className="h-11 gap-2 px-2 text-primary-foreground hover:bg-primary-foreground/15"
             aria-label="Abrir menu da conta"
           >
             <Avatar className="h-8 w-8 border border-primary-foreground/30">
@@ -73,6 +73,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
             </span>
             <icons.expandir className="h-4 w-4 opacity-80" aria-hidden />
           </button>
+        </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-72">
