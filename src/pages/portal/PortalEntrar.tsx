@@ -25,7 +25,7 @@ export default function PortalEntrar() {
     if (clean.length <= 9) {
       // Padrão Matrícula: 00000000-0
       if (clean.length <= 8) setCredential(clean);
-      else setCredential(clean.replace(/^(\d{8})(\d{1})/, '$1-$2'));
+      else setCredential(clean.replace(/^(\d{8})(\d{0,1})/, '$1-$2'));
     } else {
       // Padrão CPF: 000.000.000-00
       const d = clean.slice(0, 11);
