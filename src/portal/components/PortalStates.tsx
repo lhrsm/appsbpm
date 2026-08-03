@@ -65,7 +65,7 @@ export function PortalAccessDenied() {
 /** Estado de carregamento global do portal externo. */
 export function PortalLoadingState({ message = "Carregando seu portal..." }: { message?: string }) {
   return (
-    <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4 p-8 text-center animate-fade-in">
+    <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4 p-8 text-center animate-fade-in" id="portal-loading-state">
       <div className="relative">
         <div className="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
         <icons.dashboard className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-primary opacity-50" />
@@ -98,7 +98,7 @@ export function PortalProfileNotFound({
   };
   
   return (
-    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm w-full max-w-2xl">
+    <div className="flex flex-col items-center gap-4 rounded-xl border bg-card p-8 text-center animate-fade-in shadow-sm w-full max-w-2xl" id="portal-profile-not-found">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted" aria-hidden>
         <UserSearch className="h-6 w-6 text-muted-foreground" />
       </span>
