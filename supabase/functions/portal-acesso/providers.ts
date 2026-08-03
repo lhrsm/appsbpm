@@ -100,10 +100,12 @@ export class MockExternalIdentityProvider implements ExternalIdentityProvider {
       if (!ok) return { success: false, status: 'not_matched', errorCode: 'GENERIC_VALIDATION_FAILED' };
     }
 
-    if (data.status !== 'matched') {
+    // Permitir se o status for 'matched' OU 'regular' (compatibilidade de transição)
+    const statusValido = data.status === 'matched' || data.status === 'regular';
+    if (!statusValido) {
       return { success: false, status: data.status as ValidationStatus, errorCode: 'IDENTITY_NOT_ELIGIBLE' };
     }
-    if (data.status !== 'regular') return { success: false, status: data.status as ValidationStatus, errorCode: 'IDENTITY_NOT_ELIGIBLE' };
+    
     if (data.already_registered) return { success: false, status: 'already_linked', errorCode: 'ALREADY_LINKED' };
 
     return {
