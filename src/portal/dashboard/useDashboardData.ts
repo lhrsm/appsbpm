@@ -77,8 +77,9 @@ export function usePortalDashboardData(enabled: boolean) {
   const documentos = useSection<DashboardDocumento[]>(
     "documentos",
     async () => {
-      const res = await portalCall<{ itens: DashboardDocumento[] }>("documentos");
-      return res?.itens ?? [];
+      const res = await portalCall<any>("documentos");
+      const list = res?.itens || res?.payload || (Array.isArray(res) ? res : []);
+      return list as DashboardDocumento[];
     },
     [],
     enabled,
