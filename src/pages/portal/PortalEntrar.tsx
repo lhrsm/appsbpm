@@ -80,7 +80,7 @@ export default function PortalEntrar() {
                   autoComplete="username"
                   placeholder="Digite seu CPF ou matrícula"
                   value={credential}
-                  onChange={(e) => setCredential(mascara(e.target.value))}
+                  onChange={(e) => handleCredentialChange(e.target.value)}
                   maxLength={14}
                   className="h-12 text-lg"
                   disabled={loading}
