@@ -246,17 +246,17 @@ export default function PortalQueroMeAssociar() {
                 <legend className="text-sm font-medium">Situação funcional</legend>
                 <RadioGroup
                   value={situacao}
-                  onValueChange={(v) => setSituacao(v as 'ativo' | 'inativo')}
+                  onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
                   className="grid grid-cols-2 gap-3"
                 >
-                  {(['ativo', 'inativo'] as const).map((v) => (
+                  {(['regular', 'inativo'] as const).map((v) => (
                     <Label
                       key={v}
                       htmlFor={`sit-${v}`}
                       className="flex cursor-pointer items-center gap-2 rounded-xl border bg-background/70 p-3 text-sm font-medium has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary/25"
                     >
                       <RadioGroupItem id={`sit-${v}`} value={v} />
-                      {v === 'ativo' ? 'Ativo' : 'Inativo'}
+                      {v === 'regular' ? 'Ativo' : 'Inativo'}
                     </Label>
                   ))}
                 </RadioGroup>
