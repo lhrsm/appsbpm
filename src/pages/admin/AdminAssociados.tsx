@@ -113,7 +113,7 @@ export default function AdminAssociados() {
     let q = supabase.from("associados").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
     if (filterPatente) q = q.eq("patente", filterPatente);
-    if (filterStatus) q = q.eq("status", filterStatus);
+    if (filterStatus) q = q.eq("status", filterStatus as any);
     if (filterCidade) q = q.eq("cidade", filterCidade);
     const { data, error } = await q;
     if (error) toast.error(error.message);
