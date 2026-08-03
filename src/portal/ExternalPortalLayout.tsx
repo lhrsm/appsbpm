@@ -105,7 +105,7 @@ export default function ExternalPortalLayout({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div key="portal-layout-root" className="flex min-h-dvh w-full flex-col bg-background">
+      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-background">
         <SkipLinks />
 
 
@@ -147,7 +147,7 @@ export default function ExternalPortalLayout({
             >
 
               <PortalPageContainer>
-                {banner}
+                {banner && <div key="portal-banner-container">{banner}</div>}
                 <PortalBreadcrumbs profile={profileType} />
                 {pageTitle && !loading && !error && allowed && (
                   <PageHeader title={pageTitle} description={pageDescription} actions={actions} />

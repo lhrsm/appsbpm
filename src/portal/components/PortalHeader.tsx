@@ -39,6 +39,7 @@ export default function PortalHeader({
           asChild
           variant="ghost"
           size="icon"
+          className="min-h-11 min-w-11 shrink-0 text-primary-foreground hover:bg-primary-foreground/15 md:hidden"
           onClick={onOpenMenu}
         >
           <button
@@ -46,7 +47,6 @@ export default function PortalHeader({
             aria-label="Abrir menu de navegação"
             aria-expanded={menuOpen}
             aria-controls="portal-mobile-drawer"
-            className="min-h-11 min-w-11 shrink-0 text-primary-foreground hover:bg-primary-foreground/15 md:hidden"
           >
             <Menu className="h-5 w-5" aria-hidden />
           </button>
