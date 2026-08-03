@@ -103,7 +103,7 @@ export class MockExternalIdentityProvider implements ExternalIdentityProvider {
     if (data.status !== 'matched') {
       return { success: false, status: data.status as ValidationStatus, errorCode: 'IDENTITY_NOT_ELIGIBLE' };
     }
-    if (!data.is_active) return { success: false, status: 'inactive', errorCode: 'IDENTITY_NOT_ELIGIBLE' };
+    if (data.status !== 'regular') return { success: false, status: data.status as ValidationStatus, errorCode: 'IDENTITY_NOT_ELIGIBLE' };
     if (data.already_registered) return { success: false, status: 'already_linked', errorCode: 'ALREADY_LINKED' };
 
     return {

@@ -33,7 +33,7 @@ export default function PortalRecuperarAcesso() {
   const submeter = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await recuperarAcesso(credential.trim());
+    await recuperarAcesso(credential.replace(/\D/g, ''));
     setLoading(false);
     setEnviado(true);
   };
