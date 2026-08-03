@@ -24,6 +24,7 @@ const nav = [
   { to: "/admin/previdencia", icon: ShieldCheck, label: "Previdência" },
   { to: "/admin/saude", icon: HeartHandshake, label: "Assistência à Saúde" },
   { to: "/admin/financeiro", icon: DollarSign, label: "Financeiro" },
+  { to: "/admin/financeiro/cheques", icon: Landmark, label: "Gestão de Cheques" },
   { to: "/admin/patrimonio", icon: Building2, label: "Patrimônio" },
   { to: "/admin/contabilidade", icon: FileSignature, label: "Contabilidade" },
   { to: "/admin/rh", icon: UserPlus, label: "Recursos Humanos" },
