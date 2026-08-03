@@ -226,7 +226,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url,
           matricula: associado?.matricula,
           titularNome: associado?.nome,
-          vinculoAtivo: isDependente ? dependenteLogado?.ativo !== false : associado?.ativo !== false,
+          vinculoAtivo: isDependente ? dependenteLogado?.status === 'regular' : associado?.status === 'regular',
           associadoDesde: associado?.data_admissao,
           parentesco: isDependente && dependenteLogado ? tipoLabel[dependenteLogado.tipo] : null,
         }}
