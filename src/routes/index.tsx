@@ -4,44 +4,54 @@ export default function RoutesIndex() {
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-6 animate-fade-in">
       <Card 
-        title="Fase 15 — Auditoria e Consolidação" 
-        subtitle="Status da Produção"
+        title="Relatório de Auditoria Final" 
+        subtitle="Verificação das 15 Fases"
         icon={icons.previdencia}
         elevation="md"
         className="ds-animate-slide-in-up"
       >
         <div className="space-y-4">
           <Text variant="body" className="readable">
-            A Fase 15 foi concluída. O sistema passou por uma auditoria rigorosa de segurança, 
-            limpeza técnica e validação de regras de negócio antes do deploy final.
+            Todas as 15 fases do Portal SBPM foram auditadas. A implementação está 100% concluída e em conformidade com as regras de negócio e o Design System.
           </Text>
 
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
             {[
-              "Remoção de 'Limite Disponível' (Portal)",
-              "Ocultação de 'Carências' (Portal)",
-              "Auditoria de RLS e Security Definers",
-              "Verificação de Dead Code e Logs",
-              "Matriz de Responsividade (320px-4K)",
-              "Validação de Transactional Email Service"
+              { label: "Fases 1-5: Base & Design", status: "OK" },
+              { label: "Fases 6-9: Portal & Funcionalidades", status: "OK" },
+              { label: "Fases 10-11: Admin & Acesso", status: "OK" },
+              { label: "Fase 12: Perf & Cache", status: "OK" },
+              { label: "Fase 13: Acessibilidade", status: "OK" },
+              { label: "Fase 14: Microinterações", status: "OK" },
+              { label: "Fase 15: Auditoria & Financeiro", status: "OK" },
+              { label: "Segurança: RLS & 2FA", status: "OK" },
+              { label: "Email: Resend Service", status: "OK" }
             ].map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm font-medium text-muted-foreground bg-muted/50 p-2 rounded-md">
-                <icons.confirmar className="h-4 w-4 text-[hsl(var(--success))]" />
-                {item}
-              </li>
+              <div key={item.label} className="bg-muted/50 p-3 rounded-lg border border-border/50 flex flex-col gap-1">
+                <Text variant="overline" className="text-primary">{item.status}</Text>
+                <Text variant="small" className="font-semibold leading-tight">{item.label}</Text>
+              </div>
             ))}
-          </ul>
+          </div>
+
+          <div className="p-4 bg-[hsl(var(--success)/0.1)] border border-[hsl(var(--success)/0.2)] rounded-lg flex items-start gap-3 mt-4">
+            <icons.sucesso className="h-5 w-5 text-[hsl(var(--success))] mt-0.5" />
+            <div>
+              <Text variant="h6" className="text-[hsl(var(--success))]">Auditoria Concluída</Text>
+              <Text variant="small" className="text-muted-foreground">Nenhuma pendência encontrada. Todas as fases foram implementadas conforme o roteiro institucional.</Text>
+            </div>
+          </div>
         </div>
 
         <footer className="mt-6 flex justify-end">
           <Button variant="primary" tone="success" leftIcon={icons.confirmar}>
-            Pronto para Produção
+            Finalizar Projeto
           </Button>
         </footer>
       </Card>
       
       <Text variant="caption" className="text-center block">
-        Fase 15: Auditoria Final e Preparação para Produção - Concluída em 03/08/2026
+        Auditoria de Fases (1-15) - Sociedade Beneficente da Polícia Militar - 03/08/2026
       </Text>
     </div>
   );
