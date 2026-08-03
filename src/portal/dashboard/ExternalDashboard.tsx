@@ -70,10 +70,16 @@ const emAberto = (s?: string | null) => !["concluida", "concluída", "cancelada"
 /** Home do Portal (associado e dependente), montada por perfil. */
 export default function ExternalDashboard({ profileType }: { profileType: PortalProfile }) {
   console.log("[ExternalDashboard] Mount", { profileType });
-  const { associado, dependentes, dependenteLogado } = useAssociado();
+  const { associado, dependentes, dependenteLogado, identity } = useAssociado();
   const isDependente = profileType === "dependent";
   const { items: notificacoes, loading: loadingNotificacoes } = useNotificacoes();
-  const { solicitacoes, documentos, eventos, parceiros } = usePortalDashboardData(!!associado);
+  const { solicitacoes, documentos, eventos, parceiros, loading: loadingDashboard } = usePortalDashboardData(!!identity?.resolved);
+
+  console.log("[ExternalDashboard] Data sources:", { 
+    hasAssociado: !!associado, 
+    hasIdentity: identity?.resolved,
+    loadingDashboard 
+  });
 
   const permitido = useMemo(
     () => new Set(getNavigationItems({ profile: profileType }).map((i) => i.route)),
