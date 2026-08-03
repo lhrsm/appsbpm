@@ -8,6 +8,7 @@ import { Loader2, MailCheck, ArrowLeft } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { recuperarAcesso } from '@/lib/portalAcesso';
+import { padCpf, padRegistrationNumber } from '@/lib/identity';
 
 export default function PortalRecuperarAcesso() {
   const [credential, setCredential] = useState('');
@@ -33,7 +34,9 @@ export default function PortalRecuperarAcesso() {
   const submeter = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await recuperarAcesso(credential.replace(/\D/g, ''));
+    const clean = credential.replace(/\D/g, '');
+    const normalized = clean.length > 9 ? padCpf(clean) : padRegistrationNumber(clean);
+    await recuperarAcesso(normalized || "");
     setLoading(false);
     setEnviado(true);
   };
