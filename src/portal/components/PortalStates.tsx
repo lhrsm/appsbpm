@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/design-system/components/Button";
 import { icons } from "@/design-system/icons";
 
 export interface PortalErrorStateProps {
@@ -67,7 +67,7 @@ export function PortalLoadingState({ message = "Carregando seu portal..." }: { m
     <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4 p-8 text-center animate-fade-in">
       <div className="relative">
         <div className="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-        <icons.logo className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-primary opacity-50" />
+        <icons.dashboard className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-primary opacity-50" />
       </div>
       <div className="space-y-1">
         <h2 className="text-lg font-semibold text-foreground">{message}</h2>
