@@ -56,7 +56,7 @@ export default function AdminDocumentos() {
 
   useEffect(() => {
     if (!form.associado_id) { setDependentes([]); return; }
-    supabase.from('dependentes').select('id, nome').eq('associado_id', form.associado_id).eq('ativo', true)
+    supabase.from('dependentes').select('id, nome').eq('associado_id', form.associado_id).eq('status', 'regular')
       .then(({ data }) => setDependentes(data || []));
   }, [form.associado_id]);
 
