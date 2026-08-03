@@ -29,6 +29,7 @@ export default function Dashboard() {
     setDependenteLogado,
     initializing,
     error,
+    identity,
     refreshProfile
   } = useAssociado();
   usePageviewTracker(associado?.id);
@@ -80,27 +81,35 @@ export default function Dashboard() {
   if (initializing) return <PortalLoadingState />;
   
   if (error) {
-    console.error("[Dashboard] Interrompido por erro de perfil:", error);
+    console.error("[Dashboard] Interrompido por erro:", error, identity);
     
-    // Se o erro for de vínculo ausente, exibimos a tela de reparo controlada
-    if (error === 'PROFILE_LINK_MISSING') {
-      return (
-        <div className="flex min-h-screen items-center justify-center p-6 bg-background">
-          <PortalProfileNotFound 
-            title="Estamos concluindo a vinculação do seu cadastro"
-            description="Seus dados de acesso foram validados, mas ainda precisamos concluir a vinculação com o cadastro institucional."
-            onRetry={() => refreshProfile(true)} 
-          />
-        </div>
-      );
-    }
-
     return (
-      <div className="flex min-h-screen items-center justify-center p-6 bg-background">
-        <PortalProfileNotFound onRetry={() => {
-          console.log("[Dashboard] Tentando revalidar perfil...");
-          refreshProfile(false);
-        }} />
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background gap-8">
+        <PortalProfileNotFound 
+          title={error === 'PROFILE_LINK_MISSING' ? "Estamos vinculando seu cadastro" : "Não foi possível carregar seu cadastro"}
+          description={error === 'PROFILE_LINK_MISSING' 
+            ? "Identificamos sua conta, mas precisamos sincronizar seu vínculo institucional para liberar o acesso." 
+            : "Ocorreu uma falha ao tentar resolver sua identidade. Tente novamente."}
+          onRetry={() => refreshProfile(error === 'PROFILE_LINK_MISSING')} 
+        />
+        
+        {/* Debug Panel - Só aparece se houver dados técnicos ou for admin logado */}
+        {identity?.debug && (
+          <div className="max-w-md w-full p-4 bg-muted/50 rounded-lg text-[10px] font-mono border text-muted-foreground overflow-auto">
+            <p className="font-bold mb-1 uppercase tracking-wider text-[9px]">Diagnóstico Técnico (Admin)</p>
+            <pre>{JSON.stringify({ 
+              error,
+              identity: {
+                resolved: identity.resolved,
+                link_status: identity.linkStatus,
+                assoc_status: identity.associationStatus,
+                access: identity.accessLevel,
+                reason: identity.reasonCode,
+                associate_id: identity.associateId ? 'PRESENT' : 'MISSING'
+              }
+            }, null, 2)}</pre>
+          </div>
+        )}
       </div>
     );
   }
