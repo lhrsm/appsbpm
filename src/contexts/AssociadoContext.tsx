@@ -131,11 +131,8 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   const [initializing, setInitializing] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const mapPortalIdentityResponse = (data: any): PortalIdentity => {
-    // A RPC get_my_portal_identity() retorna um array de um objeto no Postgres
-    const raw = Array.isArray(data) ? data[0] : data;
-    
-    if (!raw || !raw.auth_id) {
+  const mapPortalIdentityResponse = (row: any): PortalIdentity => {
+    if (!row) {
       return {
         resolved: false,
         associateId: null,
@@ -148,19 +145,15 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       };
     }
 
-    const isRegular = raw.associado_status?.toLowerCase() === 'regular';
-    const isLinkActive = raw.link_status === 'active';
-
     return {
-      resolved: !!raw.associado_id,
-      associateId: raw.associado_id,
-      dependentId: raw.dependente_id,
-      profileType: raw.person_type as 'associate' | 'dependent',
-      associationStatus: raw.associado_status,
-      linkStatus: raw.link_status,
-      accessLevel: (isRegular && isLinkActive) ? 'full' : 'read_only',
-      reasonCode: 'READY',
-      debug: raw // Para diagnóstico temporário
+      resolved: row.resolved === true,
+      associateId: row.associate_id ?? null,
+      dependentId: row.dependent_id ?? null,
+      profileType: row.profile_type ?? null,
+      associationStatus: row.association_status ?? null,
+      linkStatus: row.link_status ?? null,
+      accessLevel: row.access_level ?? null,
+      reasonCode: row.reason_code ?? null
     };
   };
 
@@ -177,41 +170,54 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
         console.log("[PortalIdentity] Resultado do reparo:", repairResult);
       }
 
-      const { data: identityData, error: identityError } = await supabase.rpc('get_my_portal_identity');
+      const { data: rpcData, error: rpcError } = await supabase.rpc('get_my_portal_identity');
       
-      if (identityError) {
-        console.error("[PortalIdentity] Erro na RPC de identidade:", identityError);
+      if (rpcError) {
+        console.error("[PortalIdentity] Erro na RPC de identidade:", rpcError);
         setError('TECHNICAL_ERROR');
         return;
       }
 
-      console.log("[PortalIdentity] Dados crus da RPC:", identityData);
-      const mappedIdentity = mapPortalIdentityResponse(identityData);
+      console.log("RPC RESPONSE DATA", rpcData);
+      const row = Array.isArray(rpcData) ? rpcData[0] : rpcData;
+      console.log("RPC ROW", row);
+
+      const mappedIdentity = mapPortalIdentityResponse(row);
+      console.log("MAPPED IDENTITY", mappedIdentity);
+      
       setIdentity(mappedIdentity);
 
-      if (!mappedIdentity.resolved || !mappedIdentity.associateId) {
-        console.warn("[PortalIdentity] Vínculo não resolvido:", mappedIdentity);
-        setError('PROFILE_LINK_MISSING');
+      if (
+        mappedIdentity.resolved && 
+        mappedIdentity.associateId && 
+        mappedIdentity.reasonCode === 'READY'
+      ) {
+        // Carrega o perfil completo usando o payload centralizado
+        const data = await portalCall<any>('perfil');
+        
+        if (data?.associado) {
+          setAssociado(data.associado);
+          setDependentes(data.dependentes || []);
+          setLimite(data.limite || null);
+          setHistoricoLimite(data.historico || []);
+          setInformes(data.informes || []);
+          setIsDependente(Boolean(data.dependente));
+          setDependenteLogado(data.dependente || null);
+          setError(null);
+        } else {
+          console.error("[PortalIdentity] Falha ao carregar payload do perfil.");
+          setError(data?.error || 'Erro ao carregar dados do painel.');
+        }
         return;
       }
 
-      // Agora que temos o associateId da RPC, buscamos o perfil completo
-      // Isso garante que estamos usando o ID autorizado
-      const data = await portalCall<any>('perfil');
-      
-      if (data?.associado) {
-        setAssociado(data.associado);
-        setDependentes(data.dependentes || []);
-        setLimite(data.limite || null);
-        setHistoricoLimite(data.historico || []);
-        setInformes(data.informes || []);
-        setIsDependente(Boolean(data.dependente));
-        setDependenteLogado(data.dependente || null);
-        setError(null);
+      // Se não resolveu ou não está READY
+      if (!mappedIdentity.resolved) {
+        setError('PROFILE_LINK_MISSING');
       } else {
-        console.error("[PortalIdentity] Falha ao carregar payload do perfil.");
-        setError(data?.error || 'Não foi possível carregar os dados do seu painel.');
+        setError(mappedIdentity.reasonCode || 'ACCESS_DENIED');
       }
+    } catch (err: any) {
     } catch (err: any) {
       console.error("[PortalIdentity] Erro crítico:", err);
       setError(err.message || 'Erro de conexão.');
