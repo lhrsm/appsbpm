@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { clearPortalToken, getPortalToken, portalCall } from '@/lib/portal';
 import { clearPrivateState } from '@/lib/perf/queryClient';
 import { closeAllRealtime } from '@/hooks/useRealtimeChannel';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Dependente {
   id: string;
