@@ -158,8 +158,8 @@ export default function AdminDependentes() {
                     <div className="font-semibold truncate">{r.nome}</div>
                     <div className="text-xs text-muted-foreground">{tipoLabel(r.tipo)}</div>
                   </div>
-                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${r.ativo ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}>
-                    {r.ativo ? "Ativo" : "Inativo"}
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full text-white ${r.status === "regular" ? "bg-green-500" : "bg-gray-500"}`}>
+                    {r.status === "regular" ? "Ativo" : r.status || "Inativo"}
                   </span>
                 </div>
                 <div className="text-xs space-y-1 text-muted-foreground">
