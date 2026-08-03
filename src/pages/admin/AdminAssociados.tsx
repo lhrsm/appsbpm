@@ -198,7 +198,10 @@ export default function AdminAssociados() {
         const msg = error.message.includes("matricula") ? "Já existe um associado com essa matrícula" : "Já existe um associado com esse CPF";
         return toast.error(msg);
       }
-      return toast.error(error.message);
+      if ((error as any).code === "42501") {
+        return toast.error("Você não possui permissão para salvar este cadastro.");
+      }
+      return toast.error("Não foi possível salvar o associado. Tente novamente.");
     }
     await logAudit(isNew ? "create" : "update", "associados", (data as any)?.id ?? payload.id, payload);
     toast.success(isNew ? "Criado com sucesso" : "Atualizado");
@@ -365,7 +368,14 @@ export default function AdminAssociados() {
               <select
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 value={editing?.situacao_associativa ?? "regular"}
-                onChange={(e) => setEditing({ ...editing, situacao_associativa: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setEditing({ 
+                    ...editing, 
+                    situacao_associativa: val,
+                    ativo: val === "regular" 
+                  });
+                }}
               >
                 {SITUACOES_ASSOCIATIVAS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
