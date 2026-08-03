@@ -22,6 +22,7 @@ import { useProfileSettings } from '@/portal/profile/hooks/useProfileSettings';
 import { ProfileFieldDisplay } from '@/portal/profile/ProfileFieldDisplay';
 import { ProfileSection } from '@/portal/profile/ProfileSection';
 import { CorrectionRequestModal } from '@/portal/profile/CorrectionRequestModal';
+import { UnitChangeModal } from '@/portal/profile/UnitChangeModal';
 import { Badge } from '@/components/ui/badge';
 
 interface AcessoRegistro {
@@ -31,6 +32,7 @@ interface AcessoRegistro {
   user_agent: string | null;
   sucesso: boolean;
 }
+
 
 export default function Perfil() {
   const {
@@ -73,7 +75,10 @@ export default function Perfil() {
     currentValue: ''
   });
 
+  const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
+
   const [saving, setSaving] = useState(false);
+
   const [acessos, setAcessos] = useState<AcessoRegistro[]>([]);
   const [loadingAcessos, setLoadingAcessos] = useState(true);
 
@@ -216,8 +221,18 @@ export default function Perfil() {
         {...correctionModal} 
         onClose={() => setCorrectionModal(prev => ({ ...prev, isOpen: false }))} 
       />
+      
+      {!isDependente && (
+        <UnitChangeModal
+          isOpen={isUnitModalOpen}
+          onClose={() => setIsUnitModalOpen(false)}
+          currentUnitId={associado.unidade_id}
+          associadoId={associado.id}
+        />
+      )}
 
       {/* Header / Resumo */}
+
       <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-card rounded-xl border shadow-sm">
         <ProfilePhotoUpload
           currentPhotoUrl={alvo.foto_url}
@@ -336,7 +351,7 @@ export default function Perfil() {
                            <Shield className="h-5 w-5 text-primary" />
                            <span className="font-semibold">Unidade Operacional</span>
                          </div>
-                         <Button variant="outline" size="sm" className="h-8">Alterar Unidade</Button>
+                         <Button variant="outline" size="sm" className="h-8" onClick={() => setIsUnitModalOpen(true)}>Alterar Unidade</Button>
                       </div>
                       <p className="text-sm">Sua lotação atual é registrada como: <strong>{ (associado as any).unidade_id || 'Não informada' }</strong></p>
                     </div>
