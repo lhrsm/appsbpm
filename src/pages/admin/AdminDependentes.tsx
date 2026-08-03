@@ -116,15 +116,19 @@ export default function AdminDependentes() {
         </select>
         <select
           className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          value={filterAtivo}
-          onChange={(e) => setFilterAtivo(e.target.value)}
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
         >
-          <option value="">Ativos e inativos</option>
-          <option value="true">Somente ativos</option>
-          <option value="false">Somente inativos</option>
+          <option value="">Todos os status</option>
+          <option value="regular">Regular</option>
+          <option value="inativo">Inativo</option>
+          <option value="suspenso">Suspenso</option>
+          <option value="em_analise">Em análise</option>
+          <option value="aguardando_reativacao">Aguardando reativação</option>
+          <option value="falecido">Falecido</option>
         </select>
-        {(filterTipo || filterAtivo) && (
-          <Button variant="outline" size="sm" onClick={() => { setFilterTipo(""); setFilterAtivo(""); }}>
+        {(filterTipo || filterStatus) && (
+          <Button variant="outline" size="sm" onClick={() => { setFilterTipo(""); setFilterStatus(""); }}>
             Limpar filtros
           </Button>
         )}
