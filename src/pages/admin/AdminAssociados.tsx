@@ -170,16 +170,13 @@ export default function AdminAssociados() {
     // Removendo explicitamente o campo redundante 'ativo'
     delete payload.ativo;
     
+    // As datas já chegam como ISO string via BirthDateInput ou no load
     for (const k of ["data_nascimento", "data_admissao"] as const) {
-      const v = payload[k];
-      if (v) {
-        const iso = brToISO(v);
-        if (!iso) return toast.error(`${k === "data_nascimento" ? "Data de nascimento" : "Data de admissão"} inválida (use dd/mm/aaaa)`);
-        payload[k] = iso;
-      } else {
+      if (!payload[k]) {
         payload[k] = null;
       }
     }
+
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
 
     const isNew = !payload.id;
@@ -294,7 +291,7 @@ export default function AdminAssociados() {
 
               </div>
               <div className="flex justify-end gap-1 pt-2 border-t">
-                <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r, data_nascimento: isoToBR(r.data_nascimento), data_admissao: isoToBR(r.data_admissao) }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                <Button variant="ghost" size="icon" onClick={() => { setEditing({ ...r }); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
                 <Button variant="ghost" size="icon" onClick={() => remove(r.id!)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
               </div>
             </Card>

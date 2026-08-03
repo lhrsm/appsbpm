@@ -78,10 +78,15 @@ export default function AdminDependentes() {
       ...editing,
       cpf: padCpf(editing.cpf)
     };
+
+    // As datas já chegam como ISO string via BirthDateInput ou no load
+    if (!payload.data_nascimento) payload.data_nascimento = null;
+
     // Remover campo redundante ativo
     delete payload.ativo;
     
     Object.keys(payload).forEach((k) => { if (payload[k] === "") payload[k] = null; });
+
     const isNew = !payload.id;
     const { data, error } = isNew
       ? await supabase.from("dependentes").insert(payload).select().maybeSingle()
