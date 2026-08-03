@@ -127,8 +127,16 @@ export const senhaValida = (s: string) =>
 
 export const mascararCpf = (v: string) => {
   const d = v.replace(/\D/g, '').slice(0, 11);
-  return d
-    .replace(/^(\d{3})(\d)/, '$1.$2')
-    .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
-    .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d{1,2})$/, '$1.$2.$3-$4');
+  if (d.length === 0) return "";
+  if (d.length <= 3) return d;
+  if (d.length <= 6) return d.replace(/^(\d{3})(\d{0,3})/, '$1.$2');
+  if (d.length <= 9) return d.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+  return d.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4');
+};
+
+export const mascararMatricula = (v: string) => {
+  const d = v.replace(/\D/g, '').slice(0, 9);
+  if (d.length === 0) return "";
+  if (d.length <= 8) return d;
+  return d.replace(/^(\d{8})(\d{1})/, '$1-$2');
 };
