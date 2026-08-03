@@ -190,10 +190,10 @@ export default function Dashboard() {
       }}
       onLogout={handleLogout}
       banner={
-        <>
+        <div key={`banner-${profileType}`}>
           <WelcomeTour isDependente={isDependente} />
           <ComunicadosBanner />
-        </>
+        </div>
       }
     >
       {location.pathname === '/dashboard' ? (

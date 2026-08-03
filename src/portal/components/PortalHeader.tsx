@@ -36,15 +36,20 @@ export default function PortalHeader({
     <header className="sticky top-0 z-40 w-full bg-primary text-primary-foreground shadow-sm safe-pt safe-px">
       <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-2 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
         <Button
+          asChild
           variant="ghost"
           size="icon"
-          onClick={onOpenMenu}
-          aria-label="Abrir menu de navegação"
-          aria-expanded={menuOpen}
-          aria-controls="portal-mobile-drawer"
           className="min-h-11 min-w-11 shrink-0 text-primary-foreground hover:bg-primary-foreground/15 md:hidden"
+          onClick={onOpenMenu}
         >
-          <Menu className="h-5 w-5" aria-hidden />
+          <button
+            type="button"
+            aria-label="Abrir menu de navegação"
+            aria-expanded={menuOpen}
+            aria-controls="portal-mobile-drawer"
+          >
+            <Menu className="h-5 w-5" aria-hidden />
+          </button>
         </Button>
 
         <img

@@ -100,7 +100,7 @@ export function PortalForm({
 
         <div className={cn(columns === 2 ? "grid gap-4 sm:grid-cols-2" : variant === "compact" ? "space-y-4" : "space-y-5")}>{children}</div>
 
-        {actions && <div className="flex flex-col-reverse gap-3 border-t border-border pt-4 sm:flex-row sm:justify-end"><div>{actions}</div></div>}
+        {actions && <div className="flex flex-col-reverse gap-3 border-t border-border pt-4 sm:flex-row sm:justify-end">{actions}</div>}
       </form>
     </PortalFormContext.Provider>
   );

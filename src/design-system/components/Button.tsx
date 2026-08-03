@@ -66,8 +66,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 ) {
   const Comp = asChild ? Slot : "button";
   const Spinner = icons.carregando;
+  if (asChild) {
+    return (
+      <Slot
+        ref={ref}
+        className={cn(buttonVariants({ variant, tone, size, fullWidth }), className)}
+        {...props}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
   return (
-    <Comp
+    <button
       ref={ref}
       aria-busy={loading || undefined}
       disabled={disabled || loading}
@@ -77,7 +89,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       {loading ? <Spinner className="animate-spin" aria-hidden /> : Left ? <Left aria-hidden /> : null}
       {children}
       {!loading && Right ? <Right aria-hidden /> : null}
-    </Comp>
+    </button>
   );
 });
 

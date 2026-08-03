@@ -6,8 +6,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/design-system/utilities";
 import { useBreakpoint } from "@/design-system/hooks";
 
@@ -57,7 +58,7 @@ export function PortalModal({
 }: PortalModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {trigger && <div>{trigger}</div>}
+      {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent
         className={cn(
           "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
@@ -107,7 +108,7 @@ export function PortalDrawer({
   const { isMobile } = useBreakpoint();
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      {trigger && <div>{trigger}</div>}
+      {trigger && <SheetTrigger asChild>{trigger}</SheetTrigger>}
       <SheetContent
         side={isMobile ? "bottom" : side}
         className={cn(

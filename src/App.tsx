@@ -162,23 +162,22 @@ const App = () => (
             <RouteAnnouncer />
             <CookieConsent />
             <AccessibilityWidget />
-            <ChatbotGate />
-
-            <InstallPWAPrompt />
-            <OfflineBanner />
-            <BackToTop />
-            <PWAUpdatePrompt />
-            <Suspense fallback={<RouteFallback />}>
-              <Routes>
-                <Route path="/" element={<div><PortalBoasVindas /></div>} />
-                <Route path="/entrar" element={<div><PortalEntrar /></div>} />
-                <Route path="/primeiro-acesso" element={<div><PortalPrimeiroAcesso /></div>} />
-                <Route path="/recuperar-acesso" element={<div><PortalRecuperarAcesso /></div>} />
-                <Route path="/quero-me-associar" element={<div><PortalQueroMeAssociar /></div>} />
-                <Route path="/acesso-simplificado" element={<div><Login /></div>} />
-                <Route path="/quiosque" element={<div><Quiosque /></div>} />
-                <Route path="/bem/:token" element={<div><BemQR /></div>} />
-                <Route path="/redefinir-senha" element={<div><RedefinirSenha /></div>} />
+              <ChatbotGate />
+              <InstallPWAPrompt />
+              <OfflineBanner />
+              <BackToTop />
+              <PWAUpdatePrompt />
+              <Suspense fallback={<RouteFallback />}>
+                <Routes>
+                <Route path="/" element={<PortalBoasVindas />} />
+                <Route path="/entrar" element={<PortalEntrar />} />
+                <Route path="/primeiro-acesso" element={<PortalPrimeiroAcesso />} />
+                <Route path="/recuperar-acesso" element={<PortalRecuperarAcesso />} />
+                <Route path="/quero-me-associar" element={<PortalQueroMeAssociar />} />
+                <Route path="/acesso-simplificado" element={<Login />} />
+                <Route path="/quiosque" element={<Quiosque />} />
+                <Route path="/bem/:token" element={<BemQR />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
                 <Route path="/privacidade" element={<Privacidade />} />
                 <Route path="/acessibilidade" element={<Acessibilidade />} />
