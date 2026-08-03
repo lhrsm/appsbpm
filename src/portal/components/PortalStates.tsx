@@ -28,7 +28,7 @@ export function PortalErrorState({
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         {onRetry && <Button onClick={onRetry}>Tentar novamente</Button>}
-        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+        <Button variant="secondary" onClick={() => navigate("/dashboard")}>
           Voltar ao início
         </Button>
         <Button variant="ghost" asChild>
@@ -95,7 +95,7 @@ export function PortalProfileNotFound({ onRetry }: { onRetry: () => void }) {
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         <Button onClick={onRetry} leftIcon={icons.atualizar}>Tentar novamente</Button>
-        <Button variant="outline" onClick={() => navigate("/")}>Voltar ao início</Button>
+        <Button variant="secondary" onClick={() => navigate("/")}>Voltar ao início</Button>
       </div>
     </div>
   );
