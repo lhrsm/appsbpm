@@ -172,49 +172,57 @@ Deno.serve(async (req) => {
       let associado: any = null;
       let dependente: any = null;
 
-      const { data: porMatricula } = await admin
-        .from('associados')
-        .select(CAMPOS_ASSOCIADO)
-        .eq('matricula', credencial)
-        .eq('ativo', true)
+      // Busca na external_account_links primeiro (novo fluxo institucional)
+      const { data: link } = await admin
+        .from('external_account_links')
+        .select('associado_id, dependente_id')
+        .or(`cpf_reference.eq.${digitos},registration_number.eq.${credencial.trim().toUpperCase()}`)
         .maybeSingle();
 
-      if (porMatricula) {
-        associado = porMatricula;
-      } else if (digitos.length === 11) {
-        const { data: porCpf } = await admin
+      if (link?.associado_id) {
+        const { data: assoc } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', link.associado_id).eq('ativo', true).maybeSingle();
+        associado = assoc;
+      }
+      if (link?.dependente_id) {
+        const { data: dep } = await admin.from('dependentes').select(CAMPOS_DEPENDENTE).eq('id', link.dependente_id).eq('ativo', true).maybeSingle();
+        dependente = dep;
+      }
+
+      // Fallback legado se não houver link
+      if (!associado && !dependente) {
+        const { data: porMatricula } = await admin
           .from('associados')
           .select(CAMPOS_ASSOCIADO)
+          .eq('matricula', credencial)
           .eq('ativo', true)
-          .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(
-            /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
-            '$1.$2.$3-$4',
-          )}`)
           .maybeSingle();
 
-        if (porCpf) {
-          associado = porCpf;
-        } else {
-          const { data: dep } = await admin
-            .from('dependentes')
-            .select(CAMPOS_DEPENDENTE)
+        if (porMatricula) {
+          associado = porMatricula;
+        } else if (digitos.length === 11) {
+          const { data: porCpf } = await admin
+            .from('associados')
+            .select(CAMPOS_ASSOCIADO)
             .eq('ativo', true)
-            .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(
-              /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
-              '$1.$2.$3-$4',
-            )}`)
+            .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
             .maybeSingle();
 
-          if (dep) {
-            const { data: titular } = await admin
-              .from('associados')
-              .select(CAMPOS_ASSOCIADO)
-              .eq('id', dep.associado_id)
+          if (porCpf) {
+            associado = porCpf;
+          } else {
+            const { data: dep } = await admin
+              .from('dependentes')
+              .select(CAMPOS_DEPENDENTE)
               .eq('ativo', true)
+              .or(`cpf.eq.${digitos},cpf.eq.${digitos.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/,'$1.$2.$3-$4')}`)
               .maybeSingle();
-            if (titular) {
-              associado = titular;
-              dependente = dep;
+
+            if (dep) {
+              const { data: titular } = await admin.from('associados').select(CAMPOS_ASSOCIADO).eq('id', dep.associado_id).eq('ativo', true).maybeSingle();
+              if (titular) {
+                associado = titular;
+                dependente = dep;
+              }
             }
           }
         }
