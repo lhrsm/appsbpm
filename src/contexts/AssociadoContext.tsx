@@ -127,7 +127,6 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
     try {
       console.log(`[PortalIdentity] ${isRepairAttempt ? 'Tentando reparo' : 'Iniciando resolução'} de perfil institucional...`);
       
-      // Se for uma tentativa de reparo, chama a função de reparo via RPC antes
       if (isRepairAttempt) {
         setError(null);
         setInitializing(true);
@@ -147,13 +146,6 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
           return;
         }
         console.log("[PortalIdentity] Reparo concluído com sucesso:", result.data);
-      }
-          console.warn("[PortalIdentity] Reparo não obteve sucesso:", repairResult?.reason_code);
-          setError(`Não foi possível vincular seu cadastro. Código: ${repairResult?.reason_code || 'UNKNOWN'}`);
-          setInitializing(false);
-          return;
-        }
-        console.log("[PortalIdentity] Reparo concluído com sucesso:", repairResult.data);
       }
 
       const data = await portalCall<any>('perfil');
