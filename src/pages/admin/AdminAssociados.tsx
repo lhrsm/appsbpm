@@ -98,6 +98,14 @@ export default function AdminAssociados() {
   const [editing, setEditing] = useState<Associado | null>(null);
   const [open, setOpen] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
+  const [postos, setPostos] = useState<any[]>([]);
+  const [unidades, setUnidades] = useState<any[]>([]);
+
+  useEffect(() => {
+    supabase.from("cams_postos_graduacoes").select("*").order("hierarquia").then(({ data }) => setPostos(data || []));
+    supabase.from("cams_unidades").select("*").order("nome").then(({ data }) => setUnidades(data || []));
+  }, []);
+
 
   const load = async () => {
     setLoading(true);
