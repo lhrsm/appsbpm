@@ -26,7 +26,7 @@ interface Dependente {
   data_nascimento?: string;
   tipo?: string;
   foto_url?: string;
-  ativo?: boolean;
+  status?: string;
 }
 
 interface AssocOpt { id: string; nome: string; matricula: string; }
