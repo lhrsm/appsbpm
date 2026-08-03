@@ -300,9 +300,10 @@ Deno.serve(async (req) => {
       }
 
       const birthDateNormal = normalizeBirthDate(body.birthDate);
-      if (!birthDateNormal || !validateBirthDate(body.birthDate)) {
+      if (!birthDateNormal || !validateBirthDate(birthDateNormal)) {
         return json({ success: false, status: 'not_matched', message: MENSAGENS.not_matched });
       }
+
 
       const result = await provider.validateIdentity({
         cpf,
