@@ -14,6 +14,22 @@ export default function PortalRecuperarAcesso() {
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
 
+  const handleCredentialChange = (v: string) => {
+    const clean = v.replace(/\D/g, '');
+    if (clean.length <= 9) {
+      // Padrão Matrícula: 00000000-0
+      if (clean.length <= 8) setCredential(clean);
+      else setCredential(clean.replace(/^(\d{8})(\d{0,1})/, '$1-$2'));
+    } else {
+      // Padrão CPF: 000.000.000-00
+      const d = clean.slice(0, 11);
+      if (d.length <= 3) setCredential(d);
+      else if (d.length <= 6) setCredential(d.replace(/^(\d{3})(\d{0,3})/, '$1.$2'));
+      else if (d.length <= 9) setCredential(d.replace(/^(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3'));
+      else setCredential(d.replace(/^(\d{3})(\d{3})(\d{3})(\d{0,2})/, '$1.$2.$3-$4'));
+    }
+  };
+
   const submeter = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -53,7 +69,7 @@ export default function PortalRecuperarAcesso() {
                     id="credential"
                     inputMode="numeric"
                     value={credential}
-                    onChange={(e) => setCredential(e.target.value)}
+                    onChange={(e) => handleCredentialChange(e.target.value)}
                     maxLength={14}
                     className="h-11"
                   />
