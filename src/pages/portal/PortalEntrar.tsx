@@ -10,7 +10,7 @@ import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { loginComSenha } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
-import { padCpf, padRegistrationNumber } from '@/lib/identity';
+import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber } from '@/lib/identity';
 
 export default function PortalEntrar() {
   const [credential, setCredential] = useState('');

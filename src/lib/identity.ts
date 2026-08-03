@@ -1,7 +1,6 @@
 
 /**
  * Normaliza CPF removendo pontuação e espaços.
- * Garante 11 dígitos com zeros à esquerda.
  */
 export function normalizeCpf(cpf: string | null | undefined): string | null {
   if (!cpf) return null;
@@ -62,7 +61,6 @@ export function validateCpf(cpf: string | null | undefined): boolean {
 
 /**
  * Normaliza Matrícula removendo espaços e tratando hífens.
- * Formato normalizado: 9 dígitos numéricos (oito principais + um verificador).
  */
 export function normalizeRegistrationNumber(reg: string | null | undefined): string | null {
   if (!reg) return null;
@@ -104,6 +102,15 @@ export function validateRegistrationNumberFormat(reg: string | null | undefined)
  */
 export type AssociadoStatus = 'regular' | 'inativo' | 'suspenso' | 'em_analise' | 'aguardando_reativacao' | 'falecido';
 
+export const AssociadoStatusLabels: Record<AssociadoStatus, string> = {
+  regular: 'Regular',
+  inativo: 'Inativo',
+  suspenso: 'Suspenso',
+  em_analise: 'Em análise',
+  aguardando_reativacao: 'Aguardando reativação',
+  falecido: 'Falecido'
+};
+
 /**
  * Mapeia os status institucionais para o padrão do sistema.
  */
@@ -125,15 +132,8 @@ export function mapInstitutionalStatus(status: string | null | undefined): Assoc
     'falecido': 'falecido'
   };
 
-export const AssociadoStatusLabels: Record<AssociadoStatus, string> = {
-  regular: 'Regular',
-  inativo: 'Inativo',
-  suspenso: 'Suspenso',
-  em_analise: 'Em análise',
-  aguardando_reativacao: 'Aguardando reativação',
-  falecido: 'Falecido'
-};
-
+  return map[s] || 'inativo';
+}
 
 /**
  * Verifica se o status permite acesso básico ao portal.
