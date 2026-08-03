@@ -89,7 +89,7 @@ export function PortalAlert({
             {children}
           </Text>
         )}
-        {action && <div className="flex flex-wrap gap-2 pt-2">{action}</div>}
+        {action && <div className="flex flex-wrap gap-2 pt-2"><div>{action}</div></div>}
       </div>
       {dismissible && (
         <button

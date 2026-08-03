@@ -31,6 +31,7 @@ export interface PortalModalProps {
   /** Bloqueia fechar por clique fora/ESC (use em envios em andamento). */
   dismissible?: boolean;
   className?: string;
+  trigger?: ReactNode;
 }
 
 /**
@@ -52,9 +53,11 @@ export function PortalModal({
   size = "md",
   dismissible = true,
   className,
+  trigger,
 }: PortalModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {trigger && <div>{trigger}</div>}
       <DialogContent
         className={cn(
           "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
@@ -99,10 +102,12 @@ export function PortalDrawer({
   side = "right",
   dismissible = true,
   className,
+  trigger,
 }: PortalDrawerProps) {
   const { isMobile } = useBreakpoint();
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      {trigger && <div>{trigger}</div>}
       <SheetContent
         side={isMobile ? "bottom" : side}
         className={cn(

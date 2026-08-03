@@ -96,7 +96,7 @@ export function FormField({
           {loading && <Spinner className="size-3.5 animate-spin text-muted-foreground" aria-hidden />}
         </div>
 
-        {typeof children === "function" ? children(ctx) : children}
+        {typeof children === "function" ? children(ctx) : <div>{children}</div>}
 
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
