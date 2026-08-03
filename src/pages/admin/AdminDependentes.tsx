@@ -58,17 +58,16 @@ export default function AdminDependentes() {
     let q = supabase.from("dependentes").select("*").order("created_at", { ascending: false }).limit(500);
     if (search) q = q.ilike("nome", `%${search}%`);
     if (filterTipo) q = q.eq("tipo", filterTipo as any);
-    if (filterAtivo === "true") q = q.eq("ativo", true);
-    if (filterAtivo === "false") q = q.eq("ativo", false);
+    if (filterStatus) q = q.eq("status", filterStatus as any);
     const { data, error } = await q;
     if (error) toast.error(error.message);
     else setRows((data as Dependente[]) ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterTipo, filterAtivo]);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, [search, filterTipo, filterStatus]);
 
-  const openNew = () => { setEditing({ ativo: true, tipo: "outro" }); setOpen(true); };
+  const openNew = () => { setEditing({ status: "regular", tipo: "outro" }); setOpen(true); };
 
   const save = async () => {
     if (!editing) return;
