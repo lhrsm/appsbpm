@@ -76,8 +76,11 @@ export default function ExternalPortalLayout({
     [pathname, profileType, permissions]
   );
 
+  console.log("[Layout] Render Stage:", { loading, error, allowed, pathname });
+
   let content: ReactNode;
   if (loading) {
+    console.log("[Layout] Rendering loading skeleton...");
     content = (
       <>
         <PageHeaderSkeleton />
@@ -85,10 +88,13 @@ export default function ExternalPortalLayout({
       </>
     );
   } else if (error) {
+    console.error("[Layout] Rendering error state:", error);
     content = <PortalErrorState title="Falha ao carregar portal" description={error} onRetry={onRetry} />;
   } else if (!allowed) {
+    console.warn("[Layout] Access denied for route:", pathname);
     content = <PortalAccessRestricted />;
   } else {
+    console.log("[Layout] Rendering children content...");
     content = children;
   }
 

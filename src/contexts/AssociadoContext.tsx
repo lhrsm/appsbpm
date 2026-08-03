@@ -180,6 +180,7 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshProfile = async (isRepairAttempt: boolean = false) => {
+    console.info("[PortalIdentity] refreshProfile start", { isRepairAttempt });
     setInitializing(true);
     setError(null);
     
@@ -217,12 +218,14 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
       if (rpcError) {
         console.error("[PortalIdentity] Erro na RPC:", rpcError);
         setError('RPC_ERROR');
+        setInitializing(false); // Garantir que não trava no initializing
         return;
       }
 
       if (!data || (Array.isArray(data) && data.length === 0)) {
         console.error("[PortalIdentity] Resposta da RPC vazia.");
         setError('RPC_EMPTY_RESPONSE');
+        setInitializing(false); // Garantir que não trava no initializing
         return;
       }
 
@@ -236,27 +239,38 @@ export function AssociadoProvider({ children }: { children: ReactNode }) {
 
       // 3. Avaliar Acesso
       if (mappedIdentity.resolved && mappedIdentity.associateId && mappedIdentity.reasonCode === 'READY') {
-        const payload = await portalCall<any>('perfil');
-        
-        if (payload?.associado) {
-          setAssociado(payload.associado);
-          setDependentes(payload.dependentes || []);
-          setLimite(payload.limite || null);
-          setHistoricoLimite(payload.historico || []);
-          setInformes(payload.informes || []);
-          setIsDependente(Boolean(payload.dependente));
-          setDependenteLogado(payload.dependente || null);
-          setError(null);
-        } else {
-          setError(payload?.error || 'Erro ao carregar dados do painel.');
+        console.log("[PortalIdentity] Calling portalCall('perfil')...");
+        try {
+          const payload = await portalCall<any>('perfil');
+          console.log("[PortalIdentity] portalCall('perfil') result:", payload);
+          
+          if (payload?.associado) {
+            setAssociado(payload.associado);
+            setDependentes(payload.dependentes || []);
+            setLimite(payload.limite || null);
+            setHistoricoLimite(payload.historico || []);
+            setInformes(payload.informes || []);
+            setIsDependente(Boolean(payload.dependente));
+            setDependenteLogado(payload.dependente || null);
+            setError(null);
+            console.log("[PortalIdentity] Context updated successfully.");
+          } else {
+            console.error("[PortalIdentity] portalCall returned no associado:", payload);
+            setError(payload?.error || 'Erro ao carregar dados do painel.');
+          }
+        } catch (callErr: any) {
+          console.error("[PortalIdentity] portalCall('perfil') failed:", callErr);
+          setError(callErr.message || 'Falha na comunicação com o backend.');
         }
       } else {
+        console.warn("[PortalIdentity] Identity not ready:", mappedIdentity.reasonCode);
         setError(mappedIdentity.reasonCode || 'PROFILE_LINK_MISSING');
       }
     } catch (err: any) {
       console.error("[PortalIdentity] Erro crítico:", err);
       setError(err.message || 'Erro de conexão.');
     } finally {
+      console.info("[PortalIdentity] refreshProfile finished.");
       setInitializing(false);
     }
   };

@@ -69,6 +69,7 @@ const emAberto = (s?: string | null) => !["concluida", "concluída", "cancelada"
 
 /** Home do Portal (associado e dependente), montada por perfil. */
 export default function ExternalDashboard({ profileType }: { profileType: PortalProfile }) {
+  console.log("[ExternalDashboard] Mount", { profileType });
   const { associado, dependentes, dependenteLogado } = useAssociado();
   const isDependente = profileType === "dependent";
   const { items: notificacoes, loading: loadingNotificacoes } = useNotificacoes();
