@@ -300,14 +300,20 @@ Deno.serve(async (req) => {
       }
 
       const birthDateNormal = normalizeBirthDate(body.birthDate);
-      if (!birthDateNormal || !validateBirthDate(birthDateNormal)) {
+      // O frontend já envia YYYY-MM-DD. Se falhar, tentamos normalizar de novo.
+      if (!validateBirthDate(body.birthDate) && (!birthDateNormal || !validateBirthDate(birthDateNormal))) {
+        console.error('Data inválida no backend:', body.birthDate, 'Normalizada:', birthDateNormal);
         return json({ success: false, status: 'not_matched', message: MENSAGENS.not_matched });
       }
+
+      const finalBirthDate = birthDateNormal || body.birthDate;
+
 
 
       const result = await provider.validateIdentity({
         cpf,
-        birthDate: birthDateNormal,
+        birthDate: finalBirthDate,
+
         personType: body.personType as PersonType,
 
         registration: body.registration,
