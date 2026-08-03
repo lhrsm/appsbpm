@@ -120,6 +120,7 @@ export function mapInstitutionalStatus(status: string | null | undefined): Assoc
 export function isStatusAtivo(status: AssociadoStatus | string | null | undefined): boolean {
   if (!status) return false;
   return status === 'regular';
+}
 
 /**
  * Define o nível de acesso baseado no status da associação.
