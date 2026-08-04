@@ -49,7 +49,7 @@ export default function WelcomeTour({ isDependente }: { isDependente: boolean })
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) finish(); }}>
-      <DialogContent className="max-w-[420px] w-[calc(100%-32px)] max-h-[85vh] gap-0 overflow-hidden flex flex-col p-0 border-none shadow-2xl bg-[var(--lgpd-sheet-bg-light)] dark:bg-[var(--lgpd-sheet-bg-dark)] backdrop-blur-[var(--lgpd-blur)] -webkit-backdrop-blur-[var(--lgpd-blur)]">
+      <DialogContent className="max-w-[420px] w-[calc(100%-32px)] max-h-[85vh] gap-0 overflow-hidden flex flex-col p-0 border-none shadow-2xl bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-[var(--portal-modal-blur)] -webkit-backdrop-blur-[var(--portal-modal-blur)]">
         <div className="overflow-y-auto p-6 flex-1">
           <DialogHeader className="gap-2">
             <div className="mx-auto mb-2 w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">

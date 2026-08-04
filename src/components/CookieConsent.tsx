@@ -82,7 +82,7 @@ export default function CookieConsent() {
         className={cn(
           "fixed right-4 z-[1000] flex items-center gap-2 h-12 px-4 rounded-full",
           "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
-          "bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-lg",
+          "bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-md border border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] shadow-lg",
           "text-primary hover:scale-105 transition-all duration-300 group active:scale-95",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
         )}

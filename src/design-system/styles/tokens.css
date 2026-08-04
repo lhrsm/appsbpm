@@ -25,7 +25,7 @@
   /* Semantic tokens for theme mode */
   --surface: 0 0% 100%;
   --surface-elevated: 210 20% 98%;
-  --overlay: 220 20% 15% / 0.42;
+  --overlay: 220 20% 15% / 0.08;
   --header: 145 63% 32%;
   --bottom-nav: 0 0% 100% / 0.95;
 
@@ -93,7 +93,7 @@
   /* Dark mode specific semantic tokens */
   --surface: 220 20% 13%;
   --surface-elevated: 220 20% 10%;
-  --overlay: 0 0% 0% / 0.62;
+  --overlay: 0 0% 0% / 0.16;
   --header: 220 20% 13%;
   --bottom-nav: 220 20% 13% / 0.95;
 
