@@ -23,7 +23,7 @@ export function PrivacyConsentActions({ onAccept, onEssential, isSaving }: Priva
         variant="outline"
         className={cn(
           "w-full h-11 sm:h-12 rounded-xl text-[14px] sm:text-sm font-semibold",
-          "bg-transparent dark:bg-slate-900/20 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+          "portal-glass-button-secondary"
         )}
         onClick={onEssential}
         disabled={isSaving}

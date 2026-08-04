@@ -51,30 +51,30 @@
   --container-laptop: 1400px;
   --container-desktop: 1600px;
 
-  /* Portal Modals & Dialogs */
-  --portal-modal-bg-light: rgba(255, 255, 255, 0.82);
-  --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.92);
-  --portal-modal-bg-dark: rgba(17, 24, 39, 0.82);
-  --portal-modal-overlay-light: rgba(15, 23, 42, 0.08);
-  --portal-modal-overlay-dark: rgba(0, 0, 0, 0.16);
-  --portal-modal-blur: 8px;
-  --portal-modal-border-light: rgba(255, 255, 255, 0.72);
-  --portal-modal-border-dark: rgba(255, 255, 255, 0.12);
-  --portal-modal-radius: 22px;
-  --portal-modal-shadow-light: 0 18px 50px rgba(15, 23, 42, 0.16);
-  --portal-modal-shadow-dark: 0 20px 55px rgba(0, 0, 0, 0.30);
+  /* Portal Modals & Dialogs - Premium Glassmorphism */
+  --portal-modal-bg-light: rgba(255, 255, 255, 0.62);
+  --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.68);
+  --portal-modal-bg-dark: rgba(17, 24, 39, 0.55);
+  --portal-modal-overlay-light: rgba(15, 23, 42, 0.06);
+  --portal-modal-overlay-dark: rgba(15, 23, 42, 0.08);
+  --portal-modal-blur: 10px;
+  --portal-modal-border-light: rgba(22, 163, 74, 0.75);
+  --portal-modal-border-dark: rgba(22, 163, 74, 0.75);
+  --portal-modal-radius: 28px;
+  --portal-modal-shadow-light: 0 18px 50px rgba(0, 0, 0, 0.12);
+  --portal-modal-shadow-dark: 0 18px 50px rgba(0, 0, 0, 0.25);
 
   /* LGPD Specific Tokens */
-  --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
-  --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
-  --lgpd-overlay-light: rgba(15, 23, 42, 0.08);
-  --lgpd-overlay-dark: rgba(0, 0, 0, 0.16);
-  --lgpd-blur: 8px;
-  --lgpd-radius: 22px;
+  --lgpd-sheet-bg-light: var(--portal-modal-bg-light);
+  --lgpd-sheet-bg-dark: var(--portal-modal-bg-dark);
+  --lgpd-overlay-light: var(--portal-modal-overlay-light);
+  --lgpd-overlay-dark: var(--portal-modal-overlay-dark);
+  --lgpd-blur: var(--portal-modal-blur);
+  --lgpd-radius: var(--portal-modal-radius);
   --lgpd-max-width: 440px;
   --lgpd-mobile-max-height: 52dvh;
-  --lgpd-shadow-light: 0 20px 50px rgba(15, 23, 42, 0.16);
-  --lgpd-shadow-dark: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --lgpd-shadow-light: var(--portal-modal-shadow-light);
+  --lgpd-shadow-dark: var(--portal-modal-shadow-dark);
 }
 
 .dark {
@@ -100,16 +100,16 @@
   --bottom-nav: 220 20% 13% / 0.95;
 
   /* LGPD Specific Tokens */
-  --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
-  --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
-  --lgpd-overlay-light: rgba(15, 23, 42, 0.08);
-  --lgpd-overlay-dark: rgba(0, 0, 0, 0.16);
-  --lgpd-blur: 8px;
-  --lgpd-radius: 22px;
+  --lgpd-sheet-bg-light: var(--portal-modal-bg-light);
+  --lgpd-sheet-bg-dark: var(--portal-modal-bg-dark);
+  --lgpd-overlay-light: var(--portal-modal-overlay-light);
+  --lgpd-overlay-dark: var(--portal-modal-overlay-dark);
+  --lgpd-blur: var(--portal-modal-blur);
+  --lgpd-radius: var(--portal-modal-radius);
   --lgpd-max-width: 520px;
   --lgpd-mobile-max-height: 62dvh;
-  --lgpd-shadow-light: 0 -12px 40px rgba(15, 23, 42, 0.14);
-  --lgpd-shadow-dark: 0 -12px 40px rgba(0, 0, 0, 0.25);
+  --lgpd-shadow-light: var(--portal-modal-shadow-light);
+  --lgpd-shadow-dark: var(--portal-modal-shadow-dark);
 }
 
 /* Elevação */

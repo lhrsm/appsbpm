@@ -20,9 +20,9 @@ export function DashboardQuickActions({ actions, initial = 6 }: { actions: Quick
             <li key={action.id}>
               <Link
                 to={action.route}
-                className="flex h-full flex-col items-center gap-2 rounded-xl border border-white/60 dark:border-white/10 bg-white/70 dark:bg-slate-900/40 p-4 text-center transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 backdrop-blur-sm"
+                className="flex h-full flex-col items-center gap-2 rounded-xl border border-[var(--portal-modal-border-light)]/40 dark:border-[var(--portal-modal-border-dark)]/40 bg-[var(--portal-modal-bg-light)]/70 dark:bg-[var(--portal-modal-bg-dark)]/40 p-4 text-center transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 backdrop-blur-sm"
               >
-                <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-primary/10" aria-hidden>
+                <span className="relative flex h-11 w-11 items-center justify-center portal-icon-circle-green" aria-hidden>
                   <Icon className="h-5 w-5 text-primary" />
                   {!!action.badge && (
                     <Badge tone="danger" className="absolute -right-2 -top-2 px-1.5 py-0">

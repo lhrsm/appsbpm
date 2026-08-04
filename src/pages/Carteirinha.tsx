@@ -55,7 +55,7 @@ function CarteirinhaCard({
     <div className="w-full max-w-full overflow-hidden">
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white/90 dark:bg-slate-900/90 border-2 border-white/80 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden flex flex-col backdrop-blur-md"
+        className="mx-auto w-full max-w-[680px] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] border-[1.5px] border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] rounded-[var(--portal-modal-radius)] shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] overflow-hidden flex flex-col backdrop-blur-[var(--portal-modal-blur)] saturate-[150%]"
         style={{ fontFamily: 'Arial, sans-serif' }}
       >
         {/* Header com Logo/Foto e Título */}

@@ -18,7 +18,7 @@ const DrawerOverlay = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Overlay ref={ref} className={cn("fixed inset-0 z-50 bg-overlay backdrop-blur-[6px]", className)} {...props} />
+  <DrawerPrimitive.Overlay ref={ref} className={cn("fixed inset-0 z-50 bg-[rgba(15,23,42,0.06)] dark:bg-[rgba(15,23,42,0.08)] backdrop-blur-[6px]", className)} {...props} />
 ));
 DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
@@ -31,7 +31,7 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col border border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] backdrop-blur-[var(--portal-modal-blur)] rounded-t-[var(--portal-modal-radius)] mx-3 mb-[calc(12px+env(safe-area-inset-bottom))]",
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col border-[1.5px] border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] backdrop-blur-[var(--portal-modal-blur)] saturate-[150%] -webkit-backdrop-blur-[var(--portal-modal-blur)] rounded-t-[var(--portal-modal-radius)] mx-3 mb-[calc(12px+env(safe-area-inset-bottom))]",
         className
       )}
       {...props}
