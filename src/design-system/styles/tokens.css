@@ -50,6 +50,16 @@
   /* Containers */
   --container-laptop: 1400px;
   --container-desktop: 1600px;
+  --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
+  --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
+  --lgpd-overlay-light: rgba(15, 23, 42, 0.14);
+  --lgpd-overlay-dark: rgba(0, 0, 0, 0.28);
+  --lgpd-blur: 10px;
+  --lgpd-radius: 22px;
+  --lgpd-max-width: 520px;
+  --lgpd-mobile-max-height: 62dvh;
+  --lgpd-shadow-light: 0 -12px 40px rgba(15, 23, 42, 0.18);
+  --lgpd-shadow-dark: 0 -12px 40px rgba(0, 0, 0, 0.35);
 }
 
 .dark {
