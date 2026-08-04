@@ -10,7 +10,7 @@ import type { SummaryItem } from "../types";
 export function DashboardSummaryGrid({ items }: { items: SummaryItem[] }) {
   if (!items.length) return null;
   return (
-    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <ul className="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-4">
       {items.map((item) => (
         <li key={item.id} className="min-w-0">
           <SummaryCard item={item} />
