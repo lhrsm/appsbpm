@@ -18,6 +18,16 @@
   --success-foreground: 0 0% 100%;
   --info: 210 85% 45%;
   --info-foreground: 0 0% 100%;
+  --warning: 45 95% 50%;
+  --warning-foreground: 220 20% 15%;
+  --danger: 0 75% 50%;
+
+  /* Semantic tokens for theme mode */
+  --surface: 0 0% 100%;
+  --surface-elevated: 210 20% 98%;
+  --overlay: 220 20% 15% / 0.42;
+  --header: 145 63% 32%;
+  --bottom-nav: 0 0% 100% / 0.95;
 
   /* Escala neutra institucional */
   --gray-50: 210 20% 98%;
@@ -43,7 +53,7 @@
 }
 
 .dark {
-  --module-lgpd: 265 70% 66%;
+  --module-lgpd: 220 20% 90%;
   --module-financeiro: 210 85% 60%;
   --module-saude: 0 75% 58%;
   --module-previdencia: 145 63% 46%;
@@ -52,8 +62,17 @@
 
   --success: 145 63% 42%;
   --info: 210 85% 55%;
+  --warning: 45 95% 50%;
+  --danger: 0 75% 60%;
 
   --green-light: 145 25% 20%;
+
+  /* Dark mode specific semantic tokens */
+  --surface: 220 20% 13%;
+  --surface-elevated: 220 20% 10%;
+  --overlay: 0 0% 0% / 0.62;
+  --header: 220 20% 13%;
+  --bottom-nav: 220 20% 13% / 0.95;
 }
 
 /* Elevação */
