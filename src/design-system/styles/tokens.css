@@ -50,16 +50,29 @@
   /* Containers */
   --container-laptop: 1400px;
   --container-desktop: 1600px;
-  --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.94);
-  --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.95);
-  --lgpd-overlay-light: rgba(15, 23, 42, 0.06);
-  --lgpd-overlay-dark: rgba(0, 0, 0, 0.28);
-  --lgpd-blur: 14px;
-  --lgpd-radius: 20px;
+  /* Portal Modals & Dialogs */
+  --portal-modal-bg-light: rgba(255, 255, 255, 0.82);
+  --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.92);
+  --portal-modal-bg-dark: rgba(17, 24, 39, 0.82);
+  --portal-modal-overlay-light: rgba(15, 23, 42, 0.08);
+  --portal-modal-overlay-dark: rgba(0, 0, 0, 0.16);
+  --portal-modal-blur: 8px;
+  --portal-modal-border-light: rgba(255, 255, 255, 0.72);
+  --portal-modal-border-dark: rgba(255, 255, 255, 0.12);
+  --portal-modal-radius: 22px;
+  --portal-modal-shadow-light: 0 18px 50px rgba(15, 23, 42, 0.16);
+  --portal-modal-shadow-dark: 0 20px 55px rgba(0, 0, 0, 0.30);
+
+  --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
+  --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
+  --lgpd-overlay-light: rgba(15, 23, 42, 0.08);
+  --lgpd-overlay-dark: rgba(0, 0, 0, 0.16);
+  --lgpd-blur: 8px;
+  --lgpd-radius: 22px;
   --lgpd-max-width: 440px;
   --lgpd-mobile-max-height: 52dvh;
-  --lgpd-shadow-light: 0 20px 50px rgba(15, 23, 42, 0.25);
-  --lgpd-shadow-dark: 0 20px 50px rgba(0, 0, 0, 0.45);
+  --lgpd-shadow-light: 0 20px 50px rgba(15, 23, 42, 0.16);
+  --lgpd-shadow-dark: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
 .dark {
@@ -87,14 +100,14 @@
   /* LGPD Specific Tokens */
   --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
   --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
-  --lgpd-overlay-light: rgba(15, 23, 42, 0.14);
-  --lgpd-overlay-dark: rgba(0, 0, 0, 0.28);
-  --lgpd-blur: 10px;
+  --lgpd-overlay-light: rgba(15, 23, 42, 0.08);
+  --lgpd-overlay-dark: rgba(0, 0, 0, 0.16);
+  --lgpd-blur: 8px;
   --lgpd-radius: 22px;
   --lgpd-max-width: 520px;
   --lgpd-mobile-max-height: 62dvh;
-  --lgpd-shadow-light: 0 -12px 40px rgba(15, 23, 42, 0.18);
-  --lgpd-shadow-dark: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  --lgpd-shadow-light: 0 -12px 40px rgba(15, 23, 42, 0.14);
+  --lgpd-shadow-dark: 0 -12px 40px rgba(0, 0, 0, 0.25);
 }
 
 /* Elevação */
