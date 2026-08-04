@@ -23,7 +23,7 @@ export function DashboardSummaryGrid({ items }: { items: SummaryItem[] }) {
 function SummaryCard({ item }: { item: SummaryItem }) {
   const Icon = item.icon;
   const body = (
-    <div className="flex h-full flex-col gap-2 rounded-xl border bg-card p-4 transition-colors hover:border-primary/40">
+    <div className="flex h-full flex-col gap-2 rounded-xl border border-white/60 dark:border-white/10 bg-white/70 dark:bg-slate-900/40 p-4 transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 backdrop-blur-sm">
       <div className="flex items-start justify-between gap-2">
         <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/25 bg-primary/10" aria-hidden>
           <Icon className="h-4.5 w-4.5 text-primary" />

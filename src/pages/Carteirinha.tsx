@@ -55,7 +55,7 @@ function CarteirinhaCard({
     <div className="w-full max-w-full overflow-hidden">
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white border-2 border-gray-300 rounded-3xl shadow-xl overflow-hidden flex flex-col"
+        className="mx-auto w-full max-w-[680px] bg-white/90 dark:bg-slate-900/90 border-2 border-white/80 dark:border-white/10 rounded-3xl shadow-xl overflow-hidden flex flex-col backdrop-blur-md"
         style={{ fontFamily: 'Arial, sans-serif' }}
       >
         {/* Header com Logo/Foto e Título */}
