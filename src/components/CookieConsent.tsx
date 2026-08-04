@@ -120,7 +120,7 @@ export default function CookieConsent() {
           "rounded-[var(--lgpd-radius)] border",
           "bg-[var(--lgpd-sheet-bg-light)] dark:bg-[var(--lgpd-sheet-bg-dark)]",
           "backdrop-blur-[var(--lgpd-blur)] -webkit-backdrop-filter: blur(var(--lgpd-blur))",
-          "border-white/65 dark:border-white/10",
+          "border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)]",
           "shadow-[var(--lgpd-shadow-light)] dark:shadow-[var(--lgpd-shadow-dark)]",
           "transition-all duration-300 ease-in-out",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8",

@@ -59,6 +59,8 @@
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 145 50% 40%;
     --sidebar-ring: 0 0% 100%;
+
+    --overlay: 220 20% 15% / 0.08;
   }
 
   .dark {
@@ -101,6 +103,8 @@
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 220 15% 25%;
     --sidebar-ring: 145 63% 42%;
+
+    --overlay: 0 0% 0% / 0.16;
   }
 }
 
