@@ -13,12 +13,12 @@ export const PORTAL_VERSION = "2.0";
 /** Rodapé institucional do portal externo. */
 export default function PortalFooter() {
   return (
-    <footer className="border-t bg-card/60 pb-bottom-nav">
-      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
+    <footer className="border-t bg-card/60 pb-bottom-nav mt-auto">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-4 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <p className="text-xs break-anywhere">
           © {new Date().getFullYear()} SBPM — Sociedade Beneficente da Polícia Militar · Portal v{PORTAL_VERSION}
         </p>
-        <ul className="flex flex-col gap-1 md:flex-row md:flex-wrap md:items-center md:gap-4">
+        <ul className="flex flex-wrap items-center gap-x-4 gap-y-1 md:gap-4">
           {links.map((l) => (
             <li key={l.label}>
               <Link

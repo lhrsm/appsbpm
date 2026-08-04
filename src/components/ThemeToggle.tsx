@@ -1,35 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const STORAGE_KEY = 'sbpm-theme';
-
-export function applyStoredTheme() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = stored ? stored === 'dark' : prefersDark;
-    document.documentElement.classList.toggle('dark', isDark);
-  } catch {}
-}
+import { useTheme } from '@/components/ThemeProvider';
 
 export default function ThemeToggle({ className }: { className?: string }) {
-  const [isDark, setIsDark] = useState<boolean>(
-    typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
-  );
-
-  useEffect(() => {
-    applyStoredTheme();
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   const toggle = () => {
-    const next = !isDark;
-    setIsDark(next);
-    document.documentElement.classList.toggle('dark', next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light');
-    } catch {}
+    setTheme(isDark ? 'light' : 'dark');
   };
 
   return (
