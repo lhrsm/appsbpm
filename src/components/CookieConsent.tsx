@@ -103,9 +103,9 @@ export default function CookieConsent() {
           "backdrop-blur-[var(--lgpd-blur)] -webkit-backdrop-blur-[var(--lgpd-blur)]",
           "border-white/45 dark:border-white/10",
           "shadow-[var(--lgpd-shadow-light)] dark:shadow-[var(--lgpd-shadow-dark)]",
-          "transition-all duration-240 ease-out-quint",
-          "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-6",
-          isClosing && "opacity-0 translate-y-4 pointer-events-none"
+          "transition-all duration-300 ease-in-out",
+          "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8",
+          isClosing && "opacity-0 translate-y-8 pointer-events-none"
         )}
       >
         <div className="p-[18px] sm:p-6 flex flex-col gap-3 sm:gap-4">
