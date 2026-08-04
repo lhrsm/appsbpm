@@ -2,9 +2,9 @@ import { useEffect, useState, useRef } from 'react';
 import { Cookie, Shield, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
-import { PrivacyConsentActions } from './PrivacyConsentActions';
-import { PrivacyConsentSummary } from './PrivacyConsentSummary';
-import { PrivacyConsentDetails } from './PrivacyConsentDetails';
+import { PrivacyConsentActions } from './privacy/PrivacyConsentActions';
+import { PrivacyConsentSummary } from './privacy/PrivacyConsentSummary';
+import { PrivacyConsentDetails } from './privacy/PrivacyConsentDetails';
 
 const STORAGE_KEY = 'sbpm.cookie-consent.v1';
 const CONSENT_VERSION = '1.0';
