@@ -303,6 +303,19 @@ html.a11y-reduce-motion *::after {
     min-height: 44px;
     min-width: 44px;
   }
+
+  /* Variant baseada em data-attribute no body para o LGPD */
+  .lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 160px\)\+24px\)\] {
+    transition: bottom 0.3s ease-in-out !important;
+  }
+  
+  body[data-lgpd-open="true"] .lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 160px\)\+24px\)\] {
+    bottom: calc(var(--lgpd-sheet-height, 160px) + 24px) !important;
+  }
+
+  body[data-lgpd-open="true"] .lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 160px\)\+84px\)\] {
+    bottom: calc(var(--lgpd-sheet-height, 160px) + 84px) !important;
+  }
 }
 
 /* Landscape em telas baixas: header e heros compactos */

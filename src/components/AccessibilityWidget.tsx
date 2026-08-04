@@ -60,7 +60,11 @@ export default function AccessibilityWidget() {
         aria-label={open ? 'Fechar opções de acessibilidade' : 'Abrir opções de acessibilidade'}
         aria-expanded={open}
         aria-controls="a11y-panel"
-        className="safe-mb fixed bottom-20 left-4 z-[60] flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring md:bottom-4"
+        className={cn(
+          "safe-mb fixed left-4 z-[60] flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring transition-all duration-300",
+          "bottom-20 md:bottom-4",
+          "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+24px)]"
+        )}
       >
         <Accessibility className="h-6 w-6" aria-hidden="true" />
       </button>
@@ -72,7 +76,11 @@ export default function AccessibilityWidget() {
           role="dialog"
           aria-modal="false"
           aria-labelledby="a11y-panel-title"
-          className="safe-mb fixed bottom-36 left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-card p-4 shadow-2xl md:bottom-20"
+          className={cn(
+            "safe-mb fixed left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-card p-4 shadow-2xl transition-all duration-300",
+            "bottom-36 md:bottom-20",
+            "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+84px)]"
+          )}
         >
           <div className="mb-3 flex items-center justify-between gap-2">
             <h2 id="a11y-panel-title" className="text-sm font-semibold">
