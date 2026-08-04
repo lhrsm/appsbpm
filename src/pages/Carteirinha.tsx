@@ -566,12 +566,12 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="flex gap-2 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
               <Download className="h-4 w-4 mr-2" />
               Baixar (PDF)
             </Button>
-            <Button onClick={handleShare} variant="outline" className="flex-1">
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
               <Share2 className="h-4 w-4 mr-2" />
               Compartilhar
             </Button>
@@ -589,24 +589,28 @@ export default function Carteirinha() {
           <CardContent className="space-y-2">
             <Button
               variant={!selectedDependente ? 'default' : 'outline'}
-              className="w-full justify-start"
+              className="w-full min-h-[48px] justify-between text-left px-4"
               onClick={() => setSelectedDependente(null)}
             >
-              <User className="h-4 w-4 mr-2" />
-              {associado.nome}
-              <Badge variant="secondary" className="ml-auto">Titular</Badge>
+              <div className="flex items-center gap-2 min-w-0">
+                <User className="h-4 w-4 shrink-0" />
+                <span className="truncate">{associado.nome}</span>
+              </div>
+              <Badge variant="secondary" className="shrink-0 ml-2">Titular</Badge>
             </Button>
 
             {dependentes.map((dep) => (
               <Button
                 key={dep.id}
                 variant={selectedDependente?.id === dep.id ? 'default' : 'outline'}
-                className="w-full justify-start"
+                className="w-full min-h-[48px] justify-between text-left px-4"
                 onClick={() => setSelectedDependente(dep)}
               >
-                <User className="h-4 w-4 mr-2" />
-                {dep.nome}
-                <Badge variant="secondary" className="ml-auto">
+                <div className="flex items-center gap-2 min-w-0">
+                  <User className="h-4 w-4 shrink-0" />
+                  <span className="truncate">{dep.nome}</span>
+                </div>
+                <Badge variant="secondary" className="shrink-0 ml-2">
                   {tipoLabel[dep.tipo]}
                 </Badge>
               </Button>
