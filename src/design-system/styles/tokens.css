@@ -50,6 +50,7 @@
   /* Containers */
   --container-laptop: 1400px;
   --container-desktop: 1600px;
+
   /* Portal Modals & Dialogs */
   --portal-modal-bg-light: rgba(255, 255, 255, 0.82);
   --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.92);
@@ -63,6 +64,7 @@
   --portal-modal-shadow-light: 0 18px 50px rgba(15, 23, 42, 0.16);
   --portal-modal-shadow-dark: 0 20px 55px rgba(0, 0, 0, 0.30);
 
+  /* LGPD Specific Tokens */
   --lgpd-sheet-bg-light: rgba(255, 255, 255, 0.78);
   --lgpd-sheet-bg-dark: rgba(15, 23, 42, 0.80);
   --lgpd-overlay-light: rgba(15, 23, 42, 0.08);

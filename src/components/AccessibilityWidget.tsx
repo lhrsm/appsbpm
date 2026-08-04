@@ -77,7 +77,7 @@ export default function AccessibilityWidget() {
           aria-modal="false"
           aria-labelledby="a11y-panel-title"
           className={cn(
-            "safe-mb fixed left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-card p-4 shadow-2xl transition-all duration-300",
+            "safe-mb fixed left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-[var(--portal-modal-radius)] border border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] p-4 shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] backdrop-blur-[var(--portal-modal-blur)] transition-all duration-300",
             "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-20",
             "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+144px)]"
           )}
