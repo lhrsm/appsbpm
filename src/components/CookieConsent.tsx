@@ -80,17 +80,16 @@ export default function CookieConsent() {
       <button
         onClick={() => setState('expanded')}
         className={cn(
-          "fixed right-4 z-[1000] flex items-center gap-2 h-12 px-4 rounded-full",
+          "fixed left-4 z-[1000] flex items-center justify-center h-12 w-12 rounded-full",
           "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
-          "bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-md border border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] shadow-lg",
+          "bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-[var(--portal-modal-blur)] saturate-[150%] border-1.5 border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] shadow-lg",
           "text-primary hover:scale-105 transition-all duration-300 group active:scale-95",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
         )}
         aria-label="Abrir preferências de privacidade"
         title="Privacidade"
       >
-        <Shield className="h-5 w-5" />
-        <span className="text-xs font-bold hidden sm:inline">Privacidade</span>
+        <Cookie className="h-6 w-6" />
       </button>
     );
   }
@@ -113,14 +112,14 @@ export default function CookieConsent() {
         aria-labelledby="cookie-consent-title"
         className={cn(
           "fixed left-1/2 z-[1000] -translate-x-1/2",
-          "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-24 sm:left-auto sm:right-6 sm:translate-x-0",
+          "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-24 sm:left-4 sm:translate-x-0",
           "w-[calc(100%-24px)] max-w-[var(--lgpd-max-width)]",
           "max-h-[var(--lgpd-mobile-max-height)] sm:max-h-[80vh]",
           "overflow-y-auto overscroll-behavior-contain no-scrollbar",
           "rounded-[var(--lgpd-radius)] border",
           "bg-[var(--lgpd-sheet-bg-light)] dark:bg-[var(--lgpd-sheet-bg-dark)]",
-          "backdrop-blur-[var(--lgpd-blur)] -webkit-backdrop-filter: blur(var(--lgpd-blur))",
-          "border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)]",
+          "backdrop-blur-[var(--lgpd-blur)] saturate-[150%] -webkit-backdrop-blur-[var(--lgpd-blur)]",
+          "border-[1.5px] border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)]",
           "shadow-[var(--lgpd-shadow-light)] dark:shadow-[var(--lgpd-shadow-dark)]",
           "transition-all duration-300 ease-in-out",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8",
@@ -128,9 +127,11 @@ export default function CookieConsent() {
         )}
       >
         <div className="p-[18px] sm:p-5 flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2.5">
+          <div className="flex items-center justify-between gap-2 border-b border-white/20 dark:border-white/10 pb-2.5">
             <div className="flex items-center gap-2.5 text-primary">
-              <Shield className="h-5 w-5" />
+              <div className="portal-icon-circle-green h-9 w-9">
+                <Cookie className="h-5 w-5" />
+              </div>
               <h2 id="cookie-consent-title" className="text-sm font-bold text-foreground">
                 Sua privacidade importa
               </h2>
