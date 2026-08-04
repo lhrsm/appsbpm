@@ -316,6 +316,29 @@ html.a11y-reduce-motion *::after {
   body[data-lgpd-open="true"] .lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 160px\)\+84px\)\] {
     bottom: calc(var(--lgpd-sheet-height, 160px) + 84px) !important;
   }
+
+  .auth-card {
+    background: rgba(255, 255, 255, 0.91) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.58) !important;
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.18) !important;
+  }
+
+  .dark .auth-card {
+    background: rgba(15, 23, 42, 0.88) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .portal-choice {
+    background: rgba(255, 255, 255, 0.70) !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  .portal-choice:hover, .portal-choice:focus-within {
+    background: rgba(240, 253, 244, 0.92) !important;
+    border-color: var(--primary) !important;
+  }
 }
 
 /* Landscape em telas baixas: header e heros compactos */
