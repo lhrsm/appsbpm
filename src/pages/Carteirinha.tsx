@@ -52,110 +52,110 @@ function CarteirinhaCard({
   };
 
   return (
-    <div
-      ref={cardRef}
-      className="w-full max-w-lg bg-white border-2 border-gray-300 rounded-3xl shadow-xl overflow-hidden"
-      style={{ fontFamily: 'Arial, sans-serif' }}
-    >
-      {/* Header com Logo/Foto e Título */}
-      <div className="flex items-start p-4 border-b border-gray-200">
-        <div className="flex items-center gap-4 flex-1">
-          <div className="relative">
-            {fotoUrl ? (
-              <img 
-                src={fotoUrl} 
-                alt={nome} 
-                className="h-16 w-16 rounded-full object-cover border-2 border-gray-200"
-              />
-            ) : (
-              <img 
-                src={sbpmLogo} 
-                alt="SBPM" 
-                className="h-16 w-16 object-contain"
-              />
-            )}
+    <div className="w-full max-w-full overflow-hidden">
+      <div
+        ref={cardRef}
+        className="mx-auto w-full max-w-[680px] bg-white border-2 border-gray-300 rounded-3xl shadow-xl overflow-hidden flex flex-col"
+        style={{ fontFamily: 'Arial, sans-serif' }}
+      >
+        {/* Header com Logo/Foto e Título */}
+        <div className="flex flex-col sm:flex-row items-center sm:items-start p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
+            <div className="relative shrink-0">
+              {fotoUrl ? (
+                <img 
+                  src={fotoUrl} 
+                  alt={nome} 
+                  className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover border-2 border-gray-200"
+                />
+              ) : (
+                <img 
+                  src={sbpmLogo} 
+                  alt="SBPM" 
+                  className="h-14 w-14 sm:h-16 sm:w-16 object-contain"
+                />
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base sm:text-lg font-bold text-gray-800 text-center sm:text-left leading-tight break-words">
+                Assistência Ambulatorial
+              </h2>
+            </div>
           </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-bold text-gray-800 text-center">
-              Assistência Ambulatorial
-            </h2>
-          </div>
-        </div>
-        <div className="text-right text-sm">
-          <div className="flex gap-4">
-            <div>
+          <div className="flex flex-row sm:flex-col justify-between sm:justify-start w-full sm:w-auto gap-2 sm:gap-1 text-xs sm:text-sm border-t sm:border-t-0 pt-2 sm:pt-0">
+            <div className="flex gap-1">
               <span className="text-gray-600">Matrícula: </span>
               <span className="font-semibold">{matricula}</span>
             </div>
-            <div>
+            <div className="flex gap-1">
               <span className="text-gray-600">Expedição: </span>
               <span className="font-semibold">{dataExpedicao}</span>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Corpo do Cartão */}
-      <div className="p-4 space-y-3">
-        {/* Nome e CPF */}
-        <div className="flex justify-between items-start">
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 uppercase tracking-wide">
-              {nome}
-            </h3>
-            <p className="text-sm text-gray-600 mt-1">
-              {tipo === 'titular' ? 'Associado' : tipoParentesco || 'Dependente'}
-            </p>
-            {tipo === 'dependente' && nomeTitular && (
-              <div className="mt-2">
-                <p className="text-sm font-semibold text-gray-800 uppercase">
-                  {nomeTitular}
-                </p>
-                <p className="text-xs text-gray-600">Associado</p>
+        {/* Corpo do Cartão */}
+        <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1">
+          {/* Nome e CPF */}
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+            <div className="flex-1 min-w-0 w-full">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 uppercase tracking-wide break-words leading-tight" style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)' }}>
+                {nome}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                {tipo === 'titular' ? 'Associado' : tipoParentesco || 'Dependente'}
+              </p>
+              {tipo === 'dependente' && nomeTitular && (
+                <div className="mt-2">
+                  <p className="text-xs sm:text-sm font-semibold text-gray-800 uppercase truncate">
+                    {nomeTitular}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-600">Associado</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-row sm:flex-col justify-between sm:justify-start w-full sm:w-auto gap-3 sm:gap-1 text-xs sm:text-sm border-t sm:border-t-0 pt-2 sm:pt-0">
+              <div className="flex gap-1 whitespace-nowrap">
+                <span className="text-gray-600">CPF.: </span>
+                <span className="font-semibold">{formatCpf(cpf)}</span>
               </div>
-            )}
-          </div>
-          <div className="text-right text-sm space-y-1">
-            <div>
-              <span className="text-gray-600">CPF.: </span>
-              <span className="font-semibold">{formatCpf(cpf)}</span>
-            </div>
-            <div>
-              <span className="text-gray-600">Validade: </span>
-              <span className="font-semibold">{dataValidade}</span>
+              <div className="flex gap-1 whitespace-nowrap">
+                <span className="text-gray-600">Validade: </span>
+                <span className="font-semibold">{dataValidade}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Linhas de Assinatura */}
-        <div className="flex justify-between items-end pt-4 mt-4 border-t border-gray-200">
-          <div className="text-center flex-1">
-            <div className="h-10 flex items-end justify-center">
-              {presidenteAssinaturaUrl && (
-                <img
-                  src={presidenteAssinaturaUrl}
-                  alt="Assinatura do Presidente"
-                  className="max-h-10 object-contain"
-                  crossOrigin="anonymous"
-                />
-              )}
+          {/* Linhas de Assinatura */}
+          <div className="flex justify-between items-end pt-3 sm:pt-4 border-t border-gray-200 gap-2">
+            <div className="text-center flex-1 min-w-0">
+              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+                {presidenteAssinaturaUrl && (
+                  <img
+                    src={presidenteAssinaturaUrl}
+                    alt="Assinatura do Presidente"
+                    className="max-h-full w-auto object-contain"
+                    crossOrigin="anonymous"
+                  />
+                )}
+              </div>
+              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
+              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1" title={presidenteNome || 'Presidente'}>{presidenteNome || 'Presidente'}</p>
             </div>
-            <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
-            <p className="text-xs text-gray-600">{presidenteNome || 'Presidente'}</p>
-          </div>
-          <div className="text-center flex-1">
-            <div className="h-10 flex items-end justify-center">
-              {assinaturaUrl && (
-                <img
-                  src={assinaturaUrl}
-                  alt="Assinatura do Associado"
-                  className="max-h-10 object-contain"
-                  crossOrigin="anonymous"
-                />
-              )}
+            <div className="text-center flex-1 min-w-0">
+              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+                {assinaturaUrl && (
+                  <img
+                    src={assinaturaUrl}
+                    alt="Assinatura do Associado"
+                    className="max-h-full w-auto object-contain"
+                    crossOrigin="anonymous"
+                  />
+                )}
+              </div>
+              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
+              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1">Assinatura Associado</p>
             </div>
-            <div className="border-t border-gray-400 w-40 mx-auto mb-1"></div>
-            <p className="text-xs text-gray-600">Assinatura Associado</p>
           </div>
         </div>
       </div>
@@ -475,12 +475,12 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="flex gap-2 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
               <Download className="h-4 w-4 mr-2" />
               Baixar (PDF)
             </Button>
-            <Button onClick={handleShare} variant="outline" className="flex-1">
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
               <Share2 className="h-4 w-4 mr-2" />
               Compartilhar
             </Button>
