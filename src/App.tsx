@@ -19,6 +19,7 @@ import PageSkeleton from "./components/PageSkeleton";
 import { initWebVitals } from "@/lib/observability/webVitals";
 import { A11yProvider } from "@/a11y/preferences";
 import RouteAnnouncer from "@/a11y/RouteAnnouncer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Lazy: chunks por área — o portal externo nunca baixa código administrativo.
 const ChatbotWidget = lazy(() => import("./components/ChatbotWidget"));
@@ -154,8 +155,9 @@ const PortalAlias = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <A11yProvider>
-        <AssociadoProvider>
+      <ThemeProvider defaultTheme="system" storageKey="sbpm-ui-theme">
+        <A11yProvider>
+          <AssociadoProvider>
           <BrowserRouter>
             <Toaster />
             <Sonner />
@@ -274,8 +276,9 @@ const App = () => (
               </Routes>
             </Suspense>
           </BrowserRouter>
-        </AssociadoProvider>
-      </A11yProvider>
+          </AssociadoProvider>
+        </A11yProvider>
+      </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

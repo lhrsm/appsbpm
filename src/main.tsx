@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { registerPWA } from "./pwa/registerSW";
-import { applyStoredTheme } from "./components/ThemeToggle";
+
 import { bootstrapA11yPreferences } from "./a11y/preferences";
 
 class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any }> {
@@ -38,7 +38,7 @@ class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, {
   }
 }
 
-applyStoredTheme();
+
 bootstrapA11yPreferences();
 
 createRoot(document.getElementById("root")!).render(
