@@ -20,7 +20,7 @@ export function DashboardQuickActions({ actions, initial = 6 }: { actions: Quick
             <li key={action.id}>
               <Link
                 to={action.route}
-                className="flex h-full flex-col items-center gap-2 rounded-xl border bg-card p-4 text-center transition-colors hover:border-primary/40 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="flex h-full flex-col items-center gap-2 rounded-xl border border-white/60 dark:border-white/10 bg-white/70 dark:bg-slate-900/40 p-4 text-center transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 backdrop-blur-sm"
               >
                 <span className="relative flex h-11 w-11 items-center justify-center rounded-full bg-primary/10" aria-hidden>
                   <Icon className="h-5 w-5 text-primary" />

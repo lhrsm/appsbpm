@@ -82,7 +82,7 @@ export default function CookieConsent() {
         className={cn(
           "fixed right-4 z-[1000] flex items-center gap-2 h-12 px-4 rounded-full",
           "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
-          "bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-lg",
+          "bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-md border border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] shadow-lg",
           "text-primary hover:scale-105 transition-all duration-300 group active:scale-95",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4"
         )}
@@ -120,7 +120,7 @@ export default function CookieConsent() {
           "rounded-[var(--lgpd-radius)] border",
           "bg-[var(--lgpd-sheet-bg-light)] dark:bg-[var(--lgpd-sheet-bg-dark)]",
           "backdrop-blur-[var(--lgpd-blur)] -webkit-backdrop-filter: blur(var(--lgpd-blur))",
-          "border-white/65 dark:border-white/10",
+          "border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)]",
           "shadow-[var(--lgpd-shadow-light)] dark:shadow-[var(--lgpd-shadow-dark)]",
           "transition-all duration-300 ease-in-out",
           "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-8",
