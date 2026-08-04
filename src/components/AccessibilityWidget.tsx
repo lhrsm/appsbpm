@@ -61,9 +61,9 @@ export default function AccessibilityWidget() {
         aria-expanded={open}
         aria-controls="a11y-panel"
         className={cn(
-          "safe-mb fixed left-4 z-[60] flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring transition-all duration-300",
-          "bottom-20 md:bottom-4",
-          "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+24px)]"
+          "safe-mb fixed left-4 z-[60] flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring transition-all duration-300 active:scale-95",
+          "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
+          "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+84px)]"
         )}
       >
         <Accessibility className="h-6 w-6" aria-hidden="true" />
@@ -78,8 +78,8 @@ export default function AccessibilityWidget() {
           aria-labelledby="a11y-panel-title"
           className={cn(
             "safe-mb fixed left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border bg-card p-4 shadow-2xl transition-all duration-300",
-            "bottom-36 md:bottom-20",
-            "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+84px)]"
+            "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-20",
+            "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+144px)]"
           )}
         >
           <div className="mb-3 flex items-center justify-between gap-2">
