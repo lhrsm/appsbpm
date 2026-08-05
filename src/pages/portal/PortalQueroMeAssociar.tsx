@@ -276,8 +276,8 @@ export default function PortalQueroMeAssociar() {
                 </RadioGroup>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="email">E-mail</Label>
                   <Input
                     id="email"
@@ -288,7 +288,7 @@ export default function PortalQueroMeAssociar() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={!!erros.email}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -297,7 +297,7 @@ export default function PortalQueroMeAssociar() {
                   {erros.email && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.email}</p>}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="telefone">Telefone com WhatsApp</Label>
                   <Input
                     id="telefone"
@@ -308,7 +308,7 @@ export default function PortalQueroMeAssociar() {
                     onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
                     maxLength={16}
                     aria-invalid={!!erros.telefone}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
