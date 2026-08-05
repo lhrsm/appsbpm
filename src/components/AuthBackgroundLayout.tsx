@@ -63,7 +63,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             justify-content: center !important;
             align-items: center !important;
             padding-right: 6vw !important;
-            padding-top: 40px !important;
+            padding-top: 12vh !important;
             width: 100% !important;
           }
 
