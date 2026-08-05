@@ -303,12 +303,12 @@ export default function PortalPrimeiroAcesso() {
                     <div className="space-y-4">
                       <Progress value={(pergunta.ordem / pergunta.total) * 100} label={`Pergunta ${pergunta.ordem} de ${pergunta.total}`} />
                       {typeof errosRestantes === 'number' && (
-                        <p className="text-xs text-[var(--field-helper)] font-medium">{errosRestantes} erro(s) restante(s)</p>
+                        <p className="text-xs text-muted-foreground font-medium">{errosRestantes} erro(s) restante(s)</p>
                       )}
                     </div>
 
                     <div className="space-y-3">
-                      <p className="text-base font-semibold text-[var(--field-label)] leading-snug">{pergunta.pergunta}</p>
+                      <p className="text-base font-semibold text-foreground leading-snug">{pergunta.pergunta}</p>
                       <div className="grid gap-2">
                         {pergunta.opcoes.map((opcao) => (
                           <RadioCard
@@ -355,7 +355,7 @@ export default function PortalPrimeiroAcesso() {
 
             {etapa === 'codigo' && (
               <div className="space-y-4">
-                <p className="text-sm text-[var(--field-helper)] font-medium">
+                <p className="text-sm text-muted-foreground font-medium">
                   Enviamos um código de 6 dígitos para <strong>{emailMascarado}</strong>. Ele expira em 5 minutos.
                 </p>
                 <Alert tone="warning" icon={MailWarning}>
@@ -384,7 +384,7 @@ export default function PortalPrimeiroAcesso() {
                   Confirmar código
                 </Button>
                 <div className="flex items-center justify-between text-sm">
-                  <button type="button" className="text-[var(--link-color)] font-semibold hover:underline" onClick={() => solicitarCodigo(true)} disabled={loading}>
+                  <button type="button" className="text-primary font-semibold hover:underline" onClick={() => solicitarCodigo(true)} disabled={loading}>
                     Reenviar código
                   </button>
                   <button type="button" className="text-muted-foreground hover:underline" onClick={() => setEtapa('email')}>
