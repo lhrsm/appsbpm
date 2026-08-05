@@ -58,7 +58,7 @@ export default function PortalBoasVindas() {
             border-radius: 14px;
             color: #166534;
             box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
-            min-height: 46px;
+            min-height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
