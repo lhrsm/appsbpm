@@ -1,9 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useNavigationState } from '@/hooks/useNavigationState';
+import { useEffect } from 'react';
+
 import { ArrowLeft, Mail, Shield } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.jpeg';
 
 export default function Privacidade() {
+  const navigate = useNavigate();
+  const { setIsNavigating } = useNavigationState();
+
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
+  const handleBack = () => {
+    setIsNavigating(true, 'Voltando...');
+    setTimeout(() => {
+      navigate('/');
+      setTimeout(() => setIsNavigating(false), 300);
+    }, 100);
+  };
+
   return (
     <div className="min-h-dvh bg-gradient-to-br from-primary/5 via-background to-accent/5">
       <a
@@ -29,12 +47,11 @@ export default function Privacidade() {
               </h1>
             </div>
           </div>
-          <Button asChild variant="outline" size="sm">
-            <Link to="/" aria-label="Voltar para a página inicial">
-              <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
-              Voltar
-            </Link>
+          <Button onClick={handleBack} variant="outline" size="sm" aria-label="Voltar para a página inicial">
+            <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" />
+            Voltar
           </Button>
+
         </div>
       </header>
 
