@@ -26,7 +26,7 @@ export default function PortalBottomNav({
   return (
     <nav
       aria-label="Navegação rápida"
-      className="fixed inset-x-0 bottom-0 z-40 border-t bg-white/96 dark:bg-slate-900/97 border-gray-900/10 dark:border-white/10 pb-[env(safe-area-inset-bottom)] backdrop-blur safe-px md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t bg-[hsl(var(--bottom-nav-bg))] border-border pb-[env(safe-area-inset-bottom)] backdrop-blur safe-px md:hidden"
     >
 
       <ul className="flex items-stretch">

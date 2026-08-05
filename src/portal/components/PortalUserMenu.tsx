@@ -55,13 +55,13 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <Button
           asChild
           variant="ghost"
-          className="h-11 gap-2 px-2 text-inherit hover:bg-black/5 dark:hover:bg-white/10"
+          className="h-11 gap-2 px-2 text-inherit hover:bg-accent hover:text-accent-foreground"
         >
           <button
             type="button"
             aria-label="Abrir menu da conta"
           >
-            <Avatar className="h-8 w-8 border border-gray-900/10 dark:border-white/20">
+            <Avatar className="h-8 w-8 border border-border">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
               <AvatarFallback className="bg-muted text-xs text-muted-foreground">
                 {iniciais}
