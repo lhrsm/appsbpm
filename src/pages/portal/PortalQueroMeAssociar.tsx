@@ -12,7 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, BadgePlus, CheckCircle2, HelpCircle, Loader2, MessageCircle } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
-import { mascararCpf } from '@/lib/portalAcesso';
+import { CpfInput } from '@/components/CpfInput';
+import { RegistrationNumberInput } from '@/components/RegistrationNumberInput';
 import { isValidCPF, isValidEmail } from '@/lib/validate';
 import {
   enviarPreCadastro,
@@ -22,6 +23,7 @@ import {
   type PostoGraduacao,
 } from '@/lib/associacao';
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
+import { cn } from '@/lib/utils';
 
 const SUPORTE_WHATSAPP = 'https://wa.me/5571985496972';
 
