@@ -364,10 +364,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1280px) {
     .auth-card {
-      width: 100% !important;
+      width: clamp(560px, 40vw, 620px) !important;
       padding: 32px 36px !important;
       max-width: none !important;
       height: auto !important;
+      margin-inline: 0 !important;
     }
   }
 

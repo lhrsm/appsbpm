@@ -8,7 +8,7 @@ export default function PortalBoasVindas() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <div className="w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center desktop-wrapper-content">
           <PublicPortalWelcomeCard />
 
           <nav
@@ -73,11 +73,23 @@ export default function PortalBoasVindas() {
             border-color: #16a34a;
           }
           @media (min-width: 1280px) {
+            .desktop-wrapper-content {
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              width: fit-content !important;
+              gap: 0 !important;
+            }
             .desktop-footer-links {
-              width: 100% !important;
-              max-width: 520px !important;
-              gap: 20px !important;
-              margin-top: 20px !important;
+              display: grid !important;
+              grid-template-columns: repeat(2, 1fr) !important;
+              width: fit-content !important;
+              max-width: none !important;
+              gap: 20px 24px !important;
+              margin-top: 24px !important;
+              padding: 0 !important;
+              justify-content: center !important;
+              align-items: center !important;
             }
             .external-link-circle {
               width: 52px !important;
