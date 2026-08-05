@@ -21,13 +21,17 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
     <div className="auth-page">
       <div className="auth-background" aria-hidden="true" />
       <div className="auth-overlay" style={{ background: "var(--portal-modal-overlay-light)", backdropFilter: "none", WebkitBackdropFilter: "none" }} aria-hidden="true" />
+      
+      {/* Container Principal */}
       <div className={cn(
-        "relative z-10 w-full flex",
-        align === "right" ? "justify-end" : "justify-center"
+        "relative z-10 w-full min-h-dvh flex",
+        align === "center" ? "justify-center items-center" : "desktop-grid-layout"
       )}>
+        {align === "right" && <div className="hidden xl:block" aria-hidden="true" />}
+        
         <div className={cn(
-          "w-full flex flex-col items-center min-h-dvh",
-          align === "right" && "desktop-align-right"
+          "w-full flex flex-col items-center",
+          align === "right" ? "desktop-auth-column" : "max-w-md mx-auto"
         )}>
           {children}
         </div>
@@ -45,68 +49,53 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             overflow: hidden !important;
           }
 
-          .desktop-align-right {
-            position: absolute !important;
-            top: clamp(150px, 18vh, 220px) !important;
-            right: clamp(80px, 8vw, 180px) !important;
-            left: auto !important;
-            transform: none !important;
-            width: clamp(520px, 34vw, 590px) !important;
-            align-items: center !important;
-            padding-right: 0 !important;
+          .desktop-grid-layout {
+            display: grid !important;
+            grid-template-columns: 55% 45% !important;
+            width: 100% !important;
+            height: 100dvh !important;
+          }
+
+          .desktop-auth-column {
+            height: 100dvh !important;
             display: flex !important;
             flex-direction: column !important;
-            overflow: visible !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-right: 6vw !important;
+            padding-top: 40px !important;
+            width: 100% !important;
+          }
+
+          /* Removendo qualquer interferência de posicionamento absoluto residual */
+          .desktop-align-right {
+            position: static !important;
+            top: auto !important;
+            right: auto !important;
+            transform: none !important;
+            width: 100% !important;
+          }
+        }
+
+        /* Fallback para telas muito baixas */
+        @media (max-height: 700px) and (min-width: 1280px) {
+          .public-portal-root {
+            overflow-y: auto !important;
             height: auto !important;
-            min-height: unset !important;
-            max-height: none !important;
           }
-
-          @media (min-width: 1280px) and (max-height: 760px) {
-            .desktop-align-right {
-              top: 90px !important;
-            }
+          .auth-page {
+            height: auto !important;
+            min-height: 100dvh !important;
+            overflow-y: auto !important;
           }
-
-          @media (min-width: 1280px) and (min-height: 761px) and (max-height: 900px) {
-            .desktop-align-right {
-              top: 130px !important;
-            }
+          .desktop-grid-layout {
+            height: auto !important;
+            min-height: 100dvh !important;
           }
-
-          @media (min-width: 1280px) and (min-height: 901px) and (max-height: 1100px) {
-            .desktop-align-right {
-              top: 170px !important;
-            }
-          }
-
-          @media (min-width: 1280px) and (min-height: 1101px) {
-            .desktop-align-right {
-              top: 190px !important;
-            }
-          }
-
-
-          /* Fallback para telas muito baixas */
-          @media (max-height: 700px) {
-            .public-portal-root {
-              overflow-y: auto !important;
-              height: auto !important;
-            }
-            .auth-page {
-              height: auto !important;
-              min-height: 100dvh !important;
-              overflow-y: auto !important;
-            }
-            .desktop-align-right {
-              position: relative !important;
-              top: auto !important;
-              right: auto !important;
-              transform: none !important;
-              margin-left: auto !important;
-              margin-right: clamp(80px, 8vw, 180px) !important;
-              padding-block: 40px !important;
-            }
+          .desktop-auth-column {
+            height: auto !important;
+            min-height: 100dvh !important;
+            padding-block: 60px !important;
           }
         }
       `}} />
