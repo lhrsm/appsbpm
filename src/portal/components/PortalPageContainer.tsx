@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { cn } from "@/lib/utils";
+ import { cn } from "@/lib/utils";
+import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 
 export interface PortalPageContainerProps {
   children: ReactNode;
@@ -23,8 +24,9 @@ export default function PortalPageContainer({
   children,
   width = "desktop",
   readable = false,
-  className,
+   className,
 }: PortalPageContainerProps) {
+  const { isKeyboardOpen } = useMobileVisualViewport();
   const max = {
     narrow: "max-w-3xl",
     laptop: "max-w-[1400px]",
@@ -39,7 +41,8 @@ export default function PortalPageContainer({
         // padding lateral progressivo + safe areas laterais (landscape com notch)
         "px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12",
         "pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:pl-6 md:pr-6 lg:pl-8 lg:pr-8 xl:pl-10 xl:pr-10 2xl:pl-12 2xl:pr-12",
-        "py-4 md:py-6",
+         "py-4 md:py-6",
+        isKeyboardOpen && "py-2 md:py-2",
         max,
         readable && "[&_p]:max-w-readable",
         className,

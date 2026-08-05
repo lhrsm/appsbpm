@@ -224,7 +224,12 @@ export default function PortalPrimeiroAcesso() {
                   label="CPF" 
                   value={cpf} 
                   onChange={setCpf} 
-                  className="h-11" 
+                  className="h-11"
+                  onFocus={(e) => {
+                    setTimeout(() => {
+                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                  }}
                 />
 
                 <BirthDateInput
@@ -233,6 +238,11 @@ export default function PortalPrimeiroAcesso() {
                   onChange={setNascimento}
                   className="h-11"
                   required
+                  onFocus={(e) => {
+                    setTimeout(() => {
+                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                  }}
                 />
 
 
@@ -244,6 +254,11 @@ export default function PortalPrimeiroAcesso() {
                         value={extras[campo.key] ?? ''}
                         onChange={(v) => setExtras((p) => ({ ...p, [campo.key]: v }))}
                         className="h-11"
+                        onFocus={(e) => {
+                          setTimeout(() => {
+                            e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }, 300);
+                        }}
                       />
                     ) : (
                       <>
@@ -253,6 +268,11 @@ export default function PortalPrimeiroAcesso() {
                           value={extras[campo.key] ?? ''}
                           onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
                           className="h-11"
+                          onFocus={(e) => {
+                            setTimeout(() => {
+                              e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }, 300);
+                          }}
                         />
                       </>
                     )}

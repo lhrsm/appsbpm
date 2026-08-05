@@ -12,8 +12,8 @@ interface CpfInputProps extends Omit<React.ComponentProps<typeof Input>, 'onChan
   showValidation?: boolean;
 }
 
-export const CpfInput = React.forwardRef<HTMLInputElement, CpfInputProps>(
-  ({ value, onChange, error, label, className, id, showValidation = true, ...props }, ref) => {
+ export const CpfInput = React.forwardRef<HTMLInputElement, CpfInputProps>(
+  ({ value, onChange, error, label, className, id, showValidation = true, onFocus, ...props }, ref) => {
     const [displayValue, setDisplayValue] = useState(formatCpf(value));
     const [internalError, setInternalError] = useState<string | null>(null);
 
@@ -50,8 +50,9 @@ export const CpfInput = React.forwardRef<HTMLInputElement, CpfInputProps>(
     return (
       <div className="space-y-2 w-full">
         {label && <Label htmlFor={inputId} className={cn(activeError && "text-destructive")}>{label}</Label>}
-        <Input
+         <Input
           {...props}
+          onFocus={onFocus}
           id={inputId}
           ref={ref}
           type="text"

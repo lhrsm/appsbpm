@@ -13,7 +13,7 @@ export default function PortalBottomNav({
   permissions?: string[];
 }) {
   const { pathname } = useLocation();
-  const { keyboardOpen } = useViewport();
+   const { keyboardOpen } = useViewport();
   const ordem = bottomNavIdsByProfile[profile];
   const items = getNavigationItems({ profile, permissions })
     .filter((i) => ordem.includes(i.id))

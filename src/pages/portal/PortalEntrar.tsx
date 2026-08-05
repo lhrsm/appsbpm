@@ -73,6 +73,7 @@ export default function PortalEntrar() {
                 <Input
                   id="credential"
                   inputMode="numeric"
+                  enterKeyHint="next"
                   autoComplete="username"
                   placeholder="Digite seu CPF ou matrícula"
                   value={credential}
@@ -80,6 +81,11 @@ export default function PortalEntrar() {
                   maxLength={14}
                   className="h-10 text-base"
                   disabled={loading}
+                  onFocus={(e) => {
+                    setTimeout(() => {
+                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                  }}
                 />
               </div>
 
@@ -89,11 +95,17 @@ export default function PortalEntrar() {
                   <Input
                     id="password"
                     type={verSenha ? 'text' : 'password'}
+                    enterKeyHint="done"
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className="h-10 pr-12 text-base"
                     disabled={loading}
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
                   />
                   <button
                     type="button"

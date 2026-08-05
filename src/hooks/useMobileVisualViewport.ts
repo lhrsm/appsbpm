@@ -21,6 +21,7 @@ export function useMobileVisualViewport() {
 
       document.documentElement.style.setProperty("--visual-viewport-height", `${height}px`);
       document.documentElement.style.setProperty("--visual-viewport-offset-top", `${offsetTop}px`);
+      document.documentElement.setAttribute("data-keyboard-open", isOpen.toString());
     };
 
     window.visualViewport.addEventListener("resize", updateViewport);
