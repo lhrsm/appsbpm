@@ -99,5 +99,3 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
     </section>
   );
 }
-  );
-}
