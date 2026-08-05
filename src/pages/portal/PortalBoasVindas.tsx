@@ -81,12 +81,13 @@ export default function PortalBoasVindas() {
               gap: 0 !important;
             }
             .desktop-footer-links {
-              display: grid !important;
-              grid-template-columns: repeat(2, 1fr) !important;
+              display: flex !important;
+              flex-direction: row !important;
+              flex-wrap: nowrap !important;
               width: fit-content !important;
               max-width: none !important;
-              gap: 20px 24px !important;
-              margin-top: 24px !important;
+              gap: 20px !important;
+              margin-top: 32px !important;
               padding: 0 !important;
               justify-content: center !important;
               align-items: center !important;
