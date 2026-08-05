@@ -535,9 +535,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1200px) {
     .portal-choice {
-      width: 100% !important; /* Follow expanded modal width */
-      padding: 16px 20px !important; /* Increased internal padding */
+      width: calc(100% - 56px) !important;
+      max-width: 480px !important;
+      padding: 16px 20px !important;
       margin-bottom: 4px !important;
+      margin-inline: auto !important;
     }
   }
 
@@ -631,10 +633,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1200px) {
     .portal-recovery-button {
-      width: 100% !important;
-      max-width: none !important;
+      width: calc(100% - 72px) !important;
+      max-width: 460px !important;
       height: 54px !important;
       margin-top: 20px !important;
+      margin-inline: auto !important;
     }
   }
 
