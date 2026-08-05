@@ -1,11 +1,11 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { cn } from "../utilities";
 import { icons } from "../icons";
 
-export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  onCheckedChange?: (checked: boolean) => void;
+export interface CheckboxProps extends Omit<CheckboxPrimitive.CheckboxProps, 'checked' | 'onCheckedChange'> {
   checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 /**

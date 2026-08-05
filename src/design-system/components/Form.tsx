@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../utilities";
+import { icons } from "../icons";
 
 export interface FieldProps {
   /** Rótulo visível do campo. */
