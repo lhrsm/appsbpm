@@ -149,6 +149,18 @@
   --header: 220 20% 13%;
   --bottom-nav: 220 20% 13% / 0.95;
 
+  /* Form/Field Tokens (UI Audit) Dark Mode */
+  --field-bg: rgba(15, 23, 42, 0.90);
+  --field-border: rgba(74, 222, 128, 0.52);
+  --field-border-focus: #17924d;
+  --field-text: #f8fafc;
+  --field-label: #f8fafc;
+  --field-placeholder: #64748b;
+  --field-helper: #94a3b8;
+  
+  --link-color: #86efac;
+  --button-primary-bg: #17924d;
+
   /* LGPD Specific Tokens */
   --lgpd-sheet-bg-light: var(--portal-modal-bg-light);
   --lgpd-sheet-bg-dark: var(--portal-modal-bg-dark);
