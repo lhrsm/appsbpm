@@ -42,20 +42,13 @@ export default function PortalHeader({
     )}>
       <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <Button
-          asChild
           variant="ghost"
           size="icon"
-          className="min-h-11 min-w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
+          className="h-11 w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
           onClick={onOpenMenu}
         >
-          <button
-            type="button"
-            aria-label="Abrir menu de navegação"
-            aria-expanded={menuOpen}
-            aria-controls="portal-mobile-drawer"
-          >
-            <Menu className="h-5 w-5" aria-hidden />
-          </button>
+          <Menu className="h-5 w-5" aria-hidden />
+          <span className="sr-only">Abrir menu</span>
         </Button>
 ...
 
@@ -82,9 +75,10 @@ export default function PortalHeader({
         <div className="mx-2 hidden min-w-0 flex-1 justify-center lg:flex">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="bar" />
         </div>
-        <div className="ml-auto flex shrink-0 items-center gap-0.5 lg:ml-0">
+        <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
           <PortalNotificationCenter />
+          <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
         </div>
       </div>
     </header>
