@@ -159,7 +159,7 @@ export default function PortalQueroMeAssociar() {
                   Voltar para a página inicial
                 </Button>
                 <Button 
-                  variant="outline"
+                  variant="secondary"
                   className="w-full h-14 rounded-2xl text-muted-foreground border-slate-200 cursor-not-allowed" 
                   disabled
                 >
@@ -340,8 +340,8 @@ export default function PortalQueroMeAssociar() {
                   <div className="grid grid-cols-2 gap-4">
                     <Button
                       type="button"
-                      variant="outline"
-                      className="h-12 rounded-[14px] border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition-all group"
+                      variant="secondary"
+                      className="h-12 rounded-[14px] border-slate-200 text-slate-600 font-semibold hover:bg-slate-50 transition-all group border"
                       onClick={() => navigate('/')}
                       disabled={enviando}
                     >
@@ -350,8 +350,8 @@ export default function PortalQueroMeAssociar() {
                     </Button>
                     <Button
                       type="button"
-                      variant="outline"
-                      className="h-12 rounded-[14px] border-[#198754]/30 text-[#198754] font-semibold hover:bg-[#198754]/5 transition-all group"
+                      variant="secondary"
+                      className="h-12 rounded-[14px] border-[#198754]/30 text-[#198754] font-semibold hover:bg-[#198754]/5 transition-all group border"
                       onClick={() => setShowHelp(true)}
                       disabled={enviando}
                     >
