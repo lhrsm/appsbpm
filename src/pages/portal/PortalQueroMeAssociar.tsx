@@ -322,7 +322,7 @@ export default function PortalQueroMeAssociar() {
                 {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 
-              <div className="space-y-3 pt-4 flex-shrink-0 sticky bottom-0 bg-[rgba(255,255,255,0.78)] border-t border-[rgba(22,163,74,0.14)] -mx-6 px-6 pb-2">
+              <div className="space-y-3 pt-4 flex-shrink-0 xl:sticky xl:bottom-0 bg-[rgba(255,255,255,0.78)] xl:backdrop-blur-sm border-t border-[rgba(22,163,74,0.14)] -mx-6 px-6 pb-2">
                 <button 
                   type="submit" 
                   className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all" 
