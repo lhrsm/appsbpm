@@ -62,13 +62,19 @@ export default function PortalRecuperarAcesso() {
               <form onSubmit={submeter} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="credential">CPF ou matrícula</Label>
-                  <Input
+                   <Input
                     id="credential"
                     inputMode="numeric"
+                    enterKeyHint="done"
                     value={credential}
                     onChange={(e) => handleCredentialChange(e.target.value)}
                     maxLength={14}
                     className="h-11"
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
                   />
                 </div>
                 <Button type="submit" className="w-full h-11" disabled={loading || !credential.trim()}>
