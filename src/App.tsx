@@ -151,8 +151,15 @@ const PortalAlias = () => {
 };
 
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => {
+  useEffect(() => {
+    // Log da versão do build para auditoria técnica
+    console.info("[Build] SBPM-PORTAL-BUILD-2026-08-05-v4-CHUNK-FIX");
+  }, []);
+
+  return (
+    <ChunkErrorBoundary>
+      <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider defaultTheme="system" storageKey="sbpm-ui-theme">
         <A11yProvider>
@@ -280,7 +287,8 @@ const App = () => (
         </A11yProvider>
       </ThemeProvider>
     </TooltipProvider>
-  </QueryClientProvider>
-);
+    </ChunkErrorBoundary>
+  );
+};
 
 export default App;
