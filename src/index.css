@@ -411,10 +411,12 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1200px) {
     .pwa-modal-page {
-      align-items: flex-end !important;
-      padding-right: 12% !important; /* Shift towards 58-62% of screen width */
+      /* Remove internal alignment to let AuthBackgroundLayout handle it */
+      align-items: center !important; 
+      padding-right: 16px !important;
     }
   }
+
 
   /* Quando o teclado está aberto, paramos de centralizar verticalmente */
   .pwa-modal-page[data-keyboard-open="true"] {
