@@ -34,14 +34,13 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @media (min-width: 1200px) {
+        @media (min-width: 1280px) {
           .desktop-align-right {
             align-items: flex-end !important;
-            padding-right: clamp(60px, 12vw, 180px) !important;
+            padding-right: 12% !important;
           }
         }
       `}} />
     </div>
   );
 }
-
