@@ -77,13 +77,16 @@ export default function PortalBoasVindas() {
           }
           @media (min-width: 1280px) {
             .desktop-footer-links {
-              max-width: 540px !important;
-              gap: 20px !important;
-              margin-top: 24px !important;
+              width: calc(100% - 48px) !important;
+              max-width: 520px !important;
+              gap: 16px 20px !important;
+              margin-top: 20px !important;
+              margin-inline: auto !important;
+              padding-bottom: 24px !important;
             }
             .external-link-card {
-              min-height: 52px !important;
-              padding: 14px 18px !important;
+              min-height: 48px !important;
+              padding: 12px 16px !important;
               font-size: 0.9rem !important;
               border-radius: 18px !important;
             }

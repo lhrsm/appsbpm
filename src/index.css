@@ -359,12 +359,15 @@ html.a11y-reduce-motion *::after {
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
   }
 
   @media (min-width: 1280px) {
     .auth-card {
-      width: 100% !important; /* Will be constrained by parent .desktop-align-right */
+      width: 100% !important;
       padding: 32px 36px !important;
+      max-width: none !important;
+      height: auto !important;
     }
   }
 
