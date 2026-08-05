@@ -341,49 +341,85 @@ html.a11y-reduce-motion *::after {
 
   .auth-card {
     background: var(--public-card-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
-    border: 1.5px solid var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
-    border-radius: var(--portal-modal-radius) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.70) !important;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
+    border-radius: 28px !important;
     padding: 24px;
     position: relative;
     z-index: 10;
-    width: 100%;
+    width: calc(100% - 32px);
+    max-width: 380px;
+    margin-inline: auto;
     height: auto;
+    min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  @media (max-width: 359px) {
+    .auth-card {
+      width: calc(100% - 20px);
+      max-width: 340px;
+      padding: 20px 16px;
+    }
+  }
+
+  @media (min-width: 390px) and (max-width: 430px) {
+    .auth-card {
+      max-width: 390px;
+    }
+  }
+
 
   .pwa-modal-page {
     width: 100%;
     min-height: var(--visual-viewport-height, 100dvh);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 
-      max(16px, env(safe-area-inset-top))
-      max(16px, env(safe-area-inset-right))
-      max(16px, env(safe-area-inset-bottom))
-      max(16px, env(safe-area-inset-left));
+      max(36px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(24px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
     transition: padding 0.3s ease-out;
-    background: transparent;
+    background: rgba(15, 23, 42, 0.02);
+  }
+
+  .pwa-modal-page[data-keyboard-open="false"]:not([data-height-short="true"]) .pwa-modal-container {
+    transform: translateY(3vh);
+  }
+
+  @media (max-height: 700px) {
+    .pwa-modal-page {
+      justify-content: flex-start;
+      padding-top: 28px;
+    }
+    .pwa-modal-page[data-keyboard-open="false"] .pwa-modal-container {
+      transform: none;
+    }
   }
 
   .pwa-modal-page[data-keyboard-open="true"] {
     align-items: flex-start;
     padding-top: 12px;
+    background: rgba(15, 23, 42, 0.08); /* Overlay mais forte com teclado aberto */
   }
 
   .pwa-modal-container {
-    width: min(calc(100% - 32px), 480px);
-    max-height: calc(var(--visual-viewport-height, 100dvh) - 32px);
+    width: 100%;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
-    margin: auto;
+    margin-inline: auto;
+    transition: transform 0.3s ease-out;
   }
+
 
   @media (max-width: 359px) {
     .pwa-modal-container {
@@ -413,15 +449,15 @@ html.a11y-reduce-motion *::after {
       color-scheme: light !important;
     }
     body.public-portal-root .auth-card {
-      background: var(--portal-modal-bg-light) !important;
-      border-color: var(--portal-modal-border-light) !important;
-      box-shadow: var(--portal-modal-shadow-light) !important;
-      backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
-      -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
+      background: rgba(255, 255, 255, 0.52) !important;
+      border-color: rgba(22, 163, 74, 0.70) !important;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
+      backdrop-filter: blur(8px) saturate(118%) !important;
+      -webkit-backdrop-filter: blur(8px) saturate(118%) !important;
     }
     body.public-portal-root .portal-choice {
-      background: #ffffff !important;
-      border-color: rgba(22, 163, 74, 0.3) !important;
+      background: rgba(255, 255, 255, 0.94) !important;
+      border-color: rgba(22, 163, 74, 0.50) !important;
     }
     body.public-portal-root .portal-title {
       color: #111827 !important;
@@ -431,6 +467,7 @@ html.a11y-reduce-motion *::after {
     }
   }
 
+
   .dark .auth-card {
     background: var(--portal-modal-bg-dark) !important;
     border: 1.5px solid var(--portal-modal-border-dark) !important;
@@ -438,18 +475,29 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice {
-    background: #ffffff !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.46) !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.50) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
     transition: all 200ms ease-in-out !important;
-    border-radius: 20px !important;
-    min-height: 104px;
-    padding: 16px 18px;
+    border-radius: 18px !important;
+    width: 100%;
+    max-width: 320px;
+    margin-inline: auto;
+    min-height: auto;
+    padding: 14px 16px;
     display: grid !important;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
   }
+
+  @media (max-width: 360px) {
+    .portal-choice {
+      max-width: 300px;
+      padding: 13px 14px;
+    }
+  }
+
 
   .dark .portal-choice {
     background: rgba(17, 24, 39, 0.82) !important;

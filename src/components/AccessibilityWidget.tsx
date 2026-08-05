@@ -63,7 +63,7 @@ export default function AccessibilityWidget() {
         className={cn(
           "safe-mb fixed left-4 z-[60] flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring transition-all duration-300 active:scale-95",
           "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
-          "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+84px)]"
+          "lgpd-open:bottom-[calc(16px+env(safe-area-inset-bottom))]"
         )}
       >
         <Accessibility className="h-6 w-6" aria-hidden="true" />
@@ -79,7 +79,7 @@ export default function AccessibilityWidget() {
           className={cn(
             "safe-mb fixed left-4 z-[60] max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-[var(--portal-modal-radius)] border-[1.5px] border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] p-4 shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] backdrop-blur-[var(--portal-modal-blur)] saturate-[150%] transition-all duration-300",
             "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-20",
-            "lgpd-open:bottom-[calc(var(--lgpd-sheet-height,160px)+144px)]"
+            "lgpd-open:bottom-[calc(76px+env(safe-area-inset-bottom))]"
           )}
         >
           <div className="mb-3 flex items-center justify-between gap-2">
