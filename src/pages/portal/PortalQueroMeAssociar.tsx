@@ -251,26 +251,26 @@ export default function PortalQueroMeAssociar() {
                 </div>
               )}
 
-              <div className="space-y-3">
+              <div className="space-y-3 w-full">
                 <Label className="text-sm font-semibold text-primary/80">Situação funcional</Label>
                 <RadioGroup
                   value={situacao}
                   onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                  className="grid grid-cols-2 gap-3 w-full"
                 >
                   {(['regular', 'inativo'] as const).map((v) => (
                     <Label
                       key={v}
                       htmlFor={`sit-${v}`}
                       className={cn(
-                        "flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200",
+                        "flex cursor-pointer items-center justify-center gap-2 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200 w-full min-w-0 box-border",
                         situacao === v 
                           ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm" 
                           : "bg-white border-primary/20 hover:border-primary/40"
                       )}
                     >
-                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary" />
-                      {v === 'regular' ? 'Ativo' : 'Inativo'}
+                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary shrink-0" />
+                      <span className="truncate">{v === 'regular' ? 'Ativo' : 'Inativo'}</span>
                     </Label>
                   ))}
                 </RadioGroup>
