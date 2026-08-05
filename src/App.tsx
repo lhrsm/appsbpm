@@ -287,6 +287,7 @@ const App = () => {
         </A11yProvider>
       </ThemeProvider>
     </TooltipProvider>
+    </QueryClientProvider>
     </ChunkErrorBoundary>
   );
 };
