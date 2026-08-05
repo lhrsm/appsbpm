@@ -63,7 +63,7 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
       <div 
         className={cn(
           "relative z-20 mx-auto -mt-16 w-[92%] sm:w-[85%] md:w-[80%] lg:w-full lg:max-w-none",
-          "animate-in slide-in-from-bottom-6 duration-500 delay-200"
+          "animate-in slide-up-in duration-500 delay-200"
         )}
       >
         <div 
@@ -79,7 +79,7 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
                 src={user.fotoUrl}
                 name={user.nome}
                 className={cn(
-                  "border-2 border-white shadow-md transition-transform duration-300 group-hover:scale-105",
+                  "border-2 border-white shadow-md transition-transform duration-300 group-hover:scale-105 shrink-0",
                   "h-14 w-14 md:h-16 w-16 lg:h-[72px] lg:w-[72px]"
                 )}
               />
@@ -100,10 +100,10 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
                 {/* 8. BADGES */}
                 <div className="flex items-center gap-2">
                   <Badge className="bg-emerald-500/20 border-emerald-500/30 text-emerald-300 text-[10px] uppercase font-bold py-0 h-5">
-                    <span className="mr-1">🟢</span> Associado Ativo
+                    🟢 Associado Ativo
                   </Badge>
                   <Badge className="bg-blue-500/20 border-blue-500/30 text-blue-300 text-[10px] uppercase font-bold py-0 h-5">
-                    <span className="mr-1">🔵</span> PMBA
+                    🔵 PMBA
                   </Badge>
                 </div>
               </div>
@@ -127,6 +127,7 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
           </div>
         </div>
       </div>
+
     </section>
   );
 }
