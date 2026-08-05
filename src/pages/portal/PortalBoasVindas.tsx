@@ -5,11 +5,14 @@ import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 import { Shield, Accessibility, Globe, Headset } from 'lucide-react';
 import { useNavigationState } from '@/hooks/useNavigationState';
 import { useEffect } from 'react';
+import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
 
 
 export default function PortalBoasVindas() {
   const navigate = useNavigate();
   const { setIsNavigating } = useNavigationState();
+
+  usePrefetchRoutes();
 
   useEffect(() => {
     // Garantir que o loader seja fechado ao montar esta página (ex: ao voltar)

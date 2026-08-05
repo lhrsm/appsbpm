@@ -1,4 +1,6 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
+import { lazyWithRetry } from "@/lib/async/lazyWithRetry";
+import { ChunkErrorBoundary } from "@/components/error/ChunkErrorBoundary";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -23,15 +25,15 @@ import RouteAnnouncer from "@/a11y/RouteAnnouncer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 // Lazy: chunks por área — o portal externo nunca baixa código administrativo.
-const ChatbotWidget = lazy(() => import("./components/ChatbotWidget"));
-const Login = lazy(() => import("./pages/Login"));
-const Clinicas = lazy(() => import("./pages/Clinicas"));
-const Informes = lazy(() => import("./pages/Informes"));
-const Dependentes = lazy(() => import("./pages/Dependentes"));
-const Perfil = lazy(() => import("./pages/Perfil"));
-const Notificacoes = lazy(() => import("./pages/Notificacoes"));
-const Privacidade = lazy(() => import("./pages/Privacidade"));
-const Acessibilidade = lazy(() => import("./pages/Acessibilidade"));
+const ChatbotWidget = lazyWithRetry(() => import("./components/ChatbotWidget"), "ChatbotWidget");
+const Login = lazyWithRetry(() => import("./pages/Login"), "Login");
+const Clinicas = lazyWithRetry(() => import("./pages/Clinicas"), "Clinicas");
+const Informes = lazyWithRetry(() => import("./pages/Informes"), "Informes");
+const Dependentes = lazyWithRetry(() => import("./pages/Dependentes"), "Dependentes");
+const Perfil = lazyWithRetry(() => import("./pages/Perfil"), "Perfil");
+const Notificacoes = lazyWithRetry(() => import("./pages/Notificacoes"), "Notificacoes");
+const Privacidade = lazyWithRetry(() => import("./pages/Privacidade"), "Privacidade");
+const Acessibilidade = lazyWithRetry(() => import("./pages/Acessibilidade"), "Acessibilidade");
 
 // Lazy: páginas menos frequentes do portal do associado
 const AssociacaoPremiada = lazy(() => import("./pages/AssociacaoPremiada"));
@@ -57,11 +59,11 @@ const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Quiosque = lazy(() => import("./pages/Quiosque"));
 const BemQR = lazy(() => import("./pages/BemQR"));
 const RedefinirSenha = lazy(() => import("./pages/RedefinirSenha"));
-const PortalBoasVindas = lazy(() => import("./pages/portal/PortalBoasVindas"));
-const PortalEntrar = lazy(() => import("./pages/portal/PortalEntrar"));
-const PortalPrimeiroAcesso = lazy(() => import("./pages/portal/PortalPrimeiroAcesso"));
-const PortalRecuperarAcesso = lazy(() => import("./pages/portal/PortalRecuperarAcesso"));
-const PortalQueroMeAssociar = lazy(() => import("./pages/portal/PortalQueroMeAssociar"));
+const PortalBoasVindas = lazyWithRetry(() => import("./pages/portal/PortalBoasVindas"), "PortalBoasVindas");
+const PortalEntrar = lazyWithRetry(() => import("./pages/portal/PortalEntrar"), "PortalEntrar");
+const PortalPrimeiroAcesso = lazyWithRetry(() => import("./pages/portal/PortalPrimeiroAcesso"), "PortalPrimeiroAcesso");
+const PortalRecuperarAcesso = lazyWithRetry(() => import("./pages/portal/PortalRecuperarAcesso"), "PortalRecuperarAcesso");
+const PortalQueroMeAssociar = lazyWithRetry(() => import("./pages/portal/PortalQueroMeAssociar"), "PortalQueroMeAssociar");
 const PortalVinculo = lazy(() => import("./pages/portal/associado/Vinculo"));
 const PortalMeusDados = lazy(() => import("./pages/portal/associado/MeusDados"));
 import {
@@ -149,8 +151,15 @@ const PortalAlias = () => {
 };
 
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => {
+  useEffect(() => {
+    // Log da versão do build para auditoria técnica
+    console.info("[Build] SBPM-PORTAL-BUILD-2026-08-05-v4-CHUNK-FIX");
+  }, []);
+
+  return (
+    <ChunkErrorBoundary>
+      <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider defaultTheme="system" storageKey="sbpm-ui-theme">
         <A11yProvider>
@@ -278,7 +287,9 @@ const App = () => (
         </A11yProvider>
       </ThemeProvider>
     </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+    </ChunkErrorBoundary>
+  );
+};
 
 export default App;
