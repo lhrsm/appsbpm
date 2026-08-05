@@ -70,15 +70,14 @@
 }
 
 /* Card translúcido */
-.auth-page .auth-card {
-  width: min(100%, 440px);
-  border-radius: 28px;
-  background: var(--public-card-bg-light);
-  border: 1.5px solid rgba(22, 163, 74, 0.72);
-  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.16);
-  backdrop-filter: blur(8px) saturate(115%);
-  -webkit-backdrop-filter: blur(8px) saturate(115%);
-}
+  .auth-page .auth-card {
+    border-radius: var(--portal-modal-radius);
+    background: var(--public-card-bg-light);
+    border: 1.5px solid var(--portal-modal-border-light);
+    box-shadow: var(--portal-modal-shadow-light);
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%);
+  }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .auth-page .auth-card {
@@ -96,8 +95,7 @@
   .auth-page {
     align-items: center;
     min-height: 100dvh;
-    padding: calc(16px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
-      calc(16px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+    padding: 0;
   }
 
   /* Menos céu: foca no casal ampliando e descendo o enquadramento */
@@ -115,24 +113,6 @@
       rgba(255, 255, 255, 0.1) 50%,
       rgba(255, 255, 255, 0.3) 100%
     );
-  }
-
-  .auth-content {
-    min-height: 0;
-    margin-top: 0;
-    align-items: center;
-  }
-
-  /* Card compacto, transparente e com borda visível */
-  .auth-page .auth-card {
-    width: 100%;
-    max-width: 440px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.88) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.5) !important;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
-    backdrop-filter: blur(12px) saturate(120%);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
   }
 
   /* Compactação do conteúdo do formulário */

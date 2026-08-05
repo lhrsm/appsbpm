@@ -15,6 +15,8 @@
   :root {
     --background: 0 0% 98%;
     --foreground: 220 20% 15%;
+    --muted-foreground: 220 12% 40%;
+    --description: 215 16% 47%; /* Slate 600 */
 
     --card: 0 0% 100%;
     --card-foreground: 220 20% 15%;
@@ -115,6 +117,22 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+  }
+
+  .public-portal-root label {
+    color: var(--public-label-light) !important;
+  }
+  
+  .public-portal-root .text-muted-foreground {
+    color: var(--public-helper-light) !important;
+  }
+
+  .public-portal-root .text-primary {
+    color: var(--public-title-light) !important;
+  }
+
+  .public-portal-root .portal-description {
+    color: var(--public-description-light) !important;
   }
 }
 
@@ -323,13 +341,65 @@ html.a11y-reduce-motion *::after {
 
   .auth-card {
     background: var(--public-card-bg-light) !important;
-    backdrop-filter: blur(8px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(8px) saturate(115%) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.72) !important;
-    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.16) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
+    border: 1.5px solid var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
     border-radius: var(--portal-modal-radius) !important;
-    padding-top: max(18px, env(safe-area-inset-top));
-    padding-bottom: max(18px, env(safe-area-inset-bottom));
+    padding: 24px;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: auto;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pwa-modal-page {
+    width: 100%;
+    min-height: var(--visual-viewport-height, 100dvh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 
+      max(16px, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right))
+      max(16px, env(safe-area-inset-bottom))
+      max(16px, env(safe-area-inset-left));
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    transition: padding 0.3s ease-out;
+    background: transparent;
+  }
+
+  .pwa-modal-page[data-keyboard-open="true"] {
+    align-items: flex-start;
+    padding-top: 12px;
+  }
+
+  .pwa-modal-container {
+    width: min(calc(100% - 32px), 480px);
+    max-height: calc(var(--visual-viewport-height, 100dvh) - 32px);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+
+  @media (max-width: 359px) {
+    .pwa-modal-container {
+      width: calc(100% - 20px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .pwa-modal-container {
+      max-width: 560px;
+    }
+  }
+
+  .pwa-modal-page[data-keyboard-open="true"] .pwa-modal-container {
+    max-height: calc(var(--visual-viewport-height, 100dvh) - 16px);
+    margin-top: 0;
   }
 
   /* Forçar tema claro em dispositivos mobile/PWA para a página pública se o sistema estiver em dark */
@@ -340,11 +410,14 @@ html.a11y-reduce-motion *::after {
     body.public-portal-root {
       background-color: #dfe6eb !important;
       color: #1f2937 !important;
+      color-scheme: light !important;
     }
     body.public-portal-root .auth-card {
-      background: rgba(255, 255, 255, 0.88) !important;
-      border-color: rgba(22, 163, 74, 0.5) !important;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+      background: var(--portal-modal-bg-light) !important;
+      border-color: var(--portal-modal-border-light) !important;
+      box-shadow: var(--portal-modal-shadow-light) !important;
+      backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
+      -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
     }
     body.public-portal-root .portal-choice {
       background: #ffffff !important;
@@ -399,7 +472,7 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice .portal-description {
-    color: #5b6472 !important;
+    color: var(--public-description-light) !important;
   }
 
   .dark .portal-choice .portal-description {

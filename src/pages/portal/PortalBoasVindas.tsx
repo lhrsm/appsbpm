@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { PublicPortalWelcomeCard } from '@/components/portal/PublicPortalWelcomeCard';
+import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 
 export default function PortalBoasVindas() {
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-xl">
+      <PublicFlowModal>
         <PublicPortalWelcomeCard />
 
         <nav
@@ -41,8 +42,7 @@ export default function PortalBoasVindas() {
             </a>
           </div>
         </nav>
-      </main>
+      </PublicFlowModal>
     </AuthBackgroundLayout>
   );
 }
-
