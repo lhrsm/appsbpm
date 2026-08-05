@@ -390,7 +390,7 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice .portal-title {
-    color: var(--public-title-light);
+    color: #1f2937 !important;
     font-weight: 700;
   }
 
@@ -399,7 +399,7 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice .portal-description {
-    color: var(--public-description-light);
+    color: #5b6472 !important;
   }
 
   .dark .portal-choice .portal-description {
