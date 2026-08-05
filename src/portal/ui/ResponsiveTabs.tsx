@@ -104,10 +104,11 @@ export function ResponsiveTabs({
                 "min-h-11 whitespace-nowrap rounded-t-md px-3 py-2 text-sm font-medium transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 selecionado
-                  ? "border-b-2 border-primary text-primary"
-                  : "text-muted-foreground hover:text-foreground",
+                  ? "bg-white dark:bg-slate-800 text-green-800 dark:text-green-300 border-b-2 border-green-600/34 dark:border-green-400/32"
+                  : "text-gray-500 dark:text-slate-400 hover:text-foreground",
                 item.disabled && "cursor-not-allowed opacity-50",
               )}
+
             >
               <span className="sm:hidden">{item.shortLabel ?? item.label}</span>
               <span className="hidden sm:inline">{item.label}</span>

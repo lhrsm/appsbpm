@@ -1,10 +1,9 @@
- import { useState } from "react";
+import { useState } from "react";
 import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { icons } from "@/design-system/icons";
-import ThemeToggle from "@/components/ThemeToggle";
 import sbpmLogo from "@/assets/sbpm-logo.jpeg";
 import PortalGlobalSearch from "./PortalGlobalSearch";
 import PortalNotificationCenter from "./PortalNotificationCenter";
@@ -33,17 +32,20 @@ export default function PortalHeader({
   environment,
 }: PortalHeaderProps) {
   const Menu = icons.menu;
-  const Ajuda = icons.ajuda;
 
-   const { isKeyboardOpen } = useMobileVisualViewport();
+  const { isKeyboardOpen } = useMobileVisualViewport();
   return (
-    <header className={cn("sticky top-0 z-40 w-full bg-header text-primary-foreground shadow-sm safe-pt safe-px", isKeyboardOpen && "hidden")}>
+    <header className={cn(
+      "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-colors",
+      "bg-white/92 text-gray-800 border-gray-900/10 dark:bg-slate-900/94 dark:text-slate-50 dark:border-white/10",
+      isKeyboardOpen && "hidden"
+    )}>
       <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-2 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
         <Button
           asChild
           variant="ghost"
           size="icon"
-          className="min-h-11 min-w-11 shrink-0 text-primary-foreground hover:bg-primary-foreground/15 md:hidden"
+          className="min-h-11 min-w-11 shrink-0 text-inherit hover:bg-black/5 dark:hover:bg-white/10 md:hidden"
           onClick={onOpenMenu}
         >
           <button
@@ -55,6 +57,8 @@ export default function PortalHeader({
             <Menu className="h-5 w-5" aria-hidden />
           </button>
         </Button>
+...
+
 
         <img
           src={sbpmLogo}
@@ -81,21 +85,9 @@ export default function PortalHeader({
         <div className="ml-auto flex shrink-0 items-center gap-0.5 lg:ml-0">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
           <PortalNotificationCenter />
-          <Button
-            variant="ghost"
-            size="icon"
-            asChild
-            className="hidden min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15 md:inline-flex"
-            aria-label="Central de ajuda"
-          >
-            <a href="/dashboard/faq">
-              <Ajuda className="h-5 w-5" aria-hidden />
-            </a>
-          </Button>
-          <ThemeToggle className="hidden min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15 md:inline-flex" />
-          <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
         </div>
       </div>
     </header>
+
   );
 }

@@ -16,7 +16,7 @@ export const PORTAL_VERSION = "2.0";
  export default function PortalFooter() {
   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
-    <footer className={cn("border-t bg-card/60 pb-bottom-nav mt-auto", isKeyboardOpen && "hidden")}>
+    <footer className={cn("border-t bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400 pb-bottom-nav mt-auto border-gray-900/10 dark:border-white/10", isKeyboardOpen && "hidden")}>
       <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-4 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <p className="text-xs break-anywhere">
           © {new Date().getFullYear()} SBPM — Sociedade Beneficente da Polícia Militar · Portal v{PORTAL_VERSION}
@@ -26,8 +26,9 @@ export const PORTAL_VERSION = "2.0";
             <li key={l.label}>
               <Link
                 to={l.to}
-                className="flex min-h-11 items-center text-xs transition hover:text-foreground hover:underline md:min-h-0"
+                className="flex min-h-11 items-center text-xs transition text-gray-600 dark:text-slate-400 hover:text-green-700 dark:hover:text-green-400 hover:underline md:min-h-0"
               >
+
                 {l.label}
               </Link>
             </li>

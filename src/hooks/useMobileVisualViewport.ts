@@ -1,39 +1,27 @@
 import { useState, useEffect } from "react";
 
 export function useMobileVisualViewport() {
-  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
+  const [viewportHeight, setViewportHeight] = useState("100dvh");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.visualViewport) return;
+    if (!window.visualViewport) return;
 
-    const updateViewport = () => {
-      const viewport = window.visualViewport!;
-      const height = viewport.height;
-      const offsetTop = viewport.offsetTop;
-
-      setViewportHeight(height);
+    const handleResize = () => {
+      const vv = window.visualViewport!;
+      const height = vv.height;
+      const isKeyboard = height < window.innerHeight * 0.85;
       
-      // Detect keyboard open: innerHeight is significantly larger than visualViewport height
-      const threshold = 120;
-      const isOpen = window.innerHeight - height > threshold;
-      setIsKeyboardOpen(isOpen);
-
+      setIsKeyboardOpen(isKeyboard);
+      setViewportHeight(`${height}px`);
+      
       document.documentElement.style.setProperty("--visual-viewport-height", `${height}px`);
-      document.documentElement.style.setProperty("--visual-viewport-offset-top", `${offsetTop}px`);
-      document.documentElement.setAttribute("data-keyboard-open", isOpen.toString());
     };
 
-    window.visualViewport.addEventListener("resize", updateViewport);
-    window.visualViewport.addEventListener("scroll", updateViewport);
-    
-    // Initial update
-    updateViewport();
+    window.visualViewport.addEventListener("resize", handleResize);
+    handleResize();
 
-    return () => {
-      window.visualViewport?.removeEventListener("resize", updateViewport);
-      window.visualViewport?.removeEventListener("scroll", updateViewport);
-    };
+    return () => window.visualViewport?.removeEventListener("resize", handleResize);
   }, []);
 
   return { viewportHeight, isKeyboardOpen };

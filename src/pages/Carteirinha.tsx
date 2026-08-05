@@ -52,14 +52,15 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden">
+    <div className="w-full max-w-full overflow-hidden digital-membership-card">
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] border-[1.5px] border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] rounded-[var(--portal-modal-radius)] shadow-[var(--portal-modal-shadow-light)] dark:shadow-[var(--portal-modal-shadow-dark)] overflow-hidden flex flex-col backdrop-blur-[var(--portal-modal-blur)] saturate-[150%]"
-        style={{ fontFamily: 'Arial, sans-serif' }}
+        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[28px] shadow-lg overflow-hidden flex flex-col backdrop-blur-none saturate-100"
+        style={{ fontFamily: 'Arial, sans-serif', colorScheme: 'light' }}
       >
         {/* Header com Logo/Foto e Título */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4 bg-white text-gray-800">
+
           <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
             <div className="relative shrink-0">
               {fotoUrl ? (
@@ -95,7 +96,7 @@ function CarteirinhaCard({
         </div>
 
         {/* Corpo do Cartão */}
-        <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1">
+        <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1 bg-white text-gray-800">
           {/* Nome e CPF */}
           <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
             <div className="flex-1 min-w-0 w-full">
@@ -127,7 +128,7 @@ function CarteirinhaCard({
           </div>
 
           {/* Linhas de Assinatura */}
-          <div className="flex justify-between items-end pt-3 sm:pt-4 border-t border-gray-200 gap-2">
+          <div className="flex justify-between items-end pt-3 sm:pt-4 border-t border-gray-200 gap-2 bg-white text-gray-800">
             <div className="text-center flex-1 min-w-0">
               <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
                 {presidenteAssinaturaUrl && (
