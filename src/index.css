@@ -359,12 +359,15 @@ html.a11y-reduce-motion *::after {
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
   }
 
   @media (min-width: 1280px) {
     .auth-card {
-      width: 100% !important; /* Will be constrained by parent .desktop-align-right */
+      width: 100% !important;
       padding: 32px 36px !important;
+      max-width: none !important;
+      height: auto !important;
     }
   }
 
@@ -532,9 +535,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1200px) {
     .portal-choice {
-      width: 100% !important; /* Follow expanded modal width */
-      padding: 16px 20px !important; /* Increased internal padding */
+      width: calc(100% - 56px) !important;
+      max-width: 480px !important;
+      padding: 16px 20px !important;
       margin-bottom: 4px !important;
+      margin-inline: auto !important;
     }
   }
 
@@ -628,10 +633,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1200px) {
     .portal-recovery-button {
-      width: 100% !important;
-      max-width: none !important;
+      width: calc(100% - 72px) !important;
+      max-width: 460px !important;
       height: 54px !important;
       margin-top: 20px !important;
+      margin-inline: auto !important;
     }
   }
 

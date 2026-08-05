@@ -22,11 +22,11 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
       <div className="auth-background" aria-hidden="true" />
       <div className="auth-overlay" style={{ background: "var(--portal-modal-overlay-light)", backdropFilter: "none", WebkitBackdropFilter: "none" }} aria-hidden="true" />
       <div className={cn(
-        "relative z-10 w-full min-h-dvh overflow-x-hidden flex",
+        "relative z-10 w-full flex",
         align === "right" ? "justify-end" : "justify-center"
       )}>
         <div className={cn(
-          "w-full flex flex-col items-center",
+          "w-full flex flex-col items-center min-h-dvh",
           align === "right" && "desktop-align-right"
         )}>
           {children}
@@ -35,9 +35,19 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
 
       <style dangerouslySetInnerHTML={{ __html: `
         @media (min-width: 1280px) {
+          .public-portal-root {
+            overflow: hidden !important;
+            height: 100dvh !important;
+          }
+          
+          .auth-page {
+            height: 100dvh !important;
+            overflow: hidden !important;
+          }
+
           .desktop-align-right {
             position: absolute !important;
-            top: clamp(52%, 56vh, 58%) !important;
+            top: clamp(54%, 58vh, 59%) !important;
             right: clamp(80px, 8vw, 180px) !important;
             left: auto !important;
             transform: translateY(-50%) !important;
@@ -46,23 +56,49 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             padding-right: 0 !important;
             display: flex !important;
             flex-direction: column !important;
+            overflow: visible !important;
+            height: auto !important;
+            min-height: unset !important;
+            max-height: none !important;
           }
 
           @media (max-height: 800px) {
             .desktop-align-right {
-              top: 53% !important;
+              top: 54% !important;
             }
           }
 
           @media (min-height: 801px) and (max-height: 1000px) {
             .desktop-align-right {
-              top: 56% !important;
+              top: 58% !important;
             }
           }
 
           @media (min-height: 1001px) {
             .desktop-align-right {
-              top: 55% !important;
+              top: 57% !important;
+            }
+          }
+
+          /* Fallback para telas muito baixas */
+          @media (max-height: 700px) {
+            .public-portal-root {
+              overflow-y: auto !important;
+              height: auto !important;
+            }
+            .auth-page {
+              height: auto !important;
+              min-height: 100dvh !important;
+              overflow-y: auto !important;
+            }
+            .desktop-align-right {
+              position: relative !important;
+              top: auto !important;
+              right: auto !important;
+              transform: none !important;
+              margin-left: auto !important;
+              margin-right: clamp(80px, 8vw, 180px) !important;
+              padding-block: 40px !important;
             }
           }
         }
