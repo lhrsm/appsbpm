@@ -6,7 +6,7 @@ import { Shield, Accessibility, Globe, Headset } from 'lucide-react';
 
 export default function PortalBoasVindas() {
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
         <PublicPortalWelcomeCard />
 
@@ -73,10 +73,10 @@ export default function PortalBoasVindas() {
             transform: scale(0.96);
             background: rgba(255, 255, 255, 1);
           }
-          @media (min-width: 1200px) {
+          @media (min-width: 1280px) {
             .desktop-footer-links {
-              max-width: 435px !important;
-              gap: 16px !important;
+              max-width: 540px !important;
+              gap: 20px !important;
               margin-top: 24px !important;
             }
             .external-link-card {

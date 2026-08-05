@@ -36,7 +36,7 @@ export default function PortalRecuperarAcesso() {
   };
 
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
         <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none overflow-hidden">
           <CardHeader className="pb-2 text-center">
