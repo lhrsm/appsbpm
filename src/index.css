@@ -370,7 +370,12 @@ html.a11y-reduce-motion *::after {
       padding: 32px 36px !important;
       max-width: none !important;
       height: auto !important;
+      max-height: calc(100dvh - 40px) !important;
       margin-inline: 0 !important;
+      overflow-y: auto !important;
+    }
+    .auth-card--wide {
+      width: clamp(580px, 42vw, 640px) !important;
     }
   }
 

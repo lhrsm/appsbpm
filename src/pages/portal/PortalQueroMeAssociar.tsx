@@ -12,7 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, BadgePlus, CheckCircle2, HelpCircle, Loader2, MessageCircle } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
-import { mascararCpf } from '@/lib/portalAcesso';
+import { CpfInput } from '@/components/CpfInput';
+import { RegistrationNumberInput } from '@/components/RegistrationNumberInput';
 import { isValidCPF, isValidEmail } from '@/lib/validate';
 import {
   enviarPreCadastro,
@@ -22,6 +23,7 @@ import {
   type PostoGraduacao,
 } from '@/lib/associacao';
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
+import { cn } from '@/lib/utils';
 
 const SUPORTE_WHATSAPP = 'https://wa.me/5571985496972';
 
@@ -103,47 +105,49 @@ export default function PortalQueroMeAssociar() {
 
   if (protocolo) {
     return (
-      <AuthBackgroundLayout align="center">
+      <AuthBackgroundLayout align="right">
         <PublicFlowModal>
-          <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none backdrop-blur-none">
-            <CardHeader className="text-center pb-2">
+          <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none overflow-hidden">
+            <CardHeader className="text-center pb-2 pt-6 space-y-1">
               <div className="flex justify-center mb-3">
-                <CheckCircle2 className="h-14 w-14 text-primary" aria-hidden="true" />
+                <CheckCircle2 className="h-14 w-14 text-primary animate-bounce-subtle" aria-hidden="true" />
               </div>
               <CardTitle className="text-2xl font-bold text-primary">Pré-cadastro enviado com sucesso</CardTitle>
-              <CardDescription>
+              <CardDescription className="text-[var(--public-description-light)] font-medium">
                 Recebemos suas informações e registramos seu interesse em se associar à SBPM.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4" role="status" aria-live="polite">
-              <p className="text-sm text-muted-foreground">
-                Para a conclusão da associação, será necessário fornecer outras informações e documentos para que a
-                instituição possa encaminhar o processo à SAEB.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                O setor responsável entrará em contato pelo telefone ou e-mail informado para orientar sobre as
-                próximas etapas e dar continuidade ao processo.
-              </p>
-
-              <div className="rounded-xl border bg-muted/40 p-4 text-center">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">Protocolo</p>
-                <p className="text-lg font-bold text-primary">{protocolo}</p>
+            <CardContent className="space-y-6 px-6 pb-8 pt-2" role="status" aria-live="polite">
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed text-center">
+                  Para a conclusão da associação, será necessário fornecer outras informações e documentos para que a
+                  instituição possa encaminhar o processo à SAEB.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed text-center">
+                  O setor responsável entrará em contato pelo telefone ou e-mail informado para orientar sobre as
+                  próximas etapas e dar continuidade ao processo.
+                </p>
               </div>
 
-              <div className="space-y-2">
-                <button type="button" className="portal-btn-primary w-full" onClick={() => navigate('/')}>
+              <div className="rounded-2xl border bg-primary/5 p-5 text-center border-primary/20">
+                <p className="text-xs uppercase tracking-widest font-semibold text-primary/70 mb-1">Protocolo</p>
+                <p className="text-2xl font-bold text-primary tracking-tight">{protocolo}</p>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                <button type="button" className="portal-btn-primary w-full h-12 rounded-xl" onClick={() => navigate('/')}>
                   Voltar ao início
                 </button>
-                <Link to="/faq" className="portal-btn-secondary w-full">
+                <Link to="/faq" className="portal-btn-secondary w-full h-12 flex items-center justify-center rounded-xl">
                   Consultar orientações
                 </Link>
                 <a
                   href={SUPORTE_WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="portal-btn-tertiary w-full"
+                  className="portal-btn-tertiary w-full h-12 flex items-center justify-center rounded-xl"
                 >
-                  <MessageCircle className="h-4 w-4" aria-hidden="true" /> Falar com o atendimento
+                  <MessageCircle className="h-4 w-4 mr-2" aria-hidden="true" /> Falar com o atendimento
                 </a>
               </div>
             </CardContent>
@@ -154,23 +158,22 @@ export default function PortalQueroMeAssociar() {
   }
 
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none backdrop-blur-none">
-          <CardHeader className="pb-2 text-center">
-            <div className="flex justify-center mb-3">
-              <img src={sbpmLogo} alt="SBPM" className="h-16 w-auto object-contain" />
+        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none overflow-hidden">
+          <CardHeader className="pb-4 pt-6 text-center space-y-2">
+            <div className="flex justify-center mb-1">
+              <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
-            <CardTitle className="flex items-center justify-center gap-2 text-2xl font-bold text-primary">
-              <BadgePlus className="h-6 w-6" aria-hidden="true" /> Pré-cadastro para associação
+            <CardTitle className="text-2xl font-bold text-primary leading-tight">
+              Quero me associar
             </CardTitle>
-            <CardDescription>
-              Informe seus dados para que a equipe da SBPM possa entrar em contato e orientar sobre as próximas etapas
-              do processo de associação.
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-sm">
+              Informe seus dados para que a equipe da SBPM possa entrar em contato.
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="px-6 pb-8 pt-2">
             <form onSubmit={submeter} className="space-y-4" noValidate aria-label="Formulário de pré-cadastro">
               <div className="space-y-2">
                 <Label htmlFor="nome">Nome completo</Label>
@@ -178,55 +181,49 @@ export default function PortalQueroMeAssociar() {
                   id="nome"
                   value={nome}
                   autoComplete="name"
+                  placeholder="Seu nome completo"
                   onChange={(e) => setNome(e.target.value)}
                   aria-invalid={!!erros.nome}
-                  aria-describedby={erros.nome ? 'erro-nome' : undefined}
-                  className="h-12"
+                  className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
                   disabled={enviando}
+                  onFocus={(e) => {
+                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                  }}
                 />
-                {erros.nome && <p id="erro-nome" className="text-xs font-medium text-destructive">{erros.nome}</p>}
+                {erros.nome && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.nome}</p>}
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input
-                    id="cpf"
-                    inputMode="numeric"
-                    value={cpf}
-                    onChange={(e) => setCpf(mascararCpf(e.target.value))}
-                    maxLength={14}
-                    aria-invalid={!!erros.cpf}
-                    aria-describedby={erros.cpf ? 'erro-cpf' : undefined}
-                    className="h-12"
-                    disabled={enviando}
-                  />
-                  {erros.cpf && <p id="erro-cpf" className="text-xs font-medium text-destructive">{erros.cpf}</p>}
-                </div>
+                <CpfInput
+                  label="CPF"
+                  value={cpf}
+                  onChange={setCpf}
+                  className="h-11 rounded-xl"
+                  disabled={enviando}
+                  error={erros.cpf}
+                  onFocus={(e) => {
+                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                  }}
+                />
 
-                <div className="space-y-2">
-                  <Label htmlFor="matricula">Matrícula</Label>
-                  <Input
-                    id="matricula"
-                    value={matricula}
-                    onChange={(e) => setMatricula(e.target.value.replace(/\s+/g, ''))}
-                    maxLength={30}
-                    aria-invalid={!!erros.matricula}
-                    aria-describedby={erros.matricula ? 'erro-matricula' : undefined}
-                    className="h-12"
-                    disabled={enviando}
-                  />
-                  {erros.matricula && (
-                    <p id="erro-matricula" className="text-xs font-medium text-destructive">{erros.matricula}</p>
-                  )}
-                </div>
+                <RegistrationNumberInput
+                  label="Matrícula"
+                  value={matricula}
+                  onChange={setMatricula}
+                  className="h-11 rounded-xl"
+                  disabled={enviando}
+                  error={erros.matricula}
+                  onFocus={(e) => {
+                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                  }}
+                />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="posto">Posto ou graduação</Label>
                 <Select value={postoId} onValueChange={setPostoId} disabled={enviando}>
-                  <SelectTrigger id="posto" className="h-12" aria-invalid={!!erros.posto}>
-                    <SelectValue placeholder="Selecione" />
+                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary" aria-invalid={!!erros.posto}>
+                    <SelectValue placeholder="Selecione seu posto ou graduação" />
                   </SelectTrigger>
                   <SelectContent>
                     {postos.map((p) => (
@@ -234,126 +231,149 @@ export default function PortalQueroMeAssociar() {
                     ))}
                   </SelectContent>
                 </Select>
-                {erros.posto && <p className="text-xs font-medium text-destructive">{erros.posto}</p>}
+                {erros.posto && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.posto}</p>}
               </div>
 
               {exigeComplemento && (
-                <div className="space-y-2">
+                <div className="space-y-2 animate-fade-in">
                   <Label htmlFor="postoOutro">Informe seu posto ou graduação</Label>
                   <Input
                     id="postoOutro"
                     value={postoOutro}
                     onChange={(e) => setPostoOutro(e.target.value)}
-                    className="h-12"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
                     disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
                   />
-                  {erros.postoOutro && <p className="text-xs font-medium text-destructive">{erros.postoOutro}</p>}
+                  {erros.postoOutro && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.postoOutro}</p>}
                 </div>
               )}
 
-              <fieldset className="space-y-2">
-                <legend className="text-sm font-medium">Situação funcional</legend>
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-primary/80">Situação funcional</Label>
                 <RadioGroup
                   value={situacao}
                   onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
-                  className="grid grid-cols-2 gap-3"
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
                 >
                   {(['regular', 'inativo'] as const).map((v) => (
                     <Label
                       key={v}
                       htmlFor={`sit-${v}`}
-                      className="flex cursor-pointer items-center gap-2 rounded-xl border bg-background/70 p-3 text-sm font-medium has-[:checked]:border-primary has-[:checked]:ring-2 has-[:checked]:ring-primary/25"
+                      className={cn(
+                        "flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200",
+                        situacao === v 
+                          ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm" 
+                          : "bg-white border-primary/20 hover:border-primary/40"
+                      )}
                     >
-                      <RadioGroupItem id={`sit-${v}`} value={v} />
+                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary" />
                       {v === 'regular' ? 'Ativo' : 'Inativo'}
                     </Label>
                   ))}
                 </RadioGroup>
-              </fieldset>
-
-              <div className="space-y-2">
-                <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  inputMode="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  aria-invalid={!!erros.email}
-                  className="h-12"
-                  disabled={enviando}
-                />
-                {erros.email && <p className="text-xs font-medium text-destructive">{erros.email}</p>}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="telefone">Telefone com WhatsApp</Label>
-                <Input
-                  id="telefone"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  value={telefone}
-                  onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
-                  maxLength={16}
-                  aria-invalid={!!erros.telefone}
-                  aria-describedby="ajuda-telefone"
-                  className="h-12"
-                  disabled={enviando}
-                />
-                <p id="ajuda-telefone" className="text-xs text-muted-foreground">
-                  Informe um número com WhatsApp — o contato da SBPM poderá ser feito por esse canal.
-                </p>
-                {erros.telefone && <p className="text-xs font-medium text-destructive">{erros.telefone}</p>}
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="email">E-mail</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="exemplo@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-invalid={!!erros.email}
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                  {erros.email && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.email}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="telefone">Telefone com WhatsApp</Label>
+                  <Input
+                    id="telefone"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="(00) 00000-0000"
+                    value={telefone}
+                    onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
+                    maxLength={16}
+                    aria-invalid={!!erros.telefone}
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                  {erros.telefone && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.telefone}</p>}
+                </div>
               </div>
 
-              <div className="rounded-xl border bg-muted/30 p-3">
-                <Label htmlFor="consent" className="flex cursor-pointer items-start gap-3 text-sm font-normal">
+              <div className={cn(
+                "rounded-2xl border p-5 transition-all duration-300",
+                consent ? "border-primary/40 bg-primary/5" : "border-primary/10 bg-white/40"
+              )}>
+                <Label htmlFor="consent" className="flex cursor-pointer items-start gap-4 text-sm font-normal">
                   <Checkbox
                     id="consent"
                     checked={consent}
                     onCheckedChange={(v) => setConsent(v === true)}
-                    className="mt-0.5"
+                    className="mt-0.5 h-5 w-5 rounded-md border-primary/40 data-[state=checked]:bg-primary"
                     disabled={enviando}
                   />
-                  <span>
-                    Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do
-                    processo.
+                  <span className="leading-relaxed">
+                    Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
                   </span>
                 </Label>
-                <p className="mt-2 pl-7 text-xs text-muted-foreground">
-                  Leia a <Link to="/privacidade" className="font-medium text-primary hover:underline">Política de Privacidade</Link>{' '}
-                  e os <Link to="/privacidade#termos" className="font-medium text-primary hover:underline">Termos de Uso</Link>.
-                </p>
-                {erros.consent && <p className="mt-1 text-xs font-medium text-destructive">{erros.consent}</p>}
+                <div className="mt-3 pl-9 flex flex-wrap gap-x-4 gap-y-1">
+                  <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
+                  <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                </div>
+                {erros.consent && <p className="mt-2 pl-9 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 
-              <div className="space-y-2 pt-1">
-                <button type="submit" className="portal-btn-primary w-full" disabled={enviando}>
+              <div className="space-y-3 pt-2">
+                <button 
+                  type="submit" 
+                  className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all" 
+                  disabled={enviando}
+                >
                   {enviando ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Enviando...
-                    </>
+                    <div className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                      <span>Enviando...</span>
+                    </div>
                   ) : (
                     'Enviar pré-cadastro'
                   )}
                 </button>
-                <button
-                  type="button"
-                  className="portal-btn-secondary w-full text-slate-700"
-                  onClick={() => navigate('/')}
-                  disabled={enviando}
-                >
-                  <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Cancelar
-                </button>
-                <a
-                  href={SUPORTE_WHATSAPP}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="portal-btn-tertiary w-full"
-                >
-                  <HelpCircle className="h-4 w-4" aria-hidden="true" /> Preciso de ajuda
-                </a>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    className="portal-btn-secondary h-11 flex items-center justify-center rounded-xl text-sm font-semibold"
+                    onClick={() => navigate('/')}
+                    disabled={enviando}
+                  >
+                    <ArrowLeft className="h-4 w-4 mr-2" aria-hidden="true" /> Voltar
+                  </button>
+                  <a
+                    href={SUPORTE_WHATSAPP}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="portal-btn-tertiary h-11 flex items-center justify-center rounded-xl text-sm font-semibold"
+                  >
+                    <HelpCircle className="h-4 w-4 mr-2" aria-hidden="true" /> Ajuda
+                  </a>
+                </div>
               </div>
             </form>
           </CardContent>
