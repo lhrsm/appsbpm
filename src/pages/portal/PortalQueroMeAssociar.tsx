@@ -2,6 +2,32 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 import { useToast } from '@/hooks/use-toast';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle, 
+  Button, 
+  Input, 
+  Checkbox, 
+  Label, 
+  Field, 
+  RadioCard, 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/design-system/components';
+import { 
+  ArrowLeft, 
+  CheckCircle2, 
+  CircleHelp, 
+  Loader2, 
+  Send, 
+  ShieldCheck 
+} from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { CpfInput } from '@/components/CpfInput';
@@ -16,9 +42,7 @@ import {
 } from '@/lib/associacao';
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 import { cn } from '@/lib/utils';
-import { useEffect, useMemo } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const SUPORTE_WHATSAPP = 'https://wa.me/5571985496972';
 
