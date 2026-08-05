@@ -910,3 +910,8 @@ html.a11y-comfortable li {
 [aria-busy="true"] [aria-hidden="true"] {
   pointer-events: none;
 }
+
+/* LGPD/Privacy adjustments for Floating Actions */
+body[data-lgpd-open="true"] .body-lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 180px\)\+env\(safe-area-inset-bottom\)\+12px\)\] {
+  bottom: calc(var(--lgpd-sheet-height, 180px) + env(safe-area-inset-bottom) + 12px) !important;
+}
