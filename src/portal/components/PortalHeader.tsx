@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,14 +33,14 @@ export default function PortalHeader({
 }: PortalHeaderProps) {
   const Menu = icons.menu;
 
-  const { isKeyboardOpen } = useMobileVisualViewport();
+  // Removido isKeyboardOpen pois o header deve ser fixo conforme especificação.
   return (
     <header className={cn(
       "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
       "bg-[hsl(var(--header-bg))] text-foreground border-border",
-      isKeyboardOpen && "hidden"
+      "h-14 md:h-16"
     )}>
-      <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
+      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <Button
           asChild
           variant="ghost"
@@ -60,17 +60,15 @@ export default function PortalHeader({
 ...
 
 
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
           <img
             src={sbpmLogo}
             alt="SBPM"
-            width={38}
-            height={38}
-            className="h-9 w-9 shrink-0 rounded-full bg-background object-cover p-0.5 md:h-10 md:w-10"
+            className="h-8 w-8 shrink-0 rounded-full object-cover"
           />
-          <div className="min-w-0">
+          <div className="min-w-0 hidden xs:block">
             <p className="truncate text-sm font-bold leading-tight">Portal da SBPM</p>
-            <p className="truncate text-[10px] sm:text-[11px] opacity-85">
+            <p className="truncate text-[10px] opacity-85 hidden sm:block">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
             </p>
           </div>

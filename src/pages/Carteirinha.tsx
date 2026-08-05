@@ -52,45 +52,43 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card">
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[28px] shadow-lg overflow-hidden flex flex-col backdrop-blur-none saturate-100 print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
-        style={{ fontFamily: 'Arial, sans-serif', colorScheme: 'light', minHeight: 'fit-content' }}
+        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
+        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content' }}
       >
         {/* Header com Logo/Foto e Título */}
-        <div className="flex items-center p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4 bg-white text-gray-800">
+        <div className="grid grid-cols-[auto,1fr] gap-3 p-3 border-b border-gray-200 bg-white text-gray-800 items-center">
 
-          <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
-            <div className="relative shrink-0">
-              {fotoUrl ? (
-                <img 
-                  src={fotoUrl} 
-                  alt={nome} 
-                  className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover border-2 border-gray-200"
-                />
-              ) : (
-                <img 
-                  src={sbpmLogo} 
-                  alt="SBPM" 
-                  className="h-14 w-14 sm:h-16 sm:w-16 object-contain"
-                />
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-base sm:text-lg font-bold text-gray-800 text-center sm:text-left leading-tight break-words">
-                Assistência Ambulatorial
-              </h2>
-            </div>
+          <div className="relative shrink-0">
+            {fotoUrl ? (
+              <img 
+                src={fotoUrl} 
+                alt={nome} 
+                className="h-11 w-11 rounded-full object-cover border border-gray-200"
+              />
+            ) : (
+              <img 
+                src={sbpmLogo} 
+                alt="SBPM" 
+                className="h-11 w-11 object-contain"
+              />
+            )}
           </div>
-          <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs">
-            <div className="flex gap-1">
-              <span className="text-gray-600">Matrícula: </span>
-              <span className="font-semibold">{matricula}</span>
-            </div>
-            <div className="flex gap-1">
-              <span className="text-gray-600">Expedição: </span>
-              <span className="font-semibold">{dataExpedicao}</span>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] items-center gap-x-4 gap-y-1">
+            <h2 className="text-sm font-bold text-gray-900 leading-tight">
+              Assistência Ambulatorial
+            </h2>
+            <div className="flex flex-col text-[10px] md:text-xs">
+              <div className="flex justify-between md:justify-end gap-2">
+                <span className="text-gray-500">Matrícula: </span>
+                <span className="font-semibold">{matricula}</span>
+              </div>
+              <div className="flex justify-between md:justify-end gap-2">
+                <span className="text-gray-500">Expedição: </span>
+                <span className="font-semibold">{dataExpedicao}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -98,32 +96,25 @@ function CarteirinhaCard({
         {/* Corpo do Cartão */}
         <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1 bg-white text-gray-800">
           {/* Nome e CPF */}
-          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-            <div className="flex-1 min-w-0 w-full">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 uppercase tracking-wide break-words leading-tight" style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)' }}>
+          <div className="flex flex-col gap-3">
+            <div className="w-full text-center">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide leading-tight break-words" style={{ fontSize: 'clamp(0.92rem, 4.2vw, 1.12rem)' }}>
                 {nome}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+              <p className="text-[11px] text-gray-500">
                 {tipo === 'titular' ? 'Associado' : tipoParentesco || 'Dependente'}
               </p>
-              {tipo === 'dependente' && nomeTitular && (
-                <div className="mt-2">
-                  <p className="text-xs sm:text-sm font-semibold text-gray-800 uppercase truncate">
-                    {nomeTitular}
-                  </p>
-                  <p className="text-[10px] sm:text-xs text-gray-600">Associado</p>
-                </div>
-              )}
             </div>
-            <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs pt-1">
-              <div className="flex gap-1 whitespace-nowrap">
-                <span className="text-gray-600">CPF.: </span>
-                <span className="font-semibold">{formatCpf(cpf)}</span>
-              </div>
-              <div className="flex gap-1 whitespace-nowrap">
-                <span className="text-gray-600">Validade: </span>
-                <span className="font-semibold">{dataValidade}</span>
-              </div>
+            
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+               <div className="flex flex-col">
+                  <span className="text-[10px] text-gray-500 uppercase">CPF</span>
+                  <span className="font-semibold">{formatCpf(cpf)}</span>
+               </div>
+               <div className="flex flex-col items-end">
+                  <span className="text-[10px] text-gray-500 uppercase">Validade</span>
+                  <span className="font-semibold">{dataValidade}</span>
+               </div>
             </div>
           </div>
 
