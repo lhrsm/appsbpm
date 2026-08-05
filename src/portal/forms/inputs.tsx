@@ -39,8 +39,8 @@ export interface TextInputProps extends Omit<InputHTMLAttributes<HTMLInputElemen
  *
  * @example <FormField label="Nome completo">{(f) => <TextInput {...f} autoComplete="name" />}</FormField>
  */
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInput(
-  { iconLeft: Left, iconRight: Right, prefix, suffix, loading, success, clearable, onClear, className, ...props },
+ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function TextInput(
+  { iconLeft: Left, iconRight: Right, prefix, suffix, loading, success, clearable, onClear, className, onFocus, ...props },
   ref,
 ) {
   const Spinner = icons.carregando;
@@ -60,7 +60,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
         {Left && <Left className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />}
         <input
           ref={ref}
-          className={cn(
+           className={cn(
             portalInputBase,
             prefix || suffix ? "rounded-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0" : "",
             Left && "pl-9",
@@ -69,6 +69,14 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(function T
             success && !invalid && "border-[hsl(var(--success))]",
             className,
           )}
+          onFocus={(e) => {
+            if (onFocus) onFocus(e);
+            if (window.innerHeight < 700 || document.documentElement.getAttribute('data-keyboard-open') === 'true') {
+              setTimeout(() => {
+                e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 300);
+            }
+          }}
           {...props}
         />
         {loading ? (

@@ -49,7 +49,10 @@
 
     --border: 220 15% 88%;
     --input: 220 15% 88%;
-    --ring: 145 63% 32%;
+     --ring: 145 63% 32%;
+
+    --visual-viewport-height: 100vh;
+    --visual-viewport-offset-top: 0px;
 
     --radius: 0.75rem;
 

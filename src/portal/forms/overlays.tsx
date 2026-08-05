@@ -1,4 +1,5 @@
-import { type ReactNode } from "react";
+ import { useEffect, type ReactNode } from "react";
+import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import {
   Dialog,
   DialogContent,
@@ -56,13 +57,17 @@ export function PortalModal({
   className,
   trigger,
 }: PortalModalProps) {
+   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
       <DialogContent
+        data-keyboard-open={isKeyboardOpen}
         className={cn(
-          "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
+           "flex max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] flex-col gap-4 overflow-hidden p-4 sm:w-full sm:p-6",
           "pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6",
+          "data-[keyboard-open=true]:max-h-[calc(var(--visual-viewport-height,100dvh)-1rem)]",
+          "data-[keyboard-open=true]:w-full data-[keyboard-open=true]:rounded-none data-[keyboard-open=true]:top-0 data-[keyboard-open=true]:translate-y-0",
           sizeClass[size],
           className,
         )}
@@ -106,11 +111,13 @@ export function PortalDrawer({
   trigger,
 }: PortalDrawerProps) {
   const { isMobile } = useBreakpoint();
+   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       {trigger && <SheetTrigger asChild>{trigger}</SheetTrigger>}
       <SheetContent
         side={isMobile ? "bottom" : side}
+        data-keyboard-open={isKeyboardOpen}
         className={cn(
           "flex flex-col gap-0 p-0",
           isMobile
