@@ -284,7 +284,8 @@
 
 .portal-btn-tertiary:hover:not(:disabled) {
   background: hsl(var(--primary) / 0.08);
-  text-decoration: underline;
+  border-color: hsl(var(--primary));
+  text-decoration: none;
 }
 
 .portal-btn-primary:focus-visible,
