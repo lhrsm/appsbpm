@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { Text } from "@/design-system/components/Text";
 import { Button } from "@/design-system/components/Button";
 import { Badge } from "@/design-system/components/Badge";
@@ -8,6 +9,7 @@ import { maskMatricula, maskNome, primeiroNome } from "@/portal/mask";
 import type { PortalProfile } from "@/portal/navigation";
 import type { DashboardUser } from "../types";
 import { DashboardLastUpdated } from "./DashboardPrimitives";
+
 
 function saudacao(date = new Date()) {
   const h = date.getHours();
@@ -46,13 +48,13 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
           "h-[160px] md:h-[190px] lg:h-[230px]"
         )}
         style={{
-          backgroundImage: `url(/assets/banner-institucional.png)`,
+          backgroundImage: `url(/sbpm.jpeg)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
         }}
-        loading="eager"
       >
+
         {/* Hero Overlay - Extremamente discreto conforme item 2 e 14 */}
         <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/18 via-black/10 to-transparent" />
       </div>
