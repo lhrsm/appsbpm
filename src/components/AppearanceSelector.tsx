@@ -25,7 +25,7 @@ export function AppearanceSelector({ className }: { className?: string }) {
               variant={active ? "default" : "outline"}
               className={cn(
                 "flex flex-col items-center gap-2 h-auto py-3 px-2 transition-all",
-                active ? "bg-primary text-primary-foreground border-primary" : "bg-card hover:bg-muted"
+                active ? "bg-primary text-primary-foreground border-primary" : "bg-secondary text-secondary-foreground hover:bg-accent"
               )}
               onClick={() => setTheme(option.id)}
             >
