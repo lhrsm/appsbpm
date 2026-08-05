@@ -42,11 +42,14 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
           .public-portal-root {
             overflow: hidden !important;
             height: 100dvh !important;
+            max-width: 100% !important;
           }
           
           .auth-page {
             height: 100dvh !important;
             overflow: hidden !important;
+            width: 100% !important;
+            max-width: 100% !important;
           }
 
           .desktop-grid-layout {
@@ -54,6 +57,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             grid-template-columns: 55% 45% !important;
             width: 100% !important;
             height: 100dvh !important;
+            overflow: hidden !important;
           }
 
           .desktop-auth-column {
@@ -65,6 +69,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             padding-right: 6vw !important;
             padding-top: 0 !important;
             width: 100% !important;
+            overflow: visible !important;
           }
 
           .desktop-auth-column .pwa-modal-page {
@@ -73,7 +78,14 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             justify-content: center !important;
             min-height: auto !important;
             height: auto !important;
+            overflow: visible !important;
             transform: translateY(65px) !important;
+            background: transparent !important;
+          }
+
+          .desktop-auth-column .pwa-modal-container {
+            overflow: visible !important;
+            transform: none !important;
           }
 
           @media (max-height: 900px) {
@@ -84,11 +96,10 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
 
           @media (max-height: 760px) {
             .desktop-auth-column .pwa-modal-page {
-              transform: translateY(20px) !important;
+              transform: translateY(8px) !important;
             }
           }
 
-          /* Removendo qualquer interferência de posicionamento absoluto residual */
           .desktop-align-right {
             position: static !important;
             top: auto !important;
@@ -98,7 +109,6 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
           }
         }
 
-        /* Fallback para telas muito baixas */
         @media (max-height: 700px) and (min-width: 1280px) {
           .public-portal-root {
             overflow-y: auto !important;
@@ -112,11 +122,15 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
           .desktop-grid-layout {
             height: auto !important;
             min-height: 100dvh !important;
+            overflow: visible !important;
           }
           .desktop-auth-column {
             height: auto !important;
             min-height: 100dvh !important;
             padding-block: 60px !important;
+          }
+          .desktop-auth-column .pwa-modal-page {
+            transform: none !important;
           }
         }
       `}} />
