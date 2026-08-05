@@ -67,9 +67,9 @@ export default function PortalEntrar() {
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
         <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="text-center pb-2">
+          <CardHeader className="text-center pb-2 pt-6">
             <div className="flex justify-center mb-4">
-              <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
+              <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight">Bem-vindo ao Portal da SBPM</CardTitle>
             <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug px-2">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
