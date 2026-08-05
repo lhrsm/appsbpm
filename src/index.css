@@ -525,19 +525,23 @@ html.a11y-reduce-motion *::after {
       color-scheme: light !important;
     }
 
+    body.public-portal-root .portal-title {
       color: #111827 !important;
     }
+
     body.public-portal-root .portal-description {
       color: #4b5563 !important;
     }
   }
 
 
-  .dark .auth-card {
+
+  .dark .auth-card:not(.public-portal-root .auth-card) {
     background: var(--portal-modal-bg-dark) !important;
     border: 1.5px solid var(--portal-modal-border-dark) !important;
     box-shadow: var(--portal-modal-shadow-dark) !important;
   }
+
 
   .portal-choice {
     background: rgba(255, 255, 255, 0.94) !important;

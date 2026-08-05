@@ -45,15 +45,15 @@ export default function PortalRecuperarAcesso() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="text-center pb-2 pt-6 space-y-1">
+        <Card className="auth-card border-0 animate-fade-in shadow-none p-0 overflow-hidden flex flex-col">
+          <CardHeader className="text-center pb-2 pt-6 space-y-1 px-6 flex-shrink-0">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug px-2">Recuperar acesso • Informe seus dados para as instruções.</CardDescription>
+            <CardDescription className="text-muted-foreground font-medium text-[0.80rem] leading-snug">Recuperar acesso • Informe seus dados para as instruções.</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 px-6 pb-6 pt-2 overflow-y-auto flex-grow">
             {enviado ? (
               <div className="space-y-4">
                 <Alert tone="info" icon={MailCheck} title="E-mail enviado">

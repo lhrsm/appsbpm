@@ -210,7 +210,7 @@ export default function PortalPrimeiroAcesso() {
             {etapa === 'identidade' && (
               <form onSubmit={validar} className="space-y-4">
                 <div className="space-y-3">
-                  <Label>Você é</Label>
+                  <Label required>Você é</Label>
                   <div className="grid grid-cols-2 gap-3">
                     <RadioCard
                       label="Associado(a)"
@@ -397,7 +397,7 @@ export default function PortalPrimeiroAcesso() {
             {etapa === 'senha' && (
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="senha">Crie sua senha</Label>
+                  <Label htmlFor="senha" required>Crie sua senha</Label>
                   <div className="relative">
                     <Input
                       id="senha"
@@ -425,7 +425,7 @@ export default function PortalPrimeiroAcesso() {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmacao">Confirme sua senha</Label>
+                  <Label htmlFor="confirmacao" required>Confirme sua senha</Label>
                   <Input
                     id="confirmacao"
                     type={verSenha ? 'text' : 'password'}
