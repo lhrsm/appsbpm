@@ -26,91 +26,105 @@ function mesAno(iso?: string | null) {
 export interface DashboardWelcomeHeroProps {
   profileType: PortalProfile;
   user: DashboardUser;
-  /** Permite exibir a ação de atualização cadastral. */
-  canEditProfile?: boolean;
 }
 
-/** Hero de boas-vindas do portal (associado e dependente). */
-export function DashboardWelcomeHero({ profileType, user, canEditProfile = true }: DashboardWelcomeHeroProps) {
+/** Hero de boas-vindas do portal (associado e dependente) - Versão Refinada Premium. */
+export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHeroProps) {
   const isDependente = profileType === "dependent";
-  const nome = primeiroNome(user.nome) || "associado";
+  const nome = primeiroNome(user.nome).toUpperCase() || "ASSOCIADO";
   const desde = mesAno(user.associadoDesde);
-
-  const detalhes = isDependente
-    ? [
-        user.parentesco ? `Vínculo: ${user.parentesco}` : null,
-        user.titularNome ? `Dependente de ${maskNome(user.titularNome)}` : null,
-        user.vinculoAtivo === false ? "Vínculo inativo" : "Vínculo ativo",
-      ]
-    : [
-        user.matricula ? `Matrícula ${maskMatricula(user.matricula)}` : null,
-        user.vinculoAtivo === false ? "Vínculo inativo" : "Vínculo ativo",
-        desde ? `Associado desde ${desde}` : null,
-      ];
 
   return (
     <section
       aria-label="Boas-vindas"
-      className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary via-primary/95 to-primary/75 p-5 text-primary-foreground md:p-7"
+      className="relative mb-12 animate-fade-in"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-primary-foreground/10"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-24 right-24 h-48 w-48 rounded-full bg-primary-foreground/5"
-      />
-
-      <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="flex min-w-0 items-center gap-4">
-          <Avatar
-            src={user.fotoUrl}
-            name={user.nome}
-            size="lg"
-            className="hidden border-primary-foreground/40 sm:flex"
-          />
-          <div className="min-w-0 space-y-1">
-            <Text variant="h3" as="h1" className="text-primary-foreground">
-              {saudacao()}, {nome}.
-            </Text>
-            <Text variant="body" className="text-primary-foreground/90">
-              {isDependente ? "Bem-vindo(a) ao seu Portal da SBPM." : "Bem-vindo ao seu Portal da SBPM."}
-            </Text>
-            <p className="hidden text-sm text-primary-foreground/80 sm:block">
-              {detalhes.filter(Boolean).join(" · ")}
-            </p>
-            {isDependente && (
-              <Badge tone="neutral" className="border-primary-foreground/30 bg-primary-foreground/15 text-primary-foreground sm:hidden">
-                Dependente
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          <Button variant="secondary" size="md" leftIcon={icons.perfil} asChild className="w-full sm:w-auto">
-            <Link to="/dashboard/perfil">Ver meu perfil</Link>
-          </Button>
-          {canEditProfile && (
-            <Button
-              variant="ghost"
-              size="md"
-              leftIcon={icons.editar}
-              asChild
-              className="w-full text-primary-foreground hover:bg-primary-foreground/15 sm:w-auto"
-            >
-              <Link to="/dashboard/perfil">Atualizar meus dados</Link>
-            </Button>
-          )}
-        </div>
+      {/* 2. IMAGEM DO HEADER */}
+      <div 
+        className={cn(
+          "relative w-full overflow-hidden rounded-[24px] shadow-lg transition-all duration-500 animate-in fade-in duration-700",
+          "h-[160px] md:h-[190px] lg:h-[230px]"
+        )}
+        style={{
+          backgroundImage: `url(/assets/banner-institucional.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+        }}
+        loading="eager"
+      >
+        {/* Hero Overlay - Extremamente discreto conforme item 2 e 14 */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/18 via-black/10 to-transparent" />
       </div>
 
-      {user.atualizadoEm && (
-        <div className="relative mt-4 hidden text-primary-foreground/80 sm:block">
-          <DashboardLastUpdated date={user.atualizadoEm} />
+      {/* 5. CARD DE BOAS-VINDAS (Sobreposição conforme item 9) */}
+      <div 
+        className={cn(
+          "relative z-20 mx-auto -mt-16 w-[92%] sm:w-[85%] md:w-[80%] lg:w-full lg:max-w-none",
+          "animate-in slide-in-from-bottom-6 duration-500 delay-200"
+        )}
+      >
+        <div 
+          className={cn(
+            "flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between lg:p-8",
+            "rounded-[24px] border border-white/18 bg-[rgba(18,120,60,0.78)] shadow-[0_20px_60px_rgba(0,0,0,0.18)] backdrop-blur-[14px] text-white"
+          )}
+        >
+          <div className="flex items-center gap-5">
+            {/* 6. FOTO DO ASSOCIADO */}
+            <div className="relative group">
+              <Avatar
+                src={user.fotoUrl}
+                name={user.nome}
+                className={cn(
+                  "border-2 border-white shadow-md transition-transform duration-300 group-hover:scale-105",
+                  "h-14 w-14 md:h-16 w-16 lg:h-[72px] lg:w-[72px]"
+                )}
+              />
+              {!user.fotoUrl && (
+                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-white/10 pointer-events-none">
+                  <icons.associados className="h-1/2 w-1/2 text-white/40" />
+                </div>
+              )}
+            </div>
+
+            <div className="min-w-0 flex-1">
+              {/* 7. TEXTO */}
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-2xl font-bold tracking-tight md:text-[28px] lg:text-[34px]">
+                  {saudacao()}, {nome}.
+                </h1>
+                
+                {/* 8. BADGES */}
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-emerald-500/20 border-emerald-500/30 text-emerald-300 text-[10px] uppercase font-bold py-0 h-5">
+                    <span className="mr-1">🟢</span> Associado Ativo
+                  </Badge>
+                  <Badge className="bg-blue-500/20 border-blue-500/30 text-blue-300 text-[10px] uppercase font-bold py-0 h-5">
+                    <span className="mr-1">🔵</span> PMBA
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="mt-1 text-sm font-medium text-white/90 md:text-base">
+                Bem-vindo ao Portal da SBPM
+              </p>
+
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-white/80 md:text-sm">
+                {user.matricula && (
+                  <>
+                    <span>Matrícula {maskMatricula(user.matricula)}</span>
+                    <span className="opacity-40">•</span>
+                  </>
+                )}
+                <span>Situação Regular</span>
+                <span className="opacity-40">•</span>
+                <span>Associação {desde || "—"}</span>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </section>
   );
 }
