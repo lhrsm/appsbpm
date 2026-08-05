@@ -1,10 +1,29 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { PublicPortalWelcomeCard } from '@/components/portal/PublicPortalWelcomeCard';
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 import { Shield, Accessibility, Globe, Headset } from 'lucide-react';
+import { useNavigationState } from '@/hooks/useNavigationState';
+import { useEffect } from 'react';
+
 
 export default function PortalBoasVindas() {
+  const navigate = useNavigate();
+  const { setIsNavigating } = useNavigationState();
+
+  useEffect(() => {
+    // Garantir que o loader seja fechado ao montar esta página (ex: ao voltar)
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
+  const handleInternalNav = (to: string, message: string) => {
+    setIsNavigating(true, message);
+    setTimeout(() => {
+      navigate(to);
+      setTimeout(() => setIsNavigating(false), 300);
+    }, 100);
+  };
+
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
@@ -15,21 +34,22 @@ export default function PortalBoasVindas() {
             aria-label="Links institucionais"
             className="mt-[12px] flex flex-wrap justify-center gap-[12px] w-full max-w-[480px] mx-auto pb-4 px-[4%] desktop-footer-links"
           >
-            <Link 
-              to="/privacidade" 
-              className="external-link-circle"
+            <button 
+              onClick={() => handleInternalNav('/privacidade', 'Carregando política de privacidade...')}
+              className="external-link-circle border-0 cursor-pointer"
               title="Privacidade"
             >
               <Shield className="h-5 w-5" />
-            </Link>
-
-            <Link 
-              to="/acessibilidade" 
-              className="external-link-circle"
+            </button>
+ 
+            <button 
+              onClick={() => handleInternalNav('/acessibilidade', 'Carregando preferências de acessibilidade...')}
+              className="external-link-circle border-0 cursor-pointer"
               title="Acessibilidade"
             >
               <Accessibility className="h-5 w-5" />
-            </Link>
+            </button>
+
 
             <a 
               href="https://www.sbpmbahia.com.br" 

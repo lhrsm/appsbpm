@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import { cn } from '@/lib/utils';
+import { useNavigationState } from '@/hooks/useNavigationState';
+
 
 const CAMINHOS = [
   {
@@ -29,6 +31,20 @@ const CAMINHOS = [
 ];
 
 export function PublicPortalWelcomeCard() {
+  const navigate = useNavigate();
+  const { setIsNavigating } = useNavigationState();
+
+  const handleNavigation = (to: string, message: string) => {
+    setIsNavigating(true, message);
+    // Pequeno delay para garantir que o loader apareça antes da navegação se o chunk demorar
+    setTimeout(() => {
+      navigate(to);
+      // O loader será fechado pelo useEffect no destino ou pelo Suspense fallback
+      // Mas por segurança, se a rota for imediata, limpamos após um tempo mínimo
+      setTimeout(() => setIsNavigating(false), 300);
+    }, 100);
+  };
+
   return (
     <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
       <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
@@ -67,12 +83,13 @@ export function PublicPortalWelcomeCard() {
         </nav>
 
         <div className="flex justify-center">
-          <Link 
-            to="/recuperar-acesso" 
-            className="portal-recovery-button"
+          <button 
+            onClick={() => handleNavigation('/recuperar-acesso', 'Abrindo a recuperação de acesso...')}
+            className="portal-recovery-button border-0 bg-transparent cursor-pointer"
           >
             <HelpCircle aria-hidden="true" /> Recuperar acesso
-          </Link>
+          </button>
+
         </div>
 
       </CardContent>
