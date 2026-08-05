@@ -174,7 +174,7 @@ export default function PortalQueroMeAssociar() {
           </CardHeader>
 
           <CardContent className="px-6 pb-8 pt-2">
-            <form onSubmit={submeter} className="space-y-5" noValidate aria-label="Formulário de pré-cadastro">
+            <form onSubmit={submeter} className="space-y-4" noValidate aria-label="Formulário de pré-cadastro">
               <div className="space-y-2">
                 <Label htmlFor="nome">Nome completo</Label>
                 <Input
