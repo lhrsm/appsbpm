@@ -1,3 +1,6 @@
+ import { useState } from "react";
+import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { icons } from "@/design-system/icons";
@@ -32,8 +35,9 @@ export default function PortalHeader({
   const Menu = icons.menu;
   const Ajuda = icons.ajuda;
 
+   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
-    <header className="sticky top-0 z-40 w-full bg-header text-primary-foreground shadow-sm safe-pt safe-px">
+    <header className={cn("sticky top-0 z-40 w-full bg-header text-primary-foreground shadow-sm safe-pt safe-px", isKeyboardOpen && "hidden")}>
       <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-2 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
         <Button
           asChild
