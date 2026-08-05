@@ -37,7 +37,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
         @media (min-width: 1280px) {
           .desktop-align-right {
             position: absolute !important;
-            top: 50% !important;
+            top: clamp(52%, 56vh, 58%) !important;
             right: clamp(80px, 8vw, 180px) !important;
             left: auto !important;
             transform: translateY(-50%) !important;
@@ -46,6 +46,24 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             padding-right: 0 !important;
             display: flex !important;
             flex-direction: column !important;
+          }
+
+          @media (max-height: 800px) {
+            .desktop-align-right {
+              top: 53% !important;
+            }
+          }
+
+          @media (min-height: 801px) and (max-height: 1000px) {
+            .desktop-align-right {
+              top: 56% !important;
+            }
+          }
+
+          @media (min-height: 1001px) {
+            .desktop-align-right {
+              top: 55% !important;
+            }
           }
         }
       `}} />
