@@ -403,11 +403,12 @@ html.a11y-reduce-motion *::after {
     transform: translateY(3vh);
   }
 
-  @media (max-height: 700px) {
+  @media (max-width: 400px) {
     .pwa-modal-page {
-      justify-content: flex-start;
-      padding-top: 28px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
+  }
     .pwa-modal-page[data-keyboard-open="false"] .pwa-modal-container {
       transform: none;
     }
@@ -502,19 +503,11 @@ html.a11y-reduce-motion *::after {
     gap: 12px !important;
   }
 
-  @media (max-width: 359px) {
+  @media (max-width: 400px) {
     .portal-choice {
-      width: calc(100% - 44px) !important;
-      max-width: 270px !important;
-      padding: 12px !important;
-      min-height: 82px !important;
+      width: 96% !important;
+      padding: 12px 14px !important;
       gap: 10px !important;
-    }
-  }
-
-  @media (min-width: 390px) and (max-width: 430px) {
-    .portal-choice {
-      max-width: 290px !important;
     }
   }
 
@@ -568,18 +561,18 @@ html.a11y-reduce-motion *::after {
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
-    min-height: 44px !important;
-    padding: 10px 20px !important;
+    height: 48px !important;
+    padding: 0 24px !important;
     border-radius: 999px !important;
     background: #168a49 !important;
     color: #ffffff !important;
-    border: 1px solid #168a49 !important;
+    border: none !important;
     font-weight: 700 !important;
-    font-size: 0.90rem !important;
+    font-size: 0.95rem !important;
     box-shadow: 0 8px 20px rgba(22, 138, 73, 0.24) !important;
-    width: auto !important;
-    min-width: 190px !important;
-    max-width: 240px !important;
+    width: 78% !important;
+    min-width: 200px !important;
+    max-width: 300px !important;
     margin-top: 14px !important;
     margin-bottom: 2px !important;
     transition: all 0.2s ease-in-out !important;
