@@ -44,16 +44,6 @@ export function FloatingActionsManager() {
       </div>
 
 
-      <style>{`
-        :root {
-          --bottom-navigation-height: 72px;
-        }
-        @media (min-width: 768px) {
-          :root {
-            --bottom-navigation-height: 0px;
-          }
-        }
-      `}</style>
     </>
   );
 }

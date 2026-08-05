@@ -467,14 +467,14 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
-              <Download className="h-4 w-4 mr-2" />
-              Baixar (PDF)
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
+              <Download className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Baixar (PDF)</span>
             </Button>
-            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
-              <Share2 className="h-4 w-4 mr-2" />
-              Compartilhar
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-[10px] border-[rgba(22,163,74,0.46)] hover:bg-green-50 dark:hover:bg-slate-700">
+              <Share2 className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Compartilhar</span>
             </Button>
           </div>
         </div>
@@ -558,14 +558,14 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
-              <Download className="h-4 w-4 mr-2" />
-              Baixar (PDF)
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
+              <Download className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Baixar (PDF)</span>
             </Button>
-            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
-              <Share2 className="h-4 w-4 mr-2" />
-              Compartilhar
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-[10px] border-[rgba(22,163,74,0.46)] hover:bg-green-50 dark:hover:bg-slate-700">
+              <Share2 className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Compartilhar</span>
             </Button>
           </div>
         </div>
