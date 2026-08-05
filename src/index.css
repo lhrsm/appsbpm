@@ -349,9 +349,10 @@ html.a11y-reduce-motion *::after {
     padding: 24px;
     position: relative;
     z-index: 10;
-    width: calc(100% - 32px);
-    max-width: 380px;
+    width: 380px;
+    max-width: 100%;
     margin-inline: auto;
+
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -359,15 +360,16 @@ html.a11y-reduce-motion *::after {
 
   @media (max-width: 359px) {
     .auth-card {
-      width: calc(100% - 20px);
-      max-width: 340px;
+      width: 319px;
+      max-width: 100%;
+
       padding: 20px 16px;
     }
   }
 
   @media (min-width: 390px) and (max-width: 430px) {
     .auth-card {
-      max-width: 390px;
+      width: 380px;
     }
   }
 
@@ -416,9 +418,11 @@ html.a11y-reduce-motion *::after {
     max-width: 480px;
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente os filhos */
     margin-inline: auto;
     transition: transform 0.3s ease-out;
   }
+
 
 
   @media (max-width: 359px) {
