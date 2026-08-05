@@ -78,7 +78,7 @@ export default function PortalEntrar() {
                   value={credential}
                   onChange={(e) => handleCredentialChange(e.target.value)}
                   maxLength={14}
-                  className="h-12 text-lg"
+                  className="h-10 text-base"
                   disabled={loading}
                 />
               </div>
@@ -92,13 +92,13 @@ export default function PortalEntrar() {
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-12 pr-12 text-lg"
+                    className="h-10 pr-12 text-base"
                     disabled={loading}
                   />
                   <button
                     type="button"
                     onClick={() => setVerSenha((v) => !v)}
-                    className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
                   >
                     {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
@@ -106,7 +106,7 @@ export default function PortalEntrar() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-12 text-lg font-semibold" disabled={loading}>
+              <Button type="submit" className="w-full h-10 text-base font-semibold" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" /> Acessando...
