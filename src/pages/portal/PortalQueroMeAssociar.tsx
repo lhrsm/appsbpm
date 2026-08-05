@@ -372,7 +372,7 @@ export default function PortalQueroMeAssociar() {
                     href={SUPORTE_WHATSAPP}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="portal-btn-tertiary h-11 flex items-center justify-center rounded-xl text-sm font-semibold"
+                    className="portal-btn-tertiary h-11 flex items-center justify-center rounded-xl text-sm font-semibold shadow-sm"
                   >
                     <HelpCircle className="h-4 w-4 mr-2" aria-hidden="true" /> Ajuda
                   </a>
