@@ -409,6 +409,12 @@ html.a11y-reduce-motion *::after {
       padding-right: 16px;
     }
   }
+
+  @media (max-height: 700px) {
+    .pwa-modal-page {
+      justify-content: flex-start;
+      padding-top: 28px;
+    }
     .pwa-modal-page[data-keyboard-open="false"] .pwa-modal-container {
       transform: none;
     }
