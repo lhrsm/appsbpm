@@ -116,22 +116,23 @@
   }
 
   .public-portal-root label {
-    color: var(--field-label) !important;
+    color: #263244 !important;
     font-weight: 600 !important;
   }
   
   .public-portal-root .text-muted-foreground {
-    color: var(--field-helper) !important;
+    color: #475569 !important;
   }
 
   .public-portal-root .text-primary {
-    color: var(--link-color) !important;
+    color: #166534 !important;
     font-weight: 600 !important;
   }
 
   .public-portal-root .portal-description {
-    color: var(--field-helper) !important;
+    color: #475569 !important;
   }
+
 }
 
 /* Custom Utilities */
@@ -342,11 +343,11 @@ html.a11y-reduce-motion *::after {
   }
 
   .auth-card {
-    background: var(--public-card-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.70) !important;
-    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(9px) saturate(118%) !important;
+    -webkit-backdrop-filter: blur(9px) saturate(118%) !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.68) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14) !important;
     border-radius: 28px !important;
     padding: 16px 12px !important;
     position: relative;
@@ -354,6 +355,7 @@ html.a11y-reduce-motion *::after {
     width: 388px;
     max-width: calc(100% - 24px);
     margin-inline: auto;
+    color: #1f2937 !important;
 
     height: auto;
     min-height: unset;
@@ -496,40 +498,51 @@ html.a11y-reduce-motion *::after {
   }
 
   /* Forçar tema claro em dispositivos mobile/PWA para a página pública se o sistema estiver em dark */
+  .public-portal-root,
+  .public-portal-root .pwa-modal-page {
+    color-scheme: light !important;
+  }
+  
+  .public-portal-root input,
+  .public-portal-root textarea,
+  .public-portal-root select,
+  .public-portal-root button {
+    color-scheme: light !important;
+  }
+
+  /* Autofill no Chrome Android */
+  .public-portal-root input:-webkit-autofill,
+  .public-portal-root input:-webkit-autofill:hover,
+  .public-portal-root input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    transition: background-color 9999s ease-out !important;
+  }
+
   @media (max-width: 1024px) {
-    :root:has(body.public-portal-root) {
-      color-scheme: light !important;
-    }
     body.public-portal-root {
-      background-color: #dfe6eb !important;
+      background-color: #e8efe9 !important;
       color: #1f2937 !important;
       color-scheme: light !important;
     }
-    body.public-portal-root .auth-card {
-      background: rgba(255, 255, 255, 0.52) !important;
-      border-color: rgba(22, 163, 74, 0.70) !important;
-      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
-      backdrop-filter: blur(8px) saturate(118%) !important;
-      -webkit-backdrop-filter: blur(8px) saturate(118%) !important;
-    }
-    body.public-portal-root .portal-choice {
-      background: rgba(255, 255, 255, 0.94) !important;
-      border-color: rgba(22, 163, 74, 0.50) !important;
-    }
+
     body.public-portal-root .portal-title {
       color: #111827 !important;
     }
+
     body.public-portal-root .portal-description {
       color: #4b5563 !important;
     }
   }
 
 
-  .dark .auth-card {
+
+  .dark .auth-card:not(.public-portal-root .auth-card) {
     background: var(--portal-modal-bg-dark) !important;
     border: 1.5px solid var(--portal-modal-border-dark) !important;
     box-shadow: var(--portal-modal-shadow-dark) !important;
   }
+
 
   .portal-choice {
     background: rgba(255, 255, 255, 0.94) !important;

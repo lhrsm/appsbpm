@@ -42,20 +42,20 @@
   --gray-900: 220 20% 12%;
 
   /* Verdes institucionais */
-  --green-main: 145 63% 32%;
-  --green-dark: 145 68% 22%;
+  --green-main: 145 63% 32%; /* #168a49 */
+  --green-dark: 145 68% 22%; /* #15803d */
   --green-medium: 145 55% 42%;
   --green-light: 145 45% 90%;
 
   /* Form/Field Tokens (UI Audit) */
-  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-bg: #ffffff;
   --field-border: rgba(22, 163, 74, 0.58);
   --field-border-focus: #159447;
   --field-focus-ring: rgba(22, 163, 74, 0.14);
   --field-text: #1f2937;
-  --field-label: #243041;
+  --field-label: #263244;
   --field-placeholder: #7b8796;
-  --field-helper: #64748b;
+  --field-helper: #475569;
   --field-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 
   --link-color: #166534;
