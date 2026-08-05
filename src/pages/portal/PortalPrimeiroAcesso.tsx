@@ -191,19 +191,21 @@ export default function PortalPrimeiroAcesso() {
   };
 
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none overflow-hidden">
-          <CardHeader className="pb-2 text-center">
-            <div className="flex justify-center mb-3">
+        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
+          <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
+            <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">{TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}</CardDescription>
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">
+              {TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}
+            </CardDescription>
             <Progress value={progresso} className="mt-3 h-2" />
           </CardHeader>
 
-          <CardContent className="space-y-5">
+          <CardContent className="px-4 pb-4 pt-4 space-y-5">
             {erro && (
               <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                 {erro}
@@ -217,12 +219,12 @@ export default function PortalPrimeiroAcesso() {
                   <RadioGroup
                     value={personType}
                     onValueChange={(v) => { setPersonType(v as PersonType); setExtras({}); }}
-                    className="grid grid-cols-2 gap-2"
+                    className="grid grid-cols-2 gap-3"
                   >
-                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
                       <RadioGroupItem value="associate" /> Associado(a)
                     </Label>
-                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
                       <RadioGroupItem value="dependent" /> Dependente
                     </Label>
                   </RadioGroup>
@@ -422,64 +424,59 @@ export default function PortalPrimeiroAcesso() {
                       autoComplete="new-password"
                       value={senha}
                       onChange={(e) => setSenha(e.target.value)}
-                      className="h-11 pr-12"
+                      className="h-11 pr-10"
                     />
                     <button
                       type="button"
-                      onClick={() => setVerSenha((v) => !v)}
-                      className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                      onClick={() => setVerSenha(!verSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     >
-                      {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {verSenha ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
-                  <Progress value={(forca.score / 4) * 100} className="h-1.5" />
-                  <p className="text-xs text-muted-foreground">
+                  <div className="flex gap-1 h-1">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className={`flex-1 rounded-full ${forca.score >= i ? 'bg-primary' : 'bg-muted'}`} />
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground leading-tight">
                     Força: {forca.label} — mínimo de 10 caracteres com maiúscula, minúscula, número e símbolo.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="conf">Confirme a senha</Label>
-                  <Input id="conf" type={verSenha ? 'text' : 'password'} value={confirmacao} onChange={(e) => setConfirmacao(e.target.value)} className="h-11" />
+                  <Label htmlFor="confirmacao">Confirme sua senha</Label>
+                  <Input
+                    id="confirmacao"
+                    type={verSenha ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    value={confirmacao}
+                    onChange={(e) => setConfirmacao(e.target.value)}
+                    className="h-11"
+                  />
                 </div>
-                <Button
-                  className="w-full h-11"
-                  onClick={() => setEtapa('termos')}
-                  disabled={!senhaValida(senha) || senha !== confirmacao}
-                >
-                  Continuar
+                <Button className="w-full h-11" onClick={() => setEtapa('termos')} disabled={loading || !senhaValida(senha) || senha !== confirmacao}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Continuar'}
                 </Button>
               </div>
             )}
 
             {etapa === 'termos' && (
               <div className="space-y-5">
-                <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
-                  <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span>Última etapa: leia e aceite os termos para liberar o seu acesso.</span>
-                </p>
-
-                <div className="rounded-lg border bg-card shadow-sm">
-                  <div className="flex items-center justify-between border-b px-4 py-2.5">
-                    <span className="text-sm font-semibold text-foreground">Termos de Uso</span>
-                    <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Role para ler</span>
-                  </div>
-                  <div className="max-h-44 space-y-3 overflow-y-auto px-4 py-3 text-xs leading-relaxed text-muted-foreground">
-                    <p>
-                      O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
-                      carteirinha digital.
-                    </p>
-                    <p>
-                      O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
-                      responsável por manter a confidencialidade da sua senha.
-                    </p>
-                    <p>
-                      Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
-                      associativos e mantidos com registro de auditoria dos acessos.
-                    </p>
-                  </div>
+                <div className="rounded-lg border bg-muted/20 p-4 max-h-60 overflow-y-auto text-[11px] space-y-3 leading-relaxed text-muted-foreground">
+                  <h4 className="font-bold text-sm text-foreground">Termos de Uso e Privacidade</h4>
+                  <p>
+                    O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
+                    carteirinha digital.
+                  </p>
+                  <p>
+                    O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
+                    responsável por manter a confidencialidade da sua senha.
+                  </p>
+                  <p>
+                    Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
+                    associativos e mantidos com registro de auditoria dos acessos.
+                  </p>
                 </div>
-
                 <div className="space-y-3">
                   <Label
                     className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
@@ -504,7 +501,6 @@ export default function PortalPrimeiroAcesso() {
                     </span>
                   </Label>
                 </div>
-
                 <Button className="w-full h-11 font-semibold" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
                   {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Concluir cadastro'}
                 </Button>
@@ -519,23 +515,52 @@ export default function PortalPrimeiroAcesso() {
                   Seu acesso foi criado com sucesso. A partir de agora, entre com seu CPF ou matrícula e a senha
                   cadastrada.
                 </p>
-                <Button className="w-full h-11" onClick={() => navigate('/dashboard')}>
-                  Ir para o portal
+                <Button className="w-full h-11" onClick={() => navigate('/entrar')}>
+                  Acessar o Portal
                 </Button>
               </div>
             )}
 
             {etapa !== 'concluido' && (
-              <Button asChild variant="ghost" className="w-full text-slate-600">
-                <Link to="/">
-                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Voltar
-                </Link>
-              </Button>
+              <div className="flex justify-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (etapa === 'identidade') navigate('/');
+                    else {
+                      const prev = ORDEM[ORDEM.indexOf(etapa) - 1];
+                      setEtapa(prev);
+                    }
+                  }}
+                  className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
+                </button>
+              </div>
             )}
           </CardContent>
+
           <style dangerouslySetInnerHTML={{ __html: `
             .clamp-title {
               font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
+            }
+            .desktop-header-respiro {
+              padding-top: 8px !important;
+              padding-bottom: 12px !important;
+            }
+            @media (min-width: 1200px) {
+              .desktop-header-respiro h3 {
+                margin-top: 12px !important;
+                margin-bottom: 6px !important;
+              }
+              .desktop-header-respiro p {
+                margin-bottom: 12px !important;
+              }
+            }
+            @media (max-width: 359px) {
+              .grid-cols-2 {
+                grid-template-columns: 1fr !important;
+              }
             }
           `}} />
         </Card>
