@@ -275,16 +275,17 @@
 }
 
 .portal-btn-tertiary {
-  background: transparent;
+  background: hsl(var(--background) / 0.85);
   color: hsl(var(--primary));
-  border: 1px solid transparent;
+  border: 1.5px solid hsl(var(--primary) / 0.35);
   min-height: 44px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .portal-btn-tertiary:hover:not(:disabled) {
   background: hsl(var(--primary) / 0.08);
-  text-decoration: underline;
+  border-color: hsl(var(--primary));
+  text-decoration: none;
 }
 
 .portal-btn-primary:focus-visible,
