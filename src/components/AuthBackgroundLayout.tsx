@@ -18,8 +18,8 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
   return (
     <div className="auth-page">
       <div className="auth-background" aria-hidden="true" />
-      <div className="auth-overlay" aria-hidden="true" />
-      <div className={align === "right" ? "auth-content" : "auth-content auth-content--center"}>
+      <div className="auth-overlay" style={{ background: "var(--portal-modal-overlay-light)", backdropFilter: "none", WebkitBackdropFilter: "none" }} aria-hidden="true" />
+      <div className="relative z-10 w-full min-h-dvh overflow-x-hidden">
         {children}
       </div>
     </div>

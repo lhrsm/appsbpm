@@ -19,6 +19,7 @@ import {
   telefoneValido,
   type PostoGraduacao,
 } from '@/lib/associacao';
+import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 
 const SUPORTE_WHATSAPP = 'https://wa.me/5571985496972';
 
@@ -95,8 +96,8 @@ export default function PortalQueroMeAssociar() {
   if (protocolo) {
     return (
       <AuthBackgroundLayout align="center">
-        <main className="w-full max-w-xl">
-          <Card className="auth-card auth-card--wide w-full border-0 animate-fade-in">
+        <PublicFlowModal>
+          <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none backdrop-blur-none">
             <CardHeader className="text-center pb-2">
               <div className="flex justify-center mb-3">
                 <CheckCircle2 className="h-14 w-14 text-primary" aria-hidden="true" />

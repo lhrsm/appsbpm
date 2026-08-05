@@ -9,6 +9,7 @@ import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { recuperarAcesso } from '@/lib/portalAcesso';
 import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber } from '@/lib/identity';
+import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 
 export default function PortalRecuperarAcesso() {
   const [credential, setCredential] = useState('');
@@ -36,8 +37,8 @@ export default function PortalRecuperarAcesso() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-md">
-        <Card className="auth-card w-full border-0 animate-fade-in">
+      <PublicFlowModal>
+        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="pb-2 text-center">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-20 w-auto object-contain" />
@@ -82,7 +83,7 @@ export default function PortalRecuperarAcesso() {
             )}
           </CardContent>
         </Card>
-      </main>
+      </PublicFlowModal>
     </AuthBackgroundLayout>
   );
 }

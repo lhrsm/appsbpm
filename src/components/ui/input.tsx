@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
         className={cn(
           "flex h-11 w-full rounded-xl border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm transition-all",
           isPublicPortal 
-            ? "bg-white border-green-600/30 text-slate-900 focus:border-green-600 focus-visible:ring-green-600/10 placeholder:text-slate-400" 
+            ? "bg-white border-[var(--portal-modal-border-light)] text-slate-900 focus:border-green-600 focus-visible:ring-green-600/18 placeholder:text-slate-400 shadow-sm" 
             : "bg-background border-input text-foreground focus:border-primary focus-visible:ring-ring/10",
           className
         )}

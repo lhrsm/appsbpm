@@ -29,6 +29,7 @@ import {
 import { padCpf, padRegistrationNumber, normalizeBirthDate } from '@/lib/identity';
 
 import { useAplicarPortal } from './useAplicarPortal';
+import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 
 type Etapa = 'identidade' | 'perguntas' | 'email' | 'codigo' | 'senha' | 'termos' | 'concluido';
 
@@ -183,8 +184,8 @@ export default function PortalPrimeiroAcesso() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-md">
-        <Card className="auth-card w-full border-0 animate-fade-in">
+      <PublicFlowModal>
+        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="pb-2 text-center">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-20 w-auto object-contain" />
@@ -505,7 +506,7 @@ export default function PortalPrimeiroAcesso() {
             )}
           </CardContent>
         </Card>
-      </main>
+      </PublicFlowModal>
     </AuthBackgroundLayout>
   );
 }

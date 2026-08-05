@@ -11,6 +11,7 @@ import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { loginComSenha } from '@/lib/portalAcesso';
 import { useAplicarPortal } from './useAplicarPortal';
 import { padCpf, padRegistrationNumber, formatCpf, formatRegistrationNumber } from '@/lib/identity';
+import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 
 export default function PortalEntrar() {
   const [credential, setCredential] = useState('');
@@ -56,8 +57,8 @@ export default function PortalEntrar() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-md">
-        <Card className="auth-card w-full border-0 animate-fade-in">
+      <PublicFlowModal>
+        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
               <img src={sbpmLogo} alt="SBPM" className="h-24 w-auto object-contain" />
@@ -126,7 +127,7 @@ export default function PortalEntrar() {
             </form>
           </CardContent>
         </Card>
-      </main>
+      </PublicFlowModal>
     </AuthBackgroundLayout>
   );
 }
