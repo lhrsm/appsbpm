@@ -319,10 +319,10 @@ export default function PortalQueroMeAssociar() {
               </div>
 
               <div className={cn(
-                "rounded-2xl border p-5 transition-all duration-300",
+                "rounded-2xl border p-5 transition-all duration-300 w-full",
                 consent ? "border-primary/40 bg-primary/5" : "border-primary/10 bg-white/40"
               )}>
-                <Label htmlFor="consent" className="flex cursor-pointer items-start gap-4 text-sm font-normal">
+                <Label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
                   <Checkbox
                     id="consent"
                     checked={consent}
@@ -330,15 +330,17 @@ export default function PortalQueroMeAssociar() {
                     className="mt-0.5 h-5 w-5 rounded-md border-primary/40 data-[state=checked]:bg-primary"
                     disabled={enviando}
                   />
-                  <span className="leading-relaxed">
-                    Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <span className="leading-relaxed break-words overflow-visible">
+                      Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
+                    </span>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                      <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
+                      <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                    </div>
+                  </div>
                 </Label>
-                <div className="mt-3 pl-9 flex flex-wrap gap-x-4 gap-y-1">
-                  <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
-                  <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
-                </div>
-                {erros.consent && <p className="mt-2 pl-9 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
+                {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 
               <div className="space-y-3 pt-2">
