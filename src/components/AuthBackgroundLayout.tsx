@@ -40,14 +40,17 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
       <style dangerouslySetInnerHTML={{ __html: `
         @media (min-width: 1280px) {
           .public-portal-root {
-            overflow: auto !important;
-            height: 100dvh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            min-height: 100dvh !important;
+            height: auto !important;
             max-width: 100% !important;
           }
           
           .auth-page {
-            height: 100dvh !important;
-            overflow: auto !important;
+            min-height: 100dvh !important;
+            height: auto !important;
+            overflow: visible !important;
             width: 100% !important;
             max-width: 100% !important;
             display: block !important;
