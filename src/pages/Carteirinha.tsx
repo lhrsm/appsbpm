@@ -119,9 +119,9 @@ function CarteirinhaCard({
           </div>
 
           {/* Linhas de Assinatura */}
-          <div className="flex justify-between items-end pt-3 sm:pt-4 border-t border-gray-200 gap-2 bg-white text-gray-800">
-            <div className="text-center flex-1 min-w-0">
-              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200 w-full px-3">
+            <div className="text-center min-w-0 flex flex-col items-center">
+              <div className="h-10 flex items-end justify-center mb-1 w-full overflow-hidden">
                 {presidenteAssinaturaUrl && (
                   <img
                     src={presidenteAssinaturaUrl}
@@ -131,11 +131,11 @@ function CarteirinhaCard({
                   />
                 )}
               </div>
-              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
-              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1" title={presidenteNome || 'Presidente'}>{presidenteNome || 'Presidente'}</p>
+              <div className="border-t border-gray-400 w-full mb-1"></div>
+              <p className="text-[10px] text-gray-500 leading-tight uppercase truncate w-full" title={presidenteNome || 'Presidente'}>{presidenteNome || 'Presidente'}</p>
             </div>
-            <div className="text-center flex-1 min-w-0">
-              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+            <div className="text-center min-w-0 flex flex-col items-center">
+              <div className="h-10 flex items-end justify-center mb-1 w-full overflow-hidden">
                 {assinaturaUrl && (
                   <img
                     src={assinaturaUrl}
@@ -145,8 +145,8 @@ function CarteirinhaCard({
                   />
                 )}
               </div>
-              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
-              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1">Assinatura Associado</p>
+              <div className="border-t border-gray-400 w-full mb-1"></div>
+              <p className="text-[10px] text-gray-500 leading-tight uppercase truncate w-full">Assinatura Associado</p>
             </div>
           </div>
         </div>
@@ -579,40 +579,42 @@ export default function Carteirinha() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button
-              variant={!selectedDependente ? 'default' : 'outline'}
-              className="w-full min-h-[48px] justify-between text-left px-4"
-              onClick={() => setSelectedDependente(null)}
-            >
-              <div className="flex items-center gap-2 min-w-0">
-                <User className="h-4 w-4 shrink-0" />
-                <span className="truncate">{associado.nome}</span>
-              </div>
-              <Badge variant="secondary" className="shrink-0 ml-2">Titular</Badge>
-            </Button>
-
-            {dependentes.map((dep) => (
+            <div className="grid grid-cols-1 gap-3">
               <Button
-                key={dep.id}
-                variant={selectedDependente?.id === dep.id ? 'default' : 'outline'}
-                className="w-full min-h-[48px] justify-between text-left px-4"
-                onClick={() => setSelectedDependente(dep)}
+                variant={!selectedDependente ? 'default' : 'outline'}
+                className="w-full min-h-[52px] h-auto flex items-center justify-between text-left px-4 py-3 gap-3 border-[1.25px] overflow-hidden"
+                onClick={() => setSelectedDependente(null)}
               >
-                <div className="flex items-center gap-2 min-w-0">
-                  <User className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{dep.nome}</span>
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <User className="h-5 w-5 shrink-0" />
+                  <span className="truncate font-semibold text-sm">{associado.nome}</span>
                 </div>
-                <Badge variant="secondary" className="shrink-0 ml-2">
-                  {tipoLabel[dep.tipo]}
-                </Badge>
+                <Badge variant="secondary" className="shrink-0 text-[10px] uppercase tracking-wider">Titular</Badge>
               </Button>
-            ))}
 
-            {dependentes.length === 0 && (
-              <p className="text-muted-foreground text-sm text-center py-4">
-                Nenhum dependente cadastrado.
-              </p>
-            )}
+              {dependentes.map((dep) => (
+                <Button
+                  key={dep.id}
+                  variant={selectedDependente?.id === dep.id ? 'default' : 'outline'}
+                  className="w-full min-h-[52px] h-auto flex items-center justify-between text-left px-4 py-3 gap-3 border-[1.25px] overflow-hidden"
+                  onClick={() => setSelectedDependente(dep)}
+                >
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <User className="h-5 w-5 shrink-0" />
+                    <span className="truncate font-semibold text-sm">{dep.nome}</span>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0 text-[10px] uppercase tracking-wider">
+                    {tipoLabel[dep.tipo]}
+                  </Badge>
+                </Button>
+              ))}
+
+              {dependentes.length === 0 && (
+                <p className="text-muted-foreground text-sm text-center py-6">
+                  Nenhum dependente cadastrado.
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>

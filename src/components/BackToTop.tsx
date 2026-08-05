@@ -20,7 +20,7 @@ export default function BackToTop() {
       size="icon"
       aria-label="Voltar ao topo"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-24 right-4 z-40 h-11 w-11 rounded-full shadow-lg animate-fade-in md:bottom-6"
+      className="h-11 w-11 rounded-full shadow-lg animate-fade-in"
     >
       <ArrowUp className="h-5 w-5" aria-hidden />
     </Button>

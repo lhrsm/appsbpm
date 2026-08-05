@@ -535,6 +535,27 @@ html.a11y-reduce-motion *::after {
     }
   }
 
+  /* Portal Interno - Estabilização de Layout */
+  :root {
+    --bottom-navigation-height: 72px;
+  }
+  @media (min-width: 768px) {
+    :root {
+      --bottom-navigation-height: 0px;
+    }
+  }
+
+  /* Carteirinha Digital - Sempre Tema Claro */
+  .digital-membership-card {
+    color-scheme: light !important;
+  }
+  .digital-membership-card, 
+  .digital-membership-card * {
+    color-scheme: light !important;
+    -webkit-print-color-adjust: exact;
+  }
+
+
 
 
   .dark .auth-card:not(.public-portal-root .auth-card) {

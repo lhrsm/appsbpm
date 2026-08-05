@@ -33,12 +33,12 @@ export default function PortalHeader({
 }: PortalHeaderProps) {
   const Menu = icons.menu;
 
-  // Removido isKeyboardOpen pois o header deve ser fixo conforme especificação.
+  // Header fixo com layout em grid conforme especificação.
   return (
     <header className={cn(
       "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
-      "bg-[hsl(var(--header-bg))] text-foreground border-border",
-      "h-14 md:h-16"
+      "h-14 md:h-16 flex items-center",
+      "bg-white/96 dark:bg-slate-900/96 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
     )}>
       <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <Button
