@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { icons } from "@/design-system/icons";
 import sbpmLogo from "@/assets/sbpm-logo.jpeg";
+import bannerInstitutional from "@/assets/banner-institucional.png.asset.json";
 import PortalGlobalSearch from "./PortalGlobalSearch";
 import PortalNotificationCenter from "./PortalNotificationCenter";
 import PortalUserMenu, { type PortalUser } from "./PortalUserMenu";
@@ -35,12 +36,26 @@ export default function PortalHeader({
 
   // Header fixo com layout em grid conforme especificação.
   return (
-    <header className={cn(
-      "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
-      "h-14 md:h-16 flex items-center",
-      "bg-white/96 dark:bg-slate-900/96 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
-    )}>
-      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
+    <header 
+      className={cn(
+        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200 overflow-hidden",
+        "h-14 md:h-20 lg:h-24 flex items-center relative",
+        "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
+      )}
+    >
+      {/* Background Image with Overlay */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-90 transition-opacity duration-300"
+        style={{
+          backgroundImage: `url(${bannerInstitutional.url})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 35%',
+        }}
+      >
+        <div className="absolute inset-0 bg-white/40 dark:bg-slate-900/60 backdrop-blur-[2px]" />
+      </div>
+
+      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide relative z-10">
         <Button
           variant="ghost"
           size="icon"
