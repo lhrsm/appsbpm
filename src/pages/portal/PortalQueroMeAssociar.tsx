@@ -193,12 +193,12 @@ export default function PortalQueroMeAssociar() {
                 {erros.nome && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.nome}</p>}
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
                 <CpfInput
                   label="CPF"
                   value={cpf}
                   onChange={setCpf}
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl w-full"
                   disabled={enviando}
                   error={erros.cpf}
                   onFocus={(e) => {
@@ -210,7 +210,7 @@ export default function PortalQueroMeAssociar() {
                   label="Matrícula"
                   value={matricula}
                   onChange={setMatricula}
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl w-full"
                   disabled={enviando}
                   error={erros.matricula}
                   onFocus={(e) => {
