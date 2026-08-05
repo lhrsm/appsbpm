@@ -424,32 +424,38 @@ export default function PortalPrimeiroAcesso() {
                       autoComplete="new-password"
                       value={senha}
                       onChange={(e) => setSenha(e.target.value)}
-                      className="h-11 pr-12"
+                      className="h-11 pr-10"
                     />
                     <button
                       type="button"
-                      onClick={() => setVerSenha((v) => !v)}
-                      className="absolute right-1 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                      onClick={() => setVerSenha(!verSenha)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                     >
-                      {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {verSenha ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
-                  <Progress value={(forca.score / 4) * 100} className="h-1.5" />
-                  <p className="text-xs text-muted-foreground">
+                  <div className="flex gap-1 h-1">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className={`flex-1 rounded-full ${forca.score >= i ? 'bg-primary' : 'bg-muted'}`} />
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground leading-tight">
                     Força: {forca.label} — mínimo de 10 caracteres com maiúscula, minúscula, número e símbolo.
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="conf">Confirme a senha</Label>
-                  <Input id="conf" type={verSenha ? 'text' : 'password'} value={confirmacao} onChange={(e) => setConfirmacao(e.target.value)} className="h-11" />
+                  <Label htmlFor="confirmacao">Confirme sua senha</Label>
+                  <Input
+                    id="confirmacao"
+                    type={verSenha ? 'text' : 'password'}
+                    autoComplete="new-password"
+                    value={confirmacao}
+                    onChange={(e) => setConfirmacao(e.target.value)}
+                    className="h-11"
+                  />
                 </div>
-                <Button
-                  className="w-full h-11"
-                  onClick={() => setEtapa('termos')}
-                  disabled={!senhaValida(senha) || senha !== confirmacao}
-                >
-                  Continuar
+                <Button className="w-full h-11" onClick={() => setEtapa('termos')} disabled={loading || !senhaValida(senha) || senha !== confirmacao}>
+                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Continuar'}
                 </Button>
               </div>
             )}
