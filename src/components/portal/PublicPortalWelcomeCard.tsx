@@ -31,7 +31,7 @@ const CAMINHOS = [
 export function PublicPortalWelcomeCard() {
   return (
     <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
-      <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1">
+      <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
         <div className="flex justify-center mb-1">
           <img
             src={sbpmLogo}
@@ -85,7 +85,21 @@ export function PublicPortalWelcomeCard() {
           overflow-wrap: break-word;
           min-width: 0;
         }
+        @media (min-width: 1200px) {
+          .desktop-header-respiro {
+            padding-top: 8px !important;
+            padding-bottom: 12px !important;
+          }
+          .desktop-header-respiro h3 {
+            margin-top: 12px !important;
+            margin-bottom: 6px !important;
+          }
+          .desktop-header-respiro p {
+            margin-bottom: 12px !important;
+          }
+        }
       `}} />
+
     </Card>
   );
 }

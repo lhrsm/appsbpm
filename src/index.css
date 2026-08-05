@@ -361,6 +361,13 @@ html.a11y-reduce-motion *::after {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  @media (min-width: 1200px) {
+    .auth-card {
+      width: 435px !important; /* ~12% increase from 388px */
+      padding: 32px 28px !important; /* Increased internal padding */
+    }
+  }
+
   @media (max-width: 400px) {
     .auth-card {
       padding: 14px 10px !important;
@@ -400,6 +407,13 @@ html.a11y-reduce-motion *::after {
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     background: rgba(15, 23, 42, 0.02);
+  }
+
+  @media (min-width: 1200px) {
+    .pwa-modal-page {
+      align-items: flex-end !important;
+      padding-right: 12% !important; /* Shift towards 58-62% of screen width */
+    }
   }
 
   /* Quando o teclado está aberto, paramos de centralizar verticalmente */
@@ -498,6 +512,7 @@ html.a11y-reduce-motion *::after {
     width: 92% !important;
     max-width: none !important;
     margin-inline: auto !important;
+
     min-height: auto !important;
     height: auto !important;
     padding: 10px 14px !important;
@@ -506,6 +521,15 @@ html.a11y-reduce-motion *::after {
     align-items: center !important;
     gap: 12px !important;
   }
+
+  @media (min-width: 1200px) {
+    .portal-choice {
+      width: 100% !important; /* Follow expanded modal width */
+      padding: 16px 20px !important; /* Increased internal padding */
+      margin-bottom: 4px !important;
+    }
+  }
+
 
 
   @media (max-width: 400px) {
@@ -523,6 +547,13 @@ html.a11y-reduce-motion *::after {
     width: 100% !important;
     gap: 12px !important;
   }
+
+  @media (min-width: 1200px) {
+    .portal-choice-container {
+      gap: 16px !important; /* Increased spacing between sections */
+    }
+  }
+
 
   @media (max-width: 359px) {
     .portal-choice-container {
@@ -586,6 +617,16 @@ html.a11y-reduce-motion *::after {
     transition: all 0.2s ease-in-out !important;
     text-decoration: none !important;
   }
+
+  @media (min-width: 1200px) {
+    .portal-recovery-button {
+      width: 100% !important;
+      max-width: none !important;
+      height: 54px !important;
+      margin-top: 20px !important;
+    }
+  }
+
 
   .portal-recovery-button:hover {
     background: #12783f !important;

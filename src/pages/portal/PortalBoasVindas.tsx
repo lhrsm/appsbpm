@@ -12,7 +12,7 @@ export default function PortalBoasVindas() {
 
         <nav
           aria-label="Links institucionais"
-          className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[388px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1"
+          className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[388px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1 desktop-footer-links"
         >
           <Link 
             to="/privacidade" 
@@ -73,6 +73,20 @@ export default function PortalBoasVindas() {
             transform: scale(0.96);
             background: rgba(255, 255, 255, 1);
           }
+          @media (min-width: 1200px) {
+            .desktop-footer-links {
+              max-width: 435px !important;
+              gap: 16px !important;
+              margin-top: 24px !important;
+            }
+            .external-link-card {
+              min-height: 52px !important;
+              padding: 14px 18px !important;
+              font-size: 0.9rem !important;
+              border-radius: 18px !important;
+            }
+          }
+
           @media (max-width: 339px) {
             nav[aria-label="Links institucionais"] {
               grid-template-columns: 1fr;
