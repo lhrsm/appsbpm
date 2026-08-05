@@ -8,48 +8,50 @@ export default function PortalBoasVindas() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <PublicPortalWelcomeCard />
+        <div className="w-full flex flex-col items-center">
+          <PublicPortalWelcomeCard />
 
-        <nav
-          aria-label="Links institucionais"
-          className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[388px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1 desktop-footer-links"
-        >
-          <Link 
-            to="/privacidade" 
-            className="external-link-card"
+          <nav
+            aria-label="Links institucionais"
+            className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[388px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1 desktop-footer-links"
           >
-            <Shield className="h-4 w-4 text-[#16a34a] shrink-0" />
-            <span>Privacidade</span>
-          </Link>
+            <Link 
+              to="/privacidade" 
+              className="external-link-card"
+            >
+              <Shield className="h-4 w-4 text-[#16a34a] shrink-0" />
+              <span>Privacidade</span>
+            </Link>
 
-          <Link 
-            to="/acessibilidade" 
-            className="external-link-card"
-          >
-            <Accessibility className="h-4 w-4 text-[#16a34a] shrink-0" />
-            <span>Acessibilidade</span>
-          </Link>
+            <Link 
+              to="/acessibilidade" 
+              className="external-link-card"
+            >
+              <Accessibility className="h-4 w-4 text-[#16a34a] shrink-0" />
+              <span>Acessibilidade</span>
+            </Link>
 
-          <a 
-            href="https://www.sbpmbahia.com.br" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="external-link-card"
-          >
-            <Globe className="h-4 w-4 text-[#16a34a] shrink-0" />
-            <span>Site Oficial</span>
-          </a>
+            <a 
+              href="https://www.sbpmbahia.com.br" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="external-link-card"
+            >
+              <Globe className="h-4 w-4 text-[#16a34a] shrink-0" />
+              <span>Site Oficial</span>
+            </a>
 
-          <a 
-            href="https://www.sbpmbahia.com.br/contato" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="external-link-card"
-          >
-            <Headset className="h-4 w-4 text-[#16a34a] shrink-0" />
-            <span>Atendimento</span>
-          </a>
-        </nav>
+            <a 
+              href="https://www.sbpmbahia.com.br/contato" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="external-link-card"
+            >
+              <Headset className="h-4 w-4 text-[#16a34a] shrink-0" />
+              <span>Atendimento</span>
+            </a>
+          </nav>
+        </div>
 
         <style dangerouslySetInnerHTML={{ __html: `
           .external-link-card {
