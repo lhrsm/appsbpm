@@ -191,19 +191,21 @@ export default function PortalPrimeiroAcesso() {
   };
 
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none overflow-hidden">
-          <CardHeader className="pb-2 text-center">
-            <div className="flex justify-center mb-3">
+        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
+          <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
+            <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">{TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}</CardDescription>
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">
+              {TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}
+            </CardDescription>
             <Progress value={progresso} className="mt-3 h-2" />
           </CardHeader>
 
-          <CardContent className="space-y-5">
+          <CardContent className="px-4 pb-4 pt-4 space-y-5">
             {erro && (
               <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                 {erro}
@@ -217,12 +219,12 @@ export default function PortalPrimeiroAcesso() {
                   <RadioGroup
                     value={personType}
                     onValueChange={(v) => { setPersonType(v as PersonType); setExtras({}); }}
-                    className="grid grid-cols-2 gap-2"
+                    className="grid grid-cols-2 gap-3"
                   >
-                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
                       <RadioGroupItem value="associate" /> Associado(a)
                     </Label>
-                    <Label className="flex items-center gap-2 rounded-md border p-3 text-sm font-normal cursor-pointer">
+                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
                       <RadioGroupItem value="dependent" /> Dependente
                     </Label>
                   </RadioGroup>
