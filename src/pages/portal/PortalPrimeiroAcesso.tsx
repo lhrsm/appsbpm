@@ -366,7 +366,7 @@ export default function PortalPrimeiroAcesso() {
                       const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
                       setCodigo(digits);
                     }}
-                    className="h-12 text-center text-2xl tracking-[0.5em]"
+                    className="h-10 text-center text-xl tracking-[0.5em]"
                   />
                 </div>
                 <Button className="w-full h-11" onClick={verificar} disabled={loading || codigo.length !== 6}>
