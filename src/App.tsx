@@ -6,6 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { createQueryClient } from "@/lib/perf/queryClient";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AssociadoProvider } from "@/contexts/AssociadoContext";
+import { PortalRouteLoading } from "@/components/portal/PortalRouteLoading";
 import Dashboard from "./pages/Dashboard";
 const DashboardRecovery = lazy(() => import("./pages/DashboardRecovery"));
 import NotFound from "./pages/NotFound";
@@ -123,11 +124,7 @@ const queryClient = createQueryClient();
 
 initWebVitals();
 
-const RouteFallback = () => (
-  <div className="p-6">
-    <PageSkeleton rows={4} />
-  </div>
-);
+const RouteFallback = () => <PortalRouteLoading />;
 
 const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/quero-me-associar", "/primeiro-acesso", "/recuperar-acesso", "/admin/login", "/quiosque", "/redefinir-senha"];
 
@@ -160,6 +157,7 @@ const App = () => (
           <AssociadoProvider>
           <BrowserRouter>
             <Toaster />
+            <PortalRouteLoading />
             <Sonner />
             <RouteAnnouncer />
             <CookieConsent />
