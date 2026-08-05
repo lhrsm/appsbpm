@@ -256,7 +256,7 @@ export default function PortalQueroMeAssociar() {
                 <RadioGroup
                   value={situacao}
                   onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
-                  className="grid grid-cols-2 gap-3"
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
                 >
                   {(['regular', 'inativo'] as const).map((v) => (
                     <Label
