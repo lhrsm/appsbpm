@@ -392,11 +392,14 @@ html.a11y-reduce-motion *::after {
     body.public-portal-root {
       background-color: #dfe6eb !important;
       color: #1f2937 !important;
+      color-scheme: light !important;
     }
     body.public-portal-root .auth-card {
       background: var(--portal-modal-bg-light) !important;
       border-color: var(--portal-modal-border-light) !important;
       box-shadow: var(--portal-modal-shadow-light) !important;
+      backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
+      -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(120%) !important;
     }
     body.public-portal-root .portal-choice {
       background: #ffffff !important;
