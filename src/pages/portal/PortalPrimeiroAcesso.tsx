@@ -188,19 +188,19 @@ export default function PortalPrimeiroAcesso() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
+        <Card className="auth-card border-0 animate-fade-in shadow-none flex flex-col max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)] p-0 overflow-hidden">
+          <CardHeader className="text-center pb-2 pt-6 px-6 space-y-1 desktop-header-respiro flex-shrink-0">
             <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">
+            <CardDescription className="text-muted-foreground font-medium text-[0.80rem] leading-snug">
               {TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}
             </CardDescription>
             <Progress value={progresso} className="mt-3 h-2" />
           </CardHeader>
 
-          <CardContent className="px-4 pb-4 pt-4 space-y-5">
+          <CardContent className="px-6 pb-6 pt-4 space-y-5 overflow-y-auto overflow-x-hidden custom-scrollbar flex-grow overscroll-behavior-contain">
             {erro && (
               <Alert tone="danger" className="mb-4">
                 {erro}

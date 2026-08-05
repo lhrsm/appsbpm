@@ -48,8 +48,8 @@ interface RegistrationNumberInputProps extends Omit<React.ComponentProps<typeof 
     const activeError = error || internalError;
 
     return (
-      <div className="space-y-2 w-full">
-        {label && <Label htmlFor={inputId} className={cn(activeError && "text-destructive")}>{label}</Label>}
+      <div className="space-y-1.5 w-full">
+        {label && <Label htmlFor={inputId} className={cn("hidden", activeError && "text-destructive")}>{label}</Label>}
          <Input
           {...props}
           onFocus={onFocus}
