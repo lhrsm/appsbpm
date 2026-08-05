@@ -361,10 +361,10 @@ html.a11y-reduce-motion *::after {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1280px) {
     .auth-card {
-      width: 435px !important; /* ~12% increase from 388px */
-      padding: 32px 28px !important; /* Increased internal padding */
+      width: 540px !important;
+      padding: 32px 36px !important;
     }
   }
 

@@ -56,7 +56,7 @@ export default function PortalEntrar() {
   };
 
   return (
-    <AuthBackgroundLayout align="center">
+    <AuthBackgroundLayout align="right">
       <PublicFlowModal>
         <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="text-center pb-2">
