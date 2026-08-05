@@ -1,90 +1,179 @@
 export default function RoutesIndex() {
   return (
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-fade-in whitespace-pre-wrap">
-      PARAR QUALQUER ALTERAÇÃO NO DASHBOARD.
+AJUSTAR EXCLUSIVAMENTE O LAYOUT DESKTOP DA TELA INICIAL DO PORTAL SBPM
 
-O erro atual não está relacionado ao Supabase, RLS, identidade institucional, RPC ou consulta do associado.
+A versão mobile e PWA já está próxima do resultado esperado.
 
-O React está quebrando antes da aplicação iniciar.
+Agora quero um refinamento EXCLUSIVO para DESKTOP.
 
-Erro real:
+IMPORTANTE
 
-React.Children.only expected to receive a single React element child.
+NÃO alterar:
 
-Quero localizar exatamente onde esse erro está acontecendo.
+- Mobile
 
-1. Pesquise no projeto inteiro por:
+- Tablet
 
-React.Children.only
+- PWA
 
-e também pelos componentes que internamente utilizam esse método.
+- Responsividade atual
 
-Especialmente verificar:
+- Glassmorphism
 
-- RootErrorBoundary
-- ErrorBoundary
-- BrowserRouter
-- Tooltip
-- TooltipProvider
-- Dialog
-- DialogTrigger
-- Sheet
-- DropdownMenu
-- Popover
-- Slot
-- ThemeProvider
-- QueryClientProvider
-- Suspense
-- AuthProvider
-- AssociadoProvider
+- Transparência
 
-2. Identifique exatamente:
+- Bordas
 
-- arquivo;
-- componente;
-- linha;
-- stack completa;
-- qual componente está recebendo mais de um child.
+- Botões
 
-3. Corrija o componente para obedecer ao contrato esperado.
+- Cards
 
-Se ele espera:
+- Fontes
 
-&lt;Componente&gt;
-    &lt;Filho /&gt;
-&lt;/Componente&gt;
+Todas as alterações abaixo devem ocorrer apenas em telas acima de 1200px.
 
-não renderizar:
+====================================================
 
-&lt;Componente&gt;
-    &lt;Filho1 /&gt;
-    &lt;Filho2 /&gt;
-&lt;/Componente&gt;
+1. DESLOCAR A MODAL MAIS PARA A DIREITA
 
-Agrupar corretamente quando necessário ou reorganizar a árvore de renderização.
+Hoje a modal está praticamente centralizada.
 
-4. Não alterar:
+Quero que ela fique aproximadamente entre 58% e 62% da largura da tela.
 
-- dashboard;
-- RPC;
-- Supabase;
-- RLS;
-- login;
-- contexto.
+Ou seja:
 
-O único objetivo desta etapa é eliminar completamente o erro:
+- manter os militares totalmente visíveis à esquerda;
 
-React.Children.only expected to receive a single React element child.
+- aproveitar melhor o espaço do mar à direita;
 
-5. Depois da correção informar:
+- criar uma composição visual mais elegante.
 
-- arquivo;
-- linha;
-- componente;
-- stack original;
-- código antigo;
-- código corrigido;
-- motivo pelo qual havia mais de um child.
+Exemplo:
+
+ANTES
+
+[Militares]      [Modal]
+
+DEPOIS
+
+[Militares]           [Modal]
+
+A alteração deve ocorrer apenas no Desktop.
+
+====================================================
+
+2. AUMENTAR UM POUCO A MODAL
+
+A modal pode crescer aproximadamente:
+
+• largura: +12%
+
+• altura: automática
+
+Não quero uma modal gigante.
+
+Quero apenas que ela fique mais confortável visualmente.
+
+====================================================
+
+3. AUMENTAR O ESPAÇO INTERNO
+
+Depois que aumentar a modal:
+
+- aumentar ligeiramente os paddings;
+
+- aumentar o respiro entre seções;
+
+- aumentar o espaço entre título e subtítulo.
+
+Sem exageros.
+
+====================================================
+
+4. AUMENTAR OS CARDS
+
+Os três cards podem ficar um pouco maiores.
+
+Aumentar apenas:
+
+- largura;
+
+- padding interno;
+
+- espaçamento horizontal.
+
+Não aumentar muito a altura.
+
+====================================================
+
+5. BOTÃO RECUPERAR ACESSO
+
+Pode acompanhar a largura dos cards.
+
+Manter exatamente a mesma identidade visual.
+
+====================================================
+
+6. LINKS INFERIORES
+
+Os quatro botões inferiores podem ficar um pouco maiores.
+
+Aumentar:
+
+- largura;
+
+- padding;
+
+- espaçamento entre eles.
+
+Continuar em grade 2x2.
+
+====================================================
+
+7. MANTER O BACKGROUND EM DESTAQUE
+
+Não aumentar a opacidade da modal.
+
+Continuar permitindo visualizar perfeitamente:
+
+- os policiais;
+
+- o farol;
+
+- o mar;
+
+- o pôr do sol.
+
+====================================================
+
+8. RESPONSIVIDADE
+
+Essas alterações devem ocorrer somente em:
+
+min-width: 1200px
+
+Para resoluções menores:
+
+- não alterar absolutamente nada.
+
+====================================================
+
+9. RESULTADO ESPERADO
+
+Quero um layout semelhante aos grandes portais institucionais modernos:
+
+- Gov.br
+
+- Microsoft
+
+- Apple
+
+- Stripe
+
+Onde existe bastante espaço lateral, excelente equilíbrio visual e uma composição elegante.
+
+A versão mobile/PWA deve permanecer exatamente como está.
     </div>
   );
 }
