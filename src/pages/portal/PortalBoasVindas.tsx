@@ -12,7 +12,7 @@ export default function PortalBoasVindas() {
 
         <nav
           aria-label="Links institucionais"
-          className="mt-[14px] grid grid-cols-2 gap-[10px] w-[calc(100%-32px)] max-w-[380px] mx-auto pb-8 sm:grid-cols-2 xs:grid-cols-1"
+          className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[380px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1"
         >
           <Link 
             to="/privacidade" 

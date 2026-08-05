@@ -346,7 +346,7 @@ html.a11y-reduce-motion *::after {
     border: 1.5px solid rgba(22, 163, 74, 0.70) !important;
     box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
     border-radius: 28px !important;
-    padding: 24px;
+    padding: 20px 20px !important;
     position: relative;
     z-index: 10;
     width: 380px;
@@ -356,6 +356,12 @@ html.a11y-reduce-motion *::after {
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (max-width: 400px) {
+    .auth-card {
+      padding: 18px 16px !important;
+    }
   }
 
   @media (max-width: 359px) {
@@ -383,9 +389,9 @@ html.a11y-reduce-motion *::after {
     justify-content: center;
     padding: 
       max(36px, env(safe-area-inset-top))
-      max(12px, env(safe-area-inset-right))
+      20px
       max(24px, env(safe-area-inset-bottom))
-      max(12px, env(safe-area-inset-left));
+      20px;
     overflow-y: auto;
     overflow-x: hidden;
     box-sizing: border-box;
@@ -484,16 +490,16 @@ html.a11y-reduce-motion *::after {
     box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
     transition: all 200ms ease-in-out !important;
     border-radius: 18px !important;
-    width: calc(100% - 56px) !important;
-    max-width: 280px !important;
+    width: 92% !important;
+    max-width: none !important;
     margin-inline: auto !important;
-    min-height: 88px !important;
+    min-height: auto !important;
     height: auto !important;
-    padding: 13px 14px !important;
+    padding: 14px 16px !important;
     display: grid !important;
     grid-template-columns: 38px minmax(0, 1fr) 20px !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 12px !important;
   }
 
   @media (max-width: 359px) {

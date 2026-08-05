@@ -40,7 +40,7 @@ export function PublicPortalWelcomeCard() {
           />
         </div>
         <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
-        <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.88rem] leading-relaxed">
+        <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">
           Acesse seus dados e serviços em um ambiente seguro.
         </CardDescription>
       </CardHeader>
