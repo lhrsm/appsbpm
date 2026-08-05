@@ -19,9 +19,27 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
     <div className="auth-page">
       <div className="auth-background" aria-hidden="true" />
       <div className="auth-overlay" style={{ background: "var(--portal-modal-overlay-light)", backdropFilter: "none", WebkitBackdropFilter: "none" }} aria-hidden="true" />
-      <div className="relative z-10 w-full min-h-dvh overflow-x-hidden">
-        {children}
+      <div className={cn(
+        "relative z-10 w-full min-h-dvh overflow-x-hidden flex",
+        align === "right" ? "justify-end" : "justify-center"
+      )}>
+        <div className={cn(
+          "w-full flex flex-col items-center",
+          align === "right" && "desktop-align-right"
+        )}>
+          {children}
+        </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (min-width: 1200px) {
+          .desktop-align-right {
+            align-items: flex-end !important;
+            padding-right: clamp(60px, 12vw, 180px) !important;
+          }
+        }
+      `}} />
     </div>
   );
 }
+
