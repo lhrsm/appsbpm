@@ -77,7 +77,7 @@ export default function PortalBoasVindas() {
               width: 100% !important;
               max-width: 520px !important;
               gap: 20px !important;
-              margin-top: 16px !important;
+              margin-top: 20px !important;
             }
             .external-link-circle {
               width: 52px !important;
