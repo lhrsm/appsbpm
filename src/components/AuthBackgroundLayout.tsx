@@ -47,7 +47,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
 
           .desktop-align-right {
             position: absolute !important;
-            top: 50% !important;
+            top: 63% !important;
             right: clamp(80px, 8vw, 180px) !important;
             left: auto !important;
             transform: translateY(-50%) !important;
@@ -60,6 +60,24 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             height: auto !important;
             min-height: unset !important;
             max-height: none !important;
+          }
+
+          @media (max-height: 760px) {
+            .desktop-align-right {
+              top: 56% !important;
+            }
+          }
+
+          @media (min-height: 761px) and (max-height: 900px) {
+            .desktop-align-right {
+              top: 61% !important;
+            }
+          }
+
+          @media (min-height: 901px) {
+            .desktop-align-right {
+              top: 63% !important;
+            }
           }
 
 
