@@ -18,7 +18,7 @@
   position: fixed;
   inset: 0;
   z-index: -3;
-  background-color: #dfe6eb;
+  background-color: #dfe6eb !important;
   background-image: url('/images/auth/background-desktop.webp');
   background-repeat: no-repeat;
   background-size: cover;
