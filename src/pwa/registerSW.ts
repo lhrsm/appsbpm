@@ -20,7 +20,7 @@ async function unregisterOldCaches() {
   if (!("caches" in window)) return;
   const cacheNames = await caches.keys();
   const oldCaches = [
-    "identity-v1", "identity-v2", "identity-v3",
+    "identity-v1", "identity-v2", "identity-v3", "identity-v4",
     "html-cache", "assets-cache", "images-cache", "profile-photos"
   ];
   await Promise.all(

@@ -11,13 +11,13 @@
   "categories": ["health", "lifestyle", "productivity"],
   "lang": "pt-BR",
   "icons": [
-    { "src": "/sbpm-logo.jpeg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
-    { "src": "/sbpm-logo.jpeg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any" }
+    { "src": "/icons/sbpm-logo-transparent-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/sbpm-logo-transparent-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
   ],
   "shortcuts": [
-    { "name": "Carteirinha", "short_name": "Carteirinha", "url": "/dashboard/carteirinha", "icons": [{ "src": "/sbpm-logo.jpeg", "sizes": "192x192" }] },
-    { "name": "Limite", "short_name": "Limite", "url": "/dashboard/limite", "icons": [{ "src": "/sbpm-logo.jpeg", "sizes": "192x192" }] },
-    { "name": "Clínicas e Parceiros", "short_name": "Clínicas", "url": "/dashboard/clinicas", "icons": [{ "src": "/sbpm-logo.jpeg", "sizes": "192x192" }] },
-    { "name": "Benefícios", "short_name": "Benefícios", "url": "/dashboard/beneficios", "icons": [{ "src": "/sbpm-logo.jpeg", "sizes": "192x192" }] }
+    { "name": "Carteirinha", "short_name": "Carteirinha", "url": "/dashboard/carteirinha", "icons": [{ "src": "/icons/sbpm-logo-transparent-192.png", "sizes": "192x192" }] },
+    { "name": "Limite", "short_name": "Limite", "url": "/dashboard/limite", "icons": [{ "src": "/icons/sbpm-logo-transparent-192.png", "sizes": "192x192" }] },
+    { "name": "Clínicas e Parceiros", "short_name": "Clínicas", "url": "/dashboard/clinicas", "icons": [{ "src": "/icons/sbpm-logo-transparent-192.png", "sizes": "192x192" }] },
+    { "name": "Benefícios", "short_name": "Benefícios", "url": "/dashboard/beneficios", "icons": [{ "src": "/icons/sbpm-logo-transparent-192.png", "sizes": "192x192" }] }
   ]
 }
