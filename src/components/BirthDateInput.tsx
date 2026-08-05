@@ -3,15 +3,16 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { formatDateForDisplay, normalizeBirthDate, validateBirthDate } from "@/lib/identity";
 
-interface BirthDateInputProps {
+ interface BirthDateInputProps {
   label?: string;
   value: string; // ISO format (YYYY-MM-DD) or empty
   onChange: (value: string) => void; // Sends ISO format
   className?: string;
   required?: boolean;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export function BirthDateInput({ label = "Data de nascimento", value, onChange, className, required }: BirthDateInputProps) {
+export function BirthDateInput({ label = "Data de nascimento", value, onChange, className, required, onFocus }: BirthDateInputProps) {
   const [displayValue, setDisplayValue] = useState("");
 
   useEffect(() => {
@@ -53,8 +54,9 @@ export function BirthDateInput({ label = "Data de nascimento", value, onChange, 
       {label && <Label>{label}{required && " *"}</Label>}
       <Input
         placeholder="DD/MM/AAAA"
-        value={displayValue}
+         value={displayValue}
         onChange={handleChange}
+        onFocus={onFocus}
         maxLength={10}
         className={className}
         inputMode="numeric"
