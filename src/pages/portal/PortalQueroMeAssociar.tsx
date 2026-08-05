@@ -252,7 +252,7 @@ export default function PortalQueroMeAssociar() {
               )}
 
               <div className="space-y-3">
-                <Label className="text-sm font-semibold text-primary/80">Situação funcional</legend>
+                <Label className="text-sm font-semibold text-primary/80">Situação funcional</Label>
                 <RadioGroup
                   value={situacao}
                   onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
