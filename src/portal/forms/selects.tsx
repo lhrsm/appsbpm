@@ -49,10 +49,18 @@ export const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>(funct
 
   return (
     <div className="relative">
-      <select
+       <select
         ref={ref}
         className={cn(portalInputBase, "appearance-none pr-10", props["aria-invalid"] && "border-destructive", className)}
         disabled={props.disabled || loading}
+        onFocus={(e) => {
+          if (props.onFocus) props.onFocus(e);
+          if (window.innerHeight < 700 || document.documentElement.getAttribute('data-keyboard-open') === 'true') {
+            setTimeout(() => {
+              e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+          }
+        }}
         {...props}
       >
         <option value="">{loading ? "Carregando..." : placeholder}</option>

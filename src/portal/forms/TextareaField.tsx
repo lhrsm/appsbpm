@@ -46,6 +46,14 @@ export const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldProps>
         success && !invalid && "border-[hsl(var(--success))]",
         className,
       )}
+       onFocus={(e) => {
+        if (props.onFocus) props.onFocus(e);
+        if (window.innerHeight < 700 || document.documentElement.getAttribute('data-keyboard-open') === 'true') {
+          setTimeout(() => {
+            e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+      }}
       {...props}
     />
   );
