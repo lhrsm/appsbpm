@@ -13,82 +13,82 @@ export default function PortalBoasVindas() {
 
           <nav
             aria-label="Links institucionais"
-            className="mt-[14px] grid grid-cols-2 gap-[10px] w-full max-w-[388px] mx-auto pb-8 px-[4%] sm:grid-cols-2 xs:grid-cols-1 desktop-footer-links"
+            className="mt-[12px] flex flex-wrap justify-center gap-[12px] w-full max-w-[480px] mx-auto pb-4 px-[4%] desktop-footer-links"
           >
             <Link 
               to="/privacidade" 
-              className="external-link-card"
+              className="external-link-circle"
+              title="Privacidade"
             >
-              <Shield className="h-4 w-4 text-[#16a34a] shrink-0" />
-              <span>Privacidade</span>
+              <Shield className="h-5 w-5" />
             </Link>
 
             <Link 
               to="/acessibilidade" 
-              className="external-link-card"
+              className="external-link-circle"
+              title="Acessibilidade"
             >
-              <Accessibility className="h-4 w-4 text-[#16a34a] shrink-0" />
-              <span>Acessibilidade</span>
+              <Accessibility className="h-5 w-5" />
             </Link>
 
             <a 
               href="https://www.sbpmbahia.com.br" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="external-link-card"
+              className="external-link-circle"
+              title="Site Oficial"
             >
-              <Globe className="h-4 w-4 text-[#16a34a] shrink-0" />
-              <span>Site Oficial</span>
+              <Globe className="h-5 w-5" />
             </a>
 
             <a 
               href="https://www.sbpmbahia.com.br/contato" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="external-link-card"
+              className="external-link-circle"
+              title="Atendimento"
             >
-              <Headset className="h-4 w-4 text-[#16a34a] shrink-0" />
-              <span>Atendimento</span>
+              <Headset className="h-5 w-5" />
             </a>
           </nav>
         </div>
 
         <style dangerouslySetInnerHTML={{ __html: `
-          .external-link-card {
+          .external-link-circle {
             background: rgba(255, 255, 255, 0.94);
-            border: 1.25px solid rgba(22, 163, 74, 0.42);
-            border-radius: 14px;
-            color: #166534;
-            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
-            min-height: 42px;
+            border: 1.5px solid rgba(22, 163, 74, 0.42);
+            border-radius: 50%;
+            color: #16a34a;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 10px 12px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            gap: 8px;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
           }
-          .external-link-card:active {
-            transform: scale(0.96);
+          .external-link-circle:active {
+            transform: scale(0.92);
             background: rgba(255, 255, 255, 1);
+            border-color: #16a34a;
           }
           @media (min-width: 1280px) {
             .desktop-footer-links {
-              width: calc(100% - 48px) !important;
+              width: 100% !important;
               max-width: 520px !important;
-              gap: 16px 20px !important;
-              margin-top: 20px !important;
-              margin-inline: auto !important;
-              padding-bottom: 24px !important;
+              gap: 20px !important;
+              margin-top: 16px !important;
             }
-            .external-link-card {
-              min-height: 48px !important;
-              padding: 12px 16px !important;
-              font-size: 0.9rem !important;
-              border-radius: 18px !important;
+            .external-link-circle {
+              width: 52px !important;
+              height: 52px !important;
+            }
+            .external-link-circle:hover {
+              transform: translateY(-2px);
+              background: #ffffff;
+              border-color: #16a34a;
+              color: #15803d;
+              box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
             }
           }
 
