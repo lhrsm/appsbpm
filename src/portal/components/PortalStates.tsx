@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/design-system/components/Button";
 import { icons } from "@/design-system/icons";
 import { useAssociado } from "@/contexts/AssociadoContext";
+import sbpmLogo from "@/assets/sbpm-logo-transparent.png";
 
 export interface PortalErrorStateProps {
   title?: string;
@@ -65,10 +66,14 @@ export function PortalAccessDenied() {
 /** Estado de carregamento global do portal externo. */
 export function PortalLoadingState({ message = "Carregando seu portal..." }: { message?: string }) {
   return (
-    <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-4 p-8 text-center animate-fade-in" id="portal-loading-state">
-      <div className="relative">
-        <div className="h-12 w-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-        <icons.dashboard className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-primary opacity-50" />
+    <div className="flex min-h-[400px] w-full flex-col items-center justify-center gap-6 p-8 text-center animate-fade-in" id="portal-loading-state">
+      <div className="relative flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full border-4 border-primary/10 border-t-primary animate-spin" />
+        <img 
+          src={sbpmLogo} 
+          alt="SBPM" 
+          className="absolute h-14 w-14 object-contain bg-transparent border-0 shadow-none filter-none" 
+        />
       </div>
       <div className="space-y-1">
         <h2 className="text-lg font-semibold text-foreground">{message}</h2>
