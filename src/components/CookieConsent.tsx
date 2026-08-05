@@ -112,7 +112,7 @@ export default function CookieConsent() {
         aria-labelledby="cookie-consent-title"
         className={cn(
           "fixed left-1/2 z-[1000] -translate-x-1/2",
-          "bottom-[calc(76px+env(safe-area-inset-bottom))] sm:bottom-24 sm:left-4 sm:translate-x-0",
+          "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-24 sm:left-4 sm:translate-x-0",
           "w-[calc(100%-24px)] max-w-[var(--lgpd-max-width)]",
           "max-h-[var(--lgpd-mobile-max-height)] sm:max-h-[80vh]",
           "overflow-y-auto overscroll-behavior-contain no-scrollbar",
