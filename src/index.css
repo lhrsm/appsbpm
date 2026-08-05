@@ -373,6 +373,18 @@ html.a11y-reduce-motion *::after {
       max-height: calc(100dvh - 40px) !important;
       margin-inline: 0 !important;
       overflow-y: auto !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(22, 163, 74, 0.2) transparent;
+    }
+    .auth-card::-webkit-scrollbar {
+      width: 6px;
+    }
+    .auth-card::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .auth-card::-webkit-scrollbar-thumb {
+      background-color: rgba(22, 163, 74, 0.2);
+      border-radius: 20px;
     }
     .auth-card--wide {
       width: clamp(580px, 42vw, 640px) !important;
