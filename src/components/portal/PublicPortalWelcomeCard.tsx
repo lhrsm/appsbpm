@@ -53,12 +53,12 @@ export function PublicPortalWelcomeCard() {
               to={to}
               className="portal-choice"
             >
-              <span className="portal-icon-circle-green shrink-0" aria-hidden="true">
-                <Icone className="h-5 w-5" />
+              <span className="portal-icon-green shrink-0" aria-hidden="true">
+                <Icone className="h-[22px] w-[22px]" />
               </span>
               <span className="flex-1 text-left min-w-0">
-                <span className="block portal-title break-anywhere">{titulo}</span>
-                <span className="block portal-description break-anywhere">{descricao}</span>
+                <span className="block portal-title">{titulo}</span>
+                <span className="block portal-description">{descricao}</span>
 
               </span>
               <ChevronRight className="portal-chevron shrink-0" aria-hidden="true" />
