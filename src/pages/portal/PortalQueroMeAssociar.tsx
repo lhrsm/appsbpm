@@ -34,6 +34,7 @@ export default function PortalQueroMeAssociar() {
 
   useEffect(() => {
     setIsNavigating(false);
+    console.log("PRE_REGISTRATION_LAYOUT_VERSION = \"pre-registration-layout-v2-2026-08-05\"");
   }, [setIsNavigating]);
 
 
