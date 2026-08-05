@@ -40,7 +40,7 @@ export default function PortalHeader({
       "bg-white/92 text-gray-800 border-gray-900/10 dark:bg-slate-900/94 dark:text-slate-50 dark:border-white/10",
       isKeyboardOpen && "hidden"
     )}>
-      <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-2 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
+      <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
         <Button
           asChild
           variant="ghost"
@@ -60,18 +60,20 @@ export default function PortalHeader({
 ...
 
 
-        <img
-          src={sbpmLogo}
-          alt="SBPM"
-          width={36}
-          height={36}
-          className="h-8 w-8 shrink-0 rounded-full bg-background object-cover p-0.5 md:h-9 md:w-9"
-        />
-        <div className="hidden min-w-0 sm:block">
-          <p className="truncate text-sm font-bold leading-tight">Portal da SBPM</p>
-          <p className="truncate text-[11px] opacity-85 landscape-hide">
-            {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
-          </p>
+        <div className="flex items-center gap-2.5 min-w-0">
+          <img
+            src={sbpmLogo}
+            alt="SBPM"
+            width={38}
+            height={38}
+            className="h-9 w-9 shrink-0 rounded-full bg-background object-cover p-0.5 md:h-10 md:w-10"
+          />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-bold leading-tight">Portal da SBPM</p>
+            <p className="truncate text-[10px] sm:text-[11px] opacity-85">
+              {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
+            </p>
+          </div>
         </div>
         {environment && (
           <Badge variant="secondary" className="hidden text-[10px] uppercase md:inline-flex">
