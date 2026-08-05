@@ -681,7 +681,6 @@ html.a11y-reduce-motion *::after {
     align-items: center;
     justify-content: center;
   }
-}
 
 /* Landscape em telas baixas: header e heros compactos */
 @media (orientation: landscape) and (max-height: 500px) {
