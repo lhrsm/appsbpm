@@ -52,45 +52,43 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card">
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[28px] shadow-lg overflow-hidden flex flex-col backdrop-blur-none saturate-100 print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
-        style={{ fontFamily: 'Arial, sans-serif', colorScheme: 'light', minHeight: 'fit-content' }}
+        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
+        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content' }}
       >
         {/* Header com Logo/Foto e Título */}
-        <div className="flex items-center p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4 bg-white text-gray-800">
+        <div className="grid grid-cols-[auto,1fr] gap-3 p-3 border-b border-gray-200 bg-white text-gray-800 items-center">
 
-          <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
-            <div className="relative shrink-0">
-              {fotoUrl ? (
-                <img 
-                  src={fotoUrl} 
-                  alt={nome} 
-                  className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover border-2 border-gray-200"
-                />
-              ) : (
-                <img 
-                  src={sbpmLogo} 
-                  alt="SBPM" 
-                  className="h-14 w-14 sm:h-16 sm:w-16 object-contain"
-                />
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-base sm:text-lg font-bold text-gray-800 text-center sm:text-left leading-tight break-words">
-                Assistência Ambulatorial
-              </h2>
-            </div>
+          <div className="relative shrink-0">
+            {fotoUrl ? (
+              <img 
+                src={fotoUrl} 
+                alt={nome} 
+                className="h-11 w-11 rounded-full object-cover border border-gray-200"
+              />
+            ) : (
+              <img 
+                src={sbpmLogo} 
+                alt="SBPM" 
+                className="h-11 w-11 object-contain"
+              />
+            )}
           </div>
-          <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs">
-            <div className="flex gap-1">
-              <span className="text-gray-600">Matrícula: </span>
-              <span className="font-semibold">{matricula}</span>
-            </div>
-            <div className="flex gap-1">
-              <span className="text-gray-600">Expedição: </span>
-              <span className="font-semibold">{dataExpedicao}</span>
+          <div className="grid grid-cols-1 md:grid-cols-[1fr,auto] items-center gap-x-4 gap-y-1">
+            <h2 className="text-sm font-bold text-gray-900 leading-tight">
+              Assistência Ambulatorial
+            </h2>
+            <div className="flex flex-col text-[10px] md:text-xs">
+              <div className="flex justify-between md:justify-end gap-2">
+                <span className="text-gray-500">Matrícula: </span>
+                <span className="font-semibold">{matricula}</span>
+              </div>
+              <div className="flex justify-between md:justify-end gap-2">
+                <span className="text-gray-500">Expedição: </span>
+                <span className="font-semibold">{dataExpedicao}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -98,39 +96,32 @@ function CarteirinhaCard({
         {/* Corpo do Cartão */}
         <div className="p-3 sm:p-4 space-y-3 sm:space-y-4 flex-1 bg-white text-gray-800">
           {/* Nome e CPF */}
-          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-            <div className="flex-1 min-w-0 w-full">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 uppercase tracking-wide break-words leading-tight" style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)' }}>
+          <div className="flex flex-col gap-3">
+            <div className="w-full text-center">
+              <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wide leading-tight break-words" style={{ fontSize: 'clamp(0.92rem, 4.2vw, 1.12rem)' }}>
                 {nome}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+              <p className="text-[11px] text-gray-500">
                 {tipo === 'titular' ? 'Associado' : tipoParentesco || 'Dependente'}
               </p>
-              {tipo === 'dependente' && nomeTitular && (
-                <div className="mt-2">
-                  <p className="text-xs sm:text-sm font-semibold text-gray-800 uppercase truncate">
-                    {nomeTitular}
-                  </p>
-                  <p className="text-[10px] sm:text-xs text-gray-600">Associado</p>
-                </div>
-              )}
             </div>
-            <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs pt-1">
-              <div className="flex gap-1 whitespace-nowrap">
-                <span className="text-gray-600">CPF.: </span>
-                <span className="font-semibold">{formatCpf(cpf)}</span>
-              </div>
-              <div className="flex gap-1 whitespace-nowrap">
-                <span className="text-gray-600">Validade: </span>
-                <span className="font-semibold">{dataValidade}</span>
-              </div>
+            
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+               <div className="flex flex-col">
+                  <span className="text-[10px] text-gray-500 uppercase">CPF</span>
+                  <span className="font-semibold">{formatCpf(cpf)}</span>
+               </div>
+               <div className="flex flex-col items-end">
+                  <span className="text-[10px] text-gray-500 uppercase">Validade</span>
+                  <span className="font-semibold">{dataValidade}</span>
+               </div>
             </div>
           </div>
 
           {/* Linhas de Assinatura */}
-          <div className="flex justify-between items-end pt-3 sm:pt-4 border-t border-gray-200 gap-2 bg-white text-gray-800">
-            <div className="text-center flex-1 min-w-0">
-              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200 w-full px-3">
+            <div className="text-center min-w-0 flex flex-col items-center">
+              <div className="h-10 flex items-end justify-center mb-1 w-full overflow-hidden">
                 {presidenteAssinaturaUrl && (
                   <img
                     src={presidenteAssinaturaUrl}
@@ -140,11 +131,11 @@ function CarteirinhaCard({
                   />
                 )}
               </div>
-              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
-              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1" title={presidenteNome || 'Presidente'}>{presidenteNome || 'Presidente'}</p>
+              <div className="border-t border-gray-400 w-full mb-1"></div>
+              <p className="text-[10px] text-gray-500 leading-tight uppercase truncate w-full" title={presidenteNome || 'Presidente'}>{presidenteNome || 'Presidente'}</p>
             </div>
-            <div className="text-center flex-1 min-w-0">
-              <div className="h-8 sm:h-10 flex items-end justify-center overflow-hidden">
+            <div className="text-center min-w-0 flex flex-col items-center">
+              <div className="h-10 flex items-end justify-center mb-1 w-full overflow-hidden">
                 {assinaturaUrl && (
                   <img
                     src={assinaturaUrl}
@@ -154,8 +145,8 @@ function CarteirinhaCard({
                   />
                 )}
               </div>
-              <div className="border-t border-gray-400 w-full max-w-[120px] sm:max-w-[160px] mx-auto mb-1"></div>
-              <p className="text-[10px] sm:text-xs text-gray-600 truncate px-1">Assinatura Associado</p>
+              <div className="border-t border-gray-400 w-full mb-1"></div>
+              <p className="text-[10px] text-gray-500 leading-tight uppercase truncate w-full">Assinatura Associado</p>
             </div>
           </div>
         </div>
@@ -476,14 +467,14 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
-              <Download className="h-4 w-4 mr-2" />
-              Baixar (PDF)
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
+              <Download className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Baixar (PDF)</span>
             </Button>
-            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
-              <Share2 className="h-4 w-4 mr-2" />
-              Compartilhar
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-[10px] border-[rgba(22,163,74,0.46)] hover:bg-green-50 dark:hover:bg-slate-700">
+              <Share2 className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Compartilhar</span>
             </Button>
           </div>
         </div>
@@ -567,14 +558,14 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="w-full h-12 sm:h-10">
-              <Download className="h-4 w-4 mr-2" />
-              Baixar (PDF)
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
+            <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
+              <Download className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Baixar (PDF)</span>
             </Button>
-            <Button onClick={handleShare} variant="outline" className="w-full h-12 sm:h-10">
-              <Share2 className="h-4 w-4 mr-2" />
-              Compartilhar
+            <Button onClick={handleShare} variant="outline" className="w-full h-12 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-[10px] border-[rgba(22,163,74,0.46)] hover:bg-green-50 dark:hover:bg-slate-700">
+              <Share2 className="h-5 w-5 mr-2" />
+              <span className="font-semibold text-base">Compartilhar</span>
             </Button>
           </div>
         </div>
@@ -588,40 +579,42 @@ export default function Carteirinha() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button
-              variant={!selectedDependente ? 'default' : 'outline'}
-              className="w-full min-h-[48px] justify-between text-left px-4"
-              onClick={() => setSelectedDependente(null)}
-            >
-              <div className="flex items-center gap-2 min-w-0">
-                <User className="h-4 w-4 shrink-0" />
-                <span className="truncate">{associado.nome}</span>
-              </div>
-              <Badge variant="secondary" className="shrink-0 ml-2">Titular</Badge>
-            </Button>
-
-            {dependentes.map((dep) => (
+            <div className="grid grid-cols-1 gap-3">
               <Button
-                key={dep.id}
-                variant={selectedDependente?.id === dep.id ? 'default' : 'outline'}
-                className="w-full min-h-[48px] justify-between text-left px-4"
-                onClick={() => setSelectedDependente(dep)}
+                variant={!selectedDependente ? 'default' : 'outline'}
+                className="w-full min-h-[52px] h-auto flex items-center justify-between text-left px-4 py-3 gap-3 border-[1.25px] overflow-hidden"
+                onClick={() => setSelectedDependente(null)}
               >
-                <div className="flex items-center gap-2 min-w-0">
-                  <User className="h-4 w-4 shrink-0" />
-                  <span className="truncate">{dep.nome}</span>
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <User className="h-5 w-5 shrink-0" />
+                  <span className="truncate font-semibold text-sm">{associado.nome}</span>
                 </div>
-                <Badge variant="secondary" className="shrink-0 ml-2">
-                  {tipoLabel[dep.tipo]}
-                </Badge>
+                <Badge variant="secondary" className="shrink-0 text-[10px] uppercase tracking-wider">Titular</Badge>
               </Button>
-            ))}
 
-            {dependentes.length === 0 && (
-              <p className="text-muted-foreground text-sm text-center py-4">
-                Nenhum dependente cadastrado.
-              </p>
-            )}
+              {dependentes.map((dep) => (
+                <Button
+                  key={dep.id}
+                  variant={selectedDependente?.id === dep.id ? 'default' : 'outline'}
+                  className="w-full min-h-[52px] h-auto flex items-center justify-between text-left px-4 py-3 gap-3 border-[1.25px] overflow-hidden"
+                  onClick={() => setSelectedDependente(dep)}
+                >
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <User className="h-5 w-5 shrink-0" />
+                    <span className="truncate font-semibold text-sm">{dep.nome}</span>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0 text-[10px] uppercase tracking-wider">
+                    {tipoLabel[dep.tipo]}
+                  </Badge>
+                </Button>
+              ))}
+
+              {dependentes.length === 0 && (
+                <p className="text-muted-foreground text-sm text-center py-6">
+                  Nenhum dependente cadastrado.
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>

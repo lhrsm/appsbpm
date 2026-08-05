@@ -124,7 +124,7 @@ export default function ChatbotWidget() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Abrir assistente virtual"
-          className="fixed bottom-5 right-5 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-105 transition-transform flex items-center justify-center"
+          className="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg hover:scale-105 transition-transform flex items-center justify-center"
         >
           <MessageCircle className="h-6 w-6" />
         </button>

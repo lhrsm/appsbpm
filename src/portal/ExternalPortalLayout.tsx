@@ -146,7 +146,7 @@ export default function ExternalPortalLayout({
             <main
               id="conteudo-principal"
               tabIndex={-1}
-              className={cn("min-w-0 flex-1 focus:outline-none", "pb-bottom-nav")}
+              className={cn("min-w-0 flex-1 focus:outline-none")}
             >
 
               <PortalPageContainer>

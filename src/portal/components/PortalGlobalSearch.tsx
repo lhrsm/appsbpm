@@ -75,7 +75,7 @@ export default function PortalGlobalSearch({ profile, permissions, variant = "ba
           size="icon"
           id="busca-portal-mobile"
           onClick={() => setOpen(true)}
-          className="min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15 lg:hidden"
+          className="h-11 w-11 text-inherit hover:bg-accent lg:hidden"
           aria-label="Pesquisar serviços, documentos e ajuda"
         >
           <Search className="h-5 w-5" aria-hidden />

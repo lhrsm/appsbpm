@@ -16,8 +16,8 @@ export const PORTAL_VERSION = "2.0";
  export default function PortalFooter() {
   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
-    <footer className={cn("border-t bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400 pb-bottom-nav mt-auto border-gray-900/10 dark:border-white/10", isKeyboardOpen && "hidden")}>
-      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-4 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
+    <footer className={cn("border-t bg-white dark:bg-slate-900 text-gray-500 dark:text-slate-400 mt-auto border-gray-900/10 dark:border-white/10", isKeyboardOpen && "hidden")}>
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-3 px-4 py-4 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide pb-[calc(var(--bottom-navigation-height,72px)+32px)] md:pb-8">
         <p className="text-xs break-anywhere">
           © {new Date().getFullYear()} SBPM — Sociedade Beneficente da Polícia Militar · Portal v{PORTAL_VERSION}
         </p>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,48 +33,43 @@ export default function PortalHeader({
 }: PortalHeaderProps) {
   const Menu = icons.menu;
 
-  const { isKeyboardOpen } = useMobileVisualViewport();
+  // Header fixo com layout em grid conforme especificação.
   return (
     <header className={cn(
       "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
-      "bg-[hsl(var(--header-bg))] text-foreground border-border",
-      isKeyboardOpen && "hidden"
+      "h-14 md:h-16 flex items-center",
+      "bg-white/96 dark:bg-slate-900/96 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
     )}>
-      <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
+      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide">
         <Button
-          asChild
           variant="ghost"
           size="icon"
-          className="min-h-11 min-w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
+          className="h-11 w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
           onClick={onOpenMenu}
         >
-          <button
-            type="button"
-            aria-label="Abrir menu de navegação"
-            aria-expanded={menuOpen}
-            aria-controls="portal-mobile-drawer"
-          >
-            <Menu className="h-5 w-5" aria-hidden />
-          </button>
+          <Menu className="h-5 w-5" aria-hidden />
+          <span className="sr-only">Abrir menu</span>
         </Button>
 ...
 
 
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
           <img
-            src={sbpmLogo}
+            src="/sbpm.jpeg"
             alt="SBPM"
-            width={38}
-            height={38}
-            className="h-9 w-9 shrink-0 rounded-full bg-background object-cover p-0.5 md:h-10 md:w-10"
+            className="h-10 w-auto md:h-11 shrink-0"
+            onError={(e) => {
+              e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
+            }}
           />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold leading-tight">Portal da SBPM</p>
-            <p className="truncate text-[10px] sm:text-[11px] opacity-85">
+          <div className="min-w-0 hidden xs:block">
+            <p className="truncate text-sm font-bold leading-tight md:text-base">Portal da SBPM</p>
+            <p className="truncate text-[10px] opacity-85 md:text-[11px]">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
             </p>
           </div>
         </div>
+        <div className="flex-1" />
         {environment && (
           <Badge variant="secondary" className="hidden text-[10px] uppercase md:inline-flex">
             {environment}
@@ -84,9 +79,10 @@ export default function PortalHeader({
         <div className="mx-2 hidden min-w-0 flex-1 justify-center lg:flex">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="bar" />
         </div>
-        <div className="ml-auto flex shrink-0 items-center gap-0.5 lg:ml-0">
+        <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
           <PortalNotificationCenter />
+          <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
         </div>
       </div>
     </header>
