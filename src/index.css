@@ -349,8 +349,8 @@ html.a11y-reduce-motion *::after {
     padding: 20px 20px !important;
     position: relative;
     z-index: 10;
-    width: 380px;
-    max-width: 100%;
+    width: 388px;
+    max-width: calc(100% - 24px);
     margin-inline: auto;
 
     height: auto;
@@ -375,7 +375,7 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 390px) and (max-width: 430px) {
     .auth-card {
-      width: 380px;
+      width: 388px;
     }
   }
 

@@ -185,13 +185,13 @@ export default function PortalPrimeiroAcesso() {
   return (
     <AuthBackgroundLayout align="center">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
+        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none overflow-hidden">
           <CardHeader className="pb-2 text-center">
             <div className="flex justify-center mb-3">
-              <img src={sbpmLogo} alt="SBPM" className="h-20 w-auto object-contain" />
+              <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
-            <CardTitle className="text-xl font-bold text-primary">{TITULOS[etapa]}</CardTitle>
-            <CardDescription>Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}</CardDescription>
+            <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">{TITULOS[etapa]} • Etapa {ORDEM.indexOf(etapa) + 1} de {ORDEM.length}</CardDescription>
             <Progress value={progresso} className="mt-3 h-2" />
           </CardHeader>
 
@@ -505,6 +505,11 @@ export default function PortalPrimeiroAcesso() {
               </Button>
             )}
           </CardContent>
+          <style dangerouslySetInnerHTML={{ __html: `
+            .clamp-title {
+              font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
+            }
+          `}} />
         </Card>
       </PublicFlowModal>
     </AuthBackgroundLayout>
