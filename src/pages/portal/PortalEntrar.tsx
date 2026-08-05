@@ -61,10 +61,10 @@ export default function PortalEntrar() {
         <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
-              <img src={sbpmLogo} alt="SBPM" className="h-24 w-auto object-contain" />
+              <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
-            <CardTitle className="text-2xl font-bold text-primary">Entrar no portal</CardTitle>
-            <CardDescription>Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
+            <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={submeter} className="space-y-5" aria-label="Formulário de acesso">
@@ -126,6 +126,11 @@ export default function PortalEntrar() {
               </div>
             </form>
           </CardContent>
+          <style dangerouslySetInnerHTML={{ __html: `
+            .clamp-title {
+              font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
+            }
+          `}} />
         </Card>
       </PublicFlowModal>
     </AuthBackgroundLayout>
