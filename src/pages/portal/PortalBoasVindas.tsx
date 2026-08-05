@@ -10,11 +10,13 @@ export default function PortalBoasVindas() {
 
         <nav
           aria-label="Links institucionais"
-          className="auth-links mt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-medium"
+          className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs font-bold"
         >
-          <Link to="/privacidade" className="text-slate-500 hover:text-primary transition-colors">Política de Privacidade</Link>
-          <span className="text-slate-300 dark:text-slate-700">•</span>
-          <Link to="/acessibilidade" className="text-slate-500 hover:text-primary transition-colors">Acessibilidade</Link>
+          <div className="bg-white/36 backdrop-blur-[5px] rounded-full px-3 py-1.5 flex items-center gap-4">
+            <Link to="/privacidade" className="text-[#1f4f3a] dark:text-green-300 hover:text-[#14532d] dark:hover:text-white transition-colors hover:underline">Política de Privacidade</Link>
+            <span className="text-slate-900/48 dark:text-white/40">•</span>
+            <Link to="/acessibilidade" className="text-[#1f4f3a] dark:text-green-300 hover:text-[#14532d] dark:hover:text-white transition-colors hover:underline">Acessibilidade</Link>
+          </div>
         </nav>
       </main>
     </AuthBackgroundLayout>
