@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNavigationState } from '@/hooks/useNavigationState';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,7 +22,13 @@ export default function PortalEntrar() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { setIsNavigating } = useNavigationState();
   const aplicar = useAplicarPortal();
+
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
 
   const handleCredentialChange = (v: string) => {
     const clean = v.replace(/\D/g, '');

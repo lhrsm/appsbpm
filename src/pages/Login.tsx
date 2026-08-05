@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNavigationState } from '@/hooks/useNavigationState';
+import { useEffect } from 'react';
+
 import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
@@ -24,6 +27,12 @@ export default function Login() {
   const [forgotOpen, setForgotOpen] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { setIsNavigating } = useNavigationState();
+
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
   
   const { 
     setAssociado, 

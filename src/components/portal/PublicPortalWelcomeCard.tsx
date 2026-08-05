@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
-import { cn } from '@/lib/utils';
+import { useNavigationState } from '@/hooks/useNavigationState';
 
 const CAMINHOS = [
   {
@@ -29,6 +29,20 @@ const CAMINHOS = [
 ];
 
 export function PublicPortalWelcomeCard() {
+  const navigate = useNavigate();
+  const { setIsNavigating } = useNavigationState();
+
+  const handleNavigation = (to: string, message: string) => {
+    setIsNavigating(true, message);
+    // Pequeno delay para garantir que o loader apareça antes da navegação se o chunk demorar
+    setTimeout(() => {
+      navigate(to);
+      // O loader será fechado pelo useEffect no destino ou pelo Suspense fallback
+      // Mas por segurança, se a rota for imediata, limpamos após um tempo mínimo
+      setTimeout(() => setIsNavigating(false), 300);
+    }, 100);
+  };
+
   return (
     <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
       <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
@@ -48,10 +62,14 @@ export function PublicPortalWelcomeCard() {
       <CardContent className="px-4 pb-4 pt-4">
         <nav aria-label="Como deseja continuar" className="portal-choice-container">
           {CAMINHOS.map(({ to, icone: Icone, titulo, descricao }) => (
-            <Link
+            <button
               key={to}
-              to={to}
-              className="portal-choice"
+              onClick={() => handleNavigation(to, 
+                to === '/primeiro-acesso' ? 'Preparando seu primeiro acesso...' :
+                to === '/entrar' ? 'Abrindo a tela de login...' :
+                'Carregando o pré-cadastro...'
+              )}
+              className="portal-choice w-full border-0 bg-transparent p-0 cursor-pointer appearance-none text-inherit font-inherit"
             >
               <span className="portal-icon-green shrink-0" aria-hidden="true">
                 <Icone className="h-[22px] w-[22px]" />
@@ -59,31 +77,25 @@ export function PublicPortalWelcomeCard() {
               <span className="flex-1 text-left min-w-0">
                 <span className="block portal-title">{titulo}</span>
                 <span className="block portal-description">{descricao}</span>
-
               </span>
               <ChevronRight className="portal-chevron shrink-0" aria-hidden="true" />
-            </Link>
+            </button>
           ))}
         </nav>
 
         <div className="flex justify-center">
-          <Link 
-            to="/recuperar-acesso" 
-            className="portal-recovery-button"
+          <button 
+            onClick={() => handleNavigation('/recuperar-acesso', 'Abrindo a recuperação de acesso...')}
+            className="portal-recovery-button border-0 bg-transparent cursor-pointer"
           >
-            <HelpCircle aria-hidden="true" /> Recuperar acesso
-          </Link>
+            <HelpCircle aria-hidden="true" className="w-4 h-4 mr-2" /> Recuperar acesso
+          </button>
         </div>
-
       </CardContent>
 
       <style dangerouslySetInnerHTML={{ __html: `
         .clamp-title {
           font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
-        }
-        .break-anywhere {
-          overflow-wrap: break-word;
-          min-width: 0;
         }
         @media (min-width: 1200px) {
           .desktop-header-respiro {
@@ -99,7 +111,6 @@ export function PublicPortalWelcomeCard() {
           }
         }
       `}} />
-
     </Card>
   );
 }

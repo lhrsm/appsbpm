@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigationState } from '@/hooks/useNavigationState';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,6 +17,12 @@ export default function PortalRecuperarAcesso() {
   const [credential, setCredential] = useState('');
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const { setIsNavigating } = useNavigationState();
+
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
 
   const handleCredentialChange = (v: string) => {
     const clean = v.replace(/\D/g, '');

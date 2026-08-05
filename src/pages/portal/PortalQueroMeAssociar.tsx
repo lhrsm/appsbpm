@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNavigationState } from '@/hooks/useNavigationState';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +28,12 @@ const SUPORTE_WHATSAPP = 'https://wa.me/5571985496972';
 export default function PortalQueroMeAssociar() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { setIsNavigating } = useNavigationState();
+
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [setIsNavigating]);
+
 
   const [postos, setPostos] = useState<PostoGraduacao[]>([]);
   const [nome, setNome] = useState('');
