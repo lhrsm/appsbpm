@@ -190,10 +190,9 @@ export default function PortalQueroMeAssociar() {
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
                 <Field label="CPF" htmlFor="cpf" error={erros.cpf}>
                   <CpfInput
-                    id="cpf"
                     value={cpf}
                     onChange={setCpf}
-                    invalid={!!erros.cpf}
+                    error={erros.cpf}
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -203,10 +202,9 @@ export default function PortalQueroMeAssociar() {
 
                 <Field label="Matrícula" htmlFor="matricula" error={erros.matricula}>
                   <RegistrationNumberInput
-                    id="matricula"
                     value={matricula}
                     onChange={setMatricula}
-                    invalid={!!erros.matricula}
+                    error={erros.matricula}
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -301,24 +299,25 @@ export default function PortalQueroMeAssociar() {
                 "rounded-2xl border p-5 transition-all duration-300 w-full",
                 consent ? "border-primary/40 bg-primary/5" : "border-primary/10 bg-white/40"
               )}>
-                <Label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
-                  <Checkbox
-                    id="consent"
-                    checked={consent}
-                    onCheckedChange={(v) => setConsent(v === true)}
-                    className="mt-0.5 h-5 w-5 rounded-md border-primary/40 data-[state=checked]:bg-primary"
-                    disabled={enviando}
-                  />
-                  <div className="flex flex-col gap-2">
-                    <span className="leading-relaxed break-words overflow-visible">
-                      Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
-                    </span>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1">
-                      <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
-                      <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
+                    <Checkbox
+                      id="consent"
+                      checked={consent}
+                      onCheckedChange={(v) => setConsent(v === true)}
+                      disabled={enviando}
+                    />
+                    <div className="flex flex-col gap-2">
+                      <span className="leading-relaxed break-words overflow-visible">
+                        Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
+                      </span>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1">
+                        <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
+                        <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                      </div>
                     </div>
-                  </div>
-                </Label>
+                  </label>
+                </div>
                 {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 

@@ -227,7 +227,6 @@ export default function PortalPrimeiroAcesso() {
 
                 <Field label="CPF" htmlFor="cpf">
                   <CpfInput 
-                    id="cpf"
                     value={cpf} 
                     onChange={setCpf} 
                     onFocus={(e) => {
@@ -240,7 +239,6 @@ export default function PortalPrimeiroAcesso() {
 
                 <Field label="Data de nascimento" htmlFor="nascimento">
                   <BirthDateInput
-                    id="nascimento"
                     value={nascimento}
                     onChange={setNascimento}
                     required
