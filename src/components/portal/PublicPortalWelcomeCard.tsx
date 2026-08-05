@@ -58,7 +58,8 @@ export function PublicPortalWelcomeCard() {
               </span>
               <span className="flex-1 text-left min-w-0">
                 <span className="block portal-title break-anywhere">{titulo}</span>
-                <span className="block portal-description font-medium break-anywhere">{descricao}</span>
+                <span className="block portal-description break-anywhere">{descricao}</span>
+
               </span>
               <ChevronRight className="portal-chevron shrink-0" aria-hidden="true" />
             </Link>
