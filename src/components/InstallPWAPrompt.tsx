@@ -48,14 +48,14 @@ export default function InstallPWAPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-50 rounded-lg border bg-card shadow-lg p-4 animate-in slide-in-from-bottom-4">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-50 rounded-2xl border border-green-600/20 bg-white/95 backdrop-blur-md shadow-xl p-4 animate-in slide-in-from-bottom-4">
       <div className="flex items-start gap-3">
         <div className="rounded-md bg-primary/10 p-2 text-primary">
           <Download className="h-5 w-5" />
         </div>
         <div className="flex-1">
-          <p className="font-semibold text-sm">Instalar aplicativo SBPM</p>
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="font-bold text-sm text-slate-900">Instalar aplicativo SBPM</p>
+          <p className="text-xs text-slate-600 mt-1">
             Tenha acesso rápido à sua carteirinha e serviços direto da tela inicial.
           </p>
           <div className="flex gap-2 mt-3">

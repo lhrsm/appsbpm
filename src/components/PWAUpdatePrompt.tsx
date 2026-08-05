@@ -22,10 +22,10 @@ export default function PWAUpdatePrompt() {
   return (
     <div
       role="status"
-      className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5rem)] z-50 mx-auto max-w-md rounded-xl border border-border bg-card p-4 shadow-lg sm:bottom-6"
+      className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+5rem)] z-50 mx-auto max-w-md rounded-2xl border border-green-600/20 bg-white/95 backdrop-blur-md p-4 shadow-xl sm:bottom-6"
     >
-      <p className="text-sm font-medium text-foreground">Uma nova versão do Portal está disponível.</p>
-      <p className="mt-1 text-xs text-muted-foreground">
+      <p className="text-sm font-bold text-slate-900">Uma nova versão do Portal está disponível.</p>
+      <p className="mt-1 text-xs text-slate-600">
         A atualização é aplicada ao recarregar. Conclua o que estiver preenchendo antes de continuar.
       </p>
       <div className="mt-3 flex gap-2">
