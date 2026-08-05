@@ -504,9 +504,9 @@ html.a11y-reduce-motion *::after {
     height: auto !important;
     padding: 12px 14px !important;
     display: grid !important;
-    grid-template-columns: 38px minmax(0, 1fr) 20px !important;
+    grid-template-columns: 44px 1fr 20px !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 10px !important;
   }
 
 
@@ -533,8 +533,11 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-icon-circle-green {
-    width: 38px !important;
+    width: 44px !important;
     height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
   }
 
   .portal-chevron {
@@ -555,7 +558,7 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-description {
-    font-size: 0.80rem !important;
+    font-size: 0.77rem !important;
     line-height: 1.35 !important;
     color: #475569 !important;
     display: -webkit-box !important;
