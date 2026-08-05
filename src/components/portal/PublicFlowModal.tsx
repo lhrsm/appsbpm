@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import { cn } from "@/lib/utils";
 
@@ -8,8 +8,18 @@ interface PublicFlowModalProps {
   className?: string;
 }
 
-export function PublicFlowModal({ children, showLogo = true, className }: PublicFlowModalProps) {
+export function PublicFlowModal({ children, className }: PublicFlowModalProps) {
   const { isKeyboardOpen } = useMobileVisualViewport();
+  const [isShortScreen, setIsShortScreen] = useState(false);
+
+  useEffect(() => {
+    const checkHeight = () => {
+      setIsShortScreen(window.innerHeight < 700);
+    };
+    checkHeight();
+    window.addEventListener('resize', checkHeight);
+    return () => window.removeEventListener('resize', checkHeight);
+  }, []);
 
   return (
     <div 
@@ -18,6 +28,7 @@ export function PublicFlowModal({ children, showLogo = true, className }: Public
         className
       )}
       data-keyboard-open={isKeyboardOpen}
+      data-height-short={isShortScreen}
     >
       <div className="pwa-modal-container">
         {children}
@@ -25,3 +36,4 @@ export function PublicFlowModal({ children, showLogo = true, className }: Public
     </div>
   );
 }
+

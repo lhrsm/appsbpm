@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { PublicPortalWelcomeCard } from '@/components/portal/PublicPortalWelcomeCard';
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
+import { Shield, Accessibility, Globe, Headset } from 'lucide-react';
 
 export default function PortalBoasVindas() {
   return (
@@ -11,37 +12,75 @@ export default function PortalBoasVindas() {
 
         <nav
           aria-label="Links institucionais"
-          className="mt-8 flex flex-col items-center gap-6"
+          className="mt-[14px] grid grid-cols-2 gap-[10px] w-[calc(100%-32px)] max-w-[380px] mx-auto pb-8 sm:grid-cols-2 xs:grid-cols-1"
         >
-          <div className="flex flex-wrap items-center justify-center gap-4 text-[13px] font-bold">
-            <div className="bg-white/42 backdrop-blur-[6px] rounded-full px-4 py-2 flex items-center gap-4 border border-green-600/10 shadow-sm">
-              <Link to="/privacidade" className="text-green-900 dark:text-green-300 hover:text-green-700 dark:hover:text-white transition-colors hover:underline underline-offset-4">Política de Privacidade</Link>
-              <span className="text-slate-900/48 dark:text-white/40">•</span>
-              <Link to="/acessibilidade" className="text-green-900 dark:text-green-300 hover:text-green-700 dark:hover:text-white transition-colors hover:underline underline-offset-4">Acessibilidade</Link>
-            </div>
-          </div>
+          <Link 
+            to="/privacidade" 
+            className="external-link-card"
+          >
+            <Shield className="h-4 w-4 text-[#16a34a] shrink-0" />
+            <span>Privacidade</span>
+          </Link>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pb-4">
-            <a 
-              href="https://www.sbpmbahia.com.br" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-[13px] font-bold text-green-900 dark:text-green-300 hover:text-green-700 dark:hover:text-white transition-colors flex items-center gap-2 group bg-white/42 backdrop-blur-[6px] px-4 py-2 rounded-full border border-green-600/10 shadow-sm"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-green-600/60 group-hover:bg-green-600 transition-colors" />
-              Site Institucional
-            </a>
-            <a 
-              href="https://www.sbpmbahia.com.br/contato" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-[13px] font-bold text-green-900 dark:text-green-300 hover:text-green-700 dark:hover:text-white transition-colors flex items-center gap-2 group bg-white/42 backdrop-blur-[6px] px-4 py-2 rounded-full border border-green-600/10 shadow-sm"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-green-600/60 group-hover:bg-green-600 transition-colors" />
-              Central de Atendimento
-            </a>
-          </div>
+          <Link 
+            to="/acessibilidade" 
+            className="external-link-card"
+          >
+            <Accessibility className="h-4 w-4 text-[#16a34a] shrink-0" />
+            <span>Acessibilidade</span>
+          </Link>
+
+          <a 
+            href="https://www.sbpmbahia.com.br" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="external-link-card"
+          >
+            <Globe className="h-4 w-4 text-[#16a34a] shrink-0" />
+            <span>Site Oficial</span>
+          </a>
+
+          <a 
+            href="https://www.sbpmbahia.com.br/contato" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="external-link-card"
+          >
+            <Headset className="h-4 w-4 text-[#16a34a] shrink-0" />
+            <span>Atendimento</span>
+          </a>
         </nav>
+
+        <style dangerouslySetInnerHTML={{ __html: `
+          .external-link-card {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1.25px solid rgba(22, 163, 74, 0.42);
+            border-radius: 14px;
+            color: #166534;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.07);
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px 12px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            gap: 8px;
+            transition: all 0.2s ease;
+          }
+          .external-link-card:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 1);
+          }
+          @media (max-width: 339px) {
+            nav[aria-label="Links institucionais"] {
+              grid-template-columns: 1fr;
+              width: calc(100% - 20px);
+              max-width: 340px;
+            }
+          }
+        `}} />
       </PublicFlowModal>
     </AuthBackgroundLayout>
   );
