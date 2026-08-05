@@ -90,8 +90,8 @@ export const portalNavigation: PortalNavSection[] = [
         label: "Meus dados",
         icon: icons.perfil,
         route: "/dashboard/perfil",
-
         allowedProfiles: TITULAR,
+
         keywords: ["cadastro", "endereço", "telefone", "e-mail"],
         order: 4,
       },

@@ -38,25 +38,12 @@ export default function PortalHeader({
   return (
     <header 
       className={cn(
-        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200 overflow-hidden",
-        "h-14 md:h-20 lg:h-24 flex items-center relative",
+        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
+        "h-14 md:h-16 flex items-center relative",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
       )}
     >
-      {/* Background Image with Overlay - Only on Desktop/Ultrawide */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-0 md:opacity-90 transition-opacity duration-300"
-        style={{
-          backgroundImage: `url(${bannerInstitutional.url})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center 35%',
-        }}
-      >
-        <div className="absolute inset-0 bg-white/40 dark:bg-slate-900/60 backdrop-blur-[2px]" />
-      </div>
 
-      {/* Mobile background fallback */}
-      <div className="absolute inset-0 z-0 md:hidden bg-white/96 dark:bg-slate-900/96" />
 
       <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide relative z-10">
         <Button
