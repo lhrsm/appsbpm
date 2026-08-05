@@ -322,12 +322,14 @@ html.a11y-reduce-motion *::after {
   }
 
   .auth-card {
-    background: var(--portal-modal-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(150%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(150%) !important;
-    border: 1.5px solid var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
+    background: var(--public-card-bg-light) !important;
+    backdrop-filter: blur(8px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(115%) !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.72) !important;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.16) !important;
     border-radius: var(--portal-modal-radius) !important;
+    padding-top: max(18px, env(safe-area-inset-top));
+    padding-bottom: max(18px, env(safe-area-inset-bottom));
   }
 
   .dark .auth-card {
@@ -337,11 +339,68 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice {
-    background: rgba(255, 255, 255, 0.35) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(150%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(150%) !important;
-    transition: all 0.2s ease-in-out !important;
-    border-radius: 16px !important;
+    background: var(--public-option-bg-light) !important;
+    border: 1.5px solid var(--public-option-border-light) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 20px !important;
+    min-height: 104px;
+    padding: 16px 18px;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .dark .portal-choice {
+    background: rgba(17, 24, 39, 0.82) !important;
+    border: 1.5px solid rgba(34, 197, 94, 0.48) !important;
+  }
+
+  .portal-choice:hover, .portal-choice:focus-within, .portal-choice:active {
+    background: rgba(240, 253, 244, 0.96) !important;
+    border-color: rgba(22, 163, 74, 0.82) !important;
+    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.12) !important;
+  }
+
+  .portal-choice .portal-title {
+    color: var(--public-title-light);
+    font-weight: 700;
+  }
+
+  .dark .portal-choice .portal-title {
+    color: #f8fafc;
+  }
+
+  .portal-choice .portal-description {
+    color: var(--public-description-light);
+  }
+
+  .dark .portal-choice .portal-description {
+    color: #cbd5e1;
+  }
+
+  .portal-choice .portal-chevron {
+    color: #64748b;
+  }
+
+  .portal-choice:hover .portal-chevron, 
+  .portal-choice:focus-within .portal-chevron {
+    color: #15803d;
+  }
+
+  .dark .portal-choice .portal-chevron {
+    color: #475569;
+  }
+
+  @media (max-width: 340px) {
+    .portal-choice {
+      padding: 12px;
+      gap: 10px;
+    }
+    .portal-choice .portal-title {
+      font-size: 0.875rem;
+    }
   }
 
   .portal-choice:hover, .portal-choice:focus-within {
