@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input, Checkbox, Label, Field, RadioCard, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Alert } from '@/design-system/components';
-import { ArrowLeft, CheckCircle2, CircleHelp, Loader2, Send, ShieldCheck, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useNavigationState } from '@/hooks/useNavigationState';
+import { useToast } from '@/hooks/use-toast';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
 import { CpfInput } from '@/components/CpfInput';
