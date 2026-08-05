@@ -412,7 +412,32 @@
 .portal-choice__chevron {
   margin-left: auto;
   flex: 0 0 auto;
-  color: hsl(var(--muted-foreground));
+  color: #64748b;
+}
+
+.portal-choice:hover .portal-choice__chevron,
+.portal-choice:focus-within .portal-choice__chevron {
+  color: #15803d;
+}
+
+.dark .portal-choice__chevron {
+  color: #475569;
+}
+
+.dark .portal-choice:hover .portal-choice__chevron {
+  color: #86efac;
+}
+
+/* Media query for small screens */
+@media (max-width: 340px) {
+  .portal-choice {
+    padding: 12px;
+    gap: 10px;
+    min-height: 90px;
+  }
+  .portal-choice__title {
+    font-size: 0.875rem;
+  }
 }
 
 /* Card mais largo (boas-vindas e pré-cadastro) */
