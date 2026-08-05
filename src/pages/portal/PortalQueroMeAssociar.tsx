@@ -146,7 +146,7 @@ export default function PortalQueroMeAssociar() {
                   href={SUPORTE_WHATSAPP}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="portal-btn-tertiary w-full h-12 flex items-center justify-center rounded-xl"
+                  className="portal-btn-tertiary w-full h-12 flex items-center justify-center rounded-xl shadow-sm"
                 >
                   <MessageCircle className="h-4 w-4 mr-2" aria-hidden="true" /> Falar com o atendimento
                 </a>
