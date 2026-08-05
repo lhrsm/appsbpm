@@ -55,11 +55,11 @@ function CarteirinhaCard({
     <div className="w-full max-w-full overflow-hidden digital-membership-card">
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[28px] shadow-lg overflow-hidden flex flex-col backdrop-blur-none saturate-100"
-        style={{ fontFamily: 'Arial, sans-serif', colorScheme: 'light' }}
+        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[28px] shadow-lg overflow-hidden flex flex-col backdrop-blur-none saturate-100 print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
+        style={{ fontFamily: 'Arial, sans-serif', colorScheme: 'light', minHeight: 'fit-content' }}
       >
         {/* Header com Logo/Foto e Título */}
-        <div className="flex flex-col sm:flex-row items-center sm:items-start p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4 bg-white text-gray-800">
+        <div className="flex items-center p-3 sm:p-4 border-b border-gray-200 gap-3 sm:gap-4 bg-white text-gray-800">
 
           <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
             <div className="relative shrink-0">
@@ -83,7 +83,7 @@ function CarteirinhaCard({
               </h2>
             </div>
           </div>
-          <div className="flex flex-row sm:flex-col justify-between sm:justify-start w-full sm:w-auto gap-2 sm:gap-1 text-xs sm:text-sm border-t sm:border-t-0 pt-2 sm:pt-0">
+          <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs">
             <div className="flex gap-1">
               <span className="text-gray-600">Matrícula: </span>
               <span className="font-semibold">{matricula}</span>
@@ -115,7 +115,7 @@ function CarteirinhaCard({
                 </div>
               )}
             </div>
-            <div className="flex flex-row sm:flex-col justify-between sm:justify-start w-full sm:w-auto gap-3 sm:gap-1 text-xs sm:text-sm border-t sm:border-t-0 pt-2 sm:pt-0">
+            <div className="flex flex-col items-end shrink-0 gap-1 text-[10px] sm:text-xs pt-1">
               <div className="flex gap-1 whitespace-nowrap">
                 <span className="text-gray-600">CPF.: </span>
                 <span className="font-semibold">{formatCpf(cpf)}</span>
