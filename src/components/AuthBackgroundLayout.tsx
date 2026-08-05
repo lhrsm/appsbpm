@@ -63,8 +63,21 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             justify-content: center !important;
             align-items: center !important;
             padding-right: 6vw !important;
-            padding-top: 12vh !important;
+            padding-top: 0 !important;
             width: 100% !important;
+            transform: translateY(65px);
+          }
+
+          @media (max-height: 900px) {
+            .desktop-auth-column {
+              transform: translateY(45px);
+            }
+          }
+
+          @media (max-height: 760px) {
+            .desktop-auth-column {
+              transform: translateY(20px);
+            }
           }
 
           /* Removendo qualquer interferência de posicionamento absoluto residual */
