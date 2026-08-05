@@ -160,22 +160,22 @@ export default function PortalQueroMeAssociar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="pb-4 pt-6 text-center space-y-2">
+        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none flex flex-col max-h-[calc(100dvh-48px)] xl:max-h-[calc(100dvh-80px)]">
+          <CardHeader className="pb-4 pt-6 text-center space-y-2 flex-shrink-0">
             <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
-            <CardTitle className="text-2xl font-bold text-primary leading-tight">
-              Quero me associar
+            <CardTitle className="text-2xl font-bold text-primary leading-tight break-words overflow-visible whitespace-normal">
+              Pré-cadastro para associação
             </CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-sm">
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-sm break-words">
               Informe seus dados para que a equipe da SBPM possa entrar em contato.
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="px-6 pb-8 pt-2">
-            <form onSubmit={submeter} className="space-y-4" noValidate aria-label="Formulário de pré-cadastro">
-              <div className="space-y-2">
+          <CardContent className="px-6 pb-8 pt-2 overflow-y-auto overflow-x-hidden overscroll-behavior-contain custom-scrollbar flex-grow">
+            <form onSubmit={submeter} className="space-y-4 w-full max-w-full" noValidate aria-label="Formulário de pré-cadastro">
+              <div className="space-y-2 w-full">
                 <Label htmlFor="nome">Nome completo</Label>
                 <Input
                   id="nome"
