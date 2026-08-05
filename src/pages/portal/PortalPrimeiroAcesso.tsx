@@ -528,16 +528,45 @@ export default function PortalPrimeiroAcesso() {
             )}
 
             {etapa !== 'concluido' && (
-              <Button asChild variant="ghost" className="w-full text-slate-600">
-                <Link to="/">
-                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Voltar
-                </Link>
-              </Button>
+              <div className="flex justify-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (etapa === 'identidade') navigate('/');
+                    else {
+                      const prev = ORDEM[ORDEM.indexOf(etapa) - 1];
+                      setEtapa(prev);
+                    }
+                  }}
+                  className="flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Voltar
+                </button>
+              </div>
             )}
           </CardContent>
+
           <style dangerouslySetInnerHTML={{ __html: `
             .clamp-title {
               font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
+            }
+            .desktop-header-respiro {
+              padding-top: 8px !important;
+              padding-bottom: 12px !important;
+            }
+            @media (min-width: 1200px) {
+              .desktop-header-respiro h3 {
+                margin-top: 12px !important;
+                margin-bottom: 6px !important;
+              }
+              .desktop-header-respiro p {
+                margin-bottom: 12px !important;
+              }
+            }
+            @media (max-width: 359px) {
+              .grid-cols-2 {
+                grid-template-columns: 1fr !important;
+              }
             }
           `}} />
         </Card>
