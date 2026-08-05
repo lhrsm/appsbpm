@@ -17,6 +17,7 @@ export default function PortalRecuperarAcesso() {
   const [credential, setCredential] = useState('');
   const [loading, setLoading] = useState(false);
   const [enviado, setEnviado] = useState(false);
+  const navigate = useNavigate();
   const { setIsNavigating } = useNavigationState();
 
   useEffect(() => {
