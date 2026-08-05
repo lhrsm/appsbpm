@@ -53,19 +53,23 @@ export default function PortalHeader({
 ...
 
 
-        <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="flex items-center gap-2 min-w-0">
           <img
-            src={sbpmLogo}
+            src="/sbpm.jpeg"
             alt="SBPM"
-            className="h-8 w-8 shrink-0 rounded-full object-cover"
+            className="h-10 w-auto md:h-11 shrink-0"
+            onError={(e) => {
+              e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
+            }}
           />
           <div className="min-w-0 hidden xs:block">
-            <p className="truncate text-sm font-bold leading-tight">Portal da SBPM</p>
-            <p className="truncate text-[10px] opacity-85 hidden sm:block">
+            <p className="truncate text-sm font-bold leading-tight md:text-base">Portal da SBPM</p>
+            <p className="truncate text-[10px] opacity-85 md:text-[11px]">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
             </p>
           </div>
         </div>
+        <div className="flex-1" />
         {environment && (
           <Badge variant="secondary" className="hidden text-[10px] uppercase md:inline-flex">
             {environment}
