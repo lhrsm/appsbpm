@@ -456,32 +456,21 @@ export default function PortalPrimeiroAcesso() {
 
             {etapa === 'termos' && (
               <div className="space-y-5">
-                <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
-                  <FileText className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span>Última etapa: leia e aceite os termos para liberar o seu acesso.</span>
-                </p>
-
-                <div className="rounded-lg border bg-card shadow-sm">
-                  <div className="flex items-center justify-between border-b px-4 py-2.5">
-                    <span className="text-sm font-semibold text-foreground">Termos de Uso</span>
-                    <span className="text-[11px] uppercase tracking-wide text-muted-foreground">Role para ler</span>
-                  </div>
-                  <div className="max-h-44 space-y-3 overflow-y-auto px-4 py-3 text-xs leading-relaxed text-muted-foreground">
-                    <p>
-                      O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
-                      carteirinha digital.
-                    </p>
-                    <p>
-                      O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
-                      responsável por manter a confidencialidade da sua senha.
-                    </p>
-                    <p>
-                      Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
-                      associativos e mantidos com registro de auditoria dos acessos.
-                    </p>
-                  </div>
+                <div className="rounded-lg border bg-muted/20 p-4 max-h-60 overflow-y-auto text-[11px] space-y-3 leading-relaxed text-muted-foreground">
+                  <h4 className="font-bold text-sm text-foreground">Termos de Uso e Privacidade</h4>
+                  <p>
+                    O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
+                    carteirinha digital.
+                  </p>
+                  <p>
+                    O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
+                    responsável por manter a confidencialidade da sua senha.
+                  </p>
+                  <p>
+                    Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
+                    associativos e mantidos com registro de auditoria dos acessos.
+                  </p>
                 </div>
-
                 <div className="space-y-3">
                   <Label
                     className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
@@ -506,7 +495,6 @@ export default function PortalPrimeiroAcesso() {
                     </span>
                   </Label>
                 </div>
-
                 <Button className="w-full h-11 font-semibold" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
                   {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Concluir cadastro'}
                 </Button>
