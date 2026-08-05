@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, Alert } from '@/design-system/components';
+import { icons } from '@/design-system/icons';
 import { Loader2, MailCheck, ArrowLeft } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import AuthBackgroundLayout from '@/components/AuthBackgroundLayout';
@@ -57,20 +55,18 @@ export default function PortalRecuperarAcesso() {
           </CardHeader>
           <CardContent className="space-y-4">
             {enviado ? (
-              <div className="space-y-4 text-center">
-                <MailCheck className="mx-auto h-12 w-12 text-primary" aria-hidden="true" />
-                <p className="text-sm text-muted-foreground">
+              <div className="space-y-4">
+                <Alert tone="info" icon={MailCheck} title="E-mail enviado">
                   Se existir uma conta vinculada aos dados informados, enviaremos as instruções para o e-mail
                   cadastrado. Verifique também a caixa de spam.
-                </p>
-                <button type="button" className="portal-btn-primary w-full h-12 rounded-xl" onClick={() => navigate('/entrar')}>
+                </Alert>
+                <Button className="w-full h-12" onClick={() => navigate('/entrar')}>
                   Voltar para o login
-                </button>
+                </Button>
               </div>
             ) : (
               <form onSubmit={submeter} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="credential">CPF ou matrícula</Label>
+                <Field label="CPF ou matrícula" htmlFor="credential">
                     <Input
                      id="credential"
                      inputMode="numeric"
@@ -79,22 +75,23 @@ export default function PortalRecuperarAcesso() {
                      value={credential}
                      onChange={(e) => handleCredentialChange(e.target.value)}
                      maxLength={14}
-                     className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
                      onFocus={(e) => {
                        setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                      }}
                    />
-                </div>
-                <button type="submit" className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20" disabled={loading || !credential.trim()}>
-                  {loading ? <Loader2 className="h-5 w-5 animate-spin mx-auto" /> : 'Enviar instruções'}
-                </button>
-                <button
+                </Field>
+                <Button type="submit" className="w-full h-12" loading={loading} disabled={!credential.trim()}>
+                  Enviar instruções
+                </Button>
+                <Button
                   type="button"
-                  className="portal-btn-secondary w-full h-11 rounded-xl text-sm font-semibold flex items-center justify-center"
+                  variant="secondary"
+                  className="w-full h-11"
                   onClick={() => navigate('/entrar')}
+                  leftIcon={ArrowLeft}
                 >
-                  <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Voltar
-                </button>
+                  Voltar
+                </Button>
               </form>
             )}
           </CardContent>

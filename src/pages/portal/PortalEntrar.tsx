@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, PasswordInput } from '@/design-system/components';
+import { icons } from '@/design-system/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
@@ -76,8 +74,7 @@ export default function PortalEntrar() {
           </CardHeader>
           <CardContent>
             <form onSubmit={submeter} className="space-y-5" aria-label="Formulário de acesso">
-              <div className="space-y-2">
-                <Label htmlFor="credential">CPF ou matrícula</Label>
+              <Field label="CPF ou matrícula" htmlFor="credential">
                 <Input
                   id="credential"
                   inputMode="numeric"
@@ -87,57 +84,36 @@ export default function PortalEntrar() {
                   value={credential}
                   onChange={(e) => handleCredentialChange(e.target.value)}
                   maxLength={14}
-                  className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
                   disabled={loading}
                   onFocus={(e) => {
                     setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                   }}
                 />
-              </div>
+              </Field>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={verSenha ? 'text' : 'password'}
-                    enterKeyHint="done"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary pr-12"
-                    disabled={loading}
-                    onFocus={(e) => {
-                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setVerSenha((v) => !v)}
-                    className="absolute right-1 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label={verSenha ? 'Ocultar senha' : 'Mostrar senha'}
-                  >
-                    {verSenha ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
-                </div>
-              </div>
+              <Field label="Senha" htmlFor="password">
+                <PasswordInput
+                  id="password"
+                  enterKeyHint="done"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  onFocus={(e) => {
+                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                  }}
+                />
+              </Field>
 
-              <button type="submit" className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all" disabled={loading}>
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
-                    <span>Acessando...</span>
-                  </div>
-                ) : (
-                  'Acessar'
-                )}
-              </button>
+              <Button type="submit" className="w-full h-12" loading={loading}>
+                Acessar
+              </Button>
 
               <div className="flex items-center justify-between text-sm">
-                <Link to="/recuperar-acesso" className="font-medium text-primary hover:underline">
+                <Link to="/recuperar-acesso" className="font-bold text-[var(--link-color)] hover:underline">
                   Esqueci minha senha
                 </Link>
-                <Link to="/primeiro-acesso" className="font-medium text-primary hover:underline">
+                <Link to="/primeiro-acesso" className="font-bold text-[var(--link-color)] hover:underline">
                   Primeiro acesso
                 </Link>
               </div>
