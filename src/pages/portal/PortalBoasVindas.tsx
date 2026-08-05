@@ -13,7 +13,7 @@ export default function PortalBoasVindas() {
 
           <nav
             aria-label="Links institucionais"
-            className="mt-[16px] flex flex-wrap justify-center gap-[12px] w-full max-w-[480px] mx-auto pb-8 px-[4%] desktop-footer-links"
+            className="mt-[12px] flex flex-wrap justify-center gap-[12px] w-full max-w-[480px] mx-auto pb-4 px-[4%] desktop-footer-links"
           >
             <Link 
               to="/privacidade" 
@@ -77,7 +77,7 @@ export default function PortalBoasVindas() {
               width: 100% !important;
               max-width: 520px !important;
               gap: 20px !important;
-              margin-top: 24px !important;
+              margin-top: 16px !important;
             }
             .external-link-circle {
               width: 52px !important;
