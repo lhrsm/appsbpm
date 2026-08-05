@@ -64,15 +64,15 @@ export default function PortalEntrar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="text-center pb-2 pt-6">
+        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden p-0 flex flex-col">
+          <CardHeader className="text-center pb-2 pt-6 px-6 flex-shrink-0">
             <div className="flex justify-center mb-4">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
             <CardTitle className="text-2xl font-bold text-primary leading-tight">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug px-2">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
+            <CardDescription className="text-muted-foreground font-medium text-[0.80rem] leading-snug">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-6 pb-8 pt-2 overflow-y-auto flex-grow">
             <form onSubmit={submeter} className="space-y-5" aria-label="Formulário de acesso">
               <Field label="CPF ou matrícula" htmlFor="credential">
                 <Input
@@ -110,10 +110,10 @@ export default function PortalEntrar() {
               </Button>
 
               <div className="flex items-center justify-between text-sm">
-                <Link to="/recuperar-acesso" className="font-bold text-[var(--link-color)] hover:underline">
+                <Link to="/recuperar-acesso" className="font-bold text-primary hover:underline">
                   Esqueci minha senha
                 </Link>
-                <Link to="/primeiro-acesso" className="font-bold text-[var(--link-color)] hover:underline">
+                <Link to="/primeiro-acesso" className="font-bold text-primary hover:underline">
                   Primeiro acesso
                 </Link>
               </div>
