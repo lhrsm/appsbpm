@@ -2,13 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Progress } from '@/components/ui/progress';
+import { Button, Input, Checkbox, Card, CardContent, CardDescription, CardHeader, CardTitle, RadioCard, Progress, Label, Field, ErrorMessage, Alert } from '@/design-system/components';
+import { icons } from '@/design-system/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning, ShieldQuestion } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
@@ -207,57 +202,57 @@ export default function PortalPrimeiroAcesso() {
 
           <CardContent className="px-4 pb-4 pt-4 space-y-5">
             {erro && (
-              <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              <Alert tone="danger" className="mb-4">
                 {erro}
-              </div>
+              </Alert>
             )}
 
             {etapa === 'identidade' && (
               <form onSubmit={validar} className="space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <Label>Você é</Label>
-                  <RadioGroup
-                    value={personType}
-                    onValueChange={(v) => { setPersonType(v as PersonType); setExtras({}); }}
-                    className="grid grid-cols-2 gap-3"
-                  >
-                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
-                      <RadioGroupItem value="associate" /> Associado(a)
-                    </Label>
-                    <Label className="flex items-center gap-2 rounded-lg border p-3 text-sm font-normal cursor-pointer hover:bg-muted/30 transition-colors">
-                      <RadioGroupItem value="dependent" /> Dependente
-                    </Label>
-                  </RadioGroup>
+                  <div className="grid grid-cols-2 gap-3">
+                    <RadioCard
+                      label="Associado(a)"
+                      selected={personType === 'associate'}
+                      onClick={() => { setPersonType('associate'); setExtras({}); }}
+                    />
+                    <RadioCard
+                      label="Dependente"
+                      selected={personType === 'dependent'}
+                      onClick={() => { setPersonType('dependent'); setExtras({}); }}
+                    />
+                  </div>
                 </div>
 
-                <CpfInput 
-                  label="CPF" 
-                  value={cpf} 
-                  onChange={setCpf} 
-                  className="h-11"
-                  onFocus={(e) => {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                  }}
-                />
+                <Field label="CPF" htmlFor="cpf">
+                  <CpfInput 
+                    value={cpf} 
+                    onChange={setCpf} 
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
+                  />
+                </Field>
 
-                <BirthDateInput
-                  label="Data de nascimento"
-                  value={nascimento}
-                  onChange={setNascimento}
-                  className="h-11"
-                  required
-                  onFocus={(e) => {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                  }}
-                />
+                <Field label="Data de nascimento" htmlFor="nascimento">
+                  <BirthDateInput
+                    value={nascimento}
+                    onChange={setNascimento}
+                    required
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
+                  />
+                </Field>
 
 
                 {CAMPOS_VALIDACAO[personType].map((campo) => (
-                  <div className="space-y-2" key={campo.key}>
+                  <Field label={campo.label} htmlFor={campo.key} hint={campo.help} key={campo.key}>
                     {campo.key === 'registration' ? (
                       <RegistrationNumberInput
                         label={campo.label}
@@ -271,23 +266,19 @@ export default function PortalPrimeiroAcesso() {
                         }}
                       />
                     ) : (
-                      <>
-                        <Label htmlFor={campo.key}>{campo.label}</Label>
-                        <Input
-                          id={campo.key}
-                          value={extras[campo.key] ?? ''}
-                          onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
-                          className="h-11"
-                          onFocus={(e) => {
-                            setTimeout(() => {
-                              e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }, 300);
-                          }}
-                        />
-                      </>
+                      <Input
+                        id={campo.key}
+                        value={extras[campo.key] ?? ''}
+                        onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
+                        className="h-11"
+                        onFocus={(e) => {
+                          setTimeout(() => {
+                            e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }, 300);
+                        }}
+                      />
                     )}
-                    {campo.help && <p className="text-xs text-muted-foreground">{campo.help}</p>}
-                  </div>
+                  </Field>
                 ))}
 
                 <Button type="submit" className="w-full h-11" disabled={loading}>
@@ -299,51 +290,40 @@ export default function PortalPrimeiroAcesso() {
             {etapa === 'perguntas' && (
               <div className="space-y-5">
                 {bloqueado ? (
-                  <div className="space-y-3 text-center">
-                    <ShieldQuestion className="mx-auto h-12 w-12 text-destructive" aria-hidden="true" />
-                    <p className="text-sm text-muted-foreground">
-                      Por segurança, encerramos esta tentativa de primeiro acesso. Procure o atendimento da SBPM para
-                      liberar o seu cadastro.
-                    </p>
-                  </div>
+                  <Alert tone="danger" title="Acesso bloqueado" icon={ShieldQuestion}>
+                    Por segurança, encerramos esta tentativa de primeiro acesso. Procure o atendimento da SBPM para
+                    liberar o seu cadastro.
+                  </Alert>
                 ) : pergunta ? (
                   <>
-                    <p className="flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
-                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      <span>
-                        Identidade localizada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Responda às perguntas abaixo
-                        para confirmarmos que é você.
-                      </span>
-                    </p>
+                    <Alert tone="success" icon={ShieldCheck}>
+                      Identidade localizada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Responda às perguntas abaixo
+                      para confirmarmos que é você.
+                    </Alert>
 
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span className="font-medium uppercase tracking-wide">
-                        Pergunta {pergunta.ordem} de {pergunta.total}
-                      </span>
+                    <div className="space-y-4">
+                      <Progress value={(pergunta.ordem / pergunta.total) * 100} label={`Pergunta ${pergunta.ordem} de ${pergunta.total}`} />
                       {typeof errosRestantes === 'number' && (
-                        <span>{errosRestantes} erro(s) restante(s)</span>
+                        <p className="text-xs text-[var(--field-helper)] font-medium">{errosRestantes} erro(s) restante(s)</p>
                       )}
                     </div>
-                    <Progress value={(pergunta.ordem / pergunta.total) * 100} className="h-1.5" />
 
-                    <fieldset className="space-y-3">
-                      <legend className="text-base font-semibold text-foreground">{pergunta.pergunta}</legend>
-                      <RadioGroup value={resposta} onValueChange={setResposta} className="grid gap-2">
+                    <div className="space-y-3">
+                      <p className="text-base font-semibold text-[var(--field-label)] leading-snug">{pergunta.pergunta}</p>
+                      <div className="grid gap-2">
                         {pergunta.opcoes.map((opcao) => (
-                          <Label
+                          <RadioCard
                             key={opcao}
-                            className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 text-sm font-normal transition-colors ${
-                              resposta === opcao ? 'border-primary/50 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
-                            }`}
-                          >
-                            <RadioGroupItem value={opcao} /> {opcao}
-                          </Label>
+                            label={opcao}
+                            selected={resposta === opcao}
+                            onClick={() => setResposta(opcao)}
+                          />
                         ))}
-                      </RadioGroup>
-                    </fieldset>
+                      </div>
+                    </div>
 
-                    <Button className="w-full h-11" onClick={responder} disabled={loading || !resposta}>
-                      {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirmar resposta'}
+                    <Button className="w-full h-11" onClick={responder} disabled={loading || !resposta} loading={loading}>
+                      Confirmar resposta
                     </Button>
                   </>
                 ) : null}
@@ -354,39 +334,39 @@ export default function PortalPrimeiroAcesso() {
 
             {etapa === 'email' && (
               <div className="space-y-4">
-                <p className="flex items-start gap-2 rounded-md border bg-muted/30 p-3 text-sm">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span>
-                    Identidade confirmada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Informe um e-mail válido para
-                    receber o código de confirmação.
-                  </span>
-                </p>
-                <div className="space-y-2">
-                  <Label htmlFor="email">E-mail</Label>
-                  <Input id="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11" />
-                </div>
-                <Button className="w-full h-11" onClick={() => solicitarCodigo(false)} disabled={loading || !email}>
-                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Enviar código'}
+                <Alert tone="success" icon={ShieldCheck}>
+                  Identidade confirmada{sessao?.nome ? ` para ${sessao.nome}` : ''}. Informe um e-mail válido para
+                  receber o código de confirmação.
+                </Alert>
+                <Field label="E-mail" htmlFor="email">
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    autoComplete="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    placeholder="exemplo@email.com"
+                  />
+                </Field>
+                <Button className="w-full h-11" onClick={() => solicitarCodigo(false)} disabled={loading || !email} loading={loading}>
+                  Enviar código
                 </Button>
               </div>
             )}
 
             {etapa === 'codigo' && (
               <div className="space-y-4">
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-[var(--field-helper)] font-medium">
                   Enviamos um código de 6 dígitos para <strong>{emailMascarado}</strong>. Ele expira em 5 minutos.
                 </p>
-                <p className="flex items-start gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3 text-xs leading-relaxed text-foreground">
-                  <MailWarning className="mt-0.5 h-4 w-4 shrink-0 text-yellow-600" aria-hidden="true" />
-                  <span>
-                    Não encontrou o e-mail? Verifique as pastas <strong>Spam</strong>, <strong>Lixo Eletrônico</strong> ou{' '}
-                    <strong>Promoções</strong>. Marque a mensagem como "não é spam" e adicione{' '}
-                    <strong>naoresponda@notify.sbpmbahia.com.br</strong> aos seus contatos.
-                  </span>
-                </p>
+                <Alert tone="warning" icon={MailWarning}>
+                  Não encontrou o e-mail? Verifique as pastas <strong>Spam</strong>, <strong>Lixo Eletrônico</strong> ou{' '}
+                  <strong>Promoções</strong>. Marque a mensagem como "não é spam" e adicione{' '}
+                  <strong>naoresponda@notify.sbpmbahia.com.br</strong> aos seus contatos.
+                </Alert>
 
                 <div className="space-y-2">
-                  <Label htmlFor="codigo">Código de confirmação</Label>
+                <Field label="Código de confirmação" htmlFor="codigo">
                   <Input
                     id="codigo"
                     inputMode="numeric"
@@ -396,14 +376,16 @@ export default function PortalPrimeiroAcesso() {
                       const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
                       setCodigo(digits);
                     }}
-                    className="h-10 text-center text-xl tracking-[0.5em]"
+                    className="h-12 text-center text-2xl tracking-[0.5em] font-bold"
+                    placeholder="000000"
                   />
+                </Field>
                 </div>
-                <Button className="w-full h-11" onClick={verificar} disabled={loading || codigo.length !== 6}>
-                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Confirmar código'}
+                <Button className="w-full h-11" onClick={verificar} disabled={loading || codigo.length !== 6} loading={loading}>
+                  Confirmar código
                 </Button>
                 <div className="flex items-center justify-between text-sm">
-                  <button type="button" className="text-primary hover:underline" onClick={() => solicitarCodigo(true)} disabled={loading}>
+                  <button type="button" className="text-[var(--link-color)] font-semibold hover:underline" onClick={() => solicitarCodigo(true)} disabled={loading}>
                     Reenviar código
                   </button>
                   <button type="button" className="text-muted-foreground hover:underline" onClick={() => setEtapa('email')}>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../utilities";
+import { icons } from "../icons";
 
 export interface FieldProps {
   /** Rótulo visível do campo. */
@@ -30,7 +31,7 @@ export function Label({
   className?: string;
 }) {
   return (
-    <label htmlFor={htmlFor} className={cn("text-sm font-medium text-foreground", className)}>
+    <label htmlFor={htmlFor} className={cn("text-sm font-semibold text-[var(--field-label)]", className)}>
       {children}
       {required && (
         <span className="ml-0.5 text-destructive" aria-hidden>
@@ -44,7 +45,7 @@ export function Label({
 /** Texto auxiliar. @example <Hint>Somente números.</Hint> */
 export function Hint({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <p id={id} className="text-xs text-muted-foreground">
+    <p id={id} className="text-[0.8125rem] font-medium text-[var(--field-helper)]">
       {children}
     </p>
   );
@@ -53,7 +54,8 @@ export function Hint({ children, id }: { children: ReactNode; id?: string }) {
 /** Mensagem de erro acessível (`role="alert"`). */
 export function ErrorMessage({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <p id={id} role="alert" className="text-xs font-medium text-destructive">
+    <p id={id} role="alert" className="text-[0.8125rem] font-semibold text-destructive flex items-center gap-1.5">
+      <icons.alerta className="h-3.5 w-3.5" />
       {children}
     </p>
   );
@@ -62,7 +64,8 @@ export function ErrorMessage({ children, id }: { children: ReactNode; id?: strin
 /** Mensagem de validação positiva. */
 export function SuccessMessage({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <p id={id} className="text-xs font-medium text-[hsl(var(--success))]">
+    <p id={id} className="text-[0.8125rem] font-semibold text-[hsl(var(--success))] flex items-center gap-1.5">
+      <icons.sucesso className="h-3.5 w-3.5" />
       {children}
     </p>
   );

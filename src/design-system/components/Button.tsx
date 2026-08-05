@@ -5,12 +5,12 @@ import { cn } from "../utilities";
 import { icons, type LucideIcon } from "../icons";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium rounded-lg transition-colors duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold rounded-xl transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[#9bbdab] disabled:text-white/90 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary: "border border-border bg-card text-foreground hover:bg-muted",
+        primary: "bg-[var(--button-primary-bg)] text-white border border-[var(--button-primary-bg)] shadow-[var(--button-primary-shadow)] hover:bg-[var(--button-primary-hover)] active:bg-[var(--button-primary-active)]",
+        secondary: "border border-[var(--field-border)] bg-[var(--field-bg)] text-[var(--link-color)] hover:bg-[var(--link-bg-soft)] hover:border-[var(--field-border-focus)]",
         ghost: "text-foreground hover:bg-muted",
       },
       tone: {
@@ -19,16 +19,16 @@ const buttonVariants = cva(
         success: "",
       },
       size: {
-        sm: "h-8 px-3 text-xs [&_svg]:size-4",
-        md: "h-10 px-4 text-sm [&_svg]:size-4",
-        lg: "h-12 px-6 text-base [&_svg]:size-5",
-        icon: "h-10 w-10 p-0 [&_svg]:size-4",
+        sm: "h-9 px-4 text-xs [&_svg]:size-4",
+        md: "h-11 px-6 text-sm [&_svg]:size-4",
+        lg: "h-12 px-8 text-base [&_svg]:size-5",
+        icon: "h-11 w-11 p-0 [&_svg]:size-5",
       },
       fullWidth: { true: "w-full", false: "" },
     },
     compoundVariants: [
-      { variant: "primary", tone: "danger", class: "bg-destructive text-destructive-foreground hover:bg-destructive/90" },
-      { variant: "primary", tone: "success", class: "bg-[hsl(var(--success))] text-primary-foreground hover:bg-[hsl(var(--success)/0.9)]" },
+      { variant: "primary", tone: "danger", class: "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-none border-destructive" },
+      { variant: "primary", tone: "success", class: "bg-[hsl(var(--success))] text-primary-foreground hover:bg-[hsl(var(--success)/0.9)] shadow-none border-transparent" },
       { variant: "secondary", tone: "danger", class: "border-destructive/40 text-destructive hover:bg-destructive/10" },
       { variant: "ghost", tone: "danger", class: "text-destructive hover:bg-destructive/10" },
     ],

@@ -2,12 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Button, Input, Checkbox, Label, Field, Alert, RadioCard, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/design-system/components';
+import { icons } from '@/design-system/icons';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, BadgePlus, CheckCircle2, HelpCircle, Loader2, MessageCircle } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
@@ -176,54 +172,50 @@ export default function PortalQueroMeAssociar() {
 
           <CardContent className="px-6 pb-8 pt-2 overflow-y-auto overflow-x-hidden overscroll-behavior-contain custom-scrollbar flex-grow">
             <form onSubmit={submeter} className="space-y-4 w-full max-w-full" noValidate aria-label="Formulário de pré-cadastro">
-              <div className="space-y-2 w-full">
-                <Label htmlFor="nome">Nome completo</Label>
+              <Field label="Nome completo" htmlFor="nome" error={erros.nome}>
                 <Input
                   id="nome"
                   value={nome}
                   autoComplete="name"
                   placeholder="Seu nome completo"
                   onChange={(e) => setNome(e.target.value)}
-                  aria-invalid={!!erros.nome}
-                  className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                  invalid={!!erros.nome}
                   disabled={enviando}
                   onFocus={(e) => {
                     setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                   }}
                 />
-                {erros.nome && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.nome}</p>}
-              </div>
+              </Field>
 
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
-                <CpfInput
-                  label="CPF"
-                  value={cpf}
-                  onChange={setCpf}
-                  className="h-11 rounded-xl w-full"
-                  disabled={enviando}
-                  error={erros.cpf}
-                  onFocus={(e) => {
-                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-                  }}
-                />
+                <Field label="CPF" htmlFor="cpf" error={erros.cpf}>
+                  <CpfInput
+                    value={cpf}
+                    onChange={setCpf}
+                    error={erros.cpf}
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                </Field>
 
-                <RegistrationNumberInput
-                  label="Matrícula"
-                  value={matricula}
-                  onChange={setMatricula}
-                  className="h-11 rounded-xl w-full"
-                  disabled={enviando}
-                  error={erros.matricula}
-                  onFocus={(e) => {
-                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-                  }}
-                />
+                <Field label="Matrícula" htmlFor="matricula" error={erros.matricula}>
+                  <RegistrationNumberInput
+                    value={matricula}
+                    onChange={setMatricula}
+                    error={erros.matricula}
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                </Field>
               </div>
 
-              <div className="space-y-2 w-full">
-                <Label htmlFor="posto">Posto ou graduação</Label>
+              <Field label="Posto ou graduação" htmlFor="posto" error={erros.posto}>
                 <Select value={postoId} onValueChange={setPostoId} disabled={enviando}>
-                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full" aria-invalid={!!erros.posto}>
+                  <SelectTrigger id="posto" invalid={!!erros.posto}>
                     <SelectValue placeholder="Selecione seu posto ou graduação" />
                   </SelectTrigger>
                   <SelectContent>
@@ -232,8 +224,7 @@ export default function PortalQueroMeAssociar() {
                     ))}
                   </SelectContent>
                 </Select>
-                {erros.posto && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.posto}</p>}
-              </div>
+              </Field>
 
               {exigeComplemento && (
                 <div className="space-y-2 animate-fade-in">
@@ -253,33 +244,23 @@ export default function PortalQueroMeAssociar() {
               )}
 
               <div className="space-y-3 w-full">
-                <Label className="text-sm font-semibold text-primary/80">Situação funcional</Label>
-                <RadioGroup
-                  value={situacao}
-                  onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
-                  className="grid grid-cols-2 gap-3 w-full"
-                >
-                  {(['regular', 'inativo'] as const).map((v) => (
-                    <Label
-                      key={v}
-                      htmlFor={`sit-${v}`}
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center gap-2 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200 w-full min-w-0 box-border",
-                        situacao === v 
-                          ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm" 
-                          : "bg-white border-primary/20 hover:border-primary/40"
-                      )}
-                    >
-                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary shrink-0" />
-                      <span className="truncate">{v === 'regular' ? 'Ativo' : 'Inativo'}</span>
-                    </Label>
-                  ))}
-                </RadioGroup>
+                <Label>Situação funcional</Label>
+                <div className="grid grid-cols-2 gap-3 w-full">
+                  <RadioCard
+                    label="Ativo"
+                    selected={situacao === 'regular'}
+                    onClick={() => setSituacao('regular')}
+                  />
+                  <RadioCard
+                    label="Inativo"
+                    selected={situacao === 'inativo'}
+                    onClick={() => setSituacao('inativo')}
+                  />
+                </div>
               </div>
 
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
-                <div className="space-y-2 w-full">
-                  <Label htmlFor="email">E-mail</Label>
+                <Field label="E-mail" htmlFor="email" error={erros.email}>
                   <Input
                     id="email"
                     type="email"
@@ -288,18 +269,15 @@ export default function PortalQueroMeAssociar() {
                     placeholder="exemplo@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    aria-invalid={!!erros.email}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
+                    invalid={!!erros.email}
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                     }}
                   />
-                  {erros.email && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.email}</p>}
-                </div>
+                </Field>
 
-                <div className="space-y-2 w-full">
-                  <Label htmlFor="telefone">Telefone com WhatsApp</Label>
+                <Field label="Telefone com WhatsApp" htmlFor="telefone" error={erros.telefone}>
                   <Input
                     id="telefone"
                     inputMode="tel"
@@ -308,39 +286,38 @@ export default function PortalQueroMeAssociar() {
                     value={telefone}
                     onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
                     maxLength={16}
-                    aria-invalid={!!erros.telefone}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
+                    invalid={!!erros.telefone}
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                     }}
                   />
-                  {erros.telefone && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.telefone}</p>}
-                </div>
+                </Field>
               </div>
 
               <div className={cn(
                 "rounded-2xl border p-5 transition-all duration-300 w-full",
                 consent ? "border-primary/40 bg-primary/5" : "border-primary/10 bg-white/40"
               )}>
-                <Label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
-                  <Checkbox
-                    id="consent"
-                    checked={consent}
-                    onCheckedChange={(v) => setConsent(v === true)}
-                    className="mt-0.5 h-5 w-5 rounded-md border-primary/40 data-[state=checked]:bg-primary"
-                    disabled={enviando}
-                  />
-                  <div className="flex flex-col gap-2">
-                    <span className="leading-relaxed break-words overflow-visible">
-                      Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
-                    </span>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1">
-                      <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
-                      <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
+                    <Checkbox
+                      id="consent"
+                      checked={consent}
+                      onCheckedChange={(v) => setConsent(v === true)}
+                      disabled={enviando}
+                    />
+                    <div className="flex flex-col gap-2">
+                      <span className="leading-relaxed break-words overflow-visible">
+                        Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
+                      </span>
+                      <div className="flex flex-wrap gap-x-4 gap-y-1">
+                        <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
+                        <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                      </div>
                     </div>
-                  </div>
-                </Label>
+                  </label>
+                </div>
                 {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 

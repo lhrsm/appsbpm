@@ -123,19 +123,21 @@
   }
 
   .public-portal-root label {
-    color: var(--public-label-light) !important;
+    color: var(--field-label) !important;
+    font-weight: 600 !important;
   }
   
   .public-portal-root .text-muted-foreground {
-    color: var(--public-helper-light) !important;
+    color: var(--field-helper) !important;
   }
 
   .public-portal-root .text-primary {
-    color: var(--public-title-light) !important;
+    color: var(--link-color) !important;
+    font-weight: 600 !important;
   }
 
   .public-portal-root .portal-description {
-    color: var(--public-description-light) !important;
+    color: var(--field-helper) !important;
   }
 }
 
