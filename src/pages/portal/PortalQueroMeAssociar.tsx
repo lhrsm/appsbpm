@@ -140,15 +140,15 @@ export default function PortalQueroMeAssociar() {
               </div>
             </CardContent>
           </Card>
-        </main>
+        </PublicFlowModal>
       </AuthBackgroundLayout>
     );
   }
 
   return (
     <AuthBackgroundLayout align="center">
-      <main className="w-full max-w-xl">
-        <Card className="auth-card auth-card--wide w-full border-0 animate-fade-in">
+      <PublicFlowModal>
+        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none backdrop-blur-none">
           <CardHeader className="pb-2 text-center">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-16 w-auto object-contain" />
@@ -350,7 +350,7 @@ export default function PortalQueroMeAssociar() {
             </form>
           </CardContent>
         </Card>
-      </main>
+      </PublicFlowModal>
     </AuthBackgroundLayout>
   );
 }
