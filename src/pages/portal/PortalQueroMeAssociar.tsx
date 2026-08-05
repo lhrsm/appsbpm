@@ -332,7 +332,7 @@ export default function PortalQueroMeAssociar() {
                 </button>
                 <button
                   type="button"
-                  className="portal-btn-secondary w-full"
+                  className="portal-btn-secondary w-full text-slate-700"
                   onClick={() => navigate('/')}
                   disabled={enviando}
                 >

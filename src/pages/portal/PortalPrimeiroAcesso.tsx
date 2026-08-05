@@ -498,7 +498,7 @@ export default function PortalPrimeiroAcesso() {
             )}
 
             {etapa !== 'concluido' && (
-              <Button asChild variant="ghost" className="w-full">
+              <Button asChild variant="ghost" className="w-full text-slate-600">
                 <Link to="/">
                   <ArrowLeft className="mr-2 h-4 w-4" aria-hidden="true" /> Voltar
                 </Link>

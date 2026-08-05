@@ -15,6 +15,8 @@
   :root {
     --background: 0 0% 98%;
     --foreground: 220 20% 15%;
+    --muted-foreground: 220 12% 40%;
+    --description: 215 16% 47%; /* Slate 600 */
 
     --card: 0 0% 100%;
     --card-foreground: 220 20% 15%;
@@ -115,6 +117,22 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+  }
+
+  .public-portal-root label {
+    color: var(--public-label-light) !important;
+  }
+  
+  .public-portal-root .text-muted-foreground {
+    color: var(--public-helper-light) !important;
+  }
+
+  .public-portal-root .text-primary {
+    color: var(--public-title-light) !important;
+  }
+
+  .public-portal-root .portal-description {
+    color: var(--public-description-light) !important;
   }
 }
 
@@ -454,7 +472,7 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice .portal-description {
-    color: #5b6472 !important;
+    color: var(--public-description-light) !important;
   }
 
   .dark .portal-choice .portal-description {
