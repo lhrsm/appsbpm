@@ -16,7 +16,7 @@
     --background: 0 0% 98%;
     --foreground: 220 20% 15%;
     --muted-foreground: 220 12% 40%;
-    --description: 215 16% 47%; /* Slate 600 */
+    --description: 215 16% 47%;
 
     --card: 0 0% 100%;
     --card-foreground: 220 20% 15%;
@@ -24,32 +24,26 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 20% 15%;
 
-    /* Verde Institucional SBPM */
     --primary: 145 63% 32%;
     --primary-foreground: 0 0% 100%;
 
-    /* Cinza Claro */
     --secondary: 210 20% 96%;
     --secondary-foreground: 220 20% 15%;
 
     --muted: 210 20% 96%;
-    --muted-foreground: 220 12% 40%;
 
-    /* Azul Institucional */
     --accent: 210 85% 45%;
     --accent-foreground: 0 0% 100%;
 
-    /* Vermelho Institucional */
     --destructive: 0 75% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Amarelo/Dourado Institucional */
     --warning: 45 95% 50%;
     --warning-foreground: 220 20% 15%;
 
     --border: 220 15% 88%;
     --input: 220 15% 88%;
-     --ring: 145 63% 32%;
+    --ring: 145 63% 32%;
 
     --visual-viewport-height: 100vh;
     --visual-viewport-offset-top: 0px;
@@ -66,6 +60,51 @@
     --sidebar-ring: 0 0% 100%;
 
     --overlay: 220 20% 15% / 0.08;
+    --header-bg: 0 0% 100% / 0.92;
+    --bottom-nav-bg: 0 0% 100% / 0.96;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 213 31% 91%;
+
+    --card: 222 47% 13%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 222 47% 13%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 145 63% 42%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 222 47% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 47% 17%;
+    --muted-foreground: 215.4 16.3% 76.9%;
+
+    --accent: 210 85% 55%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 22.5%;
+    --input: 217.2 32.6% 22.5%;
+    --ring: 145 63% 42%;
+
+    --sidebar-background: 222 47% 13%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 145 63% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217.2 32.6% 17.5%;
+    --sidebar-accent-foreground: 213 31% 91%;
+    --sidebar-border: 217.2 32.6% 22.5%;
+    --sidebar-ring: 145 63% 42%;
+
+    --overlay: 222 47% 5% / 0.45;
+    --header-bg: 222 47% 13% / 0.94;
+    --bottom-nav-bg: 222 47% 13% / 0.97;
   }
 
   .dark {
@@ -220,8 +259,10 @@ html.a11y-reduce-motion *::after {
     margin: 0;
     overflow-x: hidden;
     box-sizing: border-box;
-    background-color: #e8efe9; /* SBPM Light Background */
+    background-color: hsl(var(--background));
+    transition: background-color 0.2s ease;
   }
+
 
 
   body {

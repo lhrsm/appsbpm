@@ -36,8 +36,8 @@ export default function PortalHeader({
   const { isKeyboardOpen } = useMobileVisualViewport();
   return (
     <header className={cn(
-      "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-colors",
-      "bg-white/92 text-gray-800 border-gray-900/10 dark:bg-slate-900/94 dark:text-slate-50 dark:border-white/10",
+      "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
+      "bg-[hsl(var(--header-bg))] text-foreground border-border",
       isKeyboardOpen && "hidden"
     )}>
       <div className="mx-auto flex h-14 w-full max-w-[1400px] items-center gap-3 px-3 md:h-16 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide landscape-compact">
@@ -45,7 +45,7 @@ export default function PortalHeader({
           asChild
           variant="ghost"
           size="icon"
-          className="min-h-11 min-w-11 shrink-0 text-inherit hover:bg-black/5 dark:hover:bg-white/10 md:hidden"
+          className="min-h-11 min-w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
           onClick={onOpenMenu}
         >
           <button
