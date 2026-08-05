@@ -66,13 +66,13 @@ export default function PortalEntrar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none backdrop-blur-none">
+        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
               <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
             </div>
-            <CardTitle className="text-2xl font-bold text-primary leading-tight clamp-title">Bem-vindo ao Portal da SBPM</CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
+            <CardTitle className="text-2xl font-bold text-primary leading-tight">Bem-vindo ao Portal da SBPM</CardTitle>
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-[0.80rem] leading-snug px-2">Use seu CPF ou matrícula e a senha criada no primeiro acesso.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={submeter} className="space-y-5" aria-label="Formulário de acesso">
@@ -87,12 +87,10 @@ export default function PortalEntrar() {
                   value={credential}
                   onChange={(e) => handleCredentialChange(e.target.value)}
                   maxLength={14}
-                  className="h-10 text-base"
+                  className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
                   disabled={loading}
                   onFocus={(e) => {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                   }}
                 />
               </div>
@@ -107,12 +105,10 @@ export default function PortalEntrar() {
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="h-10 pr-12 text-base"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary pr-12"
                     disabled={loading}
                     onFocus={(e) => {
-                      setTimeout(() => {
-                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      }, 300);
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
                     }}
                   />
                   <button
@@ -126,15 +122,16 @@ export default function PortalEntrar() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full h-10 text-base font-semibold" disabled={loading}>
+              <button type="submit" className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all" disabled={loading}>
                 {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" aria-hidden="true" /> Acessando...
-                  </>
+                  <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+                    <span>Acessando...</span>
+                  </div>
                 ) : (
                   'Acessar'
                 )}
-              </Button>
+              </button>
 
               <div className="flex items-center justify-between text-sm">
                 <Link to="/recuperar-acesso" className="font-medium text-primary hover:underline">
