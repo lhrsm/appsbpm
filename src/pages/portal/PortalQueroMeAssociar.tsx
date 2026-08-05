@@ -188,29 +188,31 @@ export default function PortalQueroMeAssociar() {
               </Field>
 
               <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
-                <CpfInput
-                  label="CPF"
-                  value={cpf}
-                  onChange={setCpf}
-                  className="h-11 rounded-xl w-full"
-                  disabled={enviando}
-                  error={erros.cpf}
-                  onFocus={(e) => {
-                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-                  }}
-                />
+                <Field label="CPF" htmlFor="cpf" error={erros.cpf}>
+                  <CpfInput
+                    id="cpf"
+                    value={cpf}
+                    onChange={setCpf}
+                    invalid={!!erros.cpf}
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                </Field>
 
-                <RegistrationNumberInput
-                  label="Matrícula"
-                  value={matricula}
-                  onChange={setMatricula}
-                  className="h-11 rounded-xl w-full"
-                  disabled={enviando}
-                  error={erros.matricula}
-                  onFocus={(e) => {
-                    setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-                  }}
-                />
+                <Field label="Matrícula" htmlFor="matricula" error={erros.matricula}>
+                  <RegistrationNumberInput
+                    id="matricula"
+                    value={matricula}
+                    onChange={setMatricula}
+                    invalid={!!erros.matricula}
+                    disabled={enviando}
+                    onFocus={(e) => {
+                      setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+                    }}
+                  />
+                </Field>
               </div>
 
               <Field label="Posto ou graduação" htmlFor="posto" error={erros.posto}>

@@ -225,34 +225,36 @@ export default function PortalPrimeiroAcesso() {
                   </div>
                 </div>
 
-                <CpfInput 
-                  label="CPF" 
-                  value={cpf} 
-                  onChange={setCpf} 
-                  className="h-11"
-                  onFocus={(e) => {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                  }}
-                />
+                <Field label="CPF" htmlFor="cpf">
+                  <CpfInput 
+                    id="cpf"
+                    value={cpf} 
+                    onChange={setCpf} 
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
+                  />
+                </Field>
 
-                <BirthDateInput
-                  label="Data de nascimento"
-                  value={nascimento}
-                  onChange={setNascimento}
-                  className="h-11"
-                  required
-                  onFocus={(e) => {
-                    setTimeout(() => {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                  }}
-                />
+                <Field label="Data de nascimento" htmlFor="nascimento">
+                  <BirthDateInput
+                    id="nascimento"
+                    value={nascimento}
+                    onChange={setNascimento}
+                    required
+                    onFocus={(e) => {
+                      setTimeout(() => {
+                        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 300);
+                    }}
+                  />
+                </Field>
 
 
                 {CAMPOS_VALIDACAO[personType].map((campo) => (
-                  <div className="space-y-2" key={campo.key}>
+                  <Field label={campo.label} htmlFor={campo.key} hint={campo.help} key={campo.key}>
                     {campo.key === 'registration' ? (
                       <RegistrationNumberInput
                         label={campo.label}
@@ -266,23 +268,19 @@ export default function PortalPrimeiroAcesso() {
                         }}
                       />
                     ) : (
-                      <>
-                        <Label htmlFor={campo.key}>{campo.label}</Label>
-                        <Input
-                          id={campo.key}
-                          value={extras[campo.key] ?? ''}
-                          onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
-                          className="h-11"
-                          onFocus={(e) => {
-                            setTimeout(() => {
-                              e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }, 300);
-                          }}
-                        />
-                      </>
+                      <Input
+                        id={campo.key}
+                        value={extras[campo.key] ?? ''}
+                        onChange={(e) => setExtras((p) => ({ ...p, [campo.key]: e.target.value }))}
+                        className="h-11"
+                        onFocus={(e) => {
+                          setTimeout(() => {
+                            e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                          }, 300);
+                        }}
+                      />
                     )}
-                    {campo.help && <p className="text-xs text-muted-foreground">{campo.help}</p>}
-                  </div>
+                  </Field>
                 ))}
 
                 <Button type="submit" className="w-full h-11" disabled={loading}>

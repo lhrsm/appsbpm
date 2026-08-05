@@ -46,10 +46,10 @@ export function Alert({ tone = "info", title, children, icon, action, className 
       <Icon
         className={cn(
           "h-5 w-5 shrink-0",
-          tone === "danger" && "text-destructive",
-          tone === "success" && "text-[hsl(var(--success))]",
-          tone === "info" && "text-[hsl(var(--info))]",
-          tone === "warning" && "text-warning",
+          tone === "danger" && "text-[#dc2626]",
+          tone === "success" && "text-[#16a34a]",
+          tone === "info" && "text-[#2563eb]",
+          tone === "warning" && "text-[#d97706]",
         )}
         aria-hidden
       />
