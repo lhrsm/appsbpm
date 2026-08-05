@@ -4,14 +4,14 @@ import { toast as sonnerToast } from "sonner";
 import { cn } from "../utilities";
 import { icons, type LucideIcon } from "../icons";
 
-const alertVariants = cva("flex gap-3 rounded-lg border p-4 text-sm", {
+const alertVariants = cva("flex gap-3 rounded-xl border p-4 text-sm shadow-sm", {
   variants: {
     tone: {
-      info: "border-[hsl(var(--info)/0.35)] bg-[hsl(var(--info)/0.08)] text-foreground",
-      success: "border-[hsl(var(--success)/0.35)] bg-[hsl(var(--success)/0.08)] text-foreground",
-      warning: "border-warning/45 bg-warning/10 text-foreground",
-      danger: "border-destructive/40 bg-destructive/10 text-foreground",
-      neutral: "border-border bg-muted/50 text-foreground",
+      info: "border-[var(--notice-info-border)] bg-[var(--notice-info-bg)] text-[#1e3a8a] border-l-4",
+      success: "border-[var(--notice-success-border)] bg-[var(--notice-success-bg)] text-[#14532d] border-l-4",
+      warning: "border-[var(--notice-warning-border)] bg-[var(--notice-warning-bg)] text-[#78350f] border-l-4",
+      danger: "border-[var(--notice-error-border)] bg-[var(--notice-error-bg)] text-[#7f1d1d] border-l-4",
+      neutral: "border-[rgba(100,116,139,0.22)] bg-[rgba(248,250,252,0.90)] text-[#475569]",
     },
   },
   defaultVariants: { tone: "info" },

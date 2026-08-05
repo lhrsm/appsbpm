@@ -140,9 +140,10 @@
   .auth-page .auth-card input {
     height: 48px;
     font-size: 16px;
-    border: 1.5px solid rgba(9, 25, 45, 0.15);
-    background: #ffffff !important;
-    color: #1f2937 !important;
+    border: 1.25px solid var(--field-border);
+    background: var(--field-bg) !important;
+    color: var(--field-text) !important;
+    box-shadow: var(--field-shadow);
   }
 
   .auth-page .auth-card input:focus-visible {
@@ -247,10 +248,10 @@
 }
 
 .portal-btn-primary {
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  border: 1px solid hsl(var(--primary));
-  box-shadow: 0 8px 24px hsl(var(--primary) / 0.22);
+  background: var(--button-primary-bg);
+  color: #ffffff;
+  border: 1px solid var(--button-primary-bg);
+  box-shadow: var(--button-primary-shadow);
 }
 
 .portal-btn-primary:hover:not(:disabled) {
@@ -275,11 +276,12 @@
 }
 
 .portal-btn-tertiary {
-  background: hsl(var(--background) / 0.85);
-  color: hsl(var(--primary));
-  border: 1.5px solid hsl(var(--primary) / 0.35);
+  background: var(--link-bg-soft);
+  color: var(--link-color);
+  border: 1px solid rgba(22, 163, 74, 0.22);
   min-height: 44px;
   font-weight: 600;
+  border-radius: 10px;
 }
 
 .portal-btn-tertiary:hover:not(:disabled) {

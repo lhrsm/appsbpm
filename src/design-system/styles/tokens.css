@@ -47,6 +47,34 @@
   --green-medium: 145 55% 42%;
   --green-light: 145 45% 90%;
 
+  /* Form/Field Tokens (UI Audit) */
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(22, 163, 74, 0.58);
+  --field-border-focus: #159447;
+  --field-focus-ring: rgba(22, 163, 74, 0.14);
+  --field-text: #1f2937;
+  --field-label: #243041;
+  --field-placeholder: #7b8796;
+  --field-helper: #64748b;
+  --field-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+
+  --link-color: #166534;
+  --link-bg-soft: rgba(240, 253, 244, 0.64);
+
+  --button-primary-bg: #168a49;
+  --button-primary-hover: #127b40;
+  --button-primary-active: #106b38;
+  --button-primary-shadow: 0 7px 18px rgba(22, 138, 73, 0.20);
+
+  --notice-warning-bg: rgba(255, 251, 235, 0.94);
+  --notice-warning-border: #d97706;
+  --notice-info-bg: rgba(239, 246, 255, 0.94);
+  --notice-info-border: #2563eb;
+  --notice-success-bg: rgba(240, 253, 244, 0.94);
+  --notice-success-border: #16a34a;
+  --notice-error-bg: rgba(254, 242, 242, 0.96);
+  --notice-error-border: #dc2626;
+
   /* Containers */
   --container-laptop: 1400px;
   --container-desktop: 1600px;
