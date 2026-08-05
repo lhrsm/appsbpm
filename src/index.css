@@ -370,6 +370,17 @@ html.a11y-reduce-motion *::after {
       padding: 32px 36px !important;
       max-width: none !important;
       height: auto !important;
+      max-height: calc(100dvh - 40px) !important;
+      margin-inline: 0 !important;
+    }
+    .auth-card--wide {
+      width: clamp(580px, 42vw, 640px) !important;
+    }
+  }
+      width: clamp(560px, 40vw, 620px) !important;
+      padding: 32px 36px !important;
+      max-width: none !important;
+      height: auto !important;
       margin-inline: 0 !important;
     }
   }
