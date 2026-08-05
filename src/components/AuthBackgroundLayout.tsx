@@ -65,18 +65,26 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             padding-right: 6vw !important;
             padding-top: 0 !important;
             width: 100% !important;
-            transform: translateY(65px);
+          }
+
+          .desktop-auth-column .pwa-modal-page {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: auto !important;
+            height: auto !important;
+            transform: translateY(65px) !important;
           }
 
           @media (max-height: 900px) {
-            .desktop-auth-column {
-              transform: translateY(45px);
+            .desktop-auth-column .pwa-modal-page {
+              transform: translateY(45px) !important;
             }
           }
 
           @media (max-height: 760px) {
-            .desktop-auth-column {
-              transform: translateY(20px);
+            .desktop-auth-column .pwa-modal-page {
+              transform: translateY(20px) !important;
             }
           }
 
