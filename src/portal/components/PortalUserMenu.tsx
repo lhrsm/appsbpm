@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { icons } from "@/design-system/icons";
+import { AppearanceSelector } from "@/components/AppearanceSelector";
+
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
 import type { PortalProfile } from "../navigation";
 
@@ -53,15 +55,15 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <Button
           asChild
           variant="ghost"
-          className="h-11 gap-2 px-2 text-primary-foreground hover:bg-primary-foreground/15"
+          className="h-11 gap-2 px-2 text-inherit hover:bg-black/5 dark:hover:bg-white/10"
         >
           <button
             type="button"
             aria-label="Abrir menu da conta"
           >
-            <Avatar className="h-8 w-8 border border-primary-foreground/30">
+            <Avatar className="h-8 w-8 border border-gray-900/10 dark:border-white/20">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="bg-primary-foreground/20 text-xs text-primary-foreground">
+              <AvatarFallback className="bg-muted text-xs text-muted-foreground">
                 {iniciais}
               </AvatarFallback>
             </Avatar>
@@ -100,6 +102,10 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           </DropdownMenuItem>
         ))}
         <DropdownMenuSeparator />
+        <div className="px-2 py-3">
+          <AppearanceSelector />
+        </div>
+
         <DropdownMenuItem
           className="text-destructive focus:text-destructive"
           onSelect={() => {

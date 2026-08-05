@@ -1,0 +1,59 @@
+import { useState, useEffect } from "react";
+import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
+import { cn } from "@/lib/utils";
+import BackToTop from "./BackToTop";
+import ChatbotWidget from "./ChatbotWidget";
+import AccessibilityWidget from "./AccessibilityWidget";
+
+export function FloatingActionsManager() {
+  const { isKeyboardOpen } = useMobileVisualViewport();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (isKeyboardOpen) return null;
+  
+  // A classe .lgpd-open no body afasta os botões para cima quando o banner de cookies está aberto
+  return (
+    <>
+      <div 
+        className={cn(
+          "fixed left-4 z-50 transition-all duration-300",
+          "bottom-[calc(var(--bottom-navigation-height,72px)+env(safe-area-inset-bottom)+12px)] md:bottom-8",
+          "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+12px)]"
+        )}
+      >
+        <AccessibilityWidget />
+      </div>
+
+      <div 
+        className={cn(
+          "fixed right-4 z-50 flex flex-col items-end gap-3 transition-all duration-300",
+          "bottom-[calc(var(--bottom-navigation-height,72px)+env(safe-area-inset-bottom)+12px)] md:bottom-8",
+          "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+12px)]"
+        )}
+      >
+        {showBackToTop && <BackToTop />}
+        <ChatbotWidget />
+      </div>
+
+
+      <style>{`
+        :root {
+          --bottom-navigation-height: 72px;
+        }
+        @media (min-width: 768px) {
+          :root {
+            --bottom-navigation-height: 0px;
+          }
+        }
+      `}</style>
+    </>
+  );
+}

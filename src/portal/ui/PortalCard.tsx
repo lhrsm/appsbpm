@@ -10,11 +10,12 @@ import { PortalEmptyState } from "./PortalEmptyState";
 import { SectionErrorState } from "./errorStates";
 
 export const portalCardVariants = cva(
-  "relative rounded-[16px] border bg-card text-card-foreground transition-shadow duration-200 motion-reduce:transition-none",
+  "relative rounded-[16px] border transition-shadow duration-200 motion-reduce:transition-none",
   {
     variants: {
       variant: {
-        default: "border-border ds-shadow-sm",
+        default: "bg-white/94 dark:bg-slate-800/92 border-slate-400/28 dark:border-slate-400/18 text-gray-800 dark:text-slate-50 shadow-sm dark:shadow-lg",
+
         highlighted: "border-primary/40 ds-shadow-md",
         informational: "border-[hsl(var(--info)/0.35)] bg-[hsl(var(--info)/0.06)]",
         success: "border-[hsl(var(--success)/0.35)] bg-[hsl(var(--success)/0.06)]",

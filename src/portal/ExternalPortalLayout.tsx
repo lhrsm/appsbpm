@@ -11,6 +11,8 @@ import PortalBottomNav from "./components/PortalBottomNav";
 import PortalBreadcrumbs from "./components/PortalBreadcrumbs";
 import PortalFooter from "./components/PortalFooter";
 import PortalPageContainer from "./components/PortalPageContainer";
+import { FloatingActionsManager } from "@/components/FloatingActionsManager";
+
 import { PortalAccessRestricted, PortalErrorState } from "./components/PortalStates";
 import { PageHeaderSkeleton, ContentSkeleton } from "./components/PortalSkeletons";
 import type { PortalUser } from "./components/PortalUserMenu";
@@ -105,8 +107,9 @@ export default function ExternalPortalLayout({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-background">
+      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-slate-50 dark:bg-slate-900 transition-colors">
         <SkipLinks />
+
 
 
         <PortalHeader
@@ -160,7 +163,9 @@ export default function ExternalPortalLayout({
         </div>
 
         <PortalBottomNav profile={profileType} permissions={permissions} />
+        <FloatingActionsManager />
       </div>
     </TooltipProvider>
+
   );
 }
