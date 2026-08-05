@@ -515,8 +515,8 @@ export default function PortalPrimeiroAcesso() {
                   Seu acesso foi criado com sucesso. A partir de agora, entre com seu CPF ou matrícula e a senha
                   cadastrada.
                 </p>
-                <Button className="w-full h-11" onClick={() => navigate('/dashboard')}>
-                  Ir para o portal
+                <Button className="w-full h-11" onClick={() => navigate('/entrar')}>
+                  Acessar o Portal
                 </Button>
               </div>
             )}
