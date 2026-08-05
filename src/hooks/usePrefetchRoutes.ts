@@ -1,36 +1,40 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 /**
- * Hook para prefetch de rotas essenciais após o carregamento inicial.
- * Isso reduz a chance de falha no carregamento de chunks quando o usuário navega.
+ * Hook para prefetch de rotas ou componentes essenciais após o carregamento inicial.
  */
-export function usePrefetchRoutes() {
-  const navigate = useNavigate();
+export function usePrefetchRoutes(importers?: (() => Promise<any>)[], condition: boolean = true) {
   const location = useLocation();
 
   useEffect(() => {
-    // Apenas em idle para não competir com o carregamento inicial
-    const idleCallback = (window as any).requestIdleCallback || ((cb: any) => setTimeout(cb, 2000));
+    if (!condition) return;
+
+    const idleCallback = (window as any).requestIdleCallback || ((cb: any) => setTimeout(cb, 3000));
     
     idleCallback(() => {
-      // Lista de rotas públicas críticas
-      const criticalRoutes = [
-        '/entrar',
-        '/primeiro-acesso',
-        '/quero-me-associar',
-        '/recuperar-acesso'
-      ];
+      // 1. Prefetch de rotas públicas básicas se estiver fora do dashboard
+      if (!location.pathname.startsWith('/dashboard')) {
+        const publicImporters = [
+          () => import('@/pages/portal/PortalEntrar'),
+          () => import('@/pages/portal/PortalPrimeiroAcesso'),
+          () => import('@/pages/portal/PortalQueroMeAssociar')
+        ];
+        
+        console.info("[Prefetch] Carregando antecipadamente componentes do portal público...");
+        publicImporters.forEach(imp => {
+          try { imp().catch(() => {}); } catch(e) {}
+        });
+      }
 
-      // Filtra a rota atual para não fazer prefetch dela mesma
-      const routesToPrefetch = criticalRoutes.filter(route => route !== location.pathname);
-
-      console.info("[Prefetch] Iniciando carregamento antecipado de rotas críticas...");
-
-      // Tenta carregar os chunks de forma silenciosa
-      // Nota: React.lazy não expõe uma forma direta de prefetch sem renderizar, 
-      // mas podemos disparar os imports dinâmicos manualmente se necessário.
-      // Aqui, confiamos que o lazyWithRetry cuidará da resiliência se o usuário navegar.
+      // 2. Prefetch de importers específicos passados via props
+      if (importers && importers.length > 0) {
+        console.info("[Prefetch] Carregando antecipadamente módulos específicos...");
+        importers.forEach(imp => {
+          try { imp().catch(() => {}); } catch(e) {}
+        });
+      }
     });
-  }, [location.pathname]);
+  }, [location.pathname, condition, importers]);
 }
+
