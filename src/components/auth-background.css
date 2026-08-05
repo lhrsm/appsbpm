@@ -87,8 +87,8 @@
 }
 
 .dark .auth-page .auth-card {
-  background: hsl(var(--card) / 0.9);
-  border-color: hsl(var(--border) / 0.6);
+  background: var(--portal-modal-bg-dark);
+  border-color: var(--portal-modal-border-dark);
 }
 
 /* Mobile / PWA */
@@ -356,6 +356,16 @@
   box-shadow: 0 10px 28px rgba(22, 163, 74, 0.12) !important;
 }
 
+.dark .portal-choice {
+  background: rgba(17, 24, 39, 0.82);
+  border-color: rgba(34, 197, 94, 0.48);
+}
+
+.dark .portal-choice:hover, .dark .portal-choice:focus-within, .dark .portal-choice:active {
+  background: rgba(22, 163, 74, 0.12) !important;
+  border-color: rgba(34, 197, 94, 0.82) !important;
+}
+
 .portal-choice--primary {
   border-color: hsl(var(--primary));
   background: hsl(var(--primary) / 0.07);
@@ -386,9 +396,17 @@
   color: var(--public-title-light);
 }
 
+.dark .portal-choice__title {
+  color: #f8fafc;
+}
+
 .portal-choice__desc {
   font-size: 0.8125rem;
   color: var(--public-description-light);
+}
+
+.dark .portal-choice__desc {
+  color: #cbd5e1;
 }
 
 .portal-choice__chevron {
