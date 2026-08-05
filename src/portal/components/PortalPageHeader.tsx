@@ -1,10 +1,11 @@
-import type { ReactNode } from "react";
+ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { Text } from "@/design-system/components/Text";
 import { Badge } from "@/design-system/components/Badge";
 import { getStatus } from "@/portal/ui/status";
 import { DataFreshnessIndicator } from "@/portal/ui/DataFreshnessIndicator";
 import PortalBreadcrumbs from "./PortalBreadcrumbs";
+import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 
 export interface PortalPageHeaderProps {
   title: string;
@@ -42,10 +43,11 @@ export default function PortalPageHeader({
   hideBreadcrumbs,
   className,
 }: PortalPageHeaderProps) {
-  const statusInfo = status ? getStatus(status) : undefined;
+   const statusInfo = status ? getStatus(status) : undefined;
+  const { isKeyboardOpen } = useMobileVisualViewport();
 
   return (
-    <header className={cn("space-y-3", className)}>
+    <header className={cn("space-y-3", className, isKeyboardOpen && "hidden")}>
       {!hideBreadcrumbs && <PortalBreadcrumbs />}
 
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
