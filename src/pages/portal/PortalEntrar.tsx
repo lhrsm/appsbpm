@@ -143,11 +143,6 @@ export default function PortalEntrar() {
               </div>
             </form>
           </CardContent>
-          <style dangerouslySetInnerHTML={{ __html: `
-            .clamp-title {
-              font-size: clamp(1.45rem, 6vw, 1.8rem) !important;
-            }
-          `}} />
         </Card>
       </PublicFlowModal>
     </AuthBackgroundLayout>
