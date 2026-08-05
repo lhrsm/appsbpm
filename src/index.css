@@ -550,21 +550,15 @@ html.a11y-reduce-motion *::after {
     font-weight: 700 !important;
     line-height: 1.2 !important;
     color: #111827 !important;
-    margin-bottom: 4px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    margin-bottom: 2px !important;
+    display: block !important;
   }
 
   .portal-description {
     font-size: 0.77rem !important;
     line-height: 1.35 !important;
     color: #475569 !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    display: block !important;
   }
 
 
