@@ -44,7 +44,7 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
       {/* 2. IMAGEM DO HEADER */}
       <div 
         className={cn(
-          "relative w-full overflow-hidden rounded-[24px] shadow-lg transition-all duration-500 animate-in fade-in duration-700",
+          "relative w-full overflow-hidden rounded-[24px] shadow-lg transition-all duration-500 animate-in fade-in",
           "h-[160px] md:h-[190px] lg:h-[230px]"
         )}
         style={{
@@ -63,7 +63,7 @@ export function DashboardWelcomeHero({ profileType, user }: DashboardWelcomeHero
       <div 
         className={cn(
           "relative z-20 mx-auto -mt-16 w-[92%] sm:w-[85%] md:w-[80%] lg:w-full lg:max-w-none",
-          "animate-in slide-up-in duration-500 delay-200"
+          "animate-slide-up-in delay-200"
         )}
       >
         <div 
