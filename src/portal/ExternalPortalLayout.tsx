@@ -150,7 +150,7 @@ export default function ExternalPortalLayout({
             >
 
               <PortalPageContainer>
-                {banner && <div key="portal-banner-container">{banner}</div>}
+                {banner && <div key="portal-banner-container" className="mb-0">{banner}</div>}
                 <PortalBreadcrumbs profile={profileType} />
                 {pageTitle && !loading && !error && allowed && (
                   <PageHeader title={pageTitle} description={pageDescription} actions={actions} />

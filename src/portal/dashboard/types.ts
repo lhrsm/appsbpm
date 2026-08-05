@@ -19,6 +19,7 @@ export interface DashboardUser {
   associadoDesde?: string | null;
   parentesco?: string | null;
   atualizadoEm?: string | null;
+  tipoMilitar?: string | null;
 }
 
 export interface SummaryItem {

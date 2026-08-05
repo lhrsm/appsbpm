@@ -235,6 +235,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
           vinculoAtivo: isDependente ? dependenteLogado?.status === 'regular' : associado?.status === 'regular',
           associadoDesde: associado?.data_admissao,
           parentesco: isDependente && dependenteLogado ? tipoLabel[dependenteLogado.tipo] : null,
+          tipoMilitar: associado?.matricula?.startsWith('9') ? 'CBMBA' : 'PMBA',
         }}
       />
 
