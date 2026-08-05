@@ -218,7 +218,9 @@ html.a11y-reduce-motion *::after {
     margin: 0;
     overflow-x: hidden;
     box-sizing: border-box;
+    background-color: #e8efe9; /* SBPM Light Background */
   }
+
 
   body {
     padding-top: env(safe-area-inset-top);
