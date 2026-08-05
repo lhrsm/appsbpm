@@ -219,10 +219,10 @@ export default function PortalQueroMeAssociar() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <Label htmlFor="posto">Posto ou graduação</Label>
                 <Select value={postoId} onValueChange={setPostoId} disabled={enviando}>
-                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary" aria-invalid={!!erros.posto}>
+                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full" aria-invalid={!!erros.posto}>
                     <SelectValue placeholder="Selecione seu posto ou graduação" />
                   </SelectTrigger>
                   <SelectContent>
