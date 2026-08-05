@@ -34,6 +34,7 @@ export default function PortalQueroMeAssociar() {
 
   useEffect(() => {
     setIsNavigating(false);
+    console.log("PRE_REGISTRATION_LAYOUT_VERSION = \"pre-registration-layout-v2-2026-08-05\"");
   }, [setIsNavigating]);
 
 
@@ -160,22 +161,22 @@ export default function PortalQueroMeAssociar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none overflow-hidden">
-          <CardHeader className="pb-4 pt-6 text-center space-y-2">
+        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none flex flex-col max-h-[calc(100dvh-48px)] xl:max-h-[calc(100dvh-80px)]">
+          <CardHeader className="pb-4 pt-6 text-center space-y-2 flex-shrink-0">
             <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
             </div>
-            <CardTitle className="text-2xl font-bold text-primary leading-tight">
-              Quero me associar
+            <CardTitle className="text-2xl font-bold text-primary leading-tight break-words overflow-visible whitespace-normal">
+              Pré-cadastro para associação
             </CardTitle>
-            <CardDescription className="text-[var(--public-description-light)] font-medium text-sm">
+            <CardDescription className="text-[var(--public-description-light)] font-medium text-sm break-words">
               Informe seus dados para que a equipe da SBPM possa entrar em contato.
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="px-6 pb-8 pt-2">
-            <form onSubmit={submeter} className="space-y-4" noValidate aria-label="Formulário de pré-cadastro">
-              <div className="space-y-2">
+          <CardContent className="px-6 pb-8 pt-2 overflow-y-auto overflow-x-hidden overscroll-behavior-contain custom-scrollbar flex-grow">
+            <form onSubmit={submeter} className="space-y-4 w-full max-w-full" noValidate aria-label="Formulário de pré-cadastro">
+              <div className="space-y-2 w-full">
                 <Label htmlFor="nome">Nome completo</Label>
                 <Input
                   id="nome"
@@ -193,12 +194,12 @@ export default function PortalQueroMeAssociar() {
                 {erros.nome && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.nome}</p>}
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
                 <CpfInput
                   label="CPF"
                   value={cpf}
                   onChange={setCpf}
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl w-full"
                   disabled={enviando}
                   error={erros.cpf}
                   onFocus={(e) => {
@@ -210,7 +211,7 @@ export default function PortalQueroMeAssociar() {
                   label="Matrícula"
                   value={matricula}
                   onChange={setMatricula}
-                  className="h-11 rounded-xl"
+                  className="h-11 rounded-xl w-full"
                   disabled={enviando}
                   error={erros.matricula}
                   onFocus={(e) => {
@@ -219,10 +220,10 @@ export default function PortalQueroMeAssociar() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <Label htmlFor="posto">Posto ou graduação</Label>
                 <Select value={postoId} onValueChange={setPostoId} disabled={enviando}>
-                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary" aria-invalid={!!erros.posto}>
+                  <SelectTrigger id="posto" className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full" aria-invalid={!!erros.posto}>
                     <SelectValue placeholder="Selecione seu posto ou graduação" />
                   </SelectTrigger>
                   <SelectContent>
@@ -251,33 +252,33 @@ export default function PortalQueroMeAssociar() {
                 </div>
               )}
 
-              <div className="space-y-3">
+              <div className="space-y-3 w-full">
                 <Label className="text-sm font-semibold text-primary/80">Situação funcional</Label>
                 <RadioGroup
                   value={situacao}
                   onValueChange={(v) => setSituacao(v as 'regular' | 'inativo')}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+                  className="grid grid-cols-2 gap-3 w-full"
                 >
                   {(['regular', 'inativo'] as const).map((v) => (
                     <Label
                       key={v}
                       htmlFor={`sit-${v}`}
                       className={cn(
-                        "flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200",
+                        "flex cursor-pointer items-center justify-center gap-2 rounded-xl border p-3.5 text-sm font-medium transition-all duration-200 w-full min-w-0 box-border",
                         situacao === v 
                           ? "border-primary bg-primary/5 ring-2 ring-primary/20 shadow-sm" 
                           : "bg-white border-primary/20 hover:border-primary/40"
                       )}
                     >
-                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary" />
-                      {v === 'regular' ? 'Ativo' : 'Inativo'}
+                      <RadioGroupItem id={`sit-${v}`} value={v} className="border-primary text-primary shrink-0" />
+                      <span className="truncate">{v === 'regular' ? 'Ativo' : 'Inativo'}</span>
                     </Label>
                   ))}
                 </RadioGroup>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 w-full">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="email">E-mail</Label>
                   <Input
                     id="email"
@@ -288,7 +289,7 @@ export default function PortalQueroMeAssociar() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     aria-invalid={!!erros.email}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -297,7 +298,7 @@ export default function PortalQueroMeAssociar() {
                   {erros.email && <p className="text-xs font-medium text-destructive animate-fade-in">{erros.email}</p>}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <Label htmlFor="telefone">Telefone com WhatsApp</Label>
                   <Input
                     id="telefone"
@@ -308,7 +309,7 @@ export default function PortalQueroMeAssociar() {
                     onChange={(e) => setTelefone(mascararTelefone(e.target.value))}
                     maxLength={16}
                     aria-invalid={!!erros.telefone}
-                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary"
+                    className="h-11 rounded-xl bg-white border-primary/30 focus-visible:ring-primary w-full"
                     disabled={enviando}
                     onFocus={(e) => {
                       setTimeout(() => e.target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
@@ -319,10 +320,10 @@ export default function PortalQueroMeAssociar() {
               </div>
 
               <div className={cn(
-                "rounded-2xl border p-5 transition-all duration-300",
+                "rounded-2xl border p-5 transition-all duration-300 w-full",
                 consent ? "border-primary/40 bg-primary/5" : "border-primary/10 bg-white/40"
               )}>
-                <Label htmlFor="consent" className="flex cursor-pointer items-start gap-4 text-sm font-normal">
+                <Label htmlFor="consent" className="grid grid-cols-[auto_1fr] cursor-pointer items-start gap-3 text-sm font-normal w-full">
                   <Checkbox
                     id="consent"
                     checked={consent}
@@ -330,15 +331,17 @@ export default function PortalQueroMeAssociar() {
                     className="mt-0.5 h-5 w-5 rounded-md border-primary/40 data-[state=checked]:bg-primary"
                     disabled={enviando}
                   />
-                  <span className="leading-relaxed">
-                    Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <span className="leading-relaxed break-words overflow-visible">
+                      Confirmo que os dados informados são verdadeiros e autorizo o contato da SBPM para continuidade do processo.
+                    </span>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1">
+                      <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
+                      <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
+                    </div>
+                  </div>
                 </Label>
-                <div className="mt-3 pl-9 flex flex-wrap gap-x-4 gap-y-1">
-                  <Link to="/privacidade" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Política de Privacidade</Link>
-                  <Link to="/privacidade#termos" className="text-xs font-semibold text-primary hover:underline underline-offset-2">Termos de Uso</Link>
-                </div>
-                {erros.consent && <p className="mt-2 pl-9 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
+                {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 
               <div className="space-y-3 pt-2">
