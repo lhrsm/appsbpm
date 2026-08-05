@@ -157,7 +157,7 @@ export default function PortalQueroMeAssociar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none flex flex-col max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)] p-0 overflow-hidden">
+        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none flex flex-col xl:max-h-none p-0 overflow-visible">
           <CardHeader className="pb-4 pt-6 text-center space-y-2 flex-shrink-0 px-6">
             <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
@@ -170,7 +170,7 @@ export default function PortalQueroMeAssociar() {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="px-6 pb-6 pt-2 overflow-y-auto overflow-x-hidden overscroll-behavior-contain custom-scrollbar flex-grow">
+          <CardContent className="px-6 pb-6 pt-2 overflow-visible flex-grow">
             <form onSubmit={submeter} className="space-y-4 w-full max-w-full" noValidate aria-label="Formulário de pré-cadastro">
 
               <Field label="Nome completo" htmlFor="nome" error={erros.nome}>
@@ -322,7 +322,7 @@ export default function PortalQueroMeAssociar() {
                 {erros.consent && <p className="mt-2 pl-8 text-xs font-medium text-destructive animate-fade-in">{erros.consent}</p>}
               </div>
 
-              <div className="space-y-3 pt-4 flex-shrink-0 sticky bottom-0 bg-[rgba(255,255,255,0.78)] border-t border-[rgba(22,163,74,0.14)] -mx-6 px-6 pb-2">
+              <div className="space-y-3 pt-4 flex-shrink-0 xl:sticky xl:bottom-0 bg-[rgba(255,255,255,0.78)] xl:backdrop-blur-sm border-t border-[rgba(22,163,74,0.14)] -mx-6 px-6 pb-2">
                 <button 
                   type="submit" 
                   className="portal-btn-primary w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all" 

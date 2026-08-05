@@ -40,34 +40,40 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
       <style dangerouslySetInnerHTML={{ __html: `
         @media (min-width: 1280px) {
           .public-portal-root {
-            overflow: hidden !important;
-            height: 100dvh !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            min-height: 100dvh !important;
+            height: auto !important;
             max-width: 100% !important;
           }
           
           .auth-page {
-            height: 100dvh !important;
-            overflow: hidden !important;
+            min-height: 100dvh !important;
+            height: auto !important;
+            overflow: visible !important;
             width: 100% !important;
             max-width: 100% !important;
+            display: block !important;
           }
 
           .desktop-grid-layout {
             display: grid !important;
             grid-template-columns: 55% 45% !important;
             width: 100% !important;
-            height: 100dvh !important;
-            overflow: hidden !important;
+            min-height: 100dvh !important;
+            height: auto !important;
+            overflow: visible !important;
           }
 
           .desktop-auth-column {
-            height: 100dvh !important;
+            min-height: 100dvh !important;
+            height: auto !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
             align-items: center !important;
             padding-right: 6vw !important;
-            padding-top: 0 !important;
+            padding-block: 40px !important;
             width: 100% !important;
             overflow: visible !important;
           }
@@ -79,7 +85,7 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
             min-height: auto !important;
             height: auto !important;
             overflow: visible !important;
-            transform: translateY(65px) !important;
+            transform: translateY(20px) !important;
             background: transparent !important;
           }
 
@@ -90,13 +96,13 @@ export default function AuthBackgroundLayout({ children, align = "right" }: Auth
 
           @media (max-height: 900px) {
             .desktop-auth-column .pwa-modal-page {
-              transform: translateY(45px) !important;
+              transform: translateY(15px) !important;
             }
           }
 
           @media (max-height: 760px) {
             .desktop-auth-column .pwa-modal-page {
-              transform: translateY(8px) !important;
+              transform: translateY(0px) !important;
             }
           }
 
