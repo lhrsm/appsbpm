@@ -342,11 +342,11 @@ html.a11y-reduce-motion *::after {
   }
 
   .auth-card {
-    background: var(--public-card-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(118%) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.70) !important;
-    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12) !important;
+    background: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(9px) saturate(118%) !important;
+    -webkit-backdrop-filter: blur(9px) saturate(118%) !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.68) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14) !important;
     border-radius: 28px !important;
     padding: 16px 12px !important;
     position: relative;
@@ -354,6 +354,7 @@ html.a11y-reduce-motion *::after {
     width: 388px;
     max-width: calc(100% - 24px);
     margin-inline: auto;
+    color: #1f2937 !important;
 
     height: auto;
     min-height: unset;

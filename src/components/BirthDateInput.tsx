@@ -50,8 +50,8 @@ export function BirthDateInput({ label = "Data de nascimento", value, onChange, 
   };
 
   return (
-    <div className="space-y-2">
-      {label && <Label>{label}{required && " *"}</Label>}
+    <div className="space-y-1.5">
+      {label && <Label className="hidden">{label}{required && " *"}</Label>}
       <Input
         placeholder="DD/MM/AAAA"
          value={displayValue}

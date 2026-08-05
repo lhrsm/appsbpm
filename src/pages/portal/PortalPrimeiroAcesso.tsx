@@ -255,7 +255,6 @@ export default function PortalPrimeiroAcesso() {
                   <Field label={campo.label} htmlFor={campo.key} hint={campo.help} key={campo.key}>
                     {campo.key === 'registration' ? (
                       <RegistrationNumberInput
-                        label={campo.label}
                         value={extras[campo.key] ?? ''}
                         onChange={(v) => setExtras((p) => ({ ...p, [campo.key]: v }))}
                         className="h-11"
