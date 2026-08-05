@@ -332,6 +332,32 @@ html.a11y-reduce-motion *::after {
     padding-bottom: max(18px, env(safe-area-inset-bottom));
   }
 
+  /* Forçar tema claro em dispositivos mobile/PWA para a página pública se o sistema estiver em dark */
+  @media (max-width: 1024px) {
+    :root:has(body.public-portal-root) {
+      color-scheme: light !important;
+    }
+    body.public-portal-root {
+      background-color: #dfe6eb !important;
+      color: #1f2937 !important;
+    }
+    body.public-portal-root .auth-card {
+      background: rgba(255, 255, 255, 0.88) !important;
+      border-color: rgba(22, 163, 74, 0.5) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+    }
+    body.public-portal-root .portal-choice {
+      background: #ffffff !important;
+      border-color: rgba(22, 163, 74, 0.3) !important;
+    }
+    body.public-portal-root .portal-title {
+      color: #111827 !important;
+    }
+    body.public-portal-root .portal-description {
+      color: #4b5563 !important;
+    }
+  }
+
   .dark .auth-card {
     background: var(--portal-modal-bg-dark) !important;
     border: 1.5px solid var(--portal-modal-border-dark) !important;
