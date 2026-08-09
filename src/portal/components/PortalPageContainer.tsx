@@ -38,15 +38,12 @@ export default function PortalPageContainer({
     <div
       className={cn(
         "mx-auto w-full min-w-0 space-y-5 md:space-y-6",
-        "px-0 md:px-0",
         max,
         readable && "[&_p]:max-w-readable",
         className,
       )}
     >
-      <div className="px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12 py-4 md:py-6">
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
