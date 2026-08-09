@@ -54,64 +54,71 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-11 md:h-auto gap-2 px-2 md:px-5 text-inherit hover:bg-accent hover:text-accent-foreground md:bg-white/85 md:backdrop-blur-[12px] md:border md:border-white/50 md:rounded-[18px] md:py-3 md:shadow-[0_8px_32px_rgba(15,23,42,0.15)] transition-all"
+          className="group h-auto gap-3 px-3 py-2 text-inherit border border-white/55 rounded-[14px] bg-white/78 backdrop-blur-[10px] shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-[160ms] hover:bg-white/92 hover:border-[#168A49]/38 hover:shadow-[0_6px_18px_rgba(15,23,42,0.14)] hover:-translate-y-[1px] data-[state=open]:bg-white/95 data-[state=open]:border-[#168A49]/46 data-[state=open]:shadow-[0_8px_22px_rgba(15,23,42,0.16)]"
         >
-          <div className="flex items-center gap-2 md:gap-3">
-            <Avatar className="h-8 w-8 md:h-12 md:w-12 border border-border md:border-primary/40 md:bg-white/95 md:shadow-sm">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-[38px] w-[38px] border border-[#168A49]/32 bg-white/92 shadow-sm shrink-0">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="bg-muted text-xs text-muted-foreground md:bg-transparent md:text-sm md:font-bold">
+              <AvatarFallback className="bg-transparent text-[#166534] text-sm font-bold">
                 {iniciais}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden max-w-[15rem] flex-col items-start leading-tight sm:flex text-left">
-              <span className="truncate text-sm font-extrabold text-gray-900 md:text-[#172033] md:text-base md:leading-[1.2]">
+            <div className="hidden sm:flex flex-col items-start leading-[1.15] text-left max-w-[280px]">
+              <span className="truncate w-full text-sm font-bold text-[#172033] xl:whitespace-nowrap">
                 {user.nome}
               </span>
-              <span className="truncate text-[10px] md:text-[12px] font-semibold opacity-90 md:text-[#64748b] mt-0.5">
+              <span className="truncate w-full text-[11px] font-medium text-[#64748b] mt-0.5">
                 {profile === "dependent" ? "Dependente" : "Associado • Titular"}
               </span>
-            </span>
-            <icons.expandir className="h-4 w-4 opacity-80 md:hidden" aria-hidden />
+            </div>
+            <icons.expandir className="h-4 w-4 text-[#64748b] transition-colors group-hover:text-[#166534] shrink-0" aria-hidden />
           </div>
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-72">
-        <DropdownMenuLabel className="flex items-start gap-3 py-3">
-          <Avatar className="h-10 w-10">
+      <DropdownMenuContent 
+        align="end" 
+        className="w-72 p-2 bg-white/96 border border-slate-900/10 shadow-[0_10px_28px_rgba(15,23,42,0.14)] rounded-[12px]"
+      >
+        <DropdownMenuLabel className="flex items-start gap-3 p-3">
+          <Avatar className="h-10 w-10 border border-[#168A49]/20">
             {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-            <AvatarFallback className="text-xs">{iniciais}</AvatarFallback>
+            <AvatarFallback className="text-xs text-[#166534] font-bold">{iniciais}</AvatarFallback>
           </Avatar>
-          <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-semibold">{user.nome}</span>
-            <span className="block truncate text-xs font-normal text-muted-foreground">{vinculo}</span>
-            <Badge variant={user.ativo === false ? "destructive" : "secondary"} className="mt-1 text-[10px]">
+          <div className="min-w-0 flex-1">
+            <span className="block truncate text-sm font-bold text-[#172033]">{user.nome}</span>
+            <span className="block truncate text-[11px] font-medium text-[#64748b]">{vinculo}</span>
+            <Badge variant={user.ativo === false ? "destructive" : "secondary"} className="mt-1.5 h-5 text-[10px] px-2 font-semibold">
               {user.ativo === false ? "Vínculo inativo" : "Vínculo ativo"}
             </Badge>
-          </span>
+          </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="my-1 opacity-50" />
         {contaItens.map((item) => (
-          <DropdownMenuItem key={item.label} asChild>
-            <Link to={item.to} className="flex items-center gap-2">
-              <item.icon className="h-4 w-4 text-muted-foreground" aria-hidden />
+          <DropdownMenuItem 
+            key={item.label} 
+            asChild
+            className="flex items-center gap-2.5 px-3 py-2 text-[#263244] font-medium rounded-lg cursor-pointer focus:bg-[#F0FDF4]/92 focus:text-[#166534]"
+          >
+            <Link to={item.to}>
+              <item.icon className="h-4 w-4 text-[#64748b] group-focus:text-[#166534]" aria-hidden />
               {item.label}
             </Link>
           </DropdownMenuItem>
         ))}
-        <DropdownMenuSeparator />
-        <div className="px-2 py-3">
+        <DropdownMenuSeparator className="my-1 opacity-50" />
+        <div className="px-1 py-1">
           <AppearanceSelector />
         </div>
 
         <DropdownMenuItem
-          className="text-destructive focus:text-destructive"
+          className="mt-1 flex items-center gap-2.5 px-3 py-2 text-destructive font-semibold rounded-lg cursor-pointer focus:bg-destructive/10 focus:text-destructive"
           onSelect={() => {
             onLogout();
             navigate("/");
           }}
         >
-          <Sair className="mr-2 h-4 w-4" aria-hidden />
+          <Sair className="h-4 w-4" aria-hidden />
           Sair
         </DropdownMenuItem>
       </DropdownMenuContent>
