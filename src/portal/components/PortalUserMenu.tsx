@@ -54,22 +54,24 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-11 gap-2 px-2 text-inherit hover:bg-accent hover:text-accent-foreground"
+          className="h-11 md:h-auto gap-2 px-2 md:px-3 text-inherit hover:bg-accent hover:text-accent-foreground md:bg-white/82 md:backdrop-blur-md md:border md:border-white/48 md:rounded-[14px] md:py-2 md:shadow-[0_4px_16px_rgba(15,23,42,0.10)] transition-all"
         >
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8 border border-border">
+          <div className="flex items-center gap-2 md:gap-3">
+            <Avatar className="h-8 w-8 md:h-10 md:w-10 border border-border md:border-primary/30 md:bg-white/92">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="bg-muted text-xs text-muted-foreground">
+              <AvatarFallback className="bg-muted text-xs text-muted-foreground md:bg-transparent">
                 {iniciais}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden max-w-[9rem] flex-col items-start leading-tight sm:flex">
-              <span className="truncate text-sm font-medium">{primeiroNome(user.nome)}</span>
-              <span className="truncate text-[11px] opacity-80">
-                {profile === "dependent" ? "Dependente" : "Titular"}
+            <span className="hidden max-w-[12rem] flex-col items-start leading-tight sm:flex text-left">
+              <span className="truncate text-sm font-bold text-gray-900 md:text-[#172033] md:leading-[1.15]">
+                {user.nome}
+              </span>
+              <span className="truncate text-[10px] md:text-[11px] font-medium opacity-80 md:text-[#64748b]">
+                {profile === "dependent" ? "Dependente" : "Associado • Titular"}
               </span>
             </span>
-            <icons.expandir className="h-4 w-4 opacity-80" aria-hidden />
+            <icons.expandir className="h-4 w-4 opacity-80 md:hidden" aria-hidden />
           </div>
         </Button>
       </DropdownMenuTrigger>

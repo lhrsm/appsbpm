@@ -40,9 +40,9 @@ export default function PortalHeader({
       className={cn(
         "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
         "flex items-center relative overflow-hidden",
-        "h-14 md:h-[160px] lg:h-[180px]",
+        "h-14 md:h-[190px] xl:h-[205px] 2xl:h-[220px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
-        "institutional-header"
+        "portal-institutional-header"
       )}
     >
       <div className="mx-auto flex h-full w-full max-w-[1400px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
@@ -65,9 +65,9 @@ export default function PortalHeader({
               e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
             }}
           />
-          <div className="min-w-0 hidden sm:block">
-            <p className="truncate text-sm font-bold leading-tight md:text-base">Portal da SBPM</p>
-            <p className="truncate text-[10px] opacity-80 md:text-[11px]">
+          <div className="min-w-0 hidden sm:block md:hidden">
+            <p className="truncate text-sm font-bold leading-tight md:text-base md:text-white">Portal da SBPM</p>
+            <p className="truncate text-[10px] opacity-80 md:text-[11px] md:text-white/90">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
             </p>
           </div>
@@ -75,9 +75,11 @@ export default function PortalHeader({
 
         <div className="flex-1" />
 
-        <div className="flex shrink-0 items-center gap-1.5">
-          <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
-          <PortalNotificationCenter />
+        <div className="flex shrink-0 items-center gap-1.5 md:gap-3">
+          <div className="hidden md:flex">
+            <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
+            <PortalNotificationCenter />
+          </div>
           <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
         </div>
       </div>
