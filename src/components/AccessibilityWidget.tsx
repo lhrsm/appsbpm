@@ -53,20 +53,7 @@ export default function AccessibilityWidget() {
 
   return (
     <>
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? 'Fechar opções de acessibilidade' : 'Abrir opções de acessibilidade'}
-        aria-expanded={open}
-        aria-controls="a11y-panel"
-        className={cn(
-          "safe-mb flex h-12 w-12 min-h-11 min-w-11 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg ring-2 ring-primary-foreground/20 hover:opacity-90 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring transition-all duration-300 active:scale-95",
-          "hidden md:hidden" // Removido conforme solicitado (refinamento final)
-        )}
-      >
-        <Accessibility className="h-6 w-6" aria-hidden="true" />
-      </button>
+      {/* Botão de acessibilidade removido para evitar botões flutuantes indesejados conforme refinamento final. */}
 
       {open && (
         <div
