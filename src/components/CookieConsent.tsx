@@ -76,23 +76,7 @@ export default function CookieConsent() {
   if (state === 'hidden') return null;
 
   if (state === 'collapsed') {
-    return (
-      <button
-        onClick={() => setState('expanded')}
-        className={cn(
-          "fixed left-4 z-[1000] flex items-center justify-center h-12 w-12 rounded-full",
-          "bottom-[calc(16px+env(safe-area-inset-bottom))] sm:bottom-6",
-          "bg-[var(--portal-modal-bg-light)] dark:bg-[var(--portal-modal-bg-dark)] backdrop-blur-[var(--portal-modal-blur)] saturate-[150%] border-1.5 border-[var(--portal-modal-border-light)] dark:border-[var(--portal-modal-border-dark)] shadow-lg",
-          "text-primary hover:scale-105 transition-all duration-300 group active:scale-95",
-          "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4",
-          "hidden md:hidden" // Removido conforme solicitado (refinamento final)
-        )}
-        aria-label="Abrir preferências de privacidade"
-        title="Privacidade"
-      >
-        <Cookie className="h-6 w-6" />
-      </button>
-    );
+    return null; // Removido definitivamente para evitar botão flutuante indesejado conforme refinamento final.
   }
 
   return (

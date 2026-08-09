@@ -91,27 +91,8 @@ export function useA11y(): A11yContextValue {
 }
 
 function loadVLibras() {
-  if (document.getElementById("vlibras-script")) return;
-  if (!document.querySelector("[vw]")) {
-    const wrap = document.createElement("div");
-    wrap.setAttribute("vw", "");
-    wrap.className = "enabled";
-    wrap.innerHTML =
-      '<div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>';
-    document.body.appendChild(wrap);
-  }
-  const s = document.createElement("script");
-  s.id = "vlibras-script";
-  s.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
-  s.onload = () => {
-    try {
-      // @ts-expect-error plugin externo sem tipos
-      new window.VLibras.Widget("https://vlibras.gov.br/app");
-    } catch {
-      /* plugin indisponível */
-    }
-  };
-  document.body.appendChild(s);
+  // VLibras removido para evitar botões flutuantes indesejados conforme refinamento final.
+  return;
 }
 
 function unloadVLibras() {
