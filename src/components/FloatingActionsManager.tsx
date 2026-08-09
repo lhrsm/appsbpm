@@ -23,12 +23,11 @@ export function FloatingActionsManager() {
     <>
       <div 
         className={cn(
-          "fixed right-4 z-50 flex flex-col items-end gap-3 transition-all duration-300",
+          "fixed right-4 z-[9999] flex flex-col items-end gap-3 transition-all duration-300",
           "bottom-[calc(var(--bottom-navigation-height,72px)+env(safe-area-inset-bottom)+18px)] md:bottom-8",
           "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+18px)]"
         )}
       >
-        {/* BackToTop removido conforme solicitado */}
         <ChatbotWidget />
       </div>
     </>
