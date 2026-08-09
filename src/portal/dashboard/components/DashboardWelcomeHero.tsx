@@ -36,75 +36,59 @@ export function DashboardWelcomeHero() {
   const tipoMilitar = matricula.startsWith('9') ? 'CBMBA' : 'PMBA';
 
   return (
-    <div className="sbpm-hero-container">
-      <section className="sbpm-hero-header">
-        {/* HEADER COM IMAGEM DE FUNDO */}
-        <div className="sbpm-hero-background">
-          <img 
-            src="/images/hero-background.jpg" 
-            alt="SBPM Institucional" 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-               e.currentTarget.style.display = 'none';
-            }}
-          />
-          <div className="sbpm-hero-overlay-light" />
-        </div>
-        
-        {/* CARD VERDE SOBREPOSTO À IMAGEM */}
-        <div className="sbpm-hero-card-overlay animate-slide-up-in">
-          <div className="sbpm-hero-card-content">
-            <div className="sbpm-hero-user-info">
-              <div className="sbpm-hero-avatar">
-                <User size={24} />
-              </div>
-              
-              <div>
-                <h1 className="sbpm-hero-greeting">
-                  {saudacao()}, {nome.split(' ')[0]}
-                </h1>
-                <p className="sbpm-hero-subtitle">
-                  Bem-vindo ao Portal da SBPM
-                </p>
-              </div>
-            </div>
-
-            <div className="sbpm-hero-badges">
-              <div className="sbpm-hero-badge">
-                <span className="sbpm-hero-status-dot" />
-                Associado Ativo
-              </div>
-              <div className="sbpm-hero-badge">
-                <Shield size={12} className="mr-1" />
-                {tipoMilitar}
-              </div>
-            </div>
-          </div>
-
-          <div className="sbpm-hero-stats">
-            <div className="sbpm-hero-stat">
-              <span className="sbpm-hero-stat-label">Matrícula</span>
-              <span className="sbpm-hero-stat-value">{maskMatricula(matricula)}</span>
+    <div className="animate-slide-up-in">
+      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-none !border-0 !bg-[#168754] !backdrop-blur-none !mb-0">
+        <div className="sbpm-hero-card-content">
+          <div className="sbpm-hero-user-info">
+            <div className="sbpm-hero-avatar">
+              <User size={24} />
             </div>
             
-            <div className="sbpm-hero-stat-divider" />
-
-            <div className="sbpm-hero-stat">
-              <span className="sbpm-hero-stat-label">Situação</span>
-              <span className={cn("sbpm-hero-stat-value", situacao === 'Regular' && "sbpm-hero-status-ok")}>
-                {situacao}
-              </span>
+            <div>
+              <h1 className="sbpm-hero-greeting">
+                {saudacao()}, {nome.split(' ')[0]}
+              </h1>
+              <p className="sbpm-hero-subtitle">
+                Bem-vindo ao Portal da SBPM
+              </p>
             </div>
+          </div>
 
-            <div className="sbpm-hero-stat-divider" />
-
-            <div className="sbpm-hero-stat">
-              <span className="sbpm-hero-stat-label">Tempo de associação</span>
-              <span className="sbpm-hero-stat-value">{calcularTempoAssociacao()}</span>
+          <div className="sbpm-hero-badges">
+            <div className="sbpm-hero-badge">
+              <span className="sbpm-hero-status-dot" />
+              Associado Ativo
+            </div>
+            <div className="sbpm-hero-badge">
+              <Shield size={12} className="mr-1" />
+              {tipoMilitar}
             </div>
           </div>
         </div>
-      </section>
+
+        <div className="sbpm-hero-stats">
+          <div className="sbpm-hero-stat">
+            <span className="sbpm-hero-stat-label">Matrícula</span>
+            <span className="sbpm-hero-stat-value">{maskMatricula(matricula)}</span>
+          </div>
+          
+          <div className="sbpm-hero-stat-divider" />
+
+          <div className="sbpm-hero-stat">
+            <span className="sbpm-hero-stat-label">Situação</span>
+            <span className={cn("sbpm-hero-stat-value", situacao === 'Regular' && "sbpm-hero-status-ok")}>
+              {situacao}
+            </span>
+          </div>
+
+          <div className="sbpm-hero-stat-divider" />
+
+          <div className="sbpm-hero-stat">
+            <span className="sbpm-hero-stat-label">Tempo de associação</span>
+            <span className="sbpm-hero-stat-value">{calcularTempoAssociacao()}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
