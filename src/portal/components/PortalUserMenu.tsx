@@ -109,13 +109,13 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
 
           <DropdownMenuItem
-            className="flex items-center gap-2.5 px-3 py-2.5 text-red-600 dark:text-red-400 font-semibold rounded-lg cursor-pointer focus:bg-red-50/96 focus:text-red-600 dark:focus:bg-red-500/14 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2.5 text-red-600 dark:text-red-400 font-semibold rounded-lg cursor-pointer focus:bg-red-50/96 focus:text-red-600 dark:focus:bg-red-500/14 transition-colors group"
             onSelect={() => {
               onLogout();
               navigate("/");
             }}
           >
-            <Sair className="h-4 w-4" aria-hidden />
+            <Sair className="h-4 w-4 text-red-500 group-focus:text-inherit" aria-hidden />
             Sair
           </DropdownMenuItem>
         </DropdownMenuContent>
