@@ -100,11 +100,6 @@ function unloadVLibras() {
   document.getElementById("vlibras-script")?.remove();
 }
 
-function unloadVLibras() {
-  document.querySelectorAll("[vw]").forEach((el) => el.remove());
-  document.getElementById("vlibras-script")?.remove();
-}
-
 /**
  * Provedor global das preferências de acessibilidade + região `aria-live`
  * única da aplicação (evita múltiplas regiões concorrentes).
