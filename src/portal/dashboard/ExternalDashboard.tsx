@@ -15,6 +15,7 @@ import {
 import { DashboardWelcomeHero } from "./components/DashboardWelcomeHero";
 import { DashboardSummaryGrid } from "./components/DashboardSummaryGrid";
 import { DashboardQuickActions } from "./components/DashboardQuickActions";
+
 import { DashboardPendingSection, DashboardNotificationList } from "./components/DashboardPendingSection";
 import {
   DashboardServicesSection,
@@ -230,13 +231,14 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
       <DashboardSection
         title="Resumo do seu vínculo"
         description="Indicadores principais do seu perfil na SBPM."
-        level={1}
+        level={2}
         loading={false}
         skeleton={<DashboardGridSkeleton />}
       >
         <DashboardSummaryGrid items={summary} />
       </DashboardSection>
 
+      <DashboardQuickActions actions={todasAcoes} initial={18} />
 
       <DashboardSection
         title="Para você"
