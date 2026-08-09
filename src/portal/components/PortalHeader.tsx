@@ -43,54 +43,44 @@ export default function PortalHeader({
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10"
       )}
     >
-
-
-      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 lg:px-8 xl:px-10 2xl:max-w-[1600px] 2xl:px-12 3xl:max-w-portal-ultrawide relative z-10">
+      <div className="mx-auto flex h-full w-full max-w-[1400px] items-center gap-2.5 px-3 md:px-6 relative z-10">
         <Button
           variant="ghost"
           size="icon"
-          className="h-11 w-11 shrink-0 text-inherit hover:bg-accent hover:text-accent-foreground md:hidden"
+          className="h-10 w-10 shrink-0 md:hidden"
           onClick={onOpenMenu}
         >
           <Menu className="h-5 w-5" aria-hidden />
           <span className="sr-only">Abrir menu</span>
         </Button>
-...
-
 
         <div className="flex items-center gap-2 min-w-0">
           <img
             src="/sbpm.jpeg"
             alt="SBPM"
-            className="h-10 w-auto md:h-11 shrink-0"
+            className="h-9 w-auto md:h-10 shrink-0"
             onError={(e) => {
               e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
             }}
           />
-          <div className="min-w-0 hidden xs:block">
+          <div className="min-w-0 hidden sm:block">
             <p className="truncate text-sm font-bold leading-tight md:text-base">Portal da SBPM</p>
-            <p className="truncate text-[10px] opacity-85 md:text-[11px]">
+            <p className="truncate text-[10px] opacity-80 md:text-[11px]">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
             </p>
           </div>
         </div>
-        <div className="flex-1" />
-        {environment && (
-          <Badge variant="secondary" className="hidden text-[10px] uppercase md:inline-flex">
-            {environment}
-          </Badge>
-        )}
 
-        <div className="mx-2 hidden min-w-0 flex-1 justify-center lg:flex">
-          <PortalGlobalSearch profile={profile} permissions={permissions} variant="bar" />
-        </div>
-        <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0">
+        <div className="flex-1" />
+
+        <div className="flex shrink-0 items-center gap-1.5">
           <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
           <PortalNotificationCenter />
           <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
         </div>
       </div>
     </header>
+
 
   );
 }
