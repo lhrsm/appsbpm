@@ -122,6 +122,7 @@ export default function ExternalPortalLayout({
           environment={environment}
         />
 
+
         <div id="portal-mobile-drawer">
           <MobileNavigationDrawer
             open={drawerOpen}

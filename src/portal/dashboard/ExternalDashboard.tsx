@@ -230,12 +230,13 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
       <DashboardSection
         title="Resumo do seu vínculo"
         description="Indicadores principais do seu perfil na SBPM."
-        level={1}
+        level={2}
         loading={false}
         skeleton={<DashboardGridSkeleton />}
       >
         <DashboardSummaryGrid items={summary} />
       </DashboardSection>
+
 
 
       <DashboardSection
