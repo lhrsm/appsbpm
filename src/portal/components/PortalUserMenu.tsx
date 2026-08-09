@@ -54,20 +54,20 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-11 md:h-auto gap-2 px-2 md:px-3 text-inherit hover:bg-accent hover:text-accent-foreground md:bg-white/82 md:backdrop-blur-md md:border md:border-white/48 md:rounded-[14px] md:py-2 md:shadow-[0_4px_16px_rgba(15,23,42,0.10)] transition-all"
+          className="h-11 md:h-auto gap-2 px-2 md:px-5 text-inherit hover:bg-accent hover:text-accent-foreground md:bg-white/85 md:backdrop-blur-[12px] md:border md:border-white/50 md:rounded-[18px] md:py-3 md:shadow-[0_8px_32px_rgba(15,23,42,0.15)] transition-all"
         >
           <div className="flex items-center gap-2 md:gap-3">
-            <Avatar className="h-8 w-8 md:h-10 md:w-10 border border-border md:border-primary/30 md:bg-white/92">
+            <Avatar className="h-8 w-8 md:h-12 md:w-12 border border-border md:border-primary/40 md:bg-white/95 md:shadow-sm">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="bg-muted text-xs text-muted-foreground md:bg-transparent">
+              <AvatarFallback className="bg-muted text-xs text-muted-foreground md:bg-transparent md:text-sm md:font-bold">
                 {iniciais}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden max-w-[12rem] flex-col items-start leading-tight sm:flex text-left">
-              <span className="truncate text-sm font-bold text-gray-900 md:text-[#172033] md:leading-[1.15]">
+            <span className="hidden max-w-[15rem] flex-col items-start leading-tight sm:flex text-left">
+              <span className="truncate text-sm font-extrabold text-gray-900 md:text-[#172033] md:text-base md:leading-[1.2]">
                 {user.nome}
               </span>
-              <span className="truncate text-[10px] md:text-[11px] font-medium opacity-80 md:text-[#64748b]">
+              <span className="truncate text-[10px] md:text-[12px] font-semibold opacity-90 md:text-[#64748b] mt-0.5">
                 {profile === "dependent" ? "Dependente" : "Associado • Titular"}
               </span>
             </span>
