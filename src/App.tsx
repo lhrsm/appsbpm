@@ -170,7 +170,6 @@ const App = () => {
             <Sonner />
             <RouteAnnouncer />
             <CookieConsent />
-            <AccessibilityWidget />
               <ChatbotGate />
               <InstallPWAPrompt />
               <OfflineBanner />

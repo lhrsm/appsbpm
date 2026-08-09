@@ -2,9 +2,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { useMobileVisualViewport } from "@/hooks/useMobileVisualViewport";
 import { cn } from "@/lib/utils";
 import BackToTop from "./BackToTop";
-import AccessibilityWidget from "./AccessibilityWidget";
-
-const ChatbotWidget = lazy(() => import("./ChatbotWidget"));
+import ChatbotWidget from "./ChatbotWidget";
 
 export function FloatingActionsManager() {
   const { isKeyboardOpen } = useMobileVisualViewport();
@@ -31,9 +29,7 @@ export function FloatingActionsManager() {
         )}
       >
         {showBackToTop && <BackToTop />}
-        <Suspense fallback={null}>
-          <ChatbotWidget />
-        </Suspense>
+        <ChatbotWidget />
       </div>
     </>
   );
