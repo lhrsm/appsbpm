@@ -25,16 +25,6 @@ export function FloatingActionsManager() {
     <>
       <div 
         className={cn(
-          "fixed left-4 z-50 transition-all duration-300",
-          "bottom-[calc(var(--bottom-navigation-height,72px)+env(safe-area-inset-bottom)+18px)] md:bottom-8",
-          "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+18px)]"
-        )}
-      >
-        <AccessibilityWidget />
-      </div>
-
-      <div 
-        className={cn(
           "fixed right-4 z-50 flex flex-col items-end gap-3 transition-all duration-300",
           "bottom-[calc(var(--bottom-navigation-height,72px)+env(safe-area-inset-bottom)+18px)] md:bottom-8",
           "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+18px)]"
@@ -45,8 +35,6 @@ export function FloatingActionsManager() {
           <ChatbotWidget />
         </Suspense>
       </div>
-
-
     </>
   );
 }

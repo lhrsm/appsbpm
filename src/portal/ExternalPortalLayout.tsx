@@ -151,6 +151,16 @@ export default function ExternalPortalLayout({
             >
 
               <PortalPageContainer>
+                <div className="hidden md:block w-full mb-6">
+                  <div className="relative w-full h-[200px] overflow-hidden rounded-b-[20px] shadow-sm">
+                    <img 
+                      src="/images/hero-background.jpg" 
+                      alt="Institucional SBPM" 
+                      className="w-full h-full object-cover object-center"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 to-slate-900/20" />
+                  </div>
+                </div>
                 {banner && <div key="portal-banner-container" className="mb-0">{banner}</div>}
                 <PortalBreadcrumbs profile={profileType} />
                 {pageTitle && !loading && !error && allowed && (
