@@ -50,78 +50,80 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
       : `Matrícula ${maskMatricula(user.matricula)}`;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="group h-auto gap-3 px-3 py-2 text-inherit border border-white/55 rounded-[14px] bg-white/78 backdrop-blur-[10px] shadow-[0_4px_14px_rgba(15,23,42,0.10)] transition-all duration-[160ms] hover:bg-white/92 hover:border-[#168A49]/38 hover:shadow-[0_6px_18px_rgba(15,23,42,0.14)] hover:-translate-y-[1px] data-[state=open]:bg-white/95 data-[state=open]:border-[#168A49]/46 data-[state=open]:shadow-[0_8px_22px_rgba(15,23,42,0.16)]"
-        >
-          <div className="flex items-center gap-3">
-            <Avatar className="h-[38px] w-[38px] border border-[#168A49]/32 bg-white/92 shadow-sm shrink-0">
-              {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="bg-transparent text-[#166534] text-sm font-bold">
-                {iniciais}
-              </AvatarFallback>
-            </Avatar>
-            <div className="hidden sm:flex flex-col items-start leading-[1.15] text-left max-w-[280px]">
-              <span className="truncate w-full text-sm font-bold text-[#172033] xl:whitespace-nowrap">
-                {user.nome}
-              </span>
-              <span className="truncate w-full text-[11px] font-medium text-[#64748b] mt-0.5">
-                {profile === "dependent" ? "Dependente" : "Associado • Titular"}
-              </span>
-            </div>
-            <icons.expandir className="h-4 w-4 text-[#64748b] transition-colors group-hover:text-[#166534] shrink-0" aria-hidden />
-          </div>
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent 
-        align="end" 
-        className="w-72 p-2 bg-white/96 border border-slate-900/10 shadow-[0_10px_28px_rgba(15,23,42,0.14)] rounded-[12px]"
-      >
-        <DropdownMenuLabel className="flex items-start gap-3 p-3">
-          <Avatar className="h-10 w-10 border border-[#168A49]/20">
-            {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-            <AvatarFallback className="text-xs text-[#166534] font-bold">{iniciais}</AvatarFallback>
-          </Avatar>
-          <div className="min-w-0 flex-1">
-            <span className="block truncate text-sm font-bold text-[#172033]">{user.nome}</span>
-            <span className="block truncate text-[11px] font-medium text-[#64748b]">{vinculo}</span>
-            <Badge variant={user.ativo === false ? "destructive" : "secondary"} className="mt-1.5 h-5 text-[10px] px-2 font-semibold">
-              {user.ativo === false ? "Vínculo inativo" : "Vínculo ativo"}
-            </Badge>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator className="my-1 opacity-50" />
-        {contaItens.map((item) => (
-          <DropdownMenuItem 
-            key={item.label} 
-            asChild
-            className="flex items-center gap-2.5 px-3 py-2 text-[#263244] font-medium rounded-lg cursor-pointer focus:bg-[#F0FDF4]/92 focus:text-[#166534]"
+    <div className="relative">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/68 rounded-[14px] bg-white/92 backdrop-blur-[12px] shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition-all duration-[160ms] hover:bg-white/96 hover:shadow-[0_8px_24px_rgba(15,23,42,0.18)] hover:-translate-y-[1px] data-[state=open]:bg-white/95 min-w-[300px] max-w-[390px]"
           >
-            <Link to={item.to}>
-              <item.icon className="h-4 w-4 text-[#64748b] group-focus:text-[#166534]" aria-hidden />
-              {item.label}
-            </Link>
-          </DropdownMenuItem>
-        ))}
-        <DropdownMenuSeparator className="my-1 opacity-50" />
-        <div className="px-1 py-1">
-          <AppearanceSelector />
-        </div>
+            <div className="flex w-full items-center gap-3">
+              <Avatar className="h-[38px] w-[38px] border border-[#168A49]/32 bg-white/92 shadow-sm shrink-0">
+                {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
+                <AvatarFallback className="bg-transparent text-[#166534] text-sm font-bold">
+                  {iniciais}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start leading-[1.15] text-left flex-1 min-w-0">
+                <span className="truncate w-full text-sm font-bold text-[#172033]">
+                  {user.nome}
+                </span>
+                <span className="truncate w-full text-[11px] font-medium text-[#64748b] mt-0.5">
+                  {profile === "dependent" ? "Dependente" : "Associado • Titular"}
+                </span>
+              </div>
+              <icons.expandir className="h-4 w-4 text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:text-[#166534] shrink-0" aria-hidden />
+            </div>
+          </Button>
+        </DropdownMenuTrigger>
 
-        <DropdownMenuItem
-          className="mt-1 flex items-center gap-2.5 px-3 py-2 text-destructive font-semibold rounded-lg cursor-pointer focus:bg-destructive/10 focus:text-destructive"
-          onSelect={() => {
-            onLogout();
-            navigate("/");
-          }}
+        <DropdownMenuContent 
+          align="end" 
+          sideOffset={8}
+          className="w-[300px] max-w-[calc(100vw-32px)] p-2 bg-white/98 dark:bg-slate-900/98 backdrop-blur-[14px] border border-slate-900/10 dark:border-white/10 shadow-[0_14px_36px_rgba(15,23,42,0.18)] rounded-[14px] overflow-hidden z-[100]"
         >
-          <Sair className="h-4 w-4" aria-hidden />
-          Sair
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          {/* Omitido cabeçalho interno pois o nome já está no botão principal conforme solicitado no ponto 5 */}
+          
+          <div className="space-y-0.5">
+            {contaItens.map((item) => (
+              <DropdownMenuItem 
+                key={item.label} 
+                asChild
+                className="flex items-center gap-2.5 px-3 py-2.5 text-[#263244] dark:text-slate-200 font-medium rounded-lg cursor-pointer focus:bg-[#F0FDF4]/96 focus:text-[#166534] dark:focus:bg-green-500/12 dark:focus:text-green-300 transition-colors"
+              >
+                <Link to={item.to}>
+                  <item.icon className="h-4 w-4 text-[#64748b] group-focus:text-inherit" aria-hidden />
+                  {item.label}
+                </Link>
+              </DropdownMenuItem>
+            ))}
+          </div>
+
+          <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
+          
+          <div className="px-1 py-1">
+            <div className="px-2 py-1.5 mb-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              Aparência
+            </div>
+            <AppearanceSelector />
+          </div>
+
+          <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
+
+          <DropdownMenuItem
+            className="flex items-center gap-2.5 px-3 py-2.5 text-destructive font-semibold rounded-lg cursor-pointer focus:bg-red-50/96 focus:text-destructive dark:focus:bg-red-500/12 transition-colors"
+            onSelect={() => {
+              onLogout();
+              navigate("/");
+            }}
+          >
+            <Sair className="h-4 w-4" aria-hidden />
+            Sair
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
   );
 }
