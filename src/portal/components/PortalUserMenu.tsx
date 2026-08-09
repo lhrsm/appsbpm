@@ -44,18 +44,16 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
   const Sair = icons.sair;
   const iniciais = primeiroNome(user.nome).slice(0, 2).toUpperCase() || "SB";
 
-  const vinculo =
-    profile === "dependent"
-      ? `Dependente de ${maskNome(user.titularNome)}`
-      : `Matrícula ${maskMatricula(user.matricula)}`;
+  console.log("ACTIVE USER MENU COMPONENT: PortalUserMenu.tsx");
+  console.log("USER MENU VERSION: user-menu-v5-2026-08-09");
 
   return (
-    <div className="relative">
+    <div className="relative" data-component="portal-user-menu-v5">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/72 rounded-[14px] bg-white/88 backdrop-blur-[12px] shadow-[0_6px_18px_rgba(15,23,42,0.14)] transition-all duration-[160ms] hover:bg-white/96 hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] data-[state=open]:bg-white/95 min-w-[300px] max-w-[390px]"
+            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/72 rounded-[14px] bg-white/92 backdrop-blur-[12px] shadow-[0_6px_18px_rgba(15,23,42,0.14)] transition-all duration-[160ms] hover:bg-white/96 hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] data-[state=open]:bg-white/95 min-w-[300px] max-w-[390px] !bg-[rgba(255,255,255,0.92)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)]"
           >
             <div className="flex w-full items-center gap-3">
               <Avatar className="h-[38px] w-[38px] border border-[#168A49]/32 bg-white/96 shadow-sm shrink-0">
@@ -65,14 +63,14 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start leading-[1.15] text-left flex-1 min-w-0">
-                <span className="truncate w-full text-sm font-bold text-[#172033] shadow-none">
+                <span className="truncate w-full text-sm font-bold !text-[#172033] shadow-none !font-bold">
                   {user.nome}
                 </span>
-                <span className="truncate w-full text-[11px] font-medium text-[#64748b] mt-0.5">
+                <span className="truncate w-full text-[11px] font-medium !text-[#64748b] mt-0.5">
                   {profile === "dependent" ? "Dependente" : "Associado • Titular"}
                 </span>
               </div>
-              <icons.expandir className="h-4 w-4 text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:text-[#166534] shrink-0" aria-hidden />
+              <icons.expandir className="h-4 w-4 !text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:!text-[#166534] shrink-0" aria-hidden />
             </div>
           </Button>
         </DropdownMenuTrigger>
@@ -80,17 +78,18 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[300px] max-w-[calc(100vw-32px)] p-2 bg-white/985 dark:bg-slate-900/985 backdrop-blur-[16px] border border-slate-900/10 dark:border-white/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[14px] overflow-hidden z-[100]"
+          className="w-[300px] max-w-[calc(100vw-32px)] p-2 !bg-[rgba(255,255,255,0.985)] !text-[#263244] !opacity-100 backdrop-blur-[16px] border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[14px] overflow-hidden z-[9999] dark:!bg-[rgba(15,23,42,0.985)] dark:!text-[#e2e8f0] dark:border-white/10"
+          data-dropdown-version="user-dropdown-v5"
         >
           <div className="space-y-0.5">
             {contaItens.map((item) => (
               <DropdownMenuItem 
                 key={item.label} 
                 asChild
-                className="flex items-center gap-2.5 px-3 py-2.5 text-[#263244] dark:text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:bg-[#F0FDF4]/96 focus:text-[#166534] dark:focus:bg-green-500/14 dark:focus:text-[#86efac] transition-colors group"
+                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] dark:focus:!bg-[rgba(34,197,94,0.14)] dark:focus:!text-[#86efac] transition-colors group"
               >
                 <Link to={item.to}>
-                  <item.icon className="h-4 w-4 text-[#64748b] dark:text-[#94a3b8] group-focus:text-inherit" aria-hidden />
+                  <item.icon className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8] group-focus:text-inherit" aria-hidden />
                   {item.label}
                 </Link>
               </DropdownMenuItem>
@@ -100,7 +99,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
           
           <div className="px-1 py-1">
-            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold text-[#64748b] uppercase tracking-wider">
+            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#64748b] uppercase tracking-wider">
               Aparência
             </div>
             <AppearanceSelector />
