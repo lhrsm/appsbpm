@@ -123,5 +123,3 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
     </div>
   );
 }
-  );
-}
