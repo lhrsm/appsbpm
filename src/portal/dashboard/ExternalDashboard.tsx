@@ -225,19 +225,7 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <DashboardWelcomeHero
-        profileType={profileType}
-        user={{
-          nome: isDependente && dependenteLogado ? dependenteLogado.nome : associado?.nome ?? "",
-          fotoUrl: isDependente && dependenteLogado ? dependenteLogado.foto_url : associado?.foto_url,
-          matricula: associado?.matricula,
-          titularNome: associado?.nome,
-          vinculoAtivo: isDependente ? dependenteLogado?.status === 'regular' : associado?.status === 'regular',
-          associadoDesde: associado?.data_admissao,
-          parentesco: isDependente && dependenteLogado ? tipoLabel[dependenteLogado.tipo] : null,
-          tipoMilitar: associado?.matricula?.startsWith('9') ? 'CBMBA' : 'PMBA',
-        }}
-      />
+      <DashboardWelcomeHero />
 
       <DashboardSection
         title="Resumo do seu vínculo"
@@ -249,9 +237,6 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
         <DashboardSummaryGrid items={summary} />
       </DashboardSection>
 
-      <DashboardSection title="Ações rápidas" description="Atalhos para o que você mais usa.">
-        <DashboardQuickActions actions={todasAcoes} />
-      </DashboardSection>
 
       <DashboardSection
         title="Para você"
