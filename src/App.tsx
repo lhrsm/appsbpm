@@ -132,12 +132,9 @@ const HIDDEN_CHAT_ROUTES = ["/", "/entrar", "/quero-me-associar", "/primeiro-ace
 
 const ChatbotGate = () => {
   const { pathname } = useLocation();
-  if (HIDDEN_CHAT_ROUTES.includes(pathname) || pathname.startsWith("/bem/")) return null;
-  return (
-    <Suspense fallback={null}>
-      <ChatbotWidget />
-    </Suspense>
-  );
+  // Manter apenas uma instância de chat, controlada via FloatingActionsManager nos layouts protegidos
+  // O ChatbotGate aqui no App.tsx pode causar duplicidade em layouts que já possuem o FloatingActionsManager
+  return null;
 };
 
 /**
