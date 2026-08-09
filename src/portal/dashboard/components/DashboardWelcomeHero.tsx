@@ -14,7 +14,7 @@ export function DashboardWelcomeHero() {
     return "Boa noite";
   };
 
-  const nome = (identity?.resolved && typeof identity.resolved === 'object' && 'nome' in identity.resolved) ? identity.resolved.nome : associado?.nome || "Carlos";
+  const nome = (identity?.resolved && typeof identity.resolved === 'object' && 'nome' in (identity.resolved as any)) ? (identity.resolved as any).nome : associado?.nome || "Carlos";
   const matricula = associado?.matricula || "2024.001";
   const situacao = (associado?.status === 'regular' || !associado) ? "Regular" : "Pendente";
   
