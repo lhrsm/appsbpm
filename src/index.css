@@ -170,8 +170,8 @@
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.10)),
-      url("/images/hero-background.jpg");
+      linear-gradient(rgba(15, 23, 42, 0.22), rgba(15, 23, 42, 0.15)),
+      url("/__l5e/assets-v1/b6241277-e540-44b4-b77f-49de0e41faab/hero-background.png");
     background-size: cover;
     background-position: center 30%;
     background-repeat: no-repeat;
