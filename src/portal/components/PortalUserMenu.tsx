@@ -89,6 +89,11 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
             WebkitBackdropFilter: 'blur(16px)'
           }}
           data-dropdown-version="user-dropdown-v5"
+          onPointerDownCapture={(e) => {
+            // Teste visual magenta forçado ao clicar no menu
+            const el = e.currentTarget;
+            if (el.dataset.debug === 'true') el.style.backgroundColor = '#ff00ff';
+          }}
         >
           <div className="space-y-0.5">
             {contaItens.map((item) => (
