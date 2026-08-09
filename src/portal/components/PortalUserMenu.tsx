@@ -65,14 +65,14 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start leading-[1.15] text-left flex-1 min-w-0">
-                <span className="truncate w-full text-sm font-bold text-[#172033]">
+                <span className="truncate w-full text-sm font-bold text-[#172033] dark:md:text-white md:text-[#172033]">
                   {user.nome}
                 </span>
-                <span className="truncate w-full text-[11px] font-medium text-[#64748b] mt-0.5">
+                <span className="truncate w-full text-[11px] font-medium text-[#64748b] dark:md:text-white/80 md:text-[#64748b] mt-0.5">
                   {profile === "dependent" ? "Dependente" : "Associado • Titular"}
                 </span>
               </div>
-              <icons.expandir className="h-4 w-4 text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:text-[#166534] shrink-0" aria-hidden />
+              <icons.expandir className="h-4 w-4 text-[#64748b] dark:md:text-white/70 transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:text-[#166534] dark:group-hover:md:text-white shrink-0" aria-hidden />
             </div>
           </Button>
         </DropdownMenuTrigger>
@@ -80,10 +80,8 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[300px] max-w-[calc(100vw-32px)] p-2 bg-white/98 dark:bg-slate-900/98 backdrop-blur-[14px] border border-slate-900/10 dark:border-white/10 shadow-[0_14px_36px_rgba(15,23,42,0.18)] rounded-[14px] overflow-hidden z-[100]"
+          className="w-[300px] max-w-[calc(100vw-32px)] p-2 bg-white/99 dark:bg-slate-900/99 backdrop-blur-[16px] border border-slate-900/10 dark:border-white/10 shadow-[0_14px_36px_rgba(15,23,42,0.18)] rounded-[14px] overflow-hidden z-[100]"
         >
-          {/* Omitido cabeçalho interno pois o nome já está no botão principal conforme solicitado no ponto 5 */}
-          
           <div className="space-y-0.5">
             {contaItens.map((item) => (
               <DropdownMenuItem 
