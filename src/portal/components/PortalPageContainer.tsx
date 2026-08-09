@@ -38,17 +38,15 @@ export default function PortalPageContainer({
     <div
       className={cn(
         "mx-auto w-full min-w-0 space-y-5 md:space-y-6",
-        // padding lateral progressivo + safe areas laterais (landscape com notch)
-        "px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12",
-        "pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:pl-6 md:pr-6 lg:pl-8 lg:pr-8 xl:pl-10 xl:pr-10 2xl:pl-12 2xl:pr-12",
-         "py-4 md:py-6",
-        isKeyboardOpen && "py-2 md:py-2",
+        "px-0 md:px-0",
         max,
         readable && "[&_p]:max-w-readable",
         className,
       )}
     >
-      {children}
+      <div className="px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12 py-4 md:py-6">
+        {children}
+      </div>
     </div>
   );
 }

@@ -150,7 +150,7 @@ export default function ExternalPortalLayout({
               className={cn("min-w-0 flex-1 focus:outline-none")}
             >
 
-              <PortalPageContainer>
+              <PortalPageContainer className="!space-y-0">
                 <div className="hidden md:block w-full mb-6 mt-0">
                   <div className="relative w-full h-[200px] overflow-hidden rounded-b-[20px] shadow-sm">
                     <img 
@@ -161,12 +161,14 @@ export default function ExternalPortalLayout({
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 to-slate-900/20" />
                   </div>
                 </div>
-                {banner && <div key="portal-banner-container" className="mb-0">{banner}</div>}
+                <div className="px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12 pb-4 md:pb-6">
+                  {banner && <div key="portal-banner-container" className="mb-0">{banner}</div>}
                 <PortalBreadcrumbs profile={profileType} />
                 {pageTitle && !loading && !error && allowed && (
                   <PageHeader title={pageTitle} description={pageDescription} actions={actions} />
                 )}
-                {renderContent()}
+                  {renderContent()}
+                </div>
               </PortalPageContainer>
             </main>
             <PortalFooter />
