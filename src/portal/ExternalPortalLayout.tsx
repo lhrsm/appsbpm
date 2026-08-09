@@ -151,7 +151,7 @@ export default function ExternalPortalLayout({
             >
 
               <PortalPageContainer>
-                <div className="hidden md:block w-full mb-6">
+                <div className="hidden md:block w-full mb-6 mt-0">
                   <div className="relative w-full h-[200px] overflow-hidden rounded-b-[20px] shadow-sm">
                     <img 
                       src="/images/hero-background.jpg" 
