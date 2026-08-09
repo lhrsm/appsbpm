@@ -40,9 +40,9 @@ export default function PortalHeader({
       className={cn(
         "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
         "flex items-center relative overflow-hidden",
-        "h-14 md:h-[160px] lg:h-[180px]",
+        "h-14 md:h-[190px] xl:h-[205px] 2xl:h-[220px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
-        "institutional-header"
+        "portal-institutional-header"
       )}
     >
       <div className="mx-auto flex h-full w-full max-w-[1400px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
