@@ -13,28 +13,28 @@ export function AppearanceSelector({ className }: { className?: string }) {
   ] as const;
 
   return (
-    <div className={cn("space-y-3", className)}>
-      <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Aparência</h3>
-      <div className="grid grid-cols-3 gap-2">
-        {options.map((option) => {
-          const Icon = option.icon;
-          const active = theme === option.id;
-          return (
-            <Button
-              key={option.id}
-              variant={active ? "default" : "outline"}
-              className={cn(
-                "flex flex-col items-center gap-2 h-auto py-3 px-2 transition-all",
-                active ? "bg-primary text-primary-foreground border-primary" : "bg-secondary text-secondary-foreground hover:bg-accent"
-              )}
-              onClick={() => setTheme(option.id)}
-            >
-              <Icon className="h-5 w-5" />
-              <span className="text-xs font-medium">{option.label}</span>
-            </Button>
-          );
-        })}
-      </div>
+    <div className={cn("grid grid-cols-3 gap-2", className)}>
+      {options.map((option) => {
+        const Icon = option.icon;
+        const active = theme === option.id;
+        return (
+          <Button
+            key={option.id}
+            variant="outline"
+            size="sm"
+            onClick={() => setTheme(option.id)}
+            className={cn(
+              "flex h-auto min-h-[54px] flex-col items-center justify-center gap-1.5 rounded-[10px] border px-2 py-2 transition-all duration-200",
+              active
+                ? "border-[#168a49] bg-[#168a49]/12 text-[#166534] dark:bg-green-500/12 dark:text-green-300"
+                : "border-slate-200 bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900 dark:border-white/10 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-slate-200"
+            )}
+          >
+            <Icon className="h-4 w-4" />
+            <span className="text-[10px] font-bold uppercase tracking-tight">{option.label}</span>
+          </Button>
+        );
+      })}
     </div>
   );
 }
