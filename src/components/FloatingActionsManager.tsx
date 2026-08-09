@@ -28,7 +28,7 @@ export function FloatingActionsManager() {
           "body-lgpd-open:bottom-[calc(var(--lgpd-sheet-height,180px)+env(safe-area-inset-bottom)+18px)]"
         )}
       >
-        {showBackToTop && <BackToTop />}
+        {/* BackToTop removido conforme solicitado */}
         <ChatbotWidget />
       </div>
     </>

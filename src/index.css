@@ -160,35 +160,35 @@
 
 /* ===== SBPM HEADER INSTITUCIONAL ===== */
 
-.institutional-header {
+.portal-institutional-header {
   position: relative;
 }
 
 @media (min-width: 768px) {
-  .institutional-header::before {
+  .portal-institutional-header::before {
     content: "";
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(15, 23, 42, 0.22), rgba(15, 23, 42, 0.12)),
+      linear-gradient(rgba(15, 23, 42, 0.18), rgba(15, 23, 42, 0.10)),
       url("/images/hero-background.jpg");
     background-size: cover;
-    background-position: center 35%;
+    background-position: center 38%;
     background-repeat: no-repeat;
     z-index: 0;
   }
   
-  .institutional-header > div {
+  .portal-institutional-header > div {
     position: relative;
     z-index: 10;
   }
   
-  .institutional-header p, 
-  .institutional-header h1,
-  .institutional-header .text-gray-900 {
+  .portal-institutional-header p, 
+  .portal-institutional-header h1 {
     color: white !important;
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
   }
+}
   
   .institutional-header .bg-white {
     background-color: rgba(255, 255, 255, 0.15) !important;

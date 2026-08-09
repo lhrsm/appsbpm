@@ -13,7 +13,7 @@ import Dashboard from "./pages/Dashboard";
 const DashboardRecovery = lazy(() => import("./pages/DashboardRecovery"));
 import NotFound from "./pages/NotFound";
 import CookieConsent from "./components/CookieConsent";
-import AccessibilityWidget from "./components/AccessibilityWidget";
+
 import InstallPWAPrompt from "./components/InstallPWAPrompt";
 import OfflineBanner from "./components/OfflineBanner";
 import BackToTop from "./components/BackToTop";
@@ -173,7 +173,7 @@ const App = () => {
               <ChatbotGate />
               <InstallPWAPrompt />
               <OfflineBanner />
-              <BackToTop />
+              
               <PWAUpdatePrompt />
               <Suspense fallback={<RouteFallback />}>
                 <Routes>
