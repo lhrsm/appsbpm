@@ -65,7 +65,7 @@ export default function PortalHeader({
               e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
             }}
           />
-          <div className="min-w-0 hidden sm:block">
+          <div className="min-w-0 hidden sm:block md:hidden">
             <p className="truncate text-sm font-bold leading-tight md:text-base md:text-white">Portal da SBPM</p>
             <p className="truncate text-[10px] opacity-80 md:text-[11px] md:text-white/90">
               {profile === "dependent" ? "Portal do Dependente" : "Portal do Associado"}
