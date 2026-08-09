@@ -249,9 +249,6 @@ export default function ExternalDashboard({ profileType }: { profileType: Portal
         <DashboardSummaryGrid items={summary} />
       </DashboardSection>
 
-      <DashboardSection title="Ações rápidas" description="Atalhos para o que você mais usa.">
-        <DashboardQuickActions actions={todasAcoes} />
-      </DashboardSection>
 
       <DashboardSection
         title="Para você"

@@ -44,11 +44,6 @@ export function DashboardQuickActions({ actions, initial = 6 }: { actions: Quick
         })}
       </ul>
 
-      {(restantes > 0 || expandido) && (
-        <Button variant="ghost" size="sm" onClick={() => setExpandido((v) => !v)}>
-          {expandido ? "Mostrar menos ações" : `Ver todas as ações (${restantes})`}
-        </Button>
-      )}
     </div>
   );
 }
