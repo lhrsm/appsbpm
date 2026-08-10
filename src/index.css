@@ -728,6 +728,16 @@ html.a11y-reduce-motion *::after {
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: visible !important;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 1023px) {
+    .auth-card {
+      width: calc(100% - 24px) !important;
+      max-width: 480px !important;
+      min-width: 0 !important;
+      margin-inline: auto !important;
+    }
   }
 
   @media (min-width: 1280px) {
@@ -872,17 +882,18 @@ html.a11y-reduce-motion *::after {
     transform: none !important;
   }
 
-  /* Forçar tema claro em dispositivos mobile/PWA para a página pública se o sistema estiver em dark */
-  .public-portal-root,
-  .public-portal-root .pwa-modal-page {
-    color-scheme: light !important;
-  }
-  
-  .public-portal-root input,
-  .public-portal-root textarea,
-  .public-portal-root select,
-  .public-portal-root button {
-    color-scheme: light !important;
+  @media (max-width: 1023px) {
+    .public-portal-root,
+    .public-portal-root .pwa-modal-page {
+      color-scheme: light !important;
+    }
+    
+    .public-portal-root input,
+    .public-portal-root textarea,
+    .public-portal-root select,
+    .public-portal-root button {
+      color-scheme: light !important;
+    }
   }
 
   /* Autofill no Chrome Android */
@@ -946,8 +957,9 @@ html.a11y-reduce-motion *::after {
     box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
     transition: all 200ms ease-in-out !important;
     border-radius: 18px !important;
-    width: 92% !important;
-    max-width: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
     margin-inline: auto !important;
 
     min-height: auto !important;
@@ -959,6 +971,14 @@ html.a11y-reduce-motion *::after {
     gap: 14px !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
+  }
+
+  @media (max-width: 1023px) {
+    .portal-choice {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 0 !important;
+    }
   }
 
   @media (min-width: 1200px) {
@@ -1053,13 +1073,19 @@ html.a11y-reduce-motion *::after {
     font-weight: 700 !important;
     font-size: 0.95rem !important;
     box-shadow: 0 8px 20px rgba(22, 138, 73, 0.24) !important;
-    width: 92% !important;
+    width: auto !important;
     min-width: 200px !important;
     max-width: 300px !important;
     margin-top: 14px !important;
     margin-bottom: 2px !important;
     transition: all 0.2s ease-in-out !important;
     text-decoration: none !important;
+  }
+
+  @media (max-width: 1023px) {
+    .portal-recovery-button {
+      width: 92% !important;
+    }
   }
 
   @media (min-width: 1200px) {

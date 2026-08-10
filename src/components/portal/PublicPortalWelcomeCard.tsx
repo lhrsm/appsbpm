@@ -39,7 +39,7 @@ export function PublicPortalWelcomeCard() {
   };
 
   return (
-    <AuthCard className="!bg-white/94 !border-[rgba(22,138,73,0.42)] !w-[calc(100%-24px)] min-[320px]:!w-[calc(100%-16px)]">
+    <AuthCard className="!bg-white/94 !border-[rgba(22,138,73,0.42)] !w-full max-w-[480px]">
       <CardHeader className="text-center pb-2 pt-6 px-5 space-y-1">
         <div className="flex justify-center mb-4">
           <img
