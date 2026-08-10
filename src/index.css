@@ -115,23 +115,28 @@
     @apply bg-background text-foreground antialiased;
   }
 
-  .public-portal-root label {
+  .public-portal-root label, 
+  .public-auth-theme label {
     color: #263244 !important;
     font-weight: 600 !important;
   }
   
-  .public-portal-root .text-muted-foreground {
+  .public-portal-root .text-muted-foreground,
+  .public-auth-theme .text-muted-foreground {
     color: #475569 !important;
   }
 
-  .public-portal-root .text-primary {
+  .public-portal-root .text-primary,
+  .public-auth-theme .text-primary {
     color: #166534 !important;
     font-weight: 600 !important;
   }
 
-  .public-portal-root .portal-description {
+  .public-portal-root .portal-description,
+  .public-auth-theme .portal-description {
     color: #475569 !important;
   }
+
 
 }
 
