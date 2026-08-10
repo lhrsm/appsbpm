@@ -189,6 +189,53 @@
   --lgpd-shadow-dark: var(--portal-modal-shadow-dark);
 }
 
+/** 
+ * Public Auth Scope: Forces light theme for public flows 
+ * even if system is dark or .dark class is present on root.
+ */
+.public-auth-theme {
+  color-scheme: light !important;
+  --field-bg: #ffffff !important;
+  --field-text: #1f2937 !important;
+  --field-border: rgba(22, 138, 73, 0.58) !important;
+  --field-border-focus: #168a49 !important;
+  --field-focus-ring: rgba(22, 138, 73, 0.14) !important;
+  --field-placeholder: #8491a3 !important;
+  --field-label: #263244 !important;
+  --field-helper: #64748b !important;
+  --link-color: #166534 !important;
+  --surface: 0 0% 100% !important;
+  --card: 0 0% 100% !important;
+  --card-foreground: 220 20% 15% !important;
+  --background: 0 0% 100% !important;
+  --foreground: 220 20% 15% !important;
+  --muted: 210 20% 96% !important;
+  --muted-foreground: 220 12% 40% !important;
+}
+
+.public-auth-theme input,
+.public-auth-theme select,
+.public-auth-theme textarea {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  border-color: rgba(22, 138, 73, 0.58) !important;
+}
+
+.public-auth-theme input:focus,
+.public-auth-theme select:focus,
+.public-auth-theme textarea:focus {
+  border-color: #168a49 !important;
+  box-shadow: 0 0 0 3px rgba(22, 138, 73, 0.14) !important;
+}
+
+.public-auth-theme .external-link-circle {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1.5px solid rgba(22, 163, 74, 0.42) !important;
+  color: #16a34a !important;
+}
+
+
 /* Elevação */
 .ds-shadow-xs {
   box-shadow: 0 1px 2px 0 hsl(var(--foreground) / 0.04);
