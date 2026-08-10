@@ -278,7 +278,7 @@ export default function Login() {
                       Falar com a Previdência no WhatsApp
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full">
+                  <Button asChild variant="secondary" className="w-full">
                     <a href="mailto:previdencia@sbpmbahia.com.br?subject=Ajuda%20para%20acessar%20o%20Portal%20do%20Associado">
                       Enviar e-mail para a Previdência
                     </a>
