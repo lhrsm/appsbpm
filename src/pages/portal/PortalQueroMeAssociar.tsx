@@ -121,7 +121,8 @@ export default function PortalQueroMeAssociar() {
   if (protocolo) {
     return (
       <AuthBackgroundLayout align="right">
-        <PublicFlowModal>
+        <PublicFlowModal className="public-auth-theme">
+
           <AuthCard className="auth-card--wide">
             <CardHeader className="text-center pb-2 pt-10 space-y-4">
               <div className="flex justify-center mb-2">
@@ -176,7 +177,7 @@ export default function PortalQueroMeAssociar() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard className="auth-card--wide">
           <CardHeader className="pb-4 pt-8 text-center space-y-2 flex-shrink-0 px-8">
             <div className="flex justify-center mb-2">
