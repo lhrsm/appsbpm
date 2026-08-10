@@ -107,7 +107,7 @@ export default function ExternalPortalLayout({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-slate-50 dark:bg-slate-900 transition-colors">
+      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-white dark:bg-slate-900 transition-colors">
         <SkipLinks />
 
 
@@ -139,6 +139,7 @@ export default function ExternalPortalLayout({
             permissions={permissions}
             collapsed={collapsed}
             onToggleCollapsed={() => setCollapsed((c) => !c)}
+            className="border-r-slate-200/60"
           />
 
           <div className="flex min-w-0 flex-1 flex-col">

@@ -26,10 +26,10 @@ export default function PortalBottomNav({
   return (
     <nav
       aria-label="Navegação rápida"
-      className="fixed inset-x-0 bottom-0 z-40 border-t bg-[hsl(var(--bottom-nav-bg))] border-border pb-[env(safe-area-inset-bottom)] backdrop-blur safe-px md:hidden h-[var(--bottom-navigation-height,72px)]"
+      className="fixed inset-x-0 bottom-0 z-40 border-t bg-[hsl(var(--bottom-nav-bg))] border-border pb-[env(safe-area-inset-bottom)] backdrop-blur safe-px md:hidden h-[var(--bottom-navigation-height,72px)] flex items-center justify-around px-2"
     >
 
-      <ul className="flex items-stretch">
+      <ul className="flex items-stretch w-full">
         {items.map((item) => {
           const active = isItemActive(item.route, pathname);
           const Icon = item.icon;
@@ -39,14 +39,16 @@ export default function PortalBottomNav({
                 to={item.route}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex h-full flex-col items-center justify-center gap-0.5 px-1 py-1 text-[11px] transition-colors",
+                  "flex h-full flex-col items-center justify-center gap-1 px-1 py-1 transition-all duration-200",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-                  active ? "font-semibold text-primary" : "text-gray-600 dark:text-slate-400",
+                  active 
+                    ? "font-bold text-[var(--green-main)] scale-110" 
+                    : "text-slate-500 font-medium opacity-80",
                 )}
               >
-                <Icon className="h-5 w-5 shrink-0" aria-hidden />
-                <span className="w-full truncate text-center leading-tight">{item.label.split(" ")[0]}</span>
-                {active && <span className="h-0.5 w-6 rounded-full bg-primary" aria-hidden />}
+                <Icon className={cn("h-6 w-6 shrink-0 transition-transform", active && "animate-in zoom-in-75")} aria-hidden />
+                <span className="w-full truncate text-center text-[10px] uppercase tracking-tighter leading-none">{item.label.split(" ")[0]}</span>
+                {active && <span className="absolute bottom-1 h-1 w-5 rounded-full bg-[var(--green-main)] shadow-[0_0_8px_rgba(22,138,73,0.3)]" aria-hidden />}
               </NavLink>
             </li>
           );
