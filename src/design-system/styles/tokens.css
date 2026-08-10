@@ -213,21 +213,45 @@
   --muted-foreground: 220 12% 40% !important;
 }
 
-.public-auth-theme input,
-.public-auth-theme select,
-.public-auth-theme textarea {
-  background-color: #ffffff !important;
-  color: #1f2937 !important;
-  -webkit-text-fill-color: #1f2937 !important;
-  border-color: rgba(22, 138, 73, 0.58) !important;
+/* Proteção do Desktop a partir de 1024px */
+@media (max-width: 1023px) {
+  .public-auth-theme input,
+  .public-auth-theme textarea,
+  .public-auth-theme select,
+  .public-auth-theme [role="combobox"] {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+    color-scheme: light !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  }
+
+  .public-auth-theme input::placeholder {
+    color: #8491a3 !important;
+    -webkit-text-fill-color: #8491a3 !important;
+    opacity: 1;
+  }
+
+  .public-auth-theme input:focus,
+  .public-auth-theme textarea:focus,
+  .public-auth-theme select:focus {
+    background: #ffffff !important;
+    border-color: #168a49 !important;
+    box-shadow: 0 0 0 3px rgba(22, 138, 73, 0.14) !important;
+  }
+
+  /* Autofill Android */
+  .public-auth-theme input:-webkit-autofill,
+  .public-auth-theme input:-webkit-autofill:hover,
+  .public-auth-theme input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #1f2937;
+  }
 }
 
-.public-auth-theme input:focus,
-.public-auth-theme select:focus,
-.public-auth-theme textarea:focus {
-  border-color: #168a49 !important;
-  box-shadow: 0 0 0 3px rgba(22, 138, 73, 0.14) !important;
-}
+/* Removido estilo global que afetava desktop */
 
 .public-auth-theme .external-link-circle {
   background: rgba(255, 255, 255, 0.94) !important;

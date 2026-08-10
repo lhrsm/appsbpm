@@ -108,13 +108,13 @@ export const PasswordInput = forwardRef<HTMLInputElement, BaseProps>(function Pa
   const [show, setShow] = useState(false);
   return (
     <div className="relative group/pass">
-      <Input ref={ref} type={show ? "text" : "password"} icon={icons.senha} className={cn("pr-11 !bg-white", className)} {...props} />
+      <Input ref={ref} type={show ? "text" : "password"} icon={icons.senha} className={cn("pr-11", className)} {...props} />
       <IconButton
         type="button"
         icon={show ? icons.ocultar : icons.mostrar}
         label={show ? "Ocultar senha" : "Mostrar senha"}
         onClick={() => setShow((v) => !v)}
-        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2 !text-[#64748b] hover:!text-[#168A49] transition-colors"
+        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2 !text-[#64748b] hover:!text-[#168A49] transition-colors z-[2]"
       />
     </div>
   );
