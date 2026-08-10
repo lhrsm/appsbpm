@@ -723,6 +723,7 @@ html.a11y-reduce-motion *::after {
     max-width: calc(100% - 24px);
     margin-inline: auto;
     color: #172033 !important;
+
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
