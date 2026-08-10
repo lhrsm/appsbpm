@@ -7,7 +7,7 @@ import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from '@/design-system/components';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';

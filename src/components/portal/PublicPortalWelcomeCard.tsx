@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from '@/design-system/components';
 import { UserPlus, LogIn, HelpCircle, BadgePlus, ChevronRight } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
 import { useNavigationState } from '@/hooks/useNavigationState';
@@ -44,7 +44,7 @@ export function PublicPortalWelcomeCard() {
   };
 
   return (
-    <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden">
+    <AuthCard>
       <CardHeader className="text-center pb-2 pt-2 px-4 space-y-1 desktop-header-respiro">
         <div className="flex justify-center mb-1">
           <img
@@ -111,6 +111,6 @@ export function PublicPortalWelcomeCard() {
           }
         }
       `}} />
-    </Card>
+    </AuthCard>
   );
 }
