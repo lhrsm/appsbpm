@@ -5,11 +5,7 @@ import { useEffect } from 'react';
 
 import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from '@/design-system/components';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard, Checkbox } from '@/design-system/components';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -229,7 +225,6 @@ export default function Login() {
                 />
                 <Label
                   htmlFor="lgpd-consent"
-                  id="lgpd-consent-desc"
                   className="text-xs font-normal leading-relaxed text-muted-foreground cursor-pointer"
                 >
                   Li e concordo com a{' '}

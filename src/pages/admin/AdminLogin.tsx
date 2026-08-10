@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from "@/design-system/components";
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from "@/design-system/components";
 import { toast } from "sonner";
 import sbpmLogo from "@/assets/sbpm-logo.png";
 import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
