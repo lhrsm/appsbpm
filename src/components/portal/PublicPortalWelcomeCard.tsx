@@ -13,7 +13,7 @@ const CAMINHOS = [
   },
   {
     to: '/entrar',
-    icon: icons.entrar,
+    icon: icons.senha,
     titulo: 'Já tenho acesso',
     descricao: 'Entre utilizando seu CPF ou matrícula e sua senha.',
   },
@@ -23,6 +23,7 @@ const CAMINHOS = [
     titulo: 'Quero me associar',
     descricao: 'Preencha um pré-cadastro para iniciar seu processo.',
   },
+
 ];
 
 export function PublicPortalWelcomeCard() {
