@@ -7,7 +7,7 @@ import { Skeleton } from "./Skeleton";
 import { EmptyState } from "./EmptyState";
 import { Badge, type BadgeTone } from "./Badge";
 
-const cardVariants = cva("rounded-xl border bg-card text-card-foreground transition-shadow duration-200", {
+const cardVariants = cva("rounded-[16px] border bg-card text-card-foreground transition-shadow duration-200", {
   variants: {
     elevation: {
       flat: "",
@@ -91,7 +91,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
             {Icon && (
               <span
                 className={cn(
-                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border",
+                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border",
                   context ? moduleSurface[context] : "border-primary/25 bg-primary/10",
                 )}
                 aria-hidden

@@ -15,7 +15,7 @@ type BaseProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
 };
 
 const inputBase =
-  "flex h-11 w-full rounded-lg border border-[var(--field-border)] bg-[var(--field-bg)] px-3 py-2 text-base text-[var(--field-text)] transition-all placeholder:text-[var(--field-placeholder)] focus-visible:outline-none focus-visible:border-[var(--field-border-focus)] focus-visible:ring-4 focus-visible:ring-[var(--field-focus-ring)] focus-visible:ring-offset-0 ds-shadow-xs disabled:cursor-not-allowed disabled:opacity-50";
+  "flex h-[var(--field-height)] w-full rounded-[var(--field-radius)] border-[var(--field-border-width)] border-[var(--field-border)] bg-[var(--field-bg)] px-[var(--field-padding)] py-2 text-base text-[var(--field-text)] transition-all placeholder:text-[var(--field-placeholder)] focus-visible:outline-none focus-visible:border-[var(--field-border-focus)] focus-visible:ring-4 focus-visible:ring-[var(--field-focus-ring)] focus-visible:ring-offset-0 ds-shadow-xs disabled:cursor-not-allowed disabled:opacity-50";
 
 /**
  * Campo de texto base do Design System.

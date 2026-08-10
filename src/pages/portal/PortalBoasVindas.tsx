@@ -4,6 +4,7 @@ import { PublicPortalWelcomeCard } from '@/components/portal/PublicPortalWelcome
 import { PublicFlowModal } from '@/components/portal/PublicFlowModal';
 import { Shield, Accessibility, Globe, Headset } from 'lucide-react';
 import { useNavigationState } from '@/hooks/useNavigationState';
+import { AuthCard } from '@/design-system/components';
 import { useEffect } from 'react';
 import { usePrefetchRoutes } from '@/hooks/usePrefetchRoutes';
 

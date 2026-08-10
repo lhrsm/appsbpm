@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard } from "@/design-system/components";
 import { toast } from "sonner";
 import sbpmLogo from "@/assets/sbpm-logo.png";
 import AuthBackgroundLayout from "@/components/AuthBackgroundLayout";
@@ -45,7 +42,7 @@ export default function RedefinirSenha() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <Card className="auth-card w-full max-w-md">
+      <AuthCard>
         <CardHeader className="text-center">
           <img src={sbpmLogo} alt="SBPM" className="mx-auto h-24 w-auto object-contain mb-2" />
           <CardTitle>Redefinir senha</CardTitle>
@@ -95,7 +92,7 @@ export default function RedefinirSenha() {
             </button>
           </form>
         </CardContent>
-      </Card>
+      </AuthCard>
     </AuthBackgroundLayout>
   );
 }

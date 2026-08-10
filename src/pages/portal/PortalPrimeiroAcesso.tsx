@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button, Input, Checkbox, Card, CardContent, CardDescription, CardHeader, CardTitle, RadioCard, Progress, Label, Field, ErrorMessage, Alert } from '@/design-system/components';
+import { Button, Input, Checkbox, Card, CardContent, CardDescription, CardHeader, CardTitle, RadioCard, Progress, Label, Field, ErrorMessage, Alert, AuthCard } from '@/design-system/components';
 import { icons } from '@/design-system/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ShieldCheck, CheckCircle2, Eye, EyeOff, ArrowLeft, FileText, MailWarning, ShieldQuestion } from 'lucide-react';
@@ -188,7 +188,7 @@ export default function PortalPrimeiroAcesso() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none flex flex-col max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)] p-0 overflow-hidden">
+        <AuthCard className="max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)]">
           <CardHeader className="text-center pb-2 pt-6 px-6 space-y-1 desktop-header-respiro flex-shrink-0">
             <div className="flex justify-center mb-1">
               <img src={sbpmLogo} alt="SBPM" className="h-[62px] w-auto object-contain" />
@@ -544,7 +544,7 @@ export default function PortalPrimeiroAcesso() {
               }
             }
           `}} />
-        </Card>
+        </AuthCard>
       </PublicFlowModal>
     </AuthBackgroundLayout>
   );

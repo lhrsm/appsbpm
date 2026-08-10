@@ -53,25 +53,25 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/72 rounded-[14px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] min-w-[300px] max-w-[390px] !bg-[rgba(255,255,255,0.92)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)]"
+            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/72 rounded-[16px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] min-w-[300px] max-w-[390px] !bg-[rgba(255,255,255,0.92)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)]"
             style={{ 
               backdropFilter: 'blur(12px)', 
               WebkitBackdropFilter: 'blur(12px)' 
             }}
           >
             <div className="flex w-full items-center gap-3">
-              <Avatar className="h-[38px] w-[38px] border border-[#168A49]/32 bg-white/96 shadow-sm shrink-0">
+              <Avatar className="h-12 w-12 border-2 border-[var(--green-main)] bg-white/96 shadow-sm shrink-0">
                 {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-                <AvatarFallback className="bg-transparent text-[#166534] text-sm font-bold">
+                <AvatarFallback className="bg-transparent text-[#166534] text-base font-bold">
                   {iniciais}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start leading-[1.15] text-left flex-1 min-w-0">
-                <span className="truncate w-full text-sm font-bold !text-[#172033] !font-bold">
+                <span className="truncate w-full text-lg font-bold !text-[#172033]">
                   {user.nome}
                 </span>
-                <span className="truncate w-full text-[11px] font-medium !text-[#64748b] mt-0.5">
-                  {profile === "dependent" ? "Dependente" : "Associado • Titular"}
+                <span className="truncate w-full text-sm font-medium !text-slate-500 mt-0.5">
+                  {profile === "dependent" ? "Dependente • Titular" : "Associado • Titular"}
                 </span>
               </div>
               <icons.expandir className="h-4 w-4 !text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:!text-[#166534] shrink-0" aria-hidden />
@@ -82,7 +82,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[300px] max-w-[calc(100vw-32px)] p-2 !text-[#263244] !opacity-100 border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[14px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
+          className="w-[300px] max-w-[calc(100vw-32px)] p-2 !text-[#263244] !opacity-100 border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[16px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
           style={{ 
             backgroundColor: 'rgba(255, 255, 255, 0.985)',
             backdropFilter: 'blur(16px)', 

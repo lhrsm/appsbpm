@@ -10,6 +10,7 @@ export interface PortalSidebarProps {
   permissions?: string[];
   collapsed: boolean;
   onToggleCollapsed: () => void;
+  className?: string;
 }
 
 export function isItemActive(route: string, pathname: string) {
@@ -70,16 +71,17 @@ export function SidebarLink({
 }
 
 /** Sidebar do portal externo, montada a partir da configuração central. */
-export default function PortalSidebar({ profile, permissions, collapsed, onToggleCollapsed }: PortalSidebarProps) {
+export default function PortalSidebar({ profile, permissions, collapsed, onToggleCollapsed, className }: PortalSidebarProps) {
   const sections = getNavigationSections({ profile, permissions });
   const Recolher = collapsed ? icons.proximo : icons.anterior;
 
   return (
     <aside
       className={cn(
-        "sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 border-r bg-card md:flex md:flex-col",
+        "sticky top-16 hidden h-[calc(100dvh-4rem)] shrink-0 border-r bg-white md:flex md:flex-col",
         collapsed ? "w-[72px]" : "w-64",
-        "transition-[width] duration-200 motion-reduce:transition-none"
+        "transition-[width] duration-200 motion-reduce:transition-none",
+        className
       )}
       aria-label="Menu principal"
     >

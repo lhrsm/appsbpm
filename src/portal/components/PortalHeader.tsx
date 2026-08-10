@@ -38,29 +38,29 @@ export default function PortalHeader({
   return (
     <header 
       className={cn(
-        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
+        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-300 md:border-b-0",
         "flex items-center relative overflow-hidden",
-        "h-14 md:h-[210px] xl:h-[225px] 2xl:h-[240px]",
+        "h-14 md:h-[180px] lg:h-[210px] xl:h-[225px] 2xl:h-[240px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
         "portal-institutional-header"
       )}
     >
-      <div className="mx-auto flex h-full w-full max-w-[1400px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
+      <div className="mx-auto flex h-full w-full max-w-[1600px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
         <Button
           variant="ghost"
           size="icon"
-          className="h-10 w-10 shrink-0 md:hidden"
+          className="h-10 w-10 shrink-0 md:hidden flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 mt-2"
           onClick={onOpenMenu}
         >
-          <Menu className="h-5 w-5" aria-hidden />
+          <Menu className="h-6 w-6 text-white md:text-inherit" aria-hidden />
           <span className="sr-only">Abrir menu</span>
         </Button>
 
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 md:flex hidden">
           <img
             src="/sbpm.jpeg"
             alt="SBPM"
-            className="h-9 w-auto md:h-10 shrink-0"
+            className="h-10 w-auto shrink-0"
             onError={(e) => {
               e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
             }}
@@ -69,9 +69,10 @@ export default function PortalHeader({
 
         <div className="flex-1" />
 
-        <div className="flex shrink-0 items-center gap-1.5 md:gap-3">
-          <div className="hidden md:flex">
+        <div className="flex shrink-0 items-center gap-1.5 md:gap-4">
+          <div className="hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 shadow-sm">
             <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
+            <div className="w-[1px] h-4 bg-white/20 mx-1" />
             <PortalNotificationCenter />
           </div>
           <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />

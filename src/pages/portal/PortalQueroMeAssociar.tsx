@@ -18,7 +18,8 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue,
+  AuthCard
 } from '@/design-system/components';
 import { 
   ArrowLeft, 
@@ -121,7 +122,7 @@ export default function PortalQueroMeAssociar() {
     return (
       <AuthBackgroundLayout align="right">
         <PublicFlowModal>
-          <Card className="auth-card auth-card--wide border-0 animate-in fade-in zoom-in duration-300 shadow-xl overflow-hidden bg-white/95 backdrop-blur-sm">
+          <AuthCard className="auth-card--wide">
             <CardHeader className="text-center pb-2 pt-10 space-y-4">
               <div className="flex justify-center mb-2">
                 <div className="bg-primary/10 rounded-full p-4 animate-bounce-subtle">
@@ -167,7 +168,7 @@ export default function PortalQueroMeAssociar() {
                 </Button>
               </div>
             </CardContent>
-          </Card>
+          </AuthCard>
         </PublicFlowModal>
       </AuthBackgroundLayout>
     );
@@ -176,7 +177,7 @@ export default function PortalQueroMeAssociar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card auth-card--wide border-0 animate-fade-in shadow-none flex flex-col xl:max-h-none p-0 overflow-visible">
+        <AuthCard className="auth-card--wide">
           <CardHeader className="pb-4 pt-8 text-center space-y-2 flex-shrink-0 px-8">
             <div className="flex justify-center mb-2">
               <img src={sbpmLogo} alt="SBPM" className="h-16 w-auto object-contain" />
@@ -403,7 +404,7 @@ export default function PortalQueroMeAssociar() {
               </div>
             </form>
           </CardContent>
-        </Card>
+        </AuthCard>
       </PublicFlowModal>
 
       {/* MODAL DE AJUDA */}

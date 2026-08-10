@@ -5,7 +5,7 @@ import { cn } from "../utilities";
 import { icons, type LucideIcon } from "../icons";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold rounded-xl transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[#9bbdab] disabled:text-white/90 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-[var(--button-font-weight)] rounded-[var(--button-radius)] transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:bg-[#9bbdab] disabled:text-white/90 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -20,9 +20,9 @@ const buttonVariants = cva(
       },
       size: {
         sm: "h-9 px-4 text-xs [&_svg]:size-4",
-        md: "h-11 px-6 text-sm [&_svg]:size-4",
-        lg: "h-12 px-8 text-base [&_svg]:size-5",
-        icon: "h-11 w-11 p-0 [&_svg]:size-5",
+        md: "h-[var(--button-height)] px-6 text-[var(--button-font-size)] [&_svg]:size-5",
+        lg: "h-14 px-8 text-lg [&_svg]:size-6",
+        icon: "h-[var(--button-height)] w-[var(--button-height)] p-0 [&_svg]:size-6",
       },
       fullWidth: { true: "w-full", false: "" },
     },

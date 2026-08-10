@@ -14,6 +14,7 @@ export * from "./Avatar";
 export * from "./Disclosure";
 export * from "./EmptyState";
 export * from "./Skeleton";
+export * from "./AuthCard";
 
 // Re-export specific UI components that are needed by the portal but not yet fully wrapped
 export { 

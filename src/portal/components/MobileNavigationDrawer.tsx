@@ -5,6 +5,7 @@ import { getNavigationSections, type PortalProfile } from "../navigation";
 import { SidebarLink } from "./PortalSidebar";
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
 import type { PortalUser } from "./PortalUserMenu";
+import PortalNotificationCenter from "./PortalNotificationCenter";
 
 export interface MobileNavigationDrawerProps {
   open: boolean;
@@ -41,21 +42,22 @@ export default function MobileNavigationDrawer({
         side="left"
         className="flex w-[86vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pt-[env(safe-area-inset-top)]"
       >
-        <SheetHeader className="border-b p-4 text-left">
+        <SheetHeader className="border-b p-5 text-left bg-white/50 backdrop-blur-sm">
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-12 w-12 border-2 border-[var(--green-main)]">
               {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-              <AvatarFallback className="text-xs">{iniciais}</AvatarFallback>
+              <AvatarFallback className="text-sm font-bold bg-[var(--green-light)] text-[var(--green-dark)]">{iniciais}</AvatarFallback>
             </Avatar>
-            <div className="min-w-0">
-              <p className="truncate text-sm font-semibold">{primeiroNome(user.nome)}</p>
-              <p className="truncate text-xs text-muted-foreground">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-lg font-bold text-slate-900 leading-tight">{user.nome}</p>
+              <p className="truncate text-sm font-medium text-slate-500 mt-0.5">
                 {profile === "dependent"
-                  ? `Dependente de ${maskNome(user.titularNome)}`
-                  : `Matrícula ${maskMatricula(user.matricula)}`}
+                  ? `Dependente • ${user.titularNome}`
+                  : `Associado • Titular`}
               </p>
             </div>
+            <PortalNotificationCenter />
           </div>
         </SheetHeader>
 

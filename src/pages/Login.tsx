@@ -5,11 +5,7 @@ import { useEffect } from 'react';
 
 import { portalCall, setPortalToken } from '@/lib/portal';
 import { useAssociado, Dependente } from '@/contexts/AssociadoContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, AuthCard, Checkbox } from '@/design-system/components';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
@@ -154,9 +150,9 @@ export default function Login() {
       >
         Pular para o formulário de acesso
       </a>
-      <main id="main-login" className="w-full max-w-md">
+      <main id="main-login" className="w-full flex justify-center">
 
-        <Card className="auth-card w-full border-0 animate-fade-in">
+        <AuthCard>
 
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
@@ -229,7 +225,6 @@ export default function Login() {
                 />
                 <Label
                   htmlFor="lgpd-consent"
-                  id="lgpd-consent-desc"
                   className="text-xs font-normal leading-relaxed text-muted-foreground cursor-pointer"
                 >
                   Li e concordo com a{' '}
@@ -283,7 +278,7 @@ export default function Login() {
                       Falar com a Previdência no WhatsApp
                     </a>
                   </Button>
-                  <Button asChild variant="outline" className="w-full">
+                  <Button asChild variant="secondary" className="w-full">
                     <a href="mailto:previdencia@sbpmbahia.com.br?subject=Ajuda%20para%20acessar%20o%20Portal%20do%20Associado">
                       Enviar e-mail para a Previdência
                     </a>
@@ -293,7 +288,7 @@ export default function Login() {
             </Dialog>
 
           </CardContent>
-        </Card>
+        </AuthCard>
 
         <nav
           aria-label="Links institucionais"
