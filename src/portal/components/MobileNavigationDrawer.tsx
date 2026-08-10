@@ -5,6 +5,7 @@ import { getNavigationSections, type PortalProfile } from "../navigation";
 import { SidebarLink } from "./PortalSidebar";
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
 import type { PortalUser } from "./PortalUserMenu";
+import PortalNotificationCenter from "./PortalNotificationCenter";
 
 export interface MobileNavigationDrawerProps {
   open: boolean;
