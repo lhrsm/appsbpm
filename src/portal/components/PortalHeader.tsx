@@ -42,8 +42,10 @@ export default function PortalHeader({
         "flex items-center relative overflow-hidden",
         "h-14 md:h-[180px] lg:h-[210px] xl:h-[225px] 2xl:h-[240px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
-        "portal-institutional-header"
+        "portal-institutional-header",
+        "data-[ui-version=sbpm-mobile-header-v6]"
       )}
+      data-ui-version="sbpm-mobile-header-v6"
     >
       <div className="mx-auto flex h-full w-full max-w-[1600px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
         <Button
@@ -69,16 +71,22 @@ export default function PortalHeader({
 
         <div className="flex-1" />
 
-        <div className="flex shrink-0 items-center gap-1.5 md:gap-4">
+        <div className="flex shrink-0 items-center gap-1.5 md:gap-4 w-full md:w-auto justify-end">
           <div className="hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 shadow-sm">
             <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
             <div className="w-[1px] h-4 bg-white/20 mx-1" />
             <PortalNotificationCenter />
           </div>
-          <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
+          <div className="flex items-center gap-2 md:block">
+             <div className="md:hidden flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 mr-1">
+                <PortalNotificationCenter />
+             </div>
+             <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
+          </div>
         </div>
       </div>
     </header>
+
 
 
   );
