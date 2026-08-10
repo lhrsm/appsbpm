@@ -723,7 +723,6 @@ html.a11y-reduce-motion *::after {
     max-width: calc(100% - 24px);
     margin-inline: auto;
     color: #172033 !important;
-
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -759,25 +758,48 @@ html.a11y-reduce-motion *::after {
   }
 
     .auth-card {
-      width: calc(100% - 24px) !important;
-      max-width: 480px !important;
-      min-width: 0 !important;
-      margin-inline: auto !important;
-    }
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
+    padding: 16px 12px !important;
+    position: relative;
+    z-index: 10;
+    width: 388px;
+    max-width: calc(100% - 24px);
+    margin-inline: auto;
+    color: #172033 !important;
+    height: auto;
+    min-height: unset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
   }
 
   @media (min-width: 1280px) {
     .auth-card {
-      width: clamp(560px, 40vw, 620px) !important;
-      padding: 32px 36px !important;
-      max-width: none !important;
-      height: auto !important;
-      max-height: calc(100dvh - 40px) !important;
-      margin-inline: 0 !important;
-      overflow-y: auto !important;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(22, 163, 74, 0.2) transparent;
-    }
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
+    padding: 16px 12px !important;
+    position: relative;
+    z-index: 10;
+    width: 388px;
+    max-width: calc(100% - 24px);
+    margin-inline: auto;
+    color: #172033 !important;
+    height: auto;
+    min-height: unset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
     .auth-card::-webkit-scrollbar {
       width: 6px;
     }
@@ -795,23 +817,71 @@ html.a11y-reduce-motion *::after {
 
   @media (max-width: 400px) {
     .auth-card {
-      padding: 14px 10px !important;
-    }
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
+    padding: 16px 12px !important;
+    position: relative;
+    z-index: 10;
+    width: 388px;
+    max-width: calc(100% - 24px);
+    margin-inline: auto;
+    color: #172033 !important;
+    height: auto;
+    min-height: unset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
   }
 
   @media (max-width: 359px) {
     .auth-card {
-      width: 319px;
-      max-width: 100%;
-
-      padding: 16px 10px;
-    }
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
+    padding: 16px 12px !important;
+    position: relative;
+    z-index: 10;
+    width: 388px;
+    max-width: calc(100% - 24px);
+    margin-inline: auto;
+    color: #172033 !important;
+    height: auto;
+    min-height: unset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
   }
 
   @media (min-width: 390px) and (max-width: 430px) {
     .auth-card {
-      width: 388px;
-    }
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
+    padding: 16px 12px !important;
+    position: relative;
+    z-index: 10;
+    width: 388px;
+    max-width: calc(100% - 24px);
+    margin-inline: auto;
+    color: #172033 !important;
+    height: auto;
+    min-height: unset;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: visible !important;
+    box-sizing: border-box;
+  }
   }
 
 
@@ -1013,7 +1083,6 @@ html.a11y-reduce-motion *::after {
     max-width: 100% !important;
     min-width: 0 !important;
     margin-inline: auto !important;
-
     min-height: auto !important;
     height: auto !important;
     padding: 16px 18px !important;
@@ -1053,30 +1122,73 @@ html.a11y-reduce-motion *::after {
   }
 
     .portal-choice {
-      width: 100% !important;
-      max-width: 100% !important;
-      min-width: 0 !important;
-    }
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 16px 18px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
   }
 
   @media (min-width: 1200px) {
     .portal-choice {
-      width: calc(100% - 56px) !important;
-      max-width: 480px !important;
-      padding: 16px 20px !important;
-      margin-bottom: 4px !important;
-      margin-inline: auto !important;
-    }
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 16px 18px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
   }
 
 
 
   @media (max-width: 400px) {
     .portal-choice {
-      width: 96% !important;
-      padding: 12px 14px !important;
-      gap: 10px !important;
-    }
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 16px 18px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
   }
 
   .portal-choice-container {
@@ -1235,8 +1347,24 @@ html.a11y-reduce-motion *::after {
 
 
   .dark .portal-choice {
-    background: rgba(17, 24, 39, 0.82) !important;
-    border: 1.5px solid rgba(34, 197, 94, 0.48) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 16px 18px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   .portal-choice:hover, .portal-choice:focus-within, .portal-choice:active {
@@ -1277,9 +1405,25 @@ html.a11y-reduce-motion *::after {
 
   @media (max-width: 340px) {
     .portal-choice {
-      padding: 12px;
-      gap: 10px;
-    }
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
+    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
+    transition: all 200ms ease-in-out !important;
+    border-radius: 18px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-inline: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+    padding: 16px 18px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
     .portal-choice .portal-title {
       font-size: 0.875rem;
     }
