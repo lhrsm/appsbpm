@@ -829,6 +829,11 @@ html.a11y-reduce-motion *::after {
     .pwa-modal-page {
       justify-content: flex-start;
       padding-top: 24px;
+      overflow-y: auto;
+    }
+    .pwa-modal-container {
+      min-height: auto;
+      justify-content: flex-start;
     }
     .pwa-modal-page[data-keyboard-open="false"] .pwa-modal-container {
       transform: none;
@@ -845,6 +850,8 @@ html.a11y-reduce-motion *::after {
     transition: transform 0.3s ease-out;
     position: relative;
     box-sizing: border-box;
+    min-height: 100dvh;
+    justify-content: center;
   }
 
   @media (max-width: 359px) {
