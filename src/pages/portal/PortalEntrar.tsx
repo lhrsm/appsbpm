@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, PasswordInput } from '@/design-system/components';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, PasswordInput, AuthCard } from '@/design-system/components';
 import { icons } from '@/design-system/icons';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Eye, EyeOff } from 'lucide-react';
@@ -64,7 +64,7 @@ export default function PortalEntrar() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none overflow-hidden p-0 flex flex-col">
+        <AuthCard>
           <CardHeader className="text-center pb-2 pt-6 px-6 flex-shrink-0">
             <div className="flex justify-center mb-4">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
@@ -109,17 +109,17 @@ export default function PortalEntrar() {
                 Acessar
               </Button>
 
-              <div className="flex items-center justify-between text-sm">
-                <Link to="/recuperar-acesso" className="font-bold text-primary hover:underline">
+              <div className="flex items-center justify-between">
+                <Link to="/recuperar-acesso" className="text-[var(--link-size)] font-[var(--link-weight)] text-[var(--link-color)] hover:underline underline-offset-4 decoration-[var(--link-color)]/30">
                   Esqueci minha senha
                 </Link>
-                <Link to="/primeiro-acesso" className="font-bold text-primary hover:underline">
+                <Link to="/primeiro-acesso" className="text-[var(--link-size)] font-[var(--link-weight)] text-[var(--link-color)] hover:underline underline-offset-4 decoration-[var(--link-color)]/30">
                   Primeiro acesso
                 </Link>
               </div>
             </form>
           </CardContent>
-        </Card>
+        </AuthCard>
       </PublicFlowModal>
     </AuthBackgroundLayout>
   );

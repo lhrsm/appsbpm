@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNavigationState } from '@/hooks/useNavigationState';
 
-import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, Alert } from '@/design-system/components';
+import { Button, Input, Label, Card, CardContent, CardDescription, CardHeader, CardTitle, Field, Alert, AuthCard } from '@/design-system/components';
 import { icons } from '@/design-system/icons';
 import { Loader2, MailCheck, ArrowLeft } from 'lucide-react';
 import sbpmLogo from '@/assets/sbpm-logo.png';
@@ -45,7 +45,7 @@ export default function PortalRecuperarAcesso() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal>
-        <Card className="auth-card border-0 animate-fade-in shadow-none p-0 overflow-hidden flex flex-col">
+        <AuthCard>
           <CardHeader className="text-center pb-2 pt-6 space-y-1 px-6 flex-shrink-0">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
@@ -95,7 +95,7 @@ export default function PortalRecuperarAcesso() {
               </form>
             )}
           </CardContent>
-        </Card>
+        </AuthCard>
       </PublicFlowModal>
     </AuthBackgroundLayout>
   );

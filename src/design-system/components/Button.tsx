@@ -20,9 +20,9 @@ const buttonVariants = cva(
       },
       size: {
         sm: "h-9 px-4 text-xs [&_svg]:size-4",
-        md: "h-11 px-6 text-sm [&_svg]:size-4",
-        lg: "h-12 px-8 text-base [&_svg]:size-5",
-        icon: "h-11 w-11 p-0 [&_svg]:size-5",
+        md: "h-[var(--button-height)] px-6 text-[var(--button-font-size)] [&_svg]:size-5",
+        lg: "h-14 px-8 text-lg [&_svg]:size-6",
+        icon: "h-[var(--button-height)] w-[var(--button-height)] p-0 [&_svg]:size-6",
       },
       fullWidth: { true: "w-full", false: "" },
     },
