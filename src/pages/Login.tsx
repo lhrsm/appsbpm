@@ -154,9 +154,9 @@ export default function Login() {
       >
         Pular para o formulário de acesso
       </a>
-      <main id="main-login" className="w-full max-w-md">
+      <main id="main-login" className="w-full flex justify-center">
 
-        <Card className="auth-card w-full border-0 animate-fade-in">
+        <AuthCard>
 
           <CardHeader className="text-center pb-2">
             <div className="flex justify-center mb-4">
@@ -293,7 +293,7 @@ export default function Login() {
             </Dialog>
 
           </CardContent>
-        </Card>
+        </AuthCard>
 
         <nav
           aria-label="Links institucionais"
