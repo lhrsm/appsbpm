@@ -49,17 +49,32 @@
 
   /* Form/Field Tokens (UI Audit) */
   --field-bg: #ffffff;
-  --field-border: rgba(22, 163, 74, 0.58);
-  --field-border-focus: #159447;
-  --field-focus-ring: rgba(22, 163, 74, 0.14);
-  --field-text: #1f2937;
+  --field-border: #22c55e;
+  --field-border-width: 1.5px;
+  --field-radius: 16px;
+  --field-height: 56px;
+  --field-padding: 16px;
+  --field-border-focus: #16934a;
+  --field-focus-ring: rgba(22, 197, 94, 0.14);
+  --field-text: #1e293b;
   --field-label: #263244;
-  --field-placeholder: #7b8796;
-  --field-helper: #475569;
+  --field-placeholder: #94a3b8;
+  --field-helper: #64748b;
   --field-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 
-  --link-color: #166534;
+  --link-color: #15803d;
+  --link-size: 15px;
+  --link-weight: 500;
   --link-bg-soft: rgba(240, 253, 244, 0.64);
+
+  --button-primary-bg: #16934a;
+  --button-primary-hover: #15803d;
+  --button-primary-active: #127b40;
+  --button-primary-shadow: 0 4px 12px rgba(22, 147, 74, 0.16);
+  --button-radius: 16px;
+  --button-height: 56px;
+  --button-font-size: 18px;
+  --button-font-weight: 600;
 
   --button-primary-bg: #168a49;
   --button-primary-hover: #127b40;
