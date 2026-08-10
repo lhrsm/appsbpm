@@ -53,30 +53,31 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="group flex h-auto items-center gap-3 px-3 py-2 text-inherit border border-white/72 rounded-[16px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] min-w-[300px] max-w-[390px] !bg-[rgba(255,255,255,0.92)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)]"
+            className="group flex h-auto items-center gap-3 px-2 md:px-3 py-1.5 md:py-2 text-inherit border border-white/72 rounded-xl md:rounded-[16px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] w-full md:min-w-[300px] md:max-w-[390px] !bg-[rgba(255,255,255,0.96)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)]"
             style={{ 
               backdropFilter: 'blur(12px)', 
               WebkitBackdropFilter: 'blur(12px)' 
             }}
           >
-            <div className="flex w-full items-center gap-3">
-              <Avatar className="h-12 w-12 border-2 border-[var(--green-main)] bg-white/96 shadow-sm shrink-0">
+            <div className="flex w-full items-center gap-2 md:gap-3 min-w-0">
+              <Avatar className="h-9 w-9 md:h-12 md:w-12 border-2 border-[var(--green-main)] bg-white/96 shadow-sm shrink-0">
                 {user.fotoUrl && <AvatarImage src={user.fotoUrl} alt="" />}
-                <AvatarFallback className="bg-transparent text-[#166534] text-base font-bold">
+                <AvatarFallback className="bg-transparent text-[#166534] text-[13px] md:text-base font-bold">
                   {iniciais}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex flex-col items-start leading-[1.15] text-left flex-1 min-w-0">
-                <span className="truncate w-full text-lg font-bold !text-[#172033]">
+              <div className="flex flex-col items-start leading-tight text-left flex-1 min-w-0">
+                <span className="truncate w-full text-[13px] md:text-lg font-bold !text-[#172033]">
                   {user.nome}
                 </span>
-                <span className="truncate w-full text-sm font-medium !text-slate-500 mt-0.5">
+                <span className="truncate w-full text-[11px] md:text-sm font-medium !text-slate-500">
                   {profile === "dependent" ? "Dependente • Titular" : "Associado • Titular"}
                 </span>
               </div>
-              <icons.expandir className="h-4 w-4 !text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:!text-[#166534] shrink-0" aria-hidden />
+              <icons.expandir className="h-3.5 w-3.5 md:h-4 md:w-4 !text-[#64748b] transition-transform duration-160 ease group-data-[state=open]:rotate-180 group-hover:!text-[#166534] shrink-0" aria-hidden />
             </div>
           </Button>
+
         </DropdownMenuTrigger>
 
         <DropdownMenuContent 

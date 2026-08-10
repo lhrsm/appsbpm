@@ -44,7 +44,7 @@ export default function PortalRecuperarAcesso() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard>
           <CardHeader className="text-center pb-2 pt-6 space-y-1 px-6 flex-shrink-0">
             <div className="flex justify-center mb-3">

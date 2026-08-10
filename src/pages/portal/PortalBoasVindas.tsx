@@ -30,7 +30,7 @@ export default function PortalBoasVindas() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <div className="w-full flex flex-col items-center desktop-wrapper-content">
           <PublicPortalWelcomeCard />
 

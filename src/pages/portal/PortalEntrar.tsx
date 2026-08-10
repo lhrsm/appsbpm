@@ -63,7 +63,7 @@ export default function PortalEntrar() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard>
           <CardHeader className="text-center pb-2 pt-6 px-6 flex-shrink-0">
             <div className="flex justify-center mb-4">
@@ -109,14 +109,15 @@ export default function PortalEntrar() {
                 Acessar
               </Button>
 
-              <div className="flex items-center justify-between">
-                <Link to="/recuperar-acesso" className="text-[var(--link-size)] font-[var(--link-weight)] text-[var(--link-color)] hover:underline underline-offset-4 decoration-[var(--link-color)]/30">
+              <div className="flex items-center justify-between mt-2">
+                <Link to="/recuperar-acesso" className="text-[14px] font-semibold text-[#166534] hover:underline underline-offset-4">
                   Esqueci minha senha
                 </Link>
-                <Link to="/primeiro-acesso" className="text-[var(--link-size)] font-[var(--link-weight)] text-[var(--link-color)] hover:underline underline-offset-4 decoration-[var(--link-color)]/30">
+                <Link to="/primeiro-acesso" className="text-[14px] font-semibold text-[#166534] hover:underline underline-offset-4">
                   Primeiro acesso
                 </Link>
               </div>
+
             </form>
           </CardContent>
         </AuthCard>

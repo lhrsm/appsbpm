@@ -187,7 +187,7 @@ export default function PortalPrimeiroAcesso() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard className="max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)]">
           <CardHeader className="text-center pb-2 pt-6 px-6 space-y-1 desktop-header-respiro flex-shrink-0">
             <div className="flex justify-center mb-1">
@@ -442,51 +442,58 @@ export default function PortalPrimeiroAcesso() {
             )}
 
             {etapa === 'termos' && (
-              <div className="space-y-5">
-                <div className="rounded-lg border bg-muted/20 p-4 max-h-60 overflow-y-auto text-[11px] space-y-3 leading-relaxed text-muted-foreground">
-                  <h4 className="font-bold text-sm text-foreground">Termos de Uso e Privacidade</h4>
-                  <p>
-                    O Portal do Associado da SBPM disponibiliza consulta a dados cadastrais, limites, informes e
-                    carteirinha digital.
-                  </p>
-                  <p>
-                    O acesso é <strong className="text-foreground">pessoal e intransferível</strong>. Você é
-                    responsável por manter a confidencialidade da sua senha.
-                  </p>
-                  <p>
-                    Os dados são tratados conforme a LGPD, utilizados apenas para prestação dos serviços
-                    associativos e mantidos com registro de auditoria dos acessos.
-                  </p>
+              <div className="space-y-6">
+                <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-primary/10 text-primary shrink-0">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-bold text-slate-900">Documentos Legais</h4>
+                      <p className="text-xs text-slate-500 leading-relaxed">
+                        Para acessar o portal, você precisa ler e aceitar nossos termos de uso e política de privacidade.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-white transition-colors cursor-pointer group border border-transparent hover:border-slate-100">
+                      <Checkbox 
+                        id="aceite-termos" 
+                        checked={aceiteTermos} 
+                        onCheckedChange={(v) => setAceiteTermos(v === true)}
+                        className="mt-0.5"
+                      />
+                      <label htmlFor="aceite-termos" className="text-sm text-slate-700 font-medium cursor-pointer leading-tight">
+                        Li e aceito os <Link to="/privacidade#termos" target="_blank" className="text-primary font-bold hover:underline">Termos de Uso</Link> do portal.
+                      </label>
+                    </div>
+
+                    <div className="flex items-start gap-3 p-3 rounded-xl hover:bg-white transition-colors cursor-pointer group border border-transparent hover:border-slate-100">
+                      <Checkbox 
+                        id="aceite-privacidade" 
+                        checked={aceitePrivacidade} 
+                        onCheckedChange={(v) => setAceitePrivacidade(v === true)}
+                        className="mt-0.5"
+                      />
+                      <label htmlFor="aceite-privacidade" className="text-sm text-slate-700 font-medium cursor-pointer leading-tight">
+                        Concordo com a <Link to="/privacidade" target="_blank" className="text-primary font-bold hover:underline">Política de Privacidade</Link> e tratamento de dados.
+                      </label>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-y-3">
-                  <Label
-                    className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
-                      aceiteTermos ? 'border-primary/40 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
-                    }`}
-                  >
-                    <Checkbox checked={aceiteTermos} onCheckedChange={(v) => setAceiteTermos(v === true)} className="mt-0.5" />
-                    <span className="text-muted-foreground">Li e aceito os Termos de Uso do Portal do Associado.</span>
-                  </Label>
-                  <Label
-                    className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-xs font-normal leading-relaxed transition-colors ${
-                      aceitePrivacidade ? 'border-primary/40 bg-primary/5' : 'bg-muted/20 hover:bg-muted/40'
-                    }`}
-                  >
-                    <Checkbox checked={aceitePrivacidade} onCheckedChange={(v) => setAceitePrivacidade(v === true)} className="mt-0.5" />
-                    <span className="text-muted-foreground">
-                      Li e concordo com a{' '}
-                      <Link to="/privacidade" className="font-medium text-primary underline underline-offset-2">
-                        Política de Privacidade
-                      </Link>{' '}
-                      e com o tratamento dos meus dados conforme a LGPD.
-                    </span>
-                  </Label>
-                </div>
-                <Button className="w-full h-11 font-semibold" onClick={concluir} disabled={loading || !aceiteTermos || !aceitePrivacidade}>
-                  {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Concluir cadastro'}
+
+                <Button 
+                  className="w-full h-14 rounded-2xl text-base font-bold shadow-lg shadow-primary/20" 
+                  onClick={concluir} 
+                  disabled={loading || !aceiteTermos || !aceitePrivacidade}
+                  loading={loading}
+                >
+                  Concluir e acessar
                 </Button>
               </div>
             )}
+
 
 
             {etapa === 'concluido' && (

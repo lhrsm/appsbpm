@@ -15,7 +15,8 @@ type BaseProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> & {
 };
 
 const inputBase =
-  "flex h-[var(--field-height)] w-full rounded-[var(--field-radius)] border-[var(--field-border-width)] border-[var(--field-border)] bg-[var(--field-bg)] px-[var(--field-padding)] py-2 text-base text-[var(--field-text)] transition-all placeholder:text-[var(--field-placeholder)] focus-visible:outline-none focus-visible:border-[var(--field-border-focus)] focus-visible:ring-4 focus-visible:ring-[var(--field-focus-ring)] focus-visible:ring-offset-0 ds-shadow-xs disabled:cursor-not-allowed disabled:opacity-50";
+  "flex h-[var(--field-height)] w-full rounded-[var(--field-radius)] border-[var(--field-border-width)] border-[var(--field-border)] bg-[var(--field-bg)] px-[var(--field-padding)] py-2 text-base text-[var(--field-text)] transition-all placeholder:text-[var(--field-placeholder)] focus-visible:outline-none focus-visible:border-[var(--field-border-focus)] focus-visible:ring-4 focus-visible:ring-[var(--field-focus-ring)] focus-visible:ring-offset-0 ds-shadow-xs disabled:cursor-not-allowed disabled:opacity-50 [color-scheme:light]";
+
 
 /**
  * Campo de texto base do Design System.
@@ -106,18 +107,19 @@ export const EmailInput = forwardRef<HTMLInputElement, BaseProps>(function Email
 export const PasswordInput = forwardRef<HTMLInputElement, BaseProps>(function PasswordInput({ className, ...props }, ref) {
   const [show, setShow] = useState(false);
   return (
-    <div className="relative">
-      <Input ref={ref} type={show ? "text" : "password"} icon={icons.senha} className={cn("pr-11", className)} {...props} />
+    <div className="relative group/pass">
+      <Input ref={ref} type={show ? "text" : "password"} icon={icons.senha} className={cn("pr-11 !bg-white", className)} {...props} />
       <IconButton
         type="button"
         icon={show ? icons.ocultar : icons.mostrar}
         label={show ? "Ocultar senha" : "Mostrar senha"}
         onClick={() => setShow((v) => !v)}
-        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2"
+        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2 !text-[#64748b] hover:!text-[#168A49] transition-colors"
       />
     </div>
   );
 });
+
 
 /** Campo de busca com ícone e botão de limpar. */
 export const SearchInput = forwardRef<HTMLInputElement, BaseProps & { onClear?: () => void }>(function SearchInput(

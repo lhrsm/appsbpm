@@ -121,7 +121,8 @@ export default function PortalQueroMeAssociar() {
   if (protocolo) {
     return (
       <AuthBackgroundLayout align="right">
-        <PublicFlowModal>
+        <PublicFlowModal className="public-auth-theme">
+
           <AuthCard className="auth-card--wide">
             <CardHeader className="text-center pb-2 pt-10 space-y-4">
               <div className="flex justify-center mb-2">
@@ -176,7 +177,7 @@ export default function PortalQueroMeAssociar() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard className="auth-card--wide">
           <CardHeader className="pb-4 pt-8 text-center space-y-2 flex-shrink-0 px-8">
             <div className="flex justify-center mb-2">
@@ -261,7 +262,7 @@ export default function PortalQueroMeAssociar() {
                 {/* 1. ÁREA DOS TERMOS (CARD PREMIUM) */}
                 <div className={cn(
                   "rounded-[16px] border p-5 transition-all duration-300 w-full shadow-sm",
-                  consent ? "border-primary/40 bg-white/80" : "border-[#E7E7E7] bg-white/60",
+                  consent ? "border-primary/40 bg-white/95" : "border-[#E7E7E7] bg-white/85",
                   erros.consent && "border-destructive/50 bg-destructive/5"
                 )}>
                   <div className="flex items-start gap-4">

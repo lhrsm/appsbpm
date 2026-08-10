@@ -151,7 +151,7 @@ const PortalAlias = () => {
 const App = () => {
   useEffect(() => {
     // Log da versão do build para auditoria técnica
-    console.info("[Build] SBPM-PORTAL-BUILD-2026-08-05-v4-CHUNK-FIX");
+    console.info("[Build] SBPM-PORTAL-BUILD-2026-08-10-v6-MOBILE-FIX");
   }, []);
 
   return (
