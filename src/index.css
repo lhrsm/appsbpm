@@ -732,6 +732,32 @@ html.a11y-reduce-motion *::after {
   }
 
   @media (max-width: 1023px) {
+  .public-portal-light input,
+  .public-portal-light textarea,
+  .public-portal-light select,
+  .public-portal-light [role="combobox"] {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+    color-scheme: light !important;
+  }
+
+  .public-portal-light input::placeholder {
+    color: #8491a3 !important;
+    -webkit-text-fill-color: #8491a3 !important;
+    opacity: 1;
+  }
+
+  /* Autofill Android for .public-portal-light */
+  .public-portal-light input:-webkit-autofill,
+  .public-portal-light input:-webkit-autofill:hover,
+  .public-portal-light input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #1f2937;
+  }
+
     .auth-card {
       width: calc(100% - 24px) !important;
       max-width: 480px !important;
@@ -883,6 +909,32 @@ html.a11y-reduce-motion *::after {
   }
 
   @media (max-width: 1023px) {
+  .public-portal-light input,
+  .public-portal-light textarea,
+  .public-portal-light select,
+  .public-portal-light [role="combobox"] {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+    color-scheme: light !important;
+  }
+
+  .public-portal-light input::placeholder {
+    color: #8491a3 !important;
+    -webkit-text-fill-color: #8491a3 !important;
+    opacity: 1;
+  }
+
+  /* Autofill Android for .public-portal-light */
+  .public-portal-light input:-webkit-autofill,
+  .public-portal-light input:-webkit-autofill:hover,
+  .public-portal-light input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #1f2937;
+  }
+
     .public-portal-root,
     .public-portal-root .pwa-modal-page {
       color-scheme: light !important;
@@ -974,6 +1026,32 @@ html.a11y-reduce-motion *::after {
   }
 
   @media (max-width: 1023px) {
+  .public-portal-light input,
+  .public-portal-light textarea,
+  .public-portal-light select,
+  .public-portal-light [role="combobox"] {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+    color-scheme: light !important;
+  }
+
+  .public-portal-light input::placeholder {
+    color: #8491a3 !important;
+    -webkit-text-fill-color: #8491a3 !important;
+    opacity: 1;
+  }
+
+  /* Autofill Android for .public-portal-light */
+  .public-portal-light input:-webkit-autofill,
+  .public-portal-light input:-webkit-autofill:hover,
+  .public-portal-light input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #1f2937;
+  }
+
     .portal-choice {
       width: 100% !important;
       max-width: 100% !important;
@@ -1083,6 +1161,32 @@ html.a11y-reduce-motion *::after {
   }
 
   @media (max-width: 1023px) {
+  .public-portal-light input,
+  .public-portal-light textarea,
+  .public-portal-light select,
+  .public-portal-light [role="combobox"] {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+    color-scheme: light !important;
+  }
+
+  .public-portal-light input::placeholder {
+    color: #8491a3 !important;
+    -webkit-text-fill-color: #8491a3 !important;
+    opacity: 1;
+  }
+
+  /* Autofill Android for .public-portal-light */
+  .public-portal-light input:-webkit-autofill,
+  .public-portal-light input:-webkit-autofill:hover,
+  .public-portal-light input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1f2937 !important;
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    caret-color: #1f2937;
+  }
+
     .portal-recovery-button {
       width: 92% !important;
     }
