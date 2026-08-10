@@ -710,19 +710,19 @@ html.a11y-reduce-motion *::after {
   }
 
   .auth-card {
-    background: rgba(255, 255, 255, 0.72) !important;
-    backdrop-filter: blur(9px) saturate(118%) !important;
-    -webkit-backdrop-filter: blur(9px) saturate(118%) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.68) !important;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.14) !important;
-    border-radius: 28px !important;
+    background: var(--portal-modal-bg-light) !important;
+    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+    border: var(--portal-modal-border-light) !important;
+    box-shadow: var(--portal-modal-shadow-light) !important;
+    border-radius: var(--portal-modal-radius) !important;
     padding: 16px 12px !important;
     position: relative;
     z-index: 10;
     width: 388px;
     max-width: calc(100% - 24px);
     margin-inline: auto;
-    color: #1f2937 !important;
+    color: #172033 !important;
 
     height: auto;
     min-height: unset;
@@ -952,8 +952,8 @@ html.a11y-reduce-motion *::after {
 
 
   .portal-choice {
-    background: rgba(255, 255, 255, 0.94) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.50) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
     box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
     transition: all 200ms ease-in-out !important;
     border-radius: 18px !important;
@@ -1136,9 +1136,9 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-choice:hover, .portal-choice:focus-within, .portal-choice:active {
-    background: rgba(240, 253, 244, 0.96) !important;
-    border-color: rgba(22, 163, 74, 0.82) !important;
-    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.12) !important;
+    background: rgba(240, 253, 244, 0.97) !important;
+    border-color: rgba(22, 163, 74, 0.68) !important;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10) !important;
   }
 
   .portal-choice .portal-title {
