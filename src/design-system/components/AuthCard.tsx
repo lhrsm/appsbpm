@@ -15,7 +15,7 @@ export const AuthCard = forwardRef<HTMLDivElement, AuthCardProps>(
       <div
         ref={ref}
         className={cn(
-          "public-auth-theme w-full border-[var(--portal-modal-border-light)] shadow-[var(--portal-modal-shadow-light)] !bg-[var(--portal-modal-bg-light)] overflow-hidden ds-animate-slide-in-up rounded-[var(--portal-modal-radius)] mx-auto xl:max-w-none",
+          "public-auth-theme w-full auth-card border-[var(--portal-modal-border-light)] shadow-[var(--portal-modal-shadow-light)] !bg-[var(--portal-modal-bg-light)] overflow-hidden ds-animate-slide-in-up rounded-[var(--portal-modal-radius)] mx-auto xl:max-w-none",
           className
         )}
         style={{ 

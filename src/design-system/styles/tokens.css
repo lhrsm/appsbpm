@@ -95,16 +95,16 @@
   --container-desktop: 1600px;
 
   /* Portal Modals & Dialogs - Premium Glassmorphism */
-  --portal-modal-bg-light: rgba(255, 255, 255, 0.86);
+  --portal-modal-bg-light: rgba(255, 255, 255, 0.74);
   --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.96);
   --portal-modal-bg-dark: rgba(17, 24, 39, 0.75);
   --portal-modal-overlay-light: rgba(15, 23, 42, 0.08);
   --portal-modal-overlay-dark: rgba(15, 23, 42, 0.12);
-  --portal-modal-blur: 10px;
-  --portal-modal-border-light: rgba(22, 163, 74, 0.72);
+  --portal-modal-blur: 18px;
+  --portal-modal-border-light: rgba(34, 197, 94, 0.75);
   --portal-modal-border-dark: rgba(34, 197, 94, 0.48);
   --portal-modal-radius: 28px;
-  --portal-modal-shadow-light: 0 16px 40px rgba(15, 23, 42, 0.14);
+  --portal-modal-shadow-light: 0 18px 45px rgba(0, 0, 0, 0.18);
   --portal-modal-shadow-dark: 0 16px 40px rgba(0, 0, 0, 0.25);
 
   /* PWA Modal Specifics */
