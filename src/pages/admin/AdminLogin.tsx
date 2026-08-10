@@ -148,7 +148,7 @@ export default function AdminLogin() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <Card className="auth-card w-full max-w-md">
+      <AuthCard>
 
         <CardHeader className="text-center">
           <img
@@ -228,7 +228,7 @@ export default function AdminLogin() {
             </form>
           )}
         </CardContent>
-      </Card>
+      </AuthCard>
     </AuthBackgroundLayout>
 
   );

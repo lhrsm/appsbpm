@@ -45,7 +45,7 @@ export default function RedefinirSenha() {
 
   return (
     <AuthBackgroundLayout align="center">
-      <Card className="auth-card w-full max-w-md">
+      <AuthCard>
         <CardHeader className="text-center">
           <img src={sbpmLogo} alt="SBPM" className="mx-auto h-24 w-auto object-contain mb-2" />
           <CardTitle>Redefinir senha</CardTitle>
@@ -95,7 +95,7 @@ export default function RedefinirSenha() {
             </button>
           </form>
         </CardContent>
-      </Card>
+      </AuthCard>
     </AuthBackgroundLayout>
   );
 }
