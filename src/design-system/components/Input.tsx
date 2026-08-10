@@ -114,7 +114,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, BaseProps>(function Pa
         icon={show ? icons.ocultar : icons.mostrar}
         label={show ? "Ocultar senha" : "Mostrar senha"}
         onClick={() => setShow((v) => !v)}
-        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2 !text-[#475569] hover:!text-[#166534]"
+        className="absolute right-0 top-1/2 h-10 w-10 min-h-0 min-w-0 -translate-y-1/2 !text-[#64748b] hover:!text-[#168A49] transition-colors"
       />
     </div>
   );

@@ -262,7 +262,7 @@ export default function PortalQueroMeAssociar() {
                 {/* 1. ÁREA DOS TERMOS (CARD PREMIUM) */}
                 <div className={cn(
                   "rounded-[16px] border p-5 transition-all duration-300 w-full shadow-sm",
-                  consent ? "border-primary/40 bg-white/80" : "border-[#E7E7E7] bg-white/60",
+                  consent ? "border-primary/40 bg-white/95" : "border-[#E7E7E7] bg-white/85",
                   erros.consent && "border-destructive/50 bg-destructive/5"
                 )}>
                   <div className="flex items-start gap-4">
