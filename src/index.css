@@ -759,11 +759,11 @@ html.a11y-reduce-motion *::after {
   }
 
     .auth-card {
-    background: var(--portal-modal-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    border: var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
+    background: rgba(255, 255, 255, 0.76) !important;
+    backdrop-filter: blur(18px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
     border-radius: var(--portal-modal-radius) !important;
     padding: 16px 12px !important;
     position: relative;
@@ -782,11 +782,11 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1280px) {
     .auth-card {
-    background: var(--portal-modal-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    border: var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
+    background: rgba(255, 255, 255, 0.74) !important;
+    backdrop-filter: blur(18px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
     border-radius: var(--portal-modal-radius) !important;
     padding: 16px 12px !important;
     position: relative;
@@ -841,11 +841,11 @@ html.a11y-reduce-motion *::after {
 
   @media (max-width: 359px) {
     .auth-card {
-    background: var(--portal-modal-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    border: var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
+    background: rgba(255, 255, 255, 0.76) !important;
+    backdrop-filter: blur(18px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
     border-radius: var(--portal-modal-radius) !important;
     padding: 16px 12px !important;
     position: relative;
