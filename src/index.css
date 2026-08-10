@@ -829,6 +829,11 @@ html.a11y-reduce-motion *::after {
     .pwa-modal-page {
       justify-content: flex-start;
       padding-top: 24px;
+      overflow-y: auto;
+    }
+    .pwa-modal-container {
+      min-height: auto;
+      justify-content: flex-start;
     }
     .pwa-modal-page[data-keyboard-open="false"] .pwa-modal-container {
       transform: none;
@@ -843,7 +848,10 @@ html.a11y-reduce-motion *::after {
     align-items: center;
     margin-inline: auto;
     transition: transform 0.3s ease-out;
-    position: relative; /* Evita fixed/absolute problems */
+    position: relative;
+    box-sizing: border-box;
+    min-height: 100dvh;
+    justify-content: center;
   }
 
   @media (max-width: 359px) {
@@ -944,11 +952,13 @@ html.a11y-reduce-motion *::after {
 
     min-height: auto !important;
     height: auto !important;
-    padding: 10px 14px !important;
+    padding: 16px 18px !important;
     display: grid !important;
-    grid-template-columns: 26px 1fr 18px !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 14px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 
   @media (min-width: 1200px) {
@@ -1007,22 +1017,25 @@ html.a11y-reduce-motion *::after {
   }
 
   .portal-title {
-    font-size: 0.90rem !important;
+    font-size: 16px !important;
     font-weight: 700 !important;
     line-height: 1.2 !important;
-    color: #111827 !important;
-    margin-bottom: 1px !important;
+    color: #172033 !important;
+    margin-bottom: 2px !important;
     display: block !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    min-width: 0 !important;
   }
 
   .portal-description {
-    font-size: 0.77rem !important;
+    font-size: 14px !important;
     line-height: 1.35 !important;
-    color: #475569 !important;
+    color: #64748b !important;
     display: block !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    min-width: 0 !important;
   }
 
 
@@ -1036,7 +1049,7 @@ html.a11y-reduce-motion *::after {
     border-radius: 999px !important;
     background: #168a49 !important;
     color: #ffffff !important;
-    border: none !important;
+    border: 1px solid #168a49 !important;
     font-weight: 700 !important;
     font-size: 0.95rem !important;
     box-shadow: 0 8px 20px rgba(22, 138, 73, 0.24) !important;

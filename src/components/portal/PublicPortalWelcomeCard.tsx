@@ -39,8 +39,8 @@ export function PublicPortalWelcomeCard() {
   };
 
   return (
-    <AuthCard className="!bg-white/94 !border-[rgba(22,138,73,0.42)]">
-      <CardHeader className="text-center pb-2 pt-6 px-6 space-y-1">
+    <AuthCard className="!bg-white/94 !border-[rgba(22,138,73,0.42)] !w-[calc(100%-24px)] min-[320px]:!w-[calc(100%-16px)]">
+      <CardHeader className="text-center pb-2 pt-6 px-5 space-y-1">
         <div className="flex justify-center mb-4">
           <img
             src={sbpmLogo}
@@ -54,22 +54,22 @@ export function PublicPortalWelcomeCard() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="px-6 pb-8 pt-4">
-        <div className="grid gap-3 mb-6">
+      <CardContent className="px-5 pb-8 pt-4">
+        <div className="grid gap-3 mb-6 portal-choice-container">
           {CAMINHOS.map(({ to, icon: Icon, titulo, descricao }) => (
             <button
               key={to}
               onClick={() => handleNavigation(to, `Carregando ${titulo.toLowerCase()}...`)}
-              className="flex items-center gap-4 p-4 rounded-xl border border-[rgba(22,138,73,0.34)] bg-white/80 hover:bg-[rgba(240,253,244,0.97)] hover:border-[#168A49] transition-all text-left group shadow-sm active:scale-[0.98] w-full"
+              className="portal-choice group w-full"
             >
-              <div className="h-10 w-10 rounded-full bg-[rgba(22,138,73,0.1)] flex items-center justify-center shrink-0 group-hover:bg-[#168A49] group-hover:text-white transition-colors">
-                <Icon className="h-5 w-5 text-[#168A49] group-hover:text-inherit" />
+              <div className="portal-icon-green shrink-0 group-hover:bg-[#168A49] group-hover:text-white transition-colors rounded-full h-10 w-10 flex items-center justify-center bg-[rgba(22,138,73,0.1)]">
+                <Icon className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-[#172033] text-[15px]">{titulo}</h3>
-                <p className="text-[12px] text-[#64748B] truncate">{descricao}</p>
+                <h3 className="portal-title">{titulo}</h3>
+                <p className="portal-description">{descricao}</p>
               </div>
-              <icons.proximo className="h-4 w-4 text-[#64748B] group-hover:text-[#168A49] transition-colors shrink-0" />
+              <icons.proximo className="portal-chevron shrink-0 text-[#64748B] group-hover:text-[#168A49] transition-colors" />
             </button>
           ))}
         </div>
@@ -77,9 +77,9 @@ export function PublicPortalWelcomeCard() {
         <div className="flex justify-center">
           <button 
             onClick={() => handleNavigation('/recuperar-acesso', 'Abrindo a recuperação de acesso...')}
-            className="flex items-center text-sm font-semibold text-[#166534] hover:underline underline-offset-4"
+            className="portal-recovery-button"
           >
-            <icons.ajuda className="w-4 h-4 mr-2" /> Recuperar acesso
+            <icons.ajuda className="w-4 h-4" /> Recuperar acesso
           </button>
         </div>
       </CardContent>

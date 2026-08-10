@@ -15,10 +15,10 @@ export const AuthCard = forwardRef<HTMLDivElement, AuthCardProps>(
       <div
         ref={ref}
         className={cn(
-          "public-auth-theme w-full max-w-[480px] border-[var(--portal-modal-border-light)] shadow-[var(--portal-modal-shadow-light)] !bg-white/95 overflow-hidden ds-animate-slide-in-up rounded-[26px]",
+          "public-auth-theme w-full max-w-[480px] border-[var(--portal-modal-border-light)] shadow-[var(--portal-modal-shadow-light)] !bg-white/95 overflow-hidden ds-animate-slide-in-up rounded-[26px] mx-auto",
           className
         )}
-        style={{ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
+        style={{ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', boxSizing: 'border-box' }}
         {...props}
       >
         {children}

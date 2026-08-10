@@ -45,7 +45,7 @@ export default function PortalRecuperarAcesso() {
   return (
     <AuthBackgroundLayout align="right">
       <PublicFlowModal className="public-auth-theme">
-        <AuthCard>
+        <AuthCard className="!w-[calc(100%-24px)] min-[320px]:!w-[calc(100%-16px)]">
           <CardHeader className="text-center pb-2 pt-6 space-y-1 px-6 flex-shrink-0">
             <div className="flex justify-center mb-3">
               <img src={sbpmLogo} alt="SBPM" className="h-14 w-auto object-contain" />
