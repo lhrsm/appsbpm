@@ -187,7 +187,7 @@ export default function PortalPrimeiroAcesso() {
 
   return (
     <AuthBackgroundLayout align="right">
-      <PublicFlowModal>
+      <PublicFlowModal className="public-auth-theme">
         <AuthCard className="max-h-[calc(100dvh-24px)] xl:max-h-[calc(100dvh-40px)]">
           <CardHeader className="text-center pb-2 pt-6 px-6 space-y-1 desktop-header-respiro flex-shrink-0">
             <div className="flex justify-center mb-1">

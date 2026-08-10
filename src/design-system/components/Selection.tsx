@@ -21,7 +21,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
       checked={checked}
       onCheckedChange={onCheckedChange}
       className={cn(
-        "peer h-5 w-5 shrink-0 rounded border border-[var(--field-border)] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--field-border-focus)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[hsl(var(--success))] data-[state=checked]:border-transparent data-[state=checked]:text-white transition-all",
+        "peer h-5 w-5 shrink-0 rounded border border-[var(--field-border)] bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--field-border-focus)] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-[hsl(var(--success))] data-[state=checked]:border-transparent data-[state=checked]:text-white transition-all [color-scheme:light]",
         className
       )}
       {...props}
