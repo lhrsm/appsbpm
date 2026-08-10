@@ -38,7 +38,7 @@ export default function PortalHeader({
   return (
     <header 
       className={cn(
-        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-200",
+        "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-300 md:border-b-0",
         "flex items-center relative overflow-hidden",
         "h-14 md:h-[180px] lg:h-[210px] xl:h-[225px] 2xl:h-[240px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
@@ -69,9 +69,10 @@ export default function PortalHeader({
 
         <div className="flex-1" />
 
-        <div className="flex shrink-0 items-center gap-1.5 md:gap-3">
-          <div className="hidden md:flex">
+        <div className="flex shrink-0 items-center gap-1.5 md:gap-4">
+          <div className="hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 shadow-sm">
             <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
+            <div className="w-[1px] h-4 bg-white/20 mx-1" />
             <PortalNotificationCenter />
           </div>
           <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
