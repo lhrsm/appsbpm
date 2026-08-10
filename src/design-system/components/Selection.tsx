@@ -54,8 +54,8 @@ export const RadioCard = ({
       className={cn(
         "flex flex-col gap-1 p-4 rounded-xl border transition-all text-left w-full touch-target",
         selected
-          ? "bg-[rgba(240,253,244,0.98)] border-[#168A49] shadow-sm text-[#166534]"
-          : "bg-[rgba(255,255,255,0.94)] border-[rgba(22,138,73,0.34)] hover:border-[#168A49] text-[#263244]",
+          ? "bg-[#f0fdf4] border-[#168A49] shadow-sm text-[#166534]"
+          : "bg-[#ffffff] border-[rgba(22,138,73,0.34)] hover:border-[#168A49] text-[#263244]",
         className
       )}
     >
