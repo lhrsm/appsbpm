@@ -50,32 +50,40 @@ export const RadioCard = ({
     <button
       type="button"
       onClick={onClick}
+      data-ui-version="sbpm-radio-card-v6"
       className={cn(
         "flex flex-col gap-1 p-4 rounded-xl border transition-all text-left w-full touch-target",
         selected
-          ? "bg-[rgba(240,253,244,0.94)] border-[var(--notice-success-border)] shadow-sm"
-          : "bg-[rgba(255,255,255,0.76)] border-[rgba(22,163,74,0.34)] hover:border-[var(--field-border-focus)]",
+          ? "bg-[rgba(240,253,244,0.96)] border-[#168A49] shadow-sm text-[#166534]"
+          : "bg-[rgba(255,255,255,0.82)] border-[rgba(22,138,73,0.34)] hover:border-[#168A49] text-[#263244]",
         className
       )}
     >
       <div className="flex items-center justify-between w-full">
-        <span className={cn("font-semibold", selected ? "text-[#14532d]" : "text-[var(--field-label)]")}>
+        <span className={cn(
+          "font-bold text-[15px] leading-tight",
+          selected ? "text-[#166534]" : "text-[#263244]"
+        )}>
           {label}
         </span>
         <div className={cn(
-          "h-5 w-5 rounded-full border flex items-center justify-center transition-all",
+          "h-5 w-5 rounded-full border-[1.5px] flex items-center justify-center transition-all shrink-0",
           selected 
-            ? "border-[hsl(var(--success))] bg-[hsl(var(--success))]" 
-            : "border-[var(--field-border)] bg-white"
+            ? "border-[#168A49] bg-[#168A49]" 
+            : "border-[#168A49] bg-white"
         )}>
           {selected && <div className="h-2 w-2 rounded-full bg-white" />}
         </div>
       </div>
       {description && (
-        <span className="text-xs text-[var(--field-helper)] leading-relaxed">
+        <span className={cn(
+          "text-xs leading-relaxed mt-0.5",
+          selected ? "text-[#166534]/80" : "text-[#64748B]"
+        )}>
           {description}
         </span>
       )}
     </button>
   );
 };
+
