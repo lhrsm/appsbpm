@@ -15,7 +15,7 @@ export const AuthCard = forwardRef<HTMLDivElement, AuthCardProps>(
       <div
         ref={ref}
         className={cn(
-          "auth-card w-full max-w-[440px] border-0 animate-fade-in shadow-xl overflow-hidden p-0 flex flex-col bg-white/95 backdrop-blur-[12px] rounded-[26px]",
+          "auth-card w-full max-w-[440px] border-0 animate-fade-in shadow-xl overflow-hidden p-0 flex flex-col bg-white backdrop-blur-[12px] rounded-[16px]",
           className
         )}
         {...props}
