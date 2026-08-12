@@ -10,7 +10,7 @@ import type { SummaryItem } from "../types";
 export function DashboardSummaryGrid({ items }: { items: SummaryItem[] }) {
   if (!items.length) return null;
   return (
-    <ul className="grid grid-cols-1 gap-5 md:gap-3 xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-4">
+    <ul className="grid grid-cols-1 gap-4 md:gap-3 xs:grid-cols-2 sm:grid-cols-2 xl:grid-cols-4">
       {items.map((item) => (
         <li key={item.id} className="min-w-0">
           <SummaryCard item={item} />
@@ -23,7 +23,7 @@ export function DashboardSummaryGrid({ items }: { items: SummaryItem[] }) {
 function SummaryCard({ item }: { item: SummaryItem }) {
   const Icon = item.icon;
   const body = (
-    <div className="flex h-full flex-col gap-2 rounded-xl border border-[var(--portal-modal-border-light)]/40 dark:border-[var(--portal-modal-border-dark)]/40 bg-[var(--portal-modal-bg-light)]/70 dark:bg-[var(--portal-modal-bg-dark)]/40 p-5 md:p-4 transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 backdrop-blur-sm shadow-sm md:shadow-none rounded-[18px] md:rounded-xl">
+    <div className="flex h-full flex-col gap-2 rounded-xl border border-[var(--portal-modal-border-light)]/40 dark:border-[var(--portal-modal-border-dark)]/40 bg-[var(--portal-modal-bg-light)]/70 dark:bg-[var(--portal-modal-bg-dark)]/40 p-4 md:p-4 transition-all hover:border-primary/40 hover:bg-white/90 dark:hover:bg-slate-900/60 backdrop-blur-sm shadow-sm md:shadow-none rounded-[18px] md:rounded-xl">
       <div className="flex items-start justify-between gap-2">
         <span className="flex h-9 w-9 items-center justify-center portal-icon-circle-green" aria-hidden>
           <Icon className="h-4.5 w-4.5 text-primary" />

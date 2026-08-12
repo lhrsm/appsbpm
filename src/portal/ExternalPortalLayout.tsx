@@ -95,6 +95,9 @@ export default function ExternalPortalLayout({
 ...
               {/* Name + Role */}
               <div className="mobile-user-info">
+                <div className="text-[11px] font-medium text-slate-500 leading-none mb-0.5">
+                  Bom dia,
+                </div>
                 <div className="mobile-user-name">
                   {user.nome}
                 </div>
@@ -131,7 +134,7 @@ export default function ExternalPortalLayout({
         </main>
 
         {/* Floating Actions (WhatsApp) */}
-        <div className="mobile-floating-actions">
+        <div className="mobile-floating-actions" style={{ bottom: 'calc(var(--mobile-bottom-nav-height, 68px) + env(safe-area-inset-bottom) + 24px)' }}>
           <FloatingActionsManager profileType={profileType} />
         </div>
 

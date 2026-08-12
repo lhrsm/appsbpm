@@ -83,7 +83,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[300px] max-w-[calc(100vw-32px)] p-2 !text-[#263244] !opacity-100 border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[16px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
+          className="w-[320px] max-w-[calc(100vw-32px)] p-2.5 !text-[#263244] !opacity-100 border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[18px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
           style={{ 
             backgroundColor: 'rgba(255, 255, 255, 0.985)',
             backdropFilter: 'blur(16px)', 

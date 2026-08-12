@@ -14,14 +14,14 @@ export function DashboardServicesSection({ services }: { services: ServiceItem[]
     return <DashboardEmptyState icon={icons.pasta} title="Nenhum serviço disponível no momento." />;
   }
   return (
-    <ul className="grid grid-cols-1 gap-5 md:gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-4 md:gap-3 md:grid-cols-2 xl:grid-cols-3">
       {services.map((s) => {
         const Icon = s.icon;
         return (
           <li key={s.id}>
             <Link
               to={s.route}
-              className="flex h-full gap-3 rounded-[18px] md:rounded-xl border bg-card p-5 md:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shadow-sm md:shadow-none"
+              className="flex h-full gap-3 rounded-[18px] md:rounded-xl border bg-card p-4 md:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shadow-sm md:shadow-none"
             >
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10" aria-hidden>
                 <Icon className="h-5 w-5 text-primary" />
@@ -72,9 +72,9 @@ export function DashboardRelatedPeople({
   }
 
   return (
-    <ul className="grid grid-cols-1 gap-5 md:gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-4 md:gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {people.map((p) => (
-        <li key={p.id} className="flex items-center gap-3 rounded-[18px] md:rounded-xl border bg-card p-5 md:p-4 shadow-sm md:shadow-none">
+        <li key={p.id} className="flex items-center gap-3 rounded-[18px] md:rounded-xl border bg-card p-4 md:p-4 shadow-sm md:shadow-none">
           <Avatar src={p.fotoUrl} name={p.nome} size="sm" />
           <div className="min-w-0 flex-1">
             <Text variant="small" className="truncate font-medium">
@@ -92,11 +92,11 @@ export function DashboardRelatedPeople({
 /** Prévia dos canais oficiais de atendimento. */
 export function DashboardSupportPreview({ channels }: { channels: SupportChannel[] }) {
   return (
-    <div className="grid grid-cols-1 gap-5 md:gap-3 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 md:gap-3 md:grid-cols-2">
       {channels.map((c) => {
         const Icon = c.icon;
         return (
-          <div key={c.id} className="flex items-center gap-3 rounded-[18px] md:rounded-xl border bg-card p-5 md:p-4 shadow-sm md:shadow-none">
+          <div key={c.id} className="flex items-center gap-3 rounded-[18px] md:rounded-xl border bg-card p-4 md:p-4 shadow-sm md:shadow-none">
             <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10" aria-hidden>
               <Icon className="h-5 w-5 text-primary" />
             </span>

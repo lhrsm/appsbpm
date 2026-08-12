@@ -37,7 +37,7 @@ export function DashboardWelcomeHero() {
 
   return (
     <div className="animate-slide-up-in">
-      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full">
+      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full min-h-[140px] md:min-h-0">
         <div className="sbpm-hero-card-content">
           <div className="sbpm-hero-user-info">
             <div className="sbpm-hero-avatar">
@@ -66,15 +66,15 @@ export function DashboardWelcomeHero() {
           </div>
         </div>
 
-        <div className="sbpm-hero-stats">
-          <div className="sbpm-hero-stat">
+        <div className="sbpm-hero-stats gap-3 md:gap-12">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Matrícula</span>
             <span className="sbpm-hero-stat-value">{maskMatricula(matricula)}</span>
           </div>
           
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Situação</span>
             <span className={cn("sbpm-hero-stat-value", situacao === 'Regular' && "sbpm-hero-status-ok")}>
               {situacao}
@@ -83,7 +83,7 @@ export function DashboardWelcomeHero() {
 
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Tempo de associação</span>
             <span className="sbpm-hero-stat-value">{calcularTempoAssociacao()}</span>
           </div>
