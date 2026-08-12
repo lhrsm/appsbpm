@@ -85,8 +85,13 @@ export default function ExternalPortalLayout({
         {/* Header Compacto Mobile */}
         <header className="mobile-portal-header">
           <div className="mobile-header-container">
-            {/* Menu Button */}
-            <button className="mobile-header-button" aria-label="Menu" onClick={() => setMenuOpen(true)}>
+            {/* Hamburger Menu - Left */}
+            <button 
+              className="mobile-header-button" 
+              aria-label="Menu" 
+              onClick={() => setMenuOpen(true)}
+              style={{ display: 'flex' }}
+            >
               <Menu size={24} />
             </button>
 
