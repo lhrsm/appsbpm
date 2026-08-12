@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { icons } from "@/design-system/icons";
@@ -6,6 +7,7 @@ import { SidebarLink } from "./PortalSidebar";
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
 import type { PortalUser } from "./PortalUserMenu";
 import PortalNotificationCenter from "./PortalNotificationCenter";
+import { cn } from "@/lib/utils";
 
 export interface MobileNavigationDrawerProps {
   open: boolean;

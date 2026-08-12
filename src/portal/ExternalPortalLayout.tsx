@@ -83,9 +83,10 @@ export default function ExternalPortalLayout({
         <header className="mobile-portal-header">
           <div className="mobile-header-container">
             {/* Menu Button */}
-            <button className="mobile-header-button" aria-label="Menu">
+            <button className="mobile-header-button" aria-label="Menu" onClick={() => setDropdownOpen(true)}>
               <Menu size={24} />
             </button>
+
 
             {/* User Block — Grid Layout */}
             <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
