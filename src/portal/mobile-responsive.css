@@ -528,21 +528,6 @@
   .dark .mobile-bottom-nav-item.active {
     color: #22c55e !important;
   }
-}
-
-  .dark .mobile-bottom-navigation {
-    background: rgba(30, 30, 45, 0.96);
-    border-top-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .dark .mobile-bottom-nav-item.inactive {
-    color: #a0aec0;
-  }
-
-  .dark .mobile-bottom-nav-item.active {
-    color: #4ade80;
-  }
-
   /* Dark mode protection for Mobile Drawer */
   .dark [data-radix-portal] [data-state='open'].fixed.z-50.bg-[#0f172a] {
     background: #0f172a !important;
