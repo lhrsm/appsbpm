@@ -67,7 +67,7 @@
     justify-content: center;
     background: none;
     border: none;
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
     color: #172033;
     padding: 0;
     border-radius: 8px;
@@ -406,7 +406,7 @@
     padding: 6px 8px;
     min-height: var(--mobile-bottom-nav-height);
     flex: 1;
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
     text-decoration: none;
     background: none;
     border: none;

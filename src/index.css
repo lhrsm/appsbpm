@@ -1211,7 +1211,7 @@ html.a11y-reduce-motion *::after {
     align-items: center;
     justify-content: center;
 
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
     border-radius: 10px;
     transition: background-color 0.2s ease;
   }
@@ -1464,7 +1464,7 @@ html.a11y-reduce-motion *::after {
     color: #166534;
 
     text-decoration: none;
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
 
     margin: 0;
     padding: 0;
@@ -1527,7 +1527,7 @@ html.a11y-reduce-motion *::after {
     box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
 
     border: none;
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
 
     transition: all 0.2s ease;
 
@@ -1610,7 +1610,7 @@ html.a11y-reduce-motion *::after {
     padding: 6px 0;
     box-sizing: border-box;
 
-    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    cursor: pointer;
     transition: all 0.2s ease;
 
     color: #64748b;
