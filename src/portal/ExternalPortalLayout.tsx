@@ -275,11 +275,11 @@ export default function ExternalPortalLayout({
       {/* Main Content */}
       <main className="portal-main-desktop">
         {/* Hero Institucional (Imagem PMBA + CBMBA) - Visível apenas em Desktop/Ultrawide */}
-        <div className="hidden lg:block w-full overflow-hidden relative institutional-hero-container">
+        <div className="hidden lg:block w-full overflow-hidden relative">
           <img 
             src="/hero-background.png" 
             alt="Institucional" 
-            className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px] border-b-[24px] border-transparent rounded-b-[24px]"
+            className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px]"
             style={{ 
               borderRadius: '0 0 24px 24px',
             }}
@@ -291,7 +291,7 @@ export default function ExternalPortalLayout({
           {banner}
         </div>
         
-        <div className="portal-content-desktop">
+        <div className="portal-content-desktop pt-0">
           {children}
         </div>
       </main>
