@@ -134,7 +134,9 @@
   }
 
   .public-portal-root .portal-description,
-  .public-auth-theme 
+  .public-auth-theme .portal-description {
+    color: #526174 !important;
+  }
 }
 
 /* Custom Utilities */
@@ -1007,9 +1009,13 @@ html.a11y-reduce-motion *::after {
       color-scheme: light !important;
     }
 
-    body.public-portal-root 
+    body.public-portal-root .portal-title {
+      color: #172033 !important;
+    }
 
-    body.public-portal-root 
+    body.public-portal-root .portal-description {
+      color: #526174 !important;
+    }
   }
 
   :root {
