@@ -23,7 +23,6 @@ const CAMINHOS = [
     titulo: 'Quero me associar',
     descricao: 'Preencha um pré-cadastro para iniciar seu processo.',
   },
-
 ];
 
 export function PublicPortalWelcomeCard() {
@@ -39,7 +38,7 @@ export function PublicPortalWelcomeCard() {
   };
 
   return (
-    <AuthCard className="!bg-white/94 !border-[rgba(22,138,73,0.42)] !w-full max-w-[480px]">
+    <AuthCard className="!bg-[var(--portal-modal-bg-light)] !border-[var(--portal-modal-border-light)] !w-full max-w-[480px]">
       <CardHeader className="text-center pb-2 pt-6 px-5 space-y-1">
         <div className="flex justify-center mb-4">
           <img

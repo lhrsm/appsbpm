@@ -151,8 +151,8 @@ const PortalAlias = () => {
 const App = () => {
   useEffect(() => {
     // Log da versão do build para auditoria técnica
-    console.info("SBPM_PUBLIC_UI_VERSION:", "public-ui-restore-v9-2026-08-10");
-    console.log("🎨 UI Version: public-ui-restore-v9-2026-08-10");
+    console.info("SBPM_PUBLIC_UI_VERSION:", "public-ui-standard-v10-2026-08-12");
+    console.log("🎨 UI Version: public-ui-standard-v10-2026-08-12");
   }, []);
 
   return (
