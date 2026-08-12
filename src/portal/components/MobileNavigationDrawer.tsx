@@ -43,9 +43,9 @@ export default function MobileNavigationDrawer({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="left"
-        className="flex w-[86vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pt-[env(safe-area-inset-top)]"
+        className="flex w-[86vw] max-w-xs flex-col gap-0 p-0 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] border-none shadow-[0_16px_38px_rgba(15,23,42,0.40)] bg-[#0f172a] dark:bg-[#0f172a] h-[calc(100dvh-var(--mobile-header-height))] mt-[var(--mobile-header-height)]"
       >
-        <SheetHeader className="border-b p-5 text-left bg-white/50 backdrop-blur-sm">
+        <SheetHeader className="border-b border-white/10 p-5 text-left bg-transparent">
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
           <div className="flex items-center gap-4">
             <Avatar className="h-12 w-12 border-2 border-[var(--green-main)]">
@@ -53,8 +53,8 @@ export default function MobileNavigationDrawer({
               <AvatarFallback className="text-sm font-bold bg-[var(--green-light)] text-[var(--green-dark)]">{iniciais}</AvatarFallback>
             </Avatar>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-lg font-bold text-slate-900 leading-tight">{user.nome}</p>
-              <p className="truncate text-sm font-medium text-slate-500 mt-0.5">
+              <p className="truncate text-lg font-bold text-white leading-tight">{user.nome}</p>
+              <p className="truncate text-sm font-medium text-slate-400 mt-0.5">
                 {profile === "dependent"
                   ? `Dependente • ${user.titularNome}`
                   : `Associado • Titular`}
@@ -67,13 +67,17 @@ export default function MobileNavigationDrawer({
         <nav className="min-h-0 flex-1 overflow-y-auto p-2" aria-label="Menu principal">
           {sections.map((section) => (
             <div key={section.id} className="mb-3">
-              <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+              <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
                 {section.section}
               </p>
               <ul className="space-y-0.5">
                 {section.items.map((item) => (
                   <li key={item.id}>
-                    <SidebarLink item={item} onNavigate={() => onOpenChange(false)} />
+                    <SidebarLink 
+                      item={item} 
+                      onNavigate={() => onOpenChange(false)} 
+                      className="text-slate-300 hover:bg-white/5 hover:text-white"
+                    />
                   </li>
                 ))}
               </ul>

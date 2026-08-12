@@ -89,11 +89,11 @@ export default function ExternalPortalLayout({
             {/* Hamburger Menu - Left */}
             <button 
               className="mobile-header-button" 
-              aria-label="Menu" 
-              onClick={() => setMenuOpen(true)}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"} 
+              onClick={() => setMenuOpen(!menuOpen)}
               style={{ display: 'flex' }}
             >
-              <Menu size={24} />
+              {menuOpen ? <icons.fechar size={24} /> : <Menu size={24} />}
             </button>
 
 
