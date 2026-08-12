@@ -482,22 +482,53 @@
 
 @media (max-width: 1023px) {
   .dark .mobile-portal-header {
-    background: rgba(30, 30, 45, 0.96);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.985) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+  }
+
+  .dark .mobile-header-button {
+    color: #e2e8f0 !important;
+  }
+
+  .dark .mobile-header-button:active {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #4ade80 !important;
   }
 
   .dark .mobile-user-block {
-    background: rgba(30, 30, 45, 0.96);
-    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.96) !important;
+    border-color: rgba(255, 255, 255, 0.10);
   }
 
   .dark .mobile-user-name {
-    color: #e0e7ff;
+    color: #f8fafc !important;
   }
 
   .dark .mobile-user-role {
-    color: #a0aec0;
+    color: #94a3b8 !important;
   }
+
+  .dark .mobile-user-avatar {
+    background: rgba(255, 255, 255, 0.96) !important;
+  }
+
+  .dark .mobile-avatar-initials {
+    color: #166534 !important;
+  }
+
+  .dark .mobile-bottom-navigation {
+    background: rgba(15, 23, 42, 0.98) !important;
+    border-top-color: rgba(255, 255, 255, 0.10);
+  }
+
+  .dark .mobile-bottom-nav-item.inactive {
+    color: #94a3b8 !important;
+  }
+
+  .dark .mobile-bottom-nav-item.active {
+    color: #22c55e !important;
+  }
+}
 
   .dark .mobile-bottom-navigation {
     background: rgba(30, 30, 45, 0.96);

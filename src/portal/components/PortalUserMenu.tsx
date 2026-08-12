@@ -87,7 +87,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[320px] max-w-[calc(100vw-32px)] p-2.5 !text-[#172033] !opacity-100 border border-slate-200 shadow-[0_16px_38px_rgba(15,23,42,0.22)] rounded-[18px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
+          className="w-[320px] max-w-[calc(100vw-32px)] p-2.5 !text-[#172033] !opacity-100 border border-slate-200 shadow-[0_16px_38px_rgba(15,23,42,0.22)] rounded-[18px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10 dark:!bg-[#0f172a]/98"
           style={{ 
             backgroundColor: 'rgba(255, 255, 255, 0.985)',
             backdropFilter: 'blur(16px)', 
@@ -120,39 +120,45 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
           
           <div className="px-1 py-1">
-            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#475569] uppercase tracking-wider">
+            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#475569] dark:!text-[#94a3b8] uppercase tracking-wider">
               Aparência
             </div>
 
             <div className="flex flex-col gap-1">
               <DropdownMenuItem 
                 className={cn(
-                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
-                  theme === "light" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                  "flex items-center gap-2.5 px-3 py-2.5 font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "light" 
+                    ? "bg-[rgba(34,197,94,0.16)] text-[#166534] dark:text-[#86efac] border border-[rgba(34,197,94,0.35)]" 
+                    : "!text-[#263244] dark:!text-[#cbd5e1] hover:!bg-[rgba(34,197,94,0.14)] hover:!text-[#166534] dark:hover:!text-[#86efac]"
                 )}
                 onSelect={() => setTheme("light")}
               >
-                <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
+                <icons.lgpd className={cn("h-4 w-4", theme === "light" ? "text-inherit" : "!text-[#64748b] dark:!text-[#94a3b8]")} />
                 Modo Claro
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className={cn(
-                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
-                  theme === "dark" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                  "flex items-center gap-2.5 px-3 py-2.5 font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "dark" 
+                    ? "bg-[rgba(34,197,94,0.16)] text-[#166534] dark:text-[#86efac] border border-[rgba(34,197,94,0.35)]" 
+                    : "!text-[#263244] dark:!text-[#cbd5e1] hover:!bg-[rgba(34,197,94,0.14)] hover:!text-[#166534] dark:hover:!text-[#86efac]"
                 )}
                 onSelect={() => setTheme("dark")}
               >
-                <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
+                <icons.lgpd className={cn("h-4 w-4", theme === "dark" ? "text-inherit" : "!text-[#64748b] dark:!text-[#94a3b8]")} />
                 Modo Escuro
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className={cn(
-                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
-                  theme === "system" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                  "flex items-center gap-2.5 px-3 py-2.5 font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "system" 
+                    ? "bg-[rgba(34,197,94,0.16)] text-[#166534] dark:text-[#86efac] border border-[rgba(34,197,94,0.35)]" 
+                    : "!text-[#263244] dark:!text-[#cbd5e1] hover:!bg-[rgba(34,197,94,0.14)] hover:!text-[#166534] dark:hover:!text-[#86efac]"
                 )}
                 onSelect={() => setTheme("system")}
               >
-                <icons.configuracoes className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
+                <icons.configuracoes className={cn("h-4 w-4", theme === "system" ? "text-inherit" : "!text-[#64748b] dark:!text-[#94a3b8]")} />
                 Sistema
               </DropdownMenuItem>
             </div>
@@ -161,13 +167,13 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
 
           <DropdownMenuItem
-            className="flex items-center gap-2.5 px-3 py-2.5 text-red-600 dark:text-red-400 font-semibold rounded-lg cursor-pointer focus:bg-red-50/96 focus:text-red-600 dark:focus:bg-red-500/14 transition-colors group"
+            className="flex items-center gap-2.5 px-3 py-2.5 text-red-600 dark:text-red-400 font-semibold rounded-lg cursor-pointer hover:!bg-red-500/10 dark:hover:!bg-red-500/20 focus:bg-red-500/10 transition-colors group"
             onSelect={() => {
               onLogout();
               navigate("/");
             }}
           >
-            <Sair className="h-4 w-4 text-red-500 group-focus:text-inherit" aria-hidden />
+            <Sair className="h-4 w-4 text-red-500 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors" aria-hidden />
             Sair
           </DropdownMenuItem>
         </DropdownMenuContent>
