@@ -277,7 +277,7 @@ export default function ExternalPortalLayout({
         {location.pathname === '/dashboard' && (
           <div className="hidden lg:block w-full overflow-hidden relative">
             <img 
-              src="/hero-background.png" 
+              src="/images/hero-background.jpg" 
               alt="Institucional" 
               className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px]"
               style={{ 
@@ -288,7 +288,7 @@ export default function ExternalPortalLayout({
           </div>
         )}
 
-        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-6" : "")}>
+        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-[24px]" : "")}>
           {banner}
         </div>
         
