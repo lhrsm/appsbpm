@@ -36,7 +36,7 @@ export function DashboardWelcomeHero() {
   const tipoMilitar = matricula.startsWith('9') ? 'CBMBA' : 'PMBA';
 
   return (
-    <div className="animate-slide-up-in">
+    <div className="animate-slide-up-in mt-6 md:mt-6">
       <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full min-h-[120px] md:min-h-0 py-4 px-4 md:py-6 md:px-6">
         <div className="sbpm-hero-card-content gap-2 md:gap-4">
           <div className="sbpm-hero-user-info">
