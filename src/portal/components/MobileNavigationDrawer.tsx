@@ -76,7 +76,6 @@ export default function MobileNavigationDrawer({
                     <SidebarLink 
                       item={item} 
                       onNavigate={() => onOpenChange(false)} 
-                      className="text-slate-300 hover:bg-white/5 hover:text-white"
                     />
                   </li>
                 ))}
@@ -85,11 +84,11 @@ export default function MobileNavigationDrawer({
           ))}
         </nav>
 
-        <div className="shrink-0 border-t p-2">
+        <div className="shrink-0 border-t border-white/10 p-2 bg-[#0f172a]">
           <Link
             to="/dashboard/faq"
             onClick={() => onOpenChange(false)}
-            className="flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
+            className="flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-slate-400 transition hover:bg-white/5 hover:text-white"
           >
             <Ajuda className="h-4 w-4" aria-hidden />
             Ajuda e suporte
@@ -102,7 +101,7 @@ export default function MobileNavigationDrawer({
                 onOpenChange(false);
                 onLogout();
               }}
-              className="flex min-h-11 w-full items-center gap-2 rounded-md px-3 text-sm text-destructive transition hover:bg-destructive/10"
+              className="flex min-h-11 w-full items-center gap-2 rounded-md px-3 text-sm text-red-400 transition hover:bg-red-400/10"
             >
               <Sair className="h-4 w-4" aria-hidden />
               Sair da conta

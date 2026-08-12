@@ -502,6 +502,11 @@
   .dark .mobile-bottom-nav-item.active {
     color: #4ade80;
   }
+
+  /* Dark mode protection for Mobile Drawer */
+  .dark [data-radix-portal] [data-state='open'].fixed.z-50.bg-[#0f172a] {
+    background: #0f172a !important;
+  }
 }
 
 /* ===================================================================
