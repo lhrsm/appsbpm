@@ -244,6 +244,8 @@ export default function ExternalPortalLayout({
                 borderRadius: '0 0 24px 24px',
               }}
             />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/15 to-transparent pointer-events-none rounded-b-[24px]" />
+
           </div>
         )}
 
