@@ -274,8 +274,25 @@ export default function ExternalPortalLayout({
 
       {/* Main Content */}
       <main className="portal-main-desktop">
-        {banner}
-        <div className="portal-content-desktop">
+        {location.pathname === '/dashboard' && (
+          <div className="hidden lg:block w-full overflow-hidden relative">
+            <img 
+              src="/hero-background.png" 
+              alt="Institucional" 
+              className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px]"
+              style={{ 
+                borderRadius: '0 0 24px 24px',
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/15 to-transparent pointer-events-none rounded-b-[24px]" />
+          </div>
+        )}
+
+        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-6" : "")}>
+          {banner}
+        </div>
+        
+        <div className={cn("portal-content-desktop", location.pathname === '/dashboard' ? "pt-0" : "")}>
           {children}
         </div>
       </main>
