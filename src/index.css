@@ -169,18 +169,7 @@
 }
 
 @media (min-width: 1024px) {
-  .portal-institutional-header::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.18)),
-      url("/__l5e/assets-v1/b6241277-e540-44b4-b77f-49de0e41faab/hero-background.png");
-    background-size: cover;
-    background-position: center 38%;
-    background-repeat: no-repeat;
-    z-index: 0;
-  }
+  /* O background agora é gerenciado diretamente no componente PortalHeader.tsx para maior controle */
   
   .portal-institutional-header > div {
     position: relative;
