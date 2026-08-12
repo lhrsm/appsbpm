@@ -216,7 +216,7 @@ export default function Perfil() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in pb-10">
+    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in pb-10 px-4 md:px-0">
       <CorrectionRequestModal 
         {...correctionModal} 
         onClose={() => setCorrectionModal(prev => ({ ...prev, isOpen: false }))} 
@@ -267,13 +267,13 @@ export default function Perfil() {
       </div>
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-auto p-1 bg-muted/50">
-          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-          <TabsTrigger value="personal">Dados Pessoais</TabsTrigger>
-          <TabsTrigger value="functional">Funcional</TabsTrigger>
-          <TabsTrigger value="contact">Contato/Endereço</TabsTrigger>
-          <TabsTrigger value="documents">Documentos</TabsTrigger>
-          <TabsTrigger value="security">Segurança</TabsTrigger>
+        <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 h-auto p-1 bg-muted/50 w-full overflow-x-auto">
+          <TabsTrigger value="overview" className="text-xs md:text-sm">Visão Geral</TabsTrigger>
+          <TabsTrigger value="personal" className="text-xs md:text-sm">Dados Pessoais</TabsTrigger>
+          <TabsTrigger value="functional" className="text-xs md:text-sm">Funcional</TabsTrigger>
+          <TabsTrigger value="contact" className="text-xs md:text-sm">Contato/Endereço</TabsTrigger>
+          <TabsTrigger value="documents" className="text-xs md:text-sm">Documentos</TabsTrigger>
+          <TabsTrigger value="security" className="text-xs md:text-sm">Segurança</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">

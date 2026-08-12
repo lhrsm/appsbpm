@@ -32,7 +32,7 @@ export interface PortalUserMenuProps {
 
 const contaItens = [
   { label: "Meu perfil", to: "/dashboard/perfil", icon: icons.perfil },
-  { label: "Segurança", to: "/dashboard/historico", icon: icons.senha },
+  { label: "Segurança", to: "/dashboard/seguranca", icon: icons.senha },
   { label: "Privacidade e LGPD", to: "/dashboard/minha-privacidade", icon: icons.lgpd },
   { label: "Histórico de acessos", to: "/dashboard/historico", icon: icons.horario },
   { label: "Central de ajuda", to: "/dashboard/faq", icon: icons.ajuda },
@@ -117,7 +117,29 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
             <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#64748b] uppercase tracking-wider">
               Aparência
             </div>
-            <AppearanceSelector />
+            <div className="flex flex-col gap-1">
+              <DropdownMenuItem 
+                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
+                onSelect={() => {/* lógica para modo claro */}}
+              >
+                <icons.contraste className="h-4 w-4 !text-[#64748b]" />
+                Modo Claro
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
+                onSelect={() => {/* lógica para modo escuro */}}
+              >
+                <icons.contraste className="h-4 w-4 !text-[#64748b]" />
+                Modo Escuro
+              </DropdownMenuItem>
+              <DropdownMenuItem 
+                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
+                onSelect={() => {/* lógica para sistema */}}
+              >
+                <icons.configuracoes className="h-4 w-4 !text-[#64748b]" />
+                Sistema
+              </DropdownMenuItem>
+            </div>
           </div>
 
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
