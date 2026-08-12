@@ -52,7 +52,7 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4 px-0" style={{ colorScheme: 'light' }}>
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-0 px-0" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
         className="mx-auto w-full max-w-[680px] md:max-w-full bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
