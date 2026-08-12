@@ -10,7 +10,7 @@ import { PortalEmptyState } from "./PortalEmptyState";
 import { SectionErrorState } from "./errorStates";
 
 export const portalCardVariants = cva(
-  "relative rounded-[16px] border transition-shadow duration-200 motion-reduce:transition-none",
+  "relative rounded-[18px] border transition-shadow duration-200 motion-reduce:transition-none",
   {
     variants: {
       variant: {
