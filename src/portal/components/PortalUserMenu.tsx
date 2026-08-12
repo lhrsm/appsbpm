@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { icons } from "@/design-system/icons";
+import { useTheme } from "@/components/ThemeProvider";
 import { AppearanceSelector } from "@/components/AppearanceSelector";
 
 import { maskMatricula, maskNome, primeiroNome } from "../mask";
@@ -42,6 +44,7 @@ const contaItens = [
 export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMenuProps) {
   const navigate = useNavigate();
   const Sair = icons.sair;
+  const { theme, setTheme } = useTheme();
   const iniciais = primeiroNome(user.nome).slice(0, 2).toUpperCase() || "SB";
 
   console.log("ACTIVE USER MENU COMPONENT: PortalUserMenu.tsx");
@@ -123,24 +126,33 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
 
             <div className="flex flex-col gap-1">
               <DropdownMenuItem 
-                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {}}
+                className={cn(
+                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "light" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                )}
+                onSelect={() => setTheme("light")}
               >
-                <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
+                <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                 Modo Claro
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {}}
+                className={cn(
+                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "dark" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                )}
+                onSelect={() => setTheme("dark")}
               >
-                <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
+                <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                 Modo Escuro
               </DropdownMenuItem>
               <DropdownMenuItem 
-                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {}}
+                className={cn(
+                  "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                  theme === "system" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                )}
+                onSelect={() => setTheme("system")}
               >
-                <icons.configuracoes className="h-4 w-4 !text-[#64748b]" />
+                <icons.configuracoes className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                 Sistema
               </DropdownMenuItem>
             </div>
