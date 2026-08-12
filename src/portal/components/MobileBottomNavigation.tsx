@@ -18,19 +18,32 @@ export default function MobileBottomNavigation() {
   const isActive = (path: string) => {
     const current = location.pathname;
     
-    // Visão Geral ativado apenas na rota exata do dashboard
+    // Visão Geral ativado apenas na rota exata do dashboard (sem sub-rotas)
     if (path === '/dashboard') {
-      return current === '/dashboard';
+      return current === '/dashboard' || current === '/dashboard/';
     }
     
-    // Carteirinha ativado apenas na rota exata da carteirinha
+    // Carteirinha e Perfil ativados apenas na rota exata para evitar brilho em páginas internas se necessário
+    // Mas geralmente queremos que Perfil brilhe em todas as suas sub-rotas (/perfil/editar etc)
     if (path === '/dashboard/carteirinha') {
-      return current === '/dashboard/carteirinha';
+      return current.startsWith('/dashboard/carteirinha');
+    }
+
+    if (path === '/dashboard/solicitacoes') {
+      return current.startsWith('/dashboard/solicitacoes');
+    }
+
+    if (path === '/dashboard/faq') {
+      return current.startsWith('/dashboard/faq');
+    }
+
+    if (path === '/dashboard/perfil') {
+      return current.startsWith('/dashboard/perfil');
     }
     
-    // Outros itens usam startsWith para sub-rotas
-    return current.startsWith(path);
+    return current === path;
   };
+
 
 
   return (
