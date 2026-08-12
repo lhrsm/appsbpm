@@ -88,10 +88,10 @@ export default function PortalHeader({
             : "bg-white/78 backdrop-blur-md rounded-[10px] px-3 py-2 border border-white/40 shadow-sm"
         )}>
           <img
-            src="/assets/sbpm-logo-transparent.png"
+            src="/sbpm-logo.png"
             alt="SBPM"
             className={cn(
-              "shrink-0",
+              "shrink-0 mix-blend-multiply",
               isDashboard ? "h-[50px] 2xl:h-[58px] w-auto" : "h-9 w-auto"
             )}
             onError={(e) => {
