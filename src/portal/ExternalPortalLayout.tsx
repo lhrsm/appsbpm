@@ -14,6 +14,7 @@ import { icons } from '@/design-system/icons';
 import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
 import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
 import MobileNavigationDrawer from '@/portal/components/MobileNavigationDrawer';
+import { useTheme } from "@/components/ThemeProvider";
 import PortalHeader from './components/PortalHeader';
 
 
@@ -57,7 +58,7 @@ export default function ExternalPortalLayout({
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const { theme, setTheme } = useTheme();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
 
@@ -170,16 +171,34 @@ export default function ExternalPortalLayout({
                 
                 <div className="px-1 py-1">
                   <div className="flex flex-col gap-1">
-                    <DropdownMenuItem className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors">
-                      <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
+                    <DropdownMenuItem 
+                      onSelect={() => setTheme("light")}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                        theme === "light" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                      )}
+                    >
+                      <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                       Modo Claro
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors">
-                      <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
+                    <DropdownMenuItem 
+                      onSelect={() => setTheme("dark")}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                        theme === "dark" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                      )}
+                    >
+                      <icons.lgpd className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                       Modo Escuro
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors">
-                      <icons.configuracoes className="h-4 w-4 !text-[#64748b]" />
+                    <DropdownMenuItem 
+                      onSelect={() => setTheme("system")}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer transition-colors",
+                        theme === "system" ? "bg-[rgba(240,253,244,0.96)] text-[#166534]" : "focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534]"
+                      )}
+                    >
+                      <icons.configuracoes className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8]" />
                       Sistema
                     </DropdownMenuItem>
                   </div>
