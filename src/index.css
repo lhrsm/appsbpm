@@ -169,13 +169,12 @@
 }
 
 @media (min-width: 1024px) {
-  /* O background agora é gerenciado diretamente no componente PortalHeader.tsx para maior controle */
-  
   .portal-institutional-header > div {
     position: relative;
     z-index: 10;
   }
 }
+
 
 .portal-institutional-header .bg-white {
   background-color: rgba(255, 255, 255, 0.15) !important;

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Bell, Menu, MessageCircle, Home, FileText, Plus, HelpCircle, User, ChevronDown } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import {
@@ -14,8 +14,10 @@ import { icons } from '@/design-system/icons';
 import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
 import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
 import UserProfileDropdown from '@/portal/components/UserProfileDropdown';
+import PortalHeader from './components/PortalHeader';
 
 interface ExternalPortalLayoutProps {
+
   profileType: 'associate' | 'dependent';
   user: {
     nome: string;
@@ -51,8 +53,10 @@ export default function ExternalPortalLayout({
   children,
 }: ExternalPortalLayoutProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -217,83 +221,43 @@ export default function ExternalPortalLayout({
 
   // ===== RENDERIZAÇÃO DESKTOP (≥1024px) =====
   return (
-    <div className="external-portal-layout">
-      {/* Header Desktop */}
-      <header className="portal-header-desktop">
-        <div className="portal-header-content">
-          <div className="portal-header-logo">
-            <div className="logo-placeholder">SBPM</div>
-          </div>
-          <div className="portal-header-spacer"></div>
-          <div className="portal-header-actions">
-            <button
-              className="portal-header-button"
-              onClick={handleNotifications}
-              aria-label="Notificações"
-            >
-              <Bell size={24} />
-            </button>
-            <div className="portal-header-divider"></div>
-            <div className="portal-header-user">
-              <button
-                className="portal-header-user-button"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <div className="portal-user-avatar-desktop">
-                  {user.fotoUrl ? (
-                    <img src={user.fotoUrl} alt={user.nome} />
-                  ) : (
-                    <div className="avatar-initials">
-                      {user.nome
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')
-                        .toUpperCase()
-                        .slice(0, 2)}
-                    </div>
-                  )}
-                </div>
-                <div className="portal-user-text">
-                  <div className="portal-user-name">{user.nome}</div>
-                  <div className="portal-user-role">
-                    {profileType === 'dependent' ? 'Dependente' : 'Associado'}
-                  </div>
-                </div>
-              </button>
-              {dropdownOpen && (
-                <UserProfileDropdown
-                  user={user}
-                  onLogout={handleLogoutClick}
-                  onClose={() => setDropdownOpen(false)}
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="external-portal-layout min-h-screen bg-slate-50 dark:bg-slate-950">
+      {/* Header Global */}
+      <PortalHeader 
+        profile={profileType}
+        user={user}
+        onOpenMenu={() => {}}
+        menuOpen={false}
+        onLogout={onLogout}
+      />
+
 
       {/* Main Content */}
-      <main className="portal-main-desktop">
+      <main className="portal-main-desktop relative">
         {location.pathname === '/dashboard' && (
           <div className="hidden lg:block w-full overflow-hidden relative">
             <img 
               src="/images/hero-background.jpg" 
               alt="Institucional" 
-              className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px]"
+              className="w-full object-cover object-[center_38%] h-[190px] md:h-[205px] 2xl:h-[220px]"
               style={{ 
                 borderRadius: '0 0 24px 24px',
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-900/15 to-transparent pointer-events-none rounded-b-[24px]" />
+
           </div>
         )}
 
-        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-[24px]" : "")}>
+        <div className={cn(
+          "max-w-[1600px] mx-auto px-6",
+          location.pathname === '/dashboard' ? "mt-6" : "mt-8"
+        )}>
           {banner}
-        </div>
-        
-        <div className={cn("portal-content-desktop", location.pathname === '/dashboard' ? "pt-0" : "")}>
-          {children}
+          
+          <div className={cn("portal-content-desktop", location.pathname === '/dashboard' ? "pt-0" : "")}>
+            {children}
+          </div>
         </div>
       </main>
 
