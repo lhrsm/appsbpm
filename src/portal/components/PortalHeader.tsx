@@ -63,13 +63,14 @@ export default function PortalHeader({
 
         <div className="flex items-center gap-2 min-w-0 md:flex hidden">
           <img
-            src="/sbpm.jpeg"
+            src="/sbpm-logo.jpeg"
             alt="SBPM"
             className="h-10 w-auto shrink-0"
             onError={(e) => {
               e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
             }}
           />
+
         </div>
 
         <div className="flex-1" />
