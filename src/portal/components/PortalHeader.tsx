@@ -47,6 +47,18 @@ export default function PortalHeader({
       )}
       data-ui-version="sbpm-mobile-header-v6"
     >
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0 hidden md:block">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/25 to-slate-900/18 z-10" />
+        <img 
+          src="/hero-background.png" 
+          alt="" 
+          className="h-full w-full object-cover object-[center_38%]"
+          onError={(e) => {
+            e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
+          }}
+        />
+      </div>
       <div className="mx-auto flex h-full w-full max-w-[1600px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
         <Button
           variant="ghost"
