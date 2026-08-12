@@ -55,9 +55,10 @@ export default function PortalHeader({
           className="h-10 w-10 shrink-0 md:hidden flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 mt-2"
           onClick={onOpenMenu}
         >
-          <Menu className="h-6 w-6 text-white md:text-inherit" aria-hidden />
+          <Menu className="h-6 w-6 text-white" aria-hidden />
           <span className="sr-only">Abrir menu</span>
         </Button>
+
 
         <div className="flex items-center gap-2 min-w-0 md:flex hidden">
           <img
@@ -73,9 +74,9 @@ export default function PortalHeader({
         <div className="flex-1" />
 
         <div className="flex shrink-0 items-center gap-1.5 md:gap-4 w-full md:w-auto justify-end">
-          <div className="hidden md:flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 shadow-sm">
+          <div className="hidden md:flex items-center gap-2 bg-slate-50/80 backdrop-blur-md rounded-full px-2 py-1 border border-slate-200 shadow-sm">
             <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
-            <div className="w-[1px] h-4 bg-white/20 mx-1" />
+            <div className="w-[1px] h-4 bg-slate-200 mx-1" />
             <PortalNotificationCenter />
           </div>
           <div className="flex items-center gap-2 md:block">
@@ -85,6 +86,7 @@ export default function PortalHeader({
              <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
           </div>
         </div>
+
       </div>
     </header>
 
