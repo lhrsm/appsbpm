@@ -523,12 +523,13 @@ export default function Carteirinha() {
   // Visão do titular - pode ver sua carteirinha e dos dependentes
   return (
     <div className="space-y-6 animate-fade-in">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Carteirinha Digital</h2>
-        <p className="text-muted-foreground">
+      <div className="px-4 md:px-0 mt-5 md:mt-0 space-y-1">
+        <h2 className="text-[22px] leading-tight md:text-2xl font-bold text-foreground">Carteirinha Digital</h2>
+        <p className="text-[13px] md:text-sm leading-snug text-muted-foreground">
           Sua carteirinha de identificação junto à SBPM
         </p>
       </div>
+
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Carteirinha Display */}
