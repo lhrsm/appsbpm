@@ -52,12 +52,13 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4 px-4 md:px-0" style={{ colorScheme: 'light' }}>
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4 px-0" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
         className="mx-auto w-full max-w-[680px] md:max-w-full bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
-        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content', maxWidth: 'calc(100vw - 32px)' }}
+        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content', maxWidth: '100%' }}
       >
+
         {/* Header com Logo/Foto e Título */}
         <div className="grid grid-cols-[auto,1fr] gap-3 p-3 border-b border-gray-200 bg-white text-gray-800 items-center">
 
@@ -443,10 +444,10 @@ export default function Carteirinha() {
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
-            className="group relative w-full max-w-lg cursor-zoom-in transition-transform hover:scale-[1.02] mt-5"
-
+            className="group relative w-full max-w-lg cursor-zoom-in transition-transform hover:scale-[1.02]"
             aria-label="Ampliar carteirinha"
           >
+
             <CarteirinhaCard
               cardRef={cardRef}
               nome={dependenteLogado.nome}
