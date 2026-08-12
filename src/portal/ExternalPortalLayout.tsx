@@ -222,36 +222,21 @@ export default function ExternalPortalLayout({
   // ===== RENDERIZAÇÃO DESKTOP (≥1024px) =====
   return (
     <div className="external-portal-layout min-h-screen bg-slate-50 dark:bg-slate-950">
-      {/* Header Global */}
+      {/* Header Global com Background Institucional no Dashboard */}
       <PortalHeader 
         profile={profileType}
         user={user}
         onOpenMenu={() => {}}
         menuOpen={false}
         onLogout={onLogout}
+        isDashboard={location.pathname === '/dashboard'}
       />
-
 
       {/* Main Content */}
       <main className="portal-main-desktop relative">
-        {location.pathname === '/dashboard' && (
-          <div className="hidden lg:block w-full overflow-hidden relative">
-            <img 
-              src="/images/hero-background.jpg" 
-              alt="Institucional" 
-              className="w-full object-cover object-[center_38%] h-[190px] md:h-[205px] 2xl:h-[220px]"
-              style={{ 
-                borderRadius: '0 0 24px 24px',
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/15 to-transparent pointer-events-none rounded-b-[24px]" />
-
-          </div>
-        )}
-
         <div className={cn(
           "max-w-[1600px] mx-auto px-6",
-          location.pathname === '/dashboard' ? "mt-6" : "mt-8"
+          location.pathname === '/dashboard' ? "mt-5 md:mt-6" : "mt-8"
         )}>
           {banner}
           
