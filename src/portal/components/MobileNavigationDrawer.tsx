@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -81,14 +82,15 @@ export default function MobileNavigationDrawer({
         </nav>
 
         <div className="shrink-0 border-t p-2">
-          <a
-            href="/dashboard/faq"
+          <Link
+            to="/dashboard/faq"
             onClick={() => onOpenChange(false)}
             className="flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground transition hover:bg-muted hover:text-foreground"
           >
             <Ajuda className="h-4 w-4" aria-hidden />
             Ajuda e suporte
-          </a>
+          </Link>
+
           {onLogout && (
             <button
               type="button"
