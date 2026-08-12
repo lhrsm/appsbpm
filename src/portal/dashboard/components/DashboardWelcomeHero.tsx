@@ -66,15 +66,15 @@ export function DashboardWelcomeHero() {
           </div>
         </div>
 
-        <div className="sbpm-hero-stats">
-          <div className="sbpm-hero-stat">
+        <div className="sbpm-hero-stats gap-3 md:gap-12">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Matrícula</span>
             <span className="sbpm-hero-stat-value">{maskMatricula(matricula)}</span>
           </div>
           
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Situação</span>
             <span className={cn("sbpm-hero-stat-value", situacao === 'Regular' && "sbpm-hero-status-ok")}>
               {situacao}
@@ -83,7 +83,7 @@ export function DashboardWelcomeHero() {
 
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat">
+          <div className="sbpm-hero-stat p-2 md:p-0">
             <span className="sbpm-hero-stat-label">Tempo de associação</span>
             <span className="sbpm-hero-stat-value">{calcularTempoAssociacao()}</span>
           </div>

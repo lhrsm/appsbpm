@@ -14,7 +14,7 @@ export function DashboardServicesSection({ services }: { services: ServiceItem[]
     return <DashboardEmptyState icon={icons.pasta} title="Nenhum serviço disponível no momento." />;
   }
   return (
-    <ul className="grid grid-cols-1 gap-5 md:gap-3 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-4 md:gap-3 md:grid-cols-2 xl:grid-cols-3">
       {services.map((s) => {
         const Icon = s.icon;
         return (
@@ -72,7 +72,7 @@ export function DashboardRelatedPeople({
   }
 
   return (
-    <ul className="grid grid-cols-1 gap-5 md:gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-1 gap-4 md:gap-3 sm:grid-cols-2 xl:grid-cols-3">
       {people.map((p) => (
         <li key={p.id} className="flex items-center gap-3 rounded-[18px] md:rounded-xl border bg-card p-4 md:p-4 shadow-sm md:shadow-none">
           <Avatar src={p.fotoUrl} name={p.nome} size="sm" />
@@ -92,7 +92,7 @@ export function DashboardRelatedPeople({
 /** Prévia dos canais oficiais de atendimento. */
 export function DashboardSupportPreview({ channels }: { channels: SupportChannel[] }) {
   return (
-    <div className="grid grid-cols-1 gap-5 md:gap-3 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 md:gap-3 md:grid-cols-2">
       {channels.map((c) => {
         const Icon = c.icon;
         return (

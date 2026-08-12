@@ -13,7 +13,7 @@ export function DashboardQuickActions({ actions, initial = 6 }: { actions: Quick
 
   return (
     <div className="space-y-3">
-      <ul className="grid grid-cols-2 gap-5 md:gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 px-4 md:px-0">
+      <ul className="grid grid-cols-2 gap-4 md:gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 px-4 md:px-0">
         {visiveis.map((action) => {
           const Icon = action.icon;
           return (

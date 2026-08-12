@@ -46,9 +46,9 @@ export function DashboardSection({
       id={id}
       aria-busy={loading || undefined}
       aria-labelledby={`${title.replace(/\s+/g, "-").toLowerCase()}-titulo`}
-      className={cn("space-y-3 px-4 md:px-0", className)}
+      className={cn("space-y-4 md:space-y-3 px-4 md:px-0", className)}
     >
-      <div className="flex flex-wrap items-end justify-between gap-2">
+      <div className="flex flex-wrap items-end justify-between gap-2 px-1 md:px-0">
         <div className="min-w-0">
           <Text
             id={`${title.replace(/\s+/g, "-").toLowerCase()}-titulo`}

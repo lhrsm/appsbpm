@@ -34,7 +34,7 @@ export function DashboardPendingSection({ items, max = 5 }: { items: PendingItem
   }
 
   return (
-    <ul className="space-y-5 md:space-y-2">
+    <ul className="space-y-4 md:space-y-2">
       {lista.map((item) => {
         const Icon = item.icon;
         return (
