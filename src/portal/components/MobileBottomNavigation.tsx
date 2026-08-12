@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Eye, Card, Plus, HelpCircle, User } from 'lucide-react';
+import { Eye, CreditCard, Plus, HelpCircle, User } from 'lucide-react';
 
 const navItems = [
   { id: 'visao', label: 'Visão', icon: Eye, path: '/dashboard/carteirinha' },
-  { id: 'carteirinha', label: 'Carteirinha', icon: Card, path: '/dashboard/carteirinha' },
+  { id: 'carteirinha', label: 'Carteirinha', icon: CreditCard, path: '/dashboard/carteirinha' },
   { id: 'solicitacoes', label: 'Solicitações', icon: Plus, path: '/dashboard/solicitacoes' },
   { id: 'canais', label: 'Canais', icon: HelpCircle, path: '/dashboard/faq' },
   { id: 'meus', label: 'Meus', icon: User, path: '/dashboard/perfil' },
