@@ -40,7 +40,7 @@ export default function PortalHeader({
       className={cn(
         "sticky top-0 z-40 w-full shadow-sm safe-pt safe-px border-b transition-all duration-300 md:border-b-0",
         "flex items-center relative overflow-hidden",
-        "h-14 md:h-[180px] lg:h-[210px] xl:h-[225px] 2xl:h-[240px]",
+        "h-14 md:h-[220px] 2xl:h-[240px]",
         "bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-50 border-gray-200 dark:border-white/10",
         "portal-institutional-header",
         "data-[ui-version=sbpm-mobile-header-v6]"
