@@ -134,7 +134,9 @@
   }
 
   .public-portal-root .portal-description,
-  .public-auth-theme 
+  .public-auth-theme .portal-description {
+    color: #526174 !important;
+  }
 }
 
 /* Custom Utilities */
