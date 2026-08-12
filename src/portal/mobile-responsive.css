@@ -481,24 +481,116 @@
    =================================================================== */
 
 @media (max-width: 1023px) {
+  /* ===================================================================
+     DARK MODE COMPLEMENTAR — HEADER MOBILE/PWA
+     =================================================================== */
+
   .dark .mobile-portal-header {
-    background: rgba(15, 23, 42, 0.985) !important;
-    border-bottom-color: rgba(255, 255, 255, 0.10);
+    background: #0f172a !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   }
 
+  /* Hamburger Menu Dark */
   .dark .mobile-header-button {
-    color: #e2e8f0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    color: #f1f5f9 !important;
   }
 
-  .dark .mobile-header-button:active {
-    background-color: rgba(255, 255, 255, 0.08);
+  .dark .mobile-header-button:active,
+  .dark .mobile-header-button:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
     color: #4ade80 !important;
+    border-radius: 10px;
   }
 
+  /* Bloco do Associado Dark */
   .dark .mobile-user-block {
-    background: rgba(15, 23, 42, 0.96) !important;
-    border-color: rgba(255, 255, 255, 0.10);
+    background: rgba(30, 41, 59, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.20);
   }
+
+  /* Textos Dark */
+  .dark .mobile-greeting {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .dark .mobile-user-name {
+    color: #f8fafc !important;
+    font-weight: 700;
+  }
+
+  .dark .mobile-user-role {
+    color: #94a3b8 !important;
+  }
+
+  /* Avatar Dark */
+  .dark .mobile-user-avatar {
+    background: #ffffff !important;
+    border: 2px solid rgba(34, 197, 94, 0.35) !important;
+  }
+
+  .dark .mobile-avatar-initials {
+    color: #166534 !important;
+  }
+
+  /* Notificação Dark */
+  .dark .mobile-notification-container {
+    background: rgba(30, 41, 59, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dark .mobile-notification-button {
+    width: 100%;
+    height: 100%;
+    background: none;
+    border: none;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .dark .mobile-notification-button:hover {
+    background: rgba(34, 197, 94, 0.14);
+    color: #4ade80;
+  }
+
+  .dark .mobile-notification-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 1.5px solid #0f172a;
+    display: block; /* Apenas se houver lógica, mas aqui deixamos fixo para estilo */
+  }
+
+  /* Seta Dark */
+  .dark .mobile-dropdown-arrow {
+    color: #cbd5e1;
+  }
+
+  .dark [data-state="open"] .mobile-dropdown-arrow {
+    color: #4ade80;
+  }
+}
 
   .dark .mobile-user-name {
     color: #f8fafc !important;
