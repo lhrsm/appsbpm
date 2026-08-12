@@ -432,15 +432,15 @@ export default function Carteirinha() {
   // Se é dependente logado, mostra apenas a carteirinha dele
   if (isDependente && dependenteLogado) {
     return (
-      <div className="space-y-6 animate-fade-in">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Minha Carteirinha</h2>
-          <p className="text-muted-foreground">
+      <div className="animate-fade-in lg:space-y-6">
+        <div className="px-4 md:px-0 mt-5 md:mt-0 space-y-1 mb-6 lg:mb-0">
+          <h2 className="text-[22px] leading-tight md:text-2xl font-bold text-foreground">Minha Carteirinha</h2>
+          <p className="text-[13px] md:text-sm leading-snug text-muted-foreground">
             Sua carteirinha de identificação junto à SBPM
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-4 w-full">
+        <div className="flex flex-col items-center gap-5 lg:gap-4 w-full px-4 md:px-0">
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
@@ -469,7 +469,7 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 gap-3 w-full max-w-lg px-0 my-6">
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg px-0 mb-6 lg:mb-0 mt-0 lg:my-6">
             <Button onClick={handleDownloadPDF} className="w-full h-[54px] bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[12px] border-none flex items-center justify-center font-semibold">
               <Download className="h-5 w-5 mr-2" />
               <span className="font-semibold text-base">Baixar (PDF)</span>
