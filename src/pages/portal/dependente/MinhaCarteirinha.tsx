@@ -17,9 +17,9 @@ export default function MinhaCarteirinha() {
   const ativo = dependenteLogado?.status === 'regular';
 
   return (
-    <div className="space-y-6 px-4 lg:px-0">
+    <div className="space-y-6 px-4 lg:px-0 pt-5 pb-6">
       <PortalPageHeader
-        className="mt-5"
+
 
         title="Minha carteirinha"
         description="Sua identificação digital da SBPM. Apresente-a na rede credenciada junto a um documento oficial com foto."
