@@ -226,6 +226,15 @@
   [data-radix-portal] [data-state='open'].fixed.z-50.gap-4.bg-background {
     z-index: 95 !important;
   }
+
+  /* Utility for hiding scrollbar in navigation */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* ===================================================================

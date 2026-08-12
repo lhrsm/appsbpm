@@ -102,7 +102,7 @@ export default function MobileNavigationDrawer({
           </div>
         </SheetHeader>
 
-        <nav className="min-h-0 flex-1 overflow-y-auto p-2" aria-label="Menu principal">
+        <nav className="min-h-0 flex-1 overflow-y-auto p-2 scrollbar-none" aria-label="Menu principal">
           {sections.map((section) => (
             <div key={section.id} className="mb-3">
               <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
