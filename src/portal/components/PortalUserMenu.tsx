@@ -120,21 +120,21 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
             <div className="flex flex-col gap-1">
               <DropdownMenuItem 
                 className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {/* lógica para modo claro */}}
+                onSelect={() => {}}
               >
-                <icons.contraste className="h-4 w-4 !text-[#64748b]" />
+                <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
                 Modo Claro
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {/* lógica para modo escuro */}}
+                onSelect={() => {}}
               >
-                <icons.contraste className="h-4 w-4 !text-[#64748b]" />
+                <icons.lgpd className="h-4 w-4 !text-[#64748b]" />
                 Modo Escuro
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
-                onSelect={() => {/* lógica para sistema */}}
+                onSelect={() => {}}
               >
                 <icons.configuracoes className="h-4 w-4 !text-[#64748b]" />
                 Sistema
