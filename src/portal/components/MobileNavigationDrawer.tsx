@@ -1,14 +1,52 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { icons } from "@/design-system/icons";
-import { getNavigationSections, type PortalProfile } from "../navigation";
-import { SidebarLink } from "./PortalSidebar";
-import { maskMatricula, maskNome, primeiroNome } from "../mask";
+import { getNavigationSections, type PortalNavItem, type PortalProfile } from "../navigation";
+import { isItemActive } from "./PortalSidebar";
+import { primeiroNome } from "../mask";
 import type { PortalUser } from "./PortalUserMenu";
 import PortalNotificationCenter from "./PortalNotificationCenter";
 import { cn } from "@/lib/utils";
+
+/** Sub-componente para links da sidebar no drawer mobile com suporte a cores customizadas. */
+function MobileDrawerLink({
+  item,
+  onNavigate,
+}: {
+  item: PortalNavItem;
+  onNavigate?: () => void;
+}) {
+  const { pathname } = useLocation();
+  const active = isItemActive(item.route, pathname);
+  const Icon = item.icon;
+
+  return (
+    <Link
+      to={item.route}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "relative flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+        active
+          ? "bg-white/10 font-semibold text-white"
+          : "text-slate-300 hover:bg-white/5 hover:text-white"
+      )}
+    >
+      {active && (
+        <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r bg-[var(--green-main)]" aria-hidden />
+      )}
+      <Icon className={cn("h-5 w-5 shrink-0", active ? "text-[var(--green-main)]" : "text-slate-400")} aria-hidden />
+      <span className="truncate">{item.label}</span>
+      {!!item.badge && (
+        <span className="ml-auto rounded-full bg-[var(--green-main)] px-2 py-0.5 text-[10px] font-bold text-white">
+          {item.badge}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 export interface MobileNavigationDrawerProps {
   open: boolean;
@@ -73,7 +111,7 @@ export default function MobileNavigationDrawer({
               <ul className="space-y-0.5">
                 {section.items.map((item) => (
                   <li key={item.id}>
-                    <SidebarLink 
+                    <MobileDrawerLink 
                       item={item} 
                       onNavigate={() => onOpenChange(false)} 
                     />
