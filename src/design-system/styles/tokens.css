@@ -118,8 +118,8 @@
 
   /* Public Portal Specific Tokens */
   --public-card-bg-light: var(--portal-modal-bg-light);
-  --public-option-bg-light: rgba(255, 255, 255, 0.96);
-  --public-option-border-light: rgba(22, 163, 74, 0.42);
+  --public-option-bg-light: rgba(255, 255, 255, 0.96) !important;
+  --public-option-border-light: rgba(22, 163, 74, 0.42) !important;
   --public-title-light: #15803d;
   --public-description-light: #475569;
   --public-label-light: #1f2937;

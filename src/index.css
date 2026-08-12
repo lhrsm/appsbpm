@@ -1796,3 +1796,19 @@ html.a11y-reduce-motion *::after {
     color: #ffffff !important;
   }
 }
+
+.public-auth-theme [data-ui-version="sbpm-radio-card-v6"] {
+  background: #ffffff !important;
+  color: #263244 !important;
+  border-color: rgba(22,138,73,0.34) !important;
+}
+.public-auth-theme [data-ui-version="sbpm-radio-card-v6"][class*="bg-[#f0fdf4]"],
+.public-auth-theme [data-ui-version="sbpm-radio-card-v6"][class*="border-[#168A49]"] {
+  background: #f0fdf4 !important;
+  color: #166534 !important;
+  border-color: #168A49 !important;
+}
+.public-auth-theme [data-ui-version="sbpm-radio-card-v6"] span {
+  color: inherit !important;
+  opacity: 1 !important;
+}
