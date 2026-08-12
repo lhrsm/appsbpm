@@ -116,8 +116,9 @@ export default function Solicitacoes() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 lg:px-0 pt-5 pb-6">
       <PortalPageHeader
+
         title="Minhas solicitações"
         description="Acompanhe pelo protocolo todos os pedidos abertos junto à SBPM."
         source="Base institucional"

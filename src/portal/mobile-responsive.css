@@ -36,9 +36,10 @@
     width: 100%;
     max-width: 100%;
     height: var(--mobile-header-height);
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.98);
     border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-    z-index: 40;
+    z-index: 100;
+
     padding-top: env(safe-area-inset-top);
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -194,7 +195,7 @@
       + env(safe-area-inset-bottom)
       + 18px
     );
-    z-index: 60;
+    z-index: 70;
   }
 
   .mobile-floating-actions button {
@@ -384,11 +385,13 @@
     width: 100%;
     max-width: 100%;
     height: var(--mobile-bottom-nav-height);
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.98);
     border-top: 1px solid rgba(15, 23, 42, 0.08);
     padding-bottom: env(safe-area-inset-bottom);
-    z-index: 50;
+    z-index: 80;
     box-sizing: border-box;
+    backdrop-filter: blur(12px);
+
   }
 
   .mobile-bottom-nav-container {

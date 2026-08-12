@@ -52,27 +52,30 @@ export default function FAQ() {
   if (loading) return <PageSkeleton />;
 
   return (
-    <div className="space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <HelpCircle className="h-6 w-6 text-primary" /> Perguntas Frequentes
+    <div className="space-y-4 px-4 lg:px-0 pt-5">
+      <div className="space-y-1.5">
+        <h1 className="text-[21px] font-bold flex items-center gap-2 leading-tight">
+          <HelpCircle className="h-5 w-5 text-primary" /> Perguntas Frequentes
+
         </h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-[13px] text-muted-foreground leading-relaxed">
           Encontre respostas rápidas para as dúvidas mais comuns.
         </p>
       </div>
 
-      <div className="relative max-w-md">
+      <div className="relative max-w-md pt-4">
+
         <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Buscar pergunta ou palavra-chave…"
-          className="pl-9"
+          className="pl-9 h-12 rounded-xl text-sm"
         />
       </div>
 
-      {Object.keys(grouped).length === 0 && (
+      <div className="space-y-2.5 pt-3.5">
+
         <Card>
           <CardContent className="py-10 text-center text-muted-foreground">
             Nenhum resultado encontrado.
@@ -98,7 +101,8 @@ export default function FAQ() {
             </Accordion>
           </CardContent>
         </Card>
-      ))}
+      </div>
     </div>
+
   );
 }

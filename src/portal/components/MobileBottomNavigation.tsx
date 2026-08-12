@@ -16,17 +16,22 @@ export default function MobileBottomNavigation() {
   const location = useLocation();
 
   const isActive = (path: string) => {
-    if (path === '/dashboard/carteirinha' && location.pathname === '/dashboard/carteirinha') {
-      return true;
-    }
-    if (path === '/dashboard/carteirinha') return false; // Evita duplicidade se for a base
+    const current = location.pathname;
     
     // Visão Geral ativado apenas na rota exata do dashboard
-    if (path === '/dashboard' && location.pathname === '/dashboard') return true;
+    if (path === '/dashboard') {
+      return current === '/dashboard';
+    }
     
-    // Outros itens usam startsWith
-    return location.pathname.startsWith(path) && path !== '/dashboard';
+    // Carteirinha ativado apenas na rota exata da carteirinha
+    if (path === '/dashboard/carteirinha') {
+      return current === '/dashboard/carteirinha';
+    }
+    
+    // Outros itens usam startsWith para sub-rotas
+    return current.startsWith(path);
   };
+
 
   return (
     <nav className="mobile-bottom-navigation">
