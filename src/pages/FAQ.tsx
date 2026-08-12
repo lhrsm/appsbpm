@@ -62,15 +62,16 @@ export default function FAQ() {
         </p>
       </div>
 
-      <div className="relative max-w-md pt-4">
-        <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+      <div className="relative max-w-[380px] pt-4">
+        <Search className="h-4 w-4 absolute left-3 top-[68%] -translate-y-1/2 text-muted-foreground" />
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Buscar pergunta ou palavra-chave…"
-          className="pl-9 h-12 rounded-xl text-sm"
+          placeholder="Buscar no FAQ…"
+          className="pl-9 h-11 rounded-xl text-sm"
         />
       </div>
+
 
       <div className="space-y-2.5 pt-3.5">
         {Object.keys(grouped).length === 0 && (
