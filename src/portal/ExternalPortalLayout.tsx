@@ -228,8 +228,9 @@ export default function ExternalPortalLayout({
         user={user}
         onOpenMenu={() => {}}
         menuOpen={false}
-        onLogout={handleLogoutClick}
+        onLogout={onLogout}
       />
+
 
       {/* Main Content */}
       <main className="portal-main-desktop relative">

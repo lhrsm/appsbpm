@@ -46,7 +46,8 @@ export default function PortalHeader({
       )}
       data-ui-version="sbpm-mobile-header-v6"
     >
-      {/* Background Image Container removido do Header Global para ser restaurado no DashboardLayout */}
+      {/* O Hero Institucional agora é renderizado no ExternalPortalLayout, abaixo do header */}
+
 
       <div className="mx-auto flex h-full w-full max-w-[1600px] items-start md:items-center gap-2.5 px-3 md:px-6 pt-2 md:pt-0 relative z-10">
         <Button
