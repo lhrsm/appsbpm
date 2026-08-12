@@ -288,7 +288,7 @@ export default function ExternalPortalLayout({
           </div>
         )}
 
-        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-6" : "")}>
+        <div className={cn(location.pathname === '/dashboard' ? "lg:mt-[24px]" : "")}>
           {banner}
         </div>
         
