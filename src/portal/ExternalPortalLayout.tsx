@@ -126,7 +126,7 @@ export default function ExternalPortalLayout({
 
         {/* Floating Actions (WhatsApp) */}
         <div className="mobile-floating-actions">
-          <FloatingActionsManager />
+          <FloatingActionsManager profileType={profileType} />
         </div>
 
         {/* Bottom Navigation */}
@@ -201,7 +201,7 @@ export default function ExternalPortalLayout({
       </main>
 
       {/* Floating Actions */}
-      <FloatingActionsManager />
+      <FloatingActionsManager profileType={profileType} />
     </div>
   );
 }
