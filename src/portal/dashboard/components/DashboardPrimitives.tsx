@@ -46,7 +46,7 @@ export function DashboardSection({
       id={id}
       aria-busy={loading || undefined}
       aria-labelledby={`${title.replace(/\s+/g, "-").toLowerCase()}-titulo`}
-      className={cn("space-y-3", className)}
+      className={cn("space-y-3 px-4 md:px-0", className)}
     >
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div className="min-w-0">
@@ -149,7 +149,7 @@ export function DashboardLastUpdated({ date, status = "atualizado" }: { date?: s
     : null;
 
   return (
-    <p className={cn("flex items-center gap-1.5 text-xs", info.className)}>
+    <p className={cn("flex items-center gap-1.5 text-xs px-4 md:px-0", info.className)}>
       <icons.horario className="h-3.5 w-3.5" aria-hidden />
       {status === "demonstracao" || !formatted ? info.text : `Dados atualizados em ${formatted} · ${info.text}`}
     </p>

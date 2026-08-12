@@ -37,7 +37,7 @@ export function DashboardWelcomeHero() {
 
   return (
     <div className="animate-slide-up-in">
-      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl">
+      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full">
         <div className="sbpm-hero-card-content">
           <div className="sbpm-hero-user-info">
             <div className="sbpm-hero-avatar">

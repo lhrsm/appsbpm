@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Eye, CreditCard, Plus, HelpCircle, User } from 'lucide-react';
 
 const navItems = [
-  { id: 'visao', label: 'Visão', icon: Eye, path: '/dashboard/carteirinha' },
+  { id: 'visao', label: 'Visão', icon: Eye, path: '/dashboard' },
   { id: 'carteirinha', label: 'Carteirinha', icon: CreditCard, path: '/dashboard/carteirinha' },
   { id: 'solicitacoes', label: 'Solicitações', icon: Plus, path: '/dashboard/solicitacoes' },
   { id: 'canais', label: 'Canais', icon: HelpCircle, path: '/dashboard/faq' },
@@ -16,7 +16,16 @@ export default function MobileBottomNavigation() {
   const location = useLocation();
 
   const isActive = (path: string) => {
-    return location.pathname.startsWith(path);
+    if (path === '/dashboard/carteirinha' && location.pathname === '/dashboard/carteirinha') {
+      return true;
+    }
+    if (path === '/dashboard/carteirinha') return false; // Evita duplicidade se for a base
+    
+    // Visão Geral ativado apenas na rota exata do dashboard
+    if (path === '/dashboard' && location.pathname === '/dashboard') return true;
+    
+    // Outros itens usam startsWith
+    return location.pathname.startsWith(path) && path !== '/dashboard';
   };
 
   return (

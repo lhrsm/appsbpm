@@ -34,13 +34,13 @@ export function DashboardPendingSection({ items, max = 5 }: { items: PendingItem
   }
 
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-5 md:space-y-2">
       {lista.map((item) => {
         const Icon = item.icon;
         return (
           <li
             key={item.id}
-            className={cn("flex flex-wrap items-start gap-3 rounded-xl border border-l-4 bg-card p-4", borda[item.priority])}
+            className={cn("flex flex-wrap items-start gap-3 rounded-[18px] md:rounded-xl border border-l-4 bg-card p-5 md:p-4 shadow-sm md:shadow-none", borda[item.priority])}
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted" aria-hidden>
               <Icon className="h-4 w-4 text-foreground" />
@@ -91,7 +91,7 @@ export function DashboardNotificationList({
   }
 
   return (
-    <ul className="divide-y rounded-xl border bg-card">
+    <ul className="divide-y rounded-[18px] md:rounded-xl border bg-card shadow-sm md:shadow-none">
       {items.slice(0, max).map((n) => (
         <li key={n.id} className="flex items-start gap-3 p-4">
           <icons.notificacao className={cn("mt-0.5 h-4 w-4", n.lida ? "text-muted-foreground" : "text-primary")} aria-hidden />

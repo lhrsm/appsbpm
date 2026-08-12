@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, CreditCard, FileText, Users, User } from 'lucide-react';
+import { Eye, CreditCard, FileText, Users, User, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -18,11 +18,11 @@ export default function PortalBottomNavigation({ currentPath }: PortalBottomNavi
   const navigate = useNavigate();
 
   const navItems: NavItem[] = [
+    { path: '/dashboard', label: 'Visão', icon: <Eye size={24} /> },
     { path: '/dashboard/carteirinha', label: 'Carteirinha', icon: <CreditCard size={24} /> },
     { path: '/dashboard/solicitacoes', label: 'Solicitações', icon: <FileText size={24} /> },
-    { path: '/dashboard/dependentes', label: 'Dependentes', icon: <Users size={24} /> },
-    { path: '/dashboard/perfil', label: 'Perfil', icon: <User size={24} /> },
-    { path: '/dashboard', label: 'Visão', icon: <Eye size={24} /> },
+    { path: '/dashboard/faq', label: 'Canais', icon: <HelpCircle size={24} /> },
+    { path: '/dashboard/perfil', label: 'Meus', icon: <User size={24} /> },
   ];
 
   const isActive = (path: string) => {

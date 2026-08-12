@@ -17,7 +17,7 @@ export default function FloatingActionsManager({ profileType }: FloatingActionsM
       className="mobile-floating-actions fixed flex flex-col gap-3 z-50"
       style={{
         right: '16px',
-        bottom: `calc(var(--mobile-bottom-nav-height, 68px) + env(safe-area-inset-bottom) + 16px)`,
+        bottom: `calc(var(--mobile-bottom-nav-height, 68px) + env(safe-area-inset-bottom) + 24px)`,
       }}
     >
       <a
