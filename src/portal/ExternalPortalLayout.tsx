@@ -235,7 +235,7 @@ export default function ExternalPortalLayout({
       {/* Main Content */}
       <main className="portal-main-desktop relative">
         {location.pathname === '/dashboard' && (
-          <div className="hidden lg:block w-full overflow-hidden">
+          <div className="hidden lg:block w-full overflow-hidden relative">
             <img 
               src="/images/hero-background.jpg" 
               alt="Institucional" 
