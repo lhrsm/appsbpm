@@ -134,9 +134,7 @@
   }
 
   .public-portal-root .portal-description,
-  .public-auth-theme .portal-description {
-    color: #475569 !important;
-  }
+  .public-auth-theme 
 }
 
 /* Custom Utilities */
@@ -1009,13 +1007,9 @@ html.a11y-reduce-motion *::after {
       color-scheme: light !important;
     }
 
-    body.public-portal-root .portal-title {
-      color: #111827 !important;
-    }
+    body.public-portal-root 
 
-    body.public-portal-root .portal-description {
-      color: #4b5563 !important;
-    }
+    body.public-portal-root 
   }
 
   :root {
@@ -1693,3 +1687,112 @@ html.a11y-reduce-motion *::after {
 /* ===== DESKTOP (≥ 1024px) — SEM ALTERAÇÕES ===== */
 /* O CSS acima somente aplica em max-width: 1023px */
 /* Desktop mantém todos os estilos originais */
+
+@media (min-width: 1024px) {
+  .portal-choice {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.42) !important;
+    padding: 16px 20px !important;
+    min-height: 88px !important;
+  }
+  .portal-title {
+    color: #172033 !important;
+    font-weight: 700 !important;
+    font-size: 17px !important;
+  }
+  .portal-description {
+    color: #526174 !important;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+  }
+  .portal-recovery-button {
+    width: 100% !important;
+    min-height: 48px !important;
+    background: #168a49 !important;
+    color: #ffffff !important;
+    border: 1px solid #168a49 !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 8px !important;
+  }
+  .portal-recovery-button:hover {
+    background: #147a42 !important;
+  }
+  .portal-recovery-button svg {
+    color: #ffffff !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .auth-card {
+    background: rgba(255, 255, 255, 0.78) !important;
+    backdrop-filter: blur(16px) saturate(115%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(115%) !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.70) !important;
+    border-radius: 28px !important;
+    width: calc(100% - 32px) !important;
+    max-width: 420px !important;
+  }
+  
+  .portal-choice {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1.25px solid rgba(22, 163, 74, 0.42) !important;
+    min-height: 92px !important;
+    padding: 14px 16px !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    gap: 12px !important;
+    align-items: center !important;
+    border-radius: 16px !important;
+  }
+
+  .portal-title {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    color: #172033 !important;
+  }
+
+  .portal-description {
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+    color: #526174 !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .portal-icon-green {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  
+  .portal-icon-green svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .portal-recovery-button {
+    width: 100% !important;
+    min-height: 48px !important;
+    background: #168a49 !important;
+    color: #ffffff !important;
+    border: 1px solid #168a49 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  
+  .portal-recovery-button svg {
+    color: #ffffff !important;
+  }
+}

@@ -95,12 +95,12 @@
   --container-desktop: 1600px;
 
   /* Portal Modals & Dialogs - Premium Glassmorphism */
-  --portal-modal-bg-light: rgba(255, 255, 255, 0.74);
+  --portal-modal-bg-light: rgba(255, 255, 255, 0.76);
   --portal-modal-bg-light-strong: rgba(255, 255, 255, 0.96);
   --portal-modal-bg-dark: rgba(17, 24, 39, 0.75);
   --portal-modal-overlay-light: rgba(15, 23, 42, 0.08);
   --portal-modal-overlay-dark: rgba(15, 23, 42, 0.12);
-  --portal-modal-blur: 18px;
+  --portal-modal-blur: 16px;
   --portal-modal-border-light: rgba(34, 197, 94, 0.75);
   --portal-modal-border-dark: rgba(34, 197, 94, 0.48);
   --portal-modal-radius: 28px;
@@ -118,8 +118,8 @@
 
   /* Public Portal Specific Tokens */
   --public-card-bg-light: var(--portal-modal-bg-light);
-  --public-option-bg-light: rgba(255, 255, 255, 0.90);
-  --public-option-border-light: rgba(22, 163, 74, 0.46);
+  --public-option-bg-light: rgba(255, 255, 255, 0.96);
+  --public-option-border-light: rgba(22, 163, 74, 0.42);
   --public-title-light: #15803d;
   --public-description-light: #475569;
   --public-label-light: #1f2937;
@@ -321,5 +321,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+/* PWA Standalone Fix - Forces light theme colors on installed app */
+@media (display-mode: standalone) {
+  .public-auth-theme, .public-portal-light {
+    --field-bg: #ffffff !important;
+    --field-text: #1f2937 !important;
+    --background: 0 0% 100% !important;
+    --card: 0 0% 100% !important;
+    --card-foreground: 222 47% 11% !important;
   }
 }
