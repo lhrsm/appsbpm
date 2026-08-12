@@ -93,7 +93,9 @@ export function StatCard({
       skeleton={<StatCardSkeleton />}
       interactive={Boolean(to)}
       density={card.density ?? "regular"}
+      className={cn("p-5 rounded-[18px]", card.className)}
     >
+
       {body}
     </PortalCard>
   );
@@ -299,7 +301,7 @@ export function ActionCard({
   );
 
   const shell = cn(
-    "block rounded-[16px] border border-border bg-card p-4 ds-shadow-sm transition-shadow duration-200 motion-reduce:transition-none",
+    "block rounded-[18px] border border-border bg-card p-5 ds-shadow-sm transition-shadow duration-200 motion-reduce:transition-none",
     unavailable
       ? "pointer-events-none opacity-60"
       : "hover:ds-shadow-md hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
