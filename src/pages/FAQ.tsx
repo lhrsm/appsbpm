@@ -56,7 +56,6 @@ export default function FAQ() {
       <div className="space-y-1.5">
         <h1 className="text-[21px] font-bold flex items-center gap-2 leading-tight">
           <HelpCircle className="h-5 w-5 text-primary" /> Perguntas Frequentes
-
         </h1>
         <p className="text-[13px] text-muted-foreground leading-relaxed">
           Encontre respostas rápidas para as dúvidas mais comuns.
@@ -64,7 +63,6 @@ export default function FAQ() {
       </div>
 
       <div className="relative max-w-md pt-4">
-
         <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
         <Input
           value={q}
@@ -75,34 +73,34 @@ export default function FAQ() {
       </div>
 
       <div className="space-y-2.5 pt-3.5">
+        {Object.keys(grouped).length === 0 && (
+          <Card>
+            <CardContent className="py-10 text-center text-muted-foreground">
+              Nenhum resultado encontrado.
+            </CardContent>
+          </Card>
+        )}
 
-        <Card>
-          <CardContent className="py-10 text-center text-muted-foreground">
-            Nenhum resultado encontrado.
-          </CardContent>
-        </Card>
-      )}
-
-      {Object.entries(grouped).map(([cat, list]) => (
-        <Card key={cat}>
-          <CardHeader>
-            <CardTitle className="text-base capitalize">{cat}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Accordion type="multiple" className="w-full">
-              {list.map((it) => (
-                <AccordionItem key={it.id} value={it.id}>
-                  <AccordionTrigger className="text-left">{it.pergunta}</AccordionTrigger>
-                  <AccordionContent className="whitespace-pre-line text-sm text-muted-foreground">
-                    {it.resposta}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </CardContent>
-        </Card>
+        {Object.entries(grouped).map(([cat, list]) => (
+          <Card key={cat}>
+            <CardHeader>
+              <CardTitle className="text-base capitalize">{cat}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Accordion type="multiple" className="w-full">
+                {list.map((it) => (
+                  <AccordionItem key={it.id} value={it.id}>
+                    <AccordionTrigger className="text-left">{it.pergunta}</AccordionTrigger>
+                    <AccordionContent className="whitespace-pre-line text-sm text-muted-foreground">
+                      {it.resposta}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
-
   );
 }

@@ -324,12 +324,13 @@
     }
   }
 
-  /* Abaixo de 390px: 1 coluna */
-  @media (max-width: 389px) {
+  /* Abaixo de 380px: 1 coluna */
+  @media (max-width: 379px) {
     .portal-vínculo-grid {
       grid-template-columns: 1fr;
     }
   }
+
 
   /* Cards do resumo */
   .portal-vínculo-card {
