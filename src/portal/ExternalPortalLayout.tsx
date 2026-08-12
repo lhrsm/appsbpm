@@ -95,6 +95,9 @@ export default function ExternalPortalLayout({
 ...
               {/* Name + Role */}
               <div className="mobile-user-info">
+                <div className="text-[11px] font-medium text-slate-500 leading-none mb-0.5">
+                  Bom dia,
+                </div>
                 <div className="mobile-user-name">
                   {user.nome}
                 </div>
