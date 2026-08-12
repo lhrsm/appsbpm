@@ -217,7 +217,7 @@
   .sbpm-hero-container {
     width: 100%;
     max-width: 100%;
-    padding: 12px 16px 0 16px;
+    padding: 0 16px; /* Ajustado padding */
     margin-bottom: 20px;
     box-sizing: border-box;
   }
