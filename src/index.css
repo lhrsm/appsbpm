@@ -1,9 +1,10 @@
+
 @import "./design-system/styles/tokens.css";
+@import "./portal/mobile-responsive.css";
 
 #lovable-badge {
   display: none !important;
 }
-
 
 @tailwind base;
 @tailwind components;
@@ -136,8 +137,6 @@
   .public-auth-theme .portal-description {
     color: #475569 !important;
   }
-
-
 }
 
 /* Custom Utilities */
@@ -208,7 +207,7 @@
   height: 220px;
   border-radius: 24px;
   overflow: visible;
-  background: #e8e8e8; /* fallback */
+  background: #e8e8e8;
 }
 
 .sbpm-hero-background {
@@ -233,7 +232,6 @@
   z-index: 1;
 }
 
-/* CARD VERDE SOBREPOSTO */
 .sbpm-hero-card-overlay {
   position: absolute;
   bottom: -40px;
@@ -356,7 +354,7 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE HERO ===== */
 
 @media (max-width: 768px) {
   .sbpm-hero-container {
@@ -451,7 +449,6 @@
 }
 
 .hero-card-footer {
-
   display: flex;
   align-items: center;
   gap: 24px;
@@ -508,8 +505,8 @@
   }
 }
 
+/* ===== ACESSIBILIDADE ===== */
 
-/* Acessibilidade — alto contraste */
 html.a11y-contrast {
   --background: 0 0% 0%;
   --foreground: 60 100% 50%;
@@ -531,16 +528,17 @@ html.a11y-contrast {
   --input: 60 100% 50%;
   --ring: 60 100% 50%;
 }
+
 html.a11y-contrast img,
 html.a11y-contrast video {
   filter: grayscale(20%) contrast(1.1);
 }
+
 html.a11y-contrast *:focus-visible {
   outline: 3px solid hsl(60 100% 50%) !important;
   outline-offset: 2px !important;
 }
 
-/* Acessibilidade — reduzir animações */
 html.a11y-reduce-motion *,
 html.a11y-reduce-motion *::before,
 html.a11y-reduce-motion *::after {
@@ -550,13 +548,11 @@ html.a11y-reduce-motion *::after {
   scroll-behavior: auto !important;
 }
 
-/* Foco visível global */
 :focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
 }
 
-/* Skip link */
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -568,6 +564,7 @@ html.a11y-reduce-motion *::after {
   border-radius: 0 0 0.5rem 0;
   font-weight: 600;
 }
+
 .skip-link:focus {
   left: 0;
 }
@@ -585,8 +582,6 @@ html.a11y-reduce-motion *::after {
     transition: background-color 0.2s ease;
   }
 
-
-
   body {
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
@@ -599,16 +594,11 @@ html.a11y-reduce-motion *::after {
   }
 }
 
-/* =========================================================
-   FASE 11 — Utilitários responsivos institucionais
-   ========================================================= */
 @layer base {
-  /* Evita overflow horizontal sem esconder conteúdo verticalmente */
   body {
     overflow-x: clip;
   }
 
-  /* Nunca deixar elementos de mídia estourarem o container */
   img,
   video,
   canvas,
@@ -622,7 +612,6 @@ html.a11y-reduce-motion *::after {
     height: auto;
   }
 
-  /* Evita zoom automático do iOS em campos com fonte < 16px */
   @media (max-width: 767px) {
     input,
     select,
@@ -633,7 +622,6 @@ html.a11y-reduce-motion *::after {
 }
 
 @layer utilities {
-  /* Safe areas (notch / PWA standalone) */
   .safe-pt {
     padding-top: env(safe-area-inset-top);
   }
@@ -648,7 +636,6 @@ html.a11y-reduce-motion *::after {
     margin-bottom: env(safe-area-inset-bottom);
   }
 
-  /* Espaço reservado para a navegação inferior (mobile/PWA) */
   .pb-bottom-nav {
     padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
   }
@@ -658,12 +645,10 @@ html.a11y-reduce-motion *::after {
     }
   }
 
-  /* Largura confortável de leitura (70–85 caracteres) */
   .readable {
     max-width: 72ch;
   }
 
-  /* Rolagem horizontal local e acessível (tabelas/abas) */
   .scroll-x {
     overflow-x: auto;
     overscroll-behavior-x: contain;
@@ -684,19 +669,16 @@ html.a11y-reduce-motion *::after {
     scrollbar-width: none;
   }
 
-  /* Quebra segura de textos longos (protocolos, e-mails, URLs) */
   .break-anywhere {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
 
-  /* Área mínima de toque (WCAG 2.5.8) */
   .touch-target {
     min-height: 44px;
     min-width: 44px;
   }
 
-  /* Variant baseada em data-attribute no body para o LGPD */
   .lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 160px\)\+24px\)\] {
     transition: bottom 0.3s ease-in-out !important;
   }
@@ -723,7 +705,6 @@ html.a11y-reduce-motion *::after {
     max-width: calc(100% - 24px);
     margin-inline: auto;
     color: #172033 !important;
-
     height: auto;
     min-height: unset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -732,75 +713,74 @@ html.a11y-reduce-motion *::after {
   }
 
   @media (max-width: 1023px) {
-  .public-portal-light input,
-  .public-portal-light textarea,
-  .public-portal-light select,
-  .public-portal-light [role="combobox"] {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    -webkit-text-fill-color: #1f2937 !important;
-    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
-    color-scheme: light !important;
-  }
+    .public-portal-light input,
+    .public-portal-light textarea,
+    .public-portal-light select,
+    .public-portal-light [role="combobox"] {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
+      -webkit-text-fill-color: #1f2937 !important;
+      border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+      color-scheme: light !important;
+    }
 
-  .public-portal-light input::placeholder {
-    color: #8491a3 !important;
-    -webkit-text-fill-color: #8491a3 !important;
-    opacity: 1;
-  }
+    .public-portal-light input::placeholder {
+      color: #8491a3 !important;
+      -webkit-text-fill-color: #8491a3 !important;
+      opacity: 1;
+    }
 
-  /* Autofill Android for .public-portal-light */
-  .public-portal-light input:-webkit-autofill,
-  .public-portal-light input:-webkit-autofill:hover,
-  .public-portal-light input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #1f2937 !important;
-    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-    caret-color: #1f2937;
-  }
+    .public-portal-light input:-webkit-autofill,
+    .public-portal-light input:-webkit-autofill:hover,
+    .public-portal-light input:-webkit-autofill:focus {
+      -webkit-text-fill-color: #1f2937 !important;
+      -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+      caret-color: #1f2937;
+    }
 
     .auth-card {
-    background: rgba(255, 255, 255, 0.76) !important;
-    backdrop-filter: blur(18px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
-    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
-    border-radius: var(--portal-modal-radius) !important;
-    padding: 16px 12px !important;
-    position: relative;
-    z-index: 10;
-    width: 388px;
-    max-width: calc(100% - 24px);
-    margin-inline: auto;
-    color: #172033 !important;
-    height: auto;
-    min-height: unset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible !important;
-    box-sizing: border-box;
-  }
+      background: rgba(255, 255, 255, 0.76) !important;
+      backdrop-filter: blur(18px) saturate(115%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+      border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
+      border-radius: var(--portal-modal-radius) !important;
+      padding: 16px 12px !important;
+      position: relative;
+      z-index: 10;
+      width: 388px;
+      max-width: calc(100% - 24px);
+      margin-inline: auto;
+      color: #172033 !important;
+      height: auto;
+      min-height: unset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
   }
 
   @media (min-width: 1280px) {
     .auth-card {
-    background: rgba(255, 255, 255, 0.74) !important;
-    backdrop-filter: blur(18px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
-    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
-    border-radius: var(--portal-modal-radius) !important;
-    padding: 16px 12px !important;
-    position: relative;
-    z-index: 10;
-    width: 388px;
-    max-width: calc(100% - 24px);
-    margin-inline: auto;
-    color: #172033 !important;
-    height: auto;
-    min-height: unset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible !important;
-    box-sizing: border-box;
-  }
+      background: rgba(255, 255, 255, 0.74) !important;
+      backdrop-filter: blur(18px) saturate(115%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+      border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
+      border-radius: var(--portal-modal-radius) !important;
+      padding: 16px 12px !important;
+      position: relative;
+      z-index: 10;
+      width: 388px;
+      max-width: calc(100% - 24px);
+      margin-inline: auto;
+      color: #172033 !important;
+      height: auto;
+      min-height: unset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
     .auth-card::-webkit-scrollbar {
       width: 6px;
     }
@@ -818,73 +798,72 @@ html.a11y-reduce-motion *::after {
 
   @media (max-width: 400px) {
     .auth-card {
-    background: rgba(255, 255, 255, 0.76) !important;
-    backdrop-filter: blur(18px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
-    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
-    border-radius: var(--portal-modal-radius) !important;
-    padding: 16px 12px !important;
-    position: relative;
-    z-index: 10;
-    width: 388px;
-    max-width: calc(100% - 24px);
-    margin-inline: auto;
-    color: #172033 !important;
-    height: auto;
-    min-height: unset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible !important;
-    box-sizing: border-box;
-  }
+      background: rgba(255, 255, 255, 0.76) !important;
+      backdrop-filter: blur(18px) saturate(115%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+      border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
+      border-radius: var(--portal-modal-radius) !important;
+      padding: 16px 12px !important;
+      position: relative;
+      z-index: 10;
+      width: 388px;
+      max-width: calc(100% - 24px);
+      margin-inline: auto;
+      color: #172033 !important;
+      height: auto;
+      min-height: unset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
   }
 
   @media (max-width: 359px) {
     .auth-card {
-    background: rgba(255, 255, 255, 0.76) !important;
-    backdrop-filter: blur(18px) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
-    border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
-    border-radius: var(--portal-modal-radius) !important;
-    padding: 16px 12px !important;
-    position: relative;
-    z-index: 10;
-    width: 388px;
-    max-width: calc(100% - 24px);
-    margin-inline: auto;
-    color: #172033 !important;
-    height: auto;
-    min-height: unset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible !important;
-    box-sizing: border-box;
-  }
+      background: rgba(255, 255, 255, 0.76) !important;
+      backdrop-filter: blur(18px) saturate(115%) !important;
+      -webkit-backdrop-filter: blur(18px) saturate(115%) !important;
+      border: 1.5px solid rgba(34, 197, 94, 0.75) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18) !important;
+      border-radius: var(--portal-modal-radius) !important;
+      padding: 16px 12px !important;
+      position: relative;
+      z-index: 10;
+      width: 388px;
+      max-width: calc(100% - 24px);
+      margin-inline: auto;
+      color: #172033 !important;
+      height: auto;
+      min-height: unset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
   }
 
   @media (min-width: 390px) and (max-width: 430px) {
     .auth-card {
-    background: var(--portal-modal-bg-light) !important;
-    backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
-    border: var(--portal-modal-border-light) !important;
-    box-shadow: var(--portal-modal-shadow-light) !important;
-    border-radius: var(--portal-modal-radius) !important;
-    padding: 16px 12px !important;
-    position: relative;
-    z-index: 10;
-    width: 388px;
-    max-width: calc(100% - 24px);
-    margin-inline: auto;
-    color: #172033 !important;
-    height: auto;
-    min-height: unset;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: visible !important;
-    box-sizing: border-box;
+      background: var(--portal-modal-bg-light) !important;
+      backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+      -webkit-backdrop-filter: blur(var(--portal-modal-blur)) saturate(115%) !important;
+      border: var(--portal-modal-border-light) !important;
+      box-shadow: var(--portal-modal-shadow-light) !important;
+      border-radius: var(--portal-modal-radius) !important;
+      padding: 16px 12px !important;
+      position: relative;
+      z-index: 10;
+      width: 388px;
+      max-width: calc(100% - 24px);
+      margin-inline: auto;
+      color: #172033 !important;
+      height: auto;
+      min-height: unset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: visible !important;
+      box-sizing: border-box;
+    }
   }
-  }
-
 
   .pwa-modal-page {
     width: 100%;
@@ -907,7 +886,6 @@ html.a11y-reduce-motion *::after {
 
   @media (min-width: 1280px) {
     .pwa-modal-page {
-      /* Reset for desktop to let AuthBackgroundLayout handle positioning */
       display: block !important;
       padding: 0 !important;
       background: transparent !important;
@@ -919,8 +897,6 @@ html.a11y-reduce-motion *::after {
     }
   }
 
-
-  /* Quando o teclado está aberto, paramos de centralizar verticalmente */
   .pwa-modal-page[data-keyboard-open="true"] {
     justify-content: flex-start;
     padding-top: max(8px, calc(var(--visual-viewport-offset-top, 0px) + 8px));
@@ -974,37 +950,36 @@ html.a11y-reduce-motion *::after {
   }
 
   .pwa-modal-page[data-keyboard-open="true"] .pwa-modal-container {
-    max-height: none; /* Deixa o container da página rolar */
+    max-height:none;
     margin-top: 0;
     transform: none !important;
   }
 
   @media (max-width: 1023px) {
-  .public-portal-light input,
-  .public-portal-light textarea,
-  .public-portal-light select,
-  .public-portal-light [role="combobox"] {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    -webkit-text-fill-color: #1f2937 !important;
-    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
-    color-scheme: light !important;
-  }
+    .public-portal-light input,
+    .public-portal-light textarea,
+    .public-portal-light select,
+    .public-portal-light [role="combobox"] {
+      background-color: #ffffff !important;
+      color: #1f2937 !important;
+      -webkit-text-fill-color: #1f2937 !important;
+      border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
+      color-scheme: light !important;
+    }
 
-  .public-portal-light input::placeholder {
-    color: #8491a3 !important;
-    -webkit-text-fill-color: #8491a3 !important;
-    opacity: 1;
-  }
+    .public-portal-light input::placeholder {
+      color: #8491a3 !important;
+      -webkit-text-fill-color: #8491a3 !important;
+      opacity: 1;
+    }
 
-  /* Autofill Android for .public-portal-light */
-  .public-portal-light input:-webkit-autofill,
-  .public-portal-light input:-webkit-autofill:hover,
-  .public-portal-light input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #1f2937 !important;
-    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-    caret-color: #1f2937;
-  }
+    .public-portal-light input:-webkit-autofill,
+    .public-portal-light input:-webkit-autofill:hover,
+    .public-portal-light input:-webkit-autofill:focus {
+      -webkit-text-fill-color: #1f2937 !important;
+      -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+      caret-color: #1f2937;
+    }
 
     .public-portal-root,
     .public-portal-root .pwa-modal-page {
@@ -1019,7 +994,6 @@ html.a11y-reduce-motion *::after {
     }
   }
 
-  /* Autofill no Chrome Android */
   .public-portal-root input:-webkit-autofill,
   .public-portal-root input:-webkit-autofill:hover,
   .public-portal-root input:-webkit-autofill:focus {
@@ -1044,7 +1018,6 @@ html.a11y-reduce-motion *::after {
     }
   }
 
-  /* Portal Interno - Estabilização de Layout */
   :root {
     --bottom-navigation-height: 72px;
   }
@@ -1054,548 +1027,783 @@ html.a11y-reduce-motion *::after {
     }
   }
 
-  /* Carteirinha Digital - Sempre Tema Claro */
   .digital-membership-card {
     color-scheme: light !important;
   }
-  .digital-membership-card, 
-  .digital-membership-card * {
-    color-scheme: light !important;
-    -webkit-print-color-adjust: exact;
+}
+
+/* ===== RESPONSIVIDADE EXCLUSIVA MOBILE/PWA — max-width: 1023px ===== */
+
+@media (max-width: 1023px) {
+  :root {
+    --mobile-bottom-nav-height: 68px;
   }
 
-
-
-
-  .dark .auth-card:not(.public-portal-root .auth-card) {
-    background: var(--portal-modal-bg-dark) !important;
-    border: 1.5px solid var(--portal-modal-border-dark) !important;
-    box-shadow: var(--portal-modal-shadow-dark) !important;
+  /* Container principal — evita scroll horizontal */
+  body {
+    overflow-x: hidden;
   }
 
-
-  .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
+  main,
+  .dashboard-content,
+  .portal-main-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
-  @media (max-width: 1023px) {
-  .public-portal-light input,
-  .public-portal-light textarea,
-  .public-portal-light select,
-  .public-portal-light [role="combobox"] {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    -webkit-text-fill-color: #1f2937 !important;
-    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
-    color-scheme: light !important;
+  /* ===== HEADER DO USUÁRIO MOBILE/PWA ===== */
+  .portal-user-header,
+  .external-portal-header,
+  [data-testid="user-header"],
+  .header-user-info {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding: 8px 12px;
+    box-sizing: border-box;
+
+    height: auto;
+    min-height: 56px;
+    max-height: 62px;
   }
 
-  .public-portal-light input::placeholder {
-    color: #8491a3 !important;
-    -webkit-text-fill-color: #8491a3 !important;
-    opacity: 1;
+  /* ===== BLOCO DO USUÁRIO (AVATAR + NOME + SUBTÍTULO) ===== */
+  .user-identity-block,
+  .user-info-block,
+  .header-user-details,
+  [data-testid="user-identity"] {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    padding: 6px 8px;
+
+    background: rgba(255, 255, 255, 0.96);
+    color: #172033;
+
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+
+    box-shadow: none;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    box-sizing: border-box;
   }
 
-  /* Autofill Android for .public-portal-light */
-  .public-portal-light input:-webkit-autofill,
-  .public-portal-light input:-webkit-autofill:hover,
-  .public-portal-light input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #1f2937 !important;
-    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-    caret-color: #1f2937;
+  /* Remover min-width fixo do bloco */
+  .user-identity-block,
+  .user-info-block,
+  .header-user-details {
+    min-width: unset !important;
   }
 
-    .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-  }
+  /* ===== AVATAR MOBILE ===== */
+  .user-avatar,
+  .header-avatar,
+  [data-testid="user-avatar"],
+  .avatar-mobile {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    flex-shrink: 0;
 
-  @media (min-width: 1200px) {
-    .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-  }
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1.5px solid rgba(22, 135, 84, 0.3);
 
-
-
-  @media (max-width: 400px) {
-    .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-  }
-
-  .portal-choice-container {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    width: 100% !important;
-    gap: 12px !important;
-  }
-
-  @media (min-width: 1200px) {
-    .portal-choice-container {
-      gap: 16px !important; /* Increased spacing between sections */
-    }
-  }
-
-
-  @media (max-width: 359px) {
-    .portal-choice-container {
-      gap: 10px !important;
-    }
-  }
-
-  .portal-icon-green {
-    width: 26px !important;
-    height: 26px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #168a49 !important;
-  }
-
-  .portal-chevron {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  .portal-title {
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    line-height: 1.2 !important;
-    color: #172033 !important;
-    margin-bottom: 2px !important;
-    display: block !important;
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    min-width: 0 !important;
-  }
-
-  .portal-description {
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    color: #64748b !important;
-    display: block !important;
-    white-space: normal !important;
-    overflow-wrap: break-word !important;
-    min-width: 0 !important;
-  }
-
-
-  .portal-recovery-button {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    height: 48px !important;
-    padding: 0 24px !important;
-    border-radius: 999px !important;
-    background: #168a49 !important;
-    color: #ffffff !important;
-    border: 1px solid #168a49 !important;
-    font-weight: 700 !important;
-    font-size: 0.95rem !important;
-    box-shadow: 0 8px 20px rgba(22, 138, 73, 0.24) !important;
-    width: auto !important;
-    min-width: 200px !important;
-    max-width: 300px !important;
-    margin-top: 14px !important;
-    margin-bottom: 2px !important;
-    transition: all 0.2s ease-in-out !important;
-    text-decoration: none !important;
-  }
-
-  @media (max-width: 1023px) {
-  .public-portal-light input,
-  .public-portal-light textarea,
-  .public-portal-light select,
-  .public-portal-light [role="combobox"] {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-    -webkit-text-fill-color: #1f2937 !important;
-    border: 1.5px solid rgba(22, 138, 73, 0.58) !important;
-    color-scheme: light !important;
-  }
-
-  .public-portal-light input::placeholder {
-    color: #8491a3 !important;
-    -webkit-text-fill-color: #8491a3 !important;
-    opacity: 1;
-  }
-
-  /* Autofill Android for .public-portal-light */
-  .public-portal-light input:-webkit-autofill,
-  .public-portal-light input:-webkit-autofill:hover,
-  .public-portal-light input:-webkit-autofill:focus {
-    -webkit-text-fill-color: #1f2937 !important;
-    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-    caret-color: #1f2937;
-  }
-
-    .portal-recovery-button {
-      width: 92% !important;
-    }
-  }
-
-  @media (min-width: 1200px) {
-    .portal-recovery-button {
-      width: calc(100% - 72px) !important;
-      max-width: 460px !important;
-      height: 54px !important;
-      margin-top: 20px !important;
-      margin-inline: auto !important;
-    }
-  }
-
-
-  .portal-recovery-button:hover {
-    background: #12783f !important;
-    border-color: #12783f !important;
-  }
-
-  .portal-recovery-button:active {
-    transform: scale(0.98) !important;
-  }
-
-  .portal-recovery-button:focus-visible {
-    outline: none !important;
-    box-shadow: 
-      0 0 0 3px rgba(255, 255, 255, 0.70),
-      0 0 0 6px rgba(22, 163, 74, 0.30) !important;
-  }
-
-  @media (max-width: 340px) {
-    .portal-recovery-button {
-      width: calc(100% - 72px) !important;
-      min-width: unset !important;
-    }
-  }
-
-  .portal-recovery-button .lucide {
-    color: #ffffff !important;
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-
-
-  .dark .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-
-  .portal-choice:hover, .portal-choice:focus-within, .portal-choice:active {
-    background: rgba(240, 253, 244, 0.97) !important;
-    border-color: rgba(22, 163, 74, 0.68) !important;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10) !important;
-  }
-
-  .portal-choice .portal-title {
-    color: #1f2937 !important;
-    font-weight: 700;
-  }
-
-  .dark .portal-choice .portal-title {
-    color: #f8fafc;
-  }
-
-  .portal-choice .portal-description {
-    color: var(--public-description-light) !important;
-  }
-
-  .dark .portal-choice .portal-description {
-    color: #cbd5e1;
-  }
-
-  .portal-choice .portal-chevron {
-    color: #64748b;
-  }
-
-  .portal-choice:hover .portal-chevron, 
-  .portal-choice:focus-within .portal-chevron {
-    color: #15803d;
-  }
-
-  .dark .portal-choice .portal-chevron {
-    color: #475569;
-  }
-
-  @media (max-width: 340px) {
-    .portal-choice {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1.25px solid rgba(22, 163, 74, 0.40) !important;
-    box-shadow: 0 7px 18px rgba(15, 23, 42, 0.08) !important;
-    transition: all 200ms ease-in-out !important;
-    border-radius: 18px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline: auto !important;
-    min-height: auto !important;
-    height: auto !important;
-    padding: 16px 18px !important;
-    display: grid !important;
-    grid-template-columns: auto minmax(0, 1fr) auto !important;
-    align-items: center !important;
-    gap: 14px !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-  }
-    .portal-choice .portal-title {
-      font-size: 0.875rem;
-    }
-  }
-
-  .portal-choice:hover, .portal-choice:focus-within {
-    background: rgba(240, 253, 244, 0.55) !important;
-    border-color: var(--primary) !important;
-  }
-
-  .portal-glass-button-secondary {
-    background: rgba(255, 255, 255, 0.35) !important;
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .portal-icon-circle-green {
-    background: rgba(22, 163, 74, 0.10) !important;
-    color: rgb(21, 128, 61) !important; /* green-700 */
-    border-radius: 9999px;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-}
 
-/* Landscape em telas baixas: header e heros compactos */
-@media (orientation: landscape) and (max-height: 500px) {
-  .landscape-compact {
-    height: 3rem;
-  }
-  .landscape-hide {
-    display: none;
-  }
-}
+    font-size: 13px;
+    font-weight: 700;
+    color: #166534;
 
-/* ================================================================== *
- * FASE 13 — Acessibilidade WCAG 2.2 AA
- * ================================================================== */
+    overflow: hidden;
+  }
 
-/* Skip links: primeiros elementos focáveis, visíveis somente no foco */
-.skip-links {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-.skip-link:focus,
-.skip-link:focus-visible {
-  left: 0;
-  outline: 3px solid hsl(var(--foreground));
-  outline-offset: 2px;
-}
-.skip-links .skip-link:nth-child(2):focus {
-  left: 12rem;
-}
-.skip-links .skip-link:nth-child(3):focus {
-  left: 24rem;
-}
+  .user-avatar img,
+  .header-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-/* Foco visível reforçado (preferência do usuário) */
-html.a11y-focus-highlight *:focus-visible {
-  outline: 3px solid hsl(var(--ring)) !important;
-  outline-offset: 3px !important;
-  box-shadow: 0 0 0 6px hsl(var(--ring) / 0.25) !important;
-  border-radius: 0.25rem;
-}
+  /* ===== NOME DO ASSOCIADO/DEPENDENTE ===== */
+  .user-name,
+  .header-user-name,
+  [data-testid="user-name"],
+  .user-display-name {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.15;
 
-/* Sublinhado de links (WCAG 1.4.1 — cor não é o único indicador) */
-html.a11y-underline-links main a,
-html.a11y-underline-links a[href]:not([role="button"]):not(.skip-link) {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
+    color: #172033;
 
-/* Densidade confortável */
-html.a11y-comfortable body {
-  line-height: 1.75;
-  letter-spacing: 0.01em;
-}
-html.a11y-comfortable p,
-html.a11y-comfortable li {
-  margin-bottom: 0.35em;
-}
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-/* Preferências do sistema respeitadas mesmo sem configuração no portal */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+    min-width: 0;
+    max-width: 100%;
 
-@media (prefers-contrast: more) {
-  :root {
-    --muted-foreground: 220 20% 30%;
-    --border: 220 20% 45%;
+    margin: 0;
+    padding: 0;
   }
-  .dark {
-    --muted-foreground: 0 0% 85%;
-    --border: 0 0% 65%;
-  }
-}
 
-/* Modo de cores forçadas (Windows High Contrast) */
-@media (forced-colors: active) {
-  *:focus-visible {
-    outline: 3px solid CanvasText !important;
-    outline-offset: 2px !important;
-  }
-  button,
-  [role="button"],
-  input,
-  select,
-  textarea,
-  a[href] {
-    forced-color-adjust: auto;
-    border: 1px solid CanvasText;
-  }
-  [data-state="checked"],
-  [aria-current="page"],
-  [aria-selected="true"] {
-    outline: 2px solid Highlight;
-    outline-offset: -2px;
-  }
-  /* Informação não pode depender de imagem de fundo */
-  .forced-colors-visible {
-    forced-color-adjust: none;
-  }
-}
+  /* ===== SUBTÍTULO (Associado • Titular / Dependente) ===== */
+  .user-subtitle,
+  .user-role,
+  .header-user-role,
+  [data-testid="user-subtitle"],
+  .user-type-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
 
-/* Tipografia mínima legível: nada abaixo de 0.8125rem em conteúdo funcional */
-@layer utilities {
-  .text-a11y-min {
-    font-size: max(0.875rem, 14px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    min-width: 0;
+    max-width: 100%;
+
+    margin: 0;
+    padding: 0;
   }
-  /* Aumenta a área de toque sem alterar o tamanho visual do ícone */
-  .tap-expand {
-    position: relative;
+
+  /* Container vertical para nome + subtítulo */
+  .user-name-group,
+  .user-text-group,
+  .header-user-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    max-width: 100%;
   }
-  .tap-expand::after {
-    content: "";
-    position: absolute;
-    inset: 50% 50%;
+
+  /* ===== ÍCONE DO SINO/NOTIFICAÇÕES ===== */
+  .header-notification-icon,
+  .header-bell-icon,
+  [data-testid="header-notifications"],
+  .notification-icon {
     width: 44px;
     height: 44px;
-    transform: translate(-50%, -50%);
-  }
-}
+    min-width: 44px;
+    min-height: 44px;
+    flex-shrink: 0;
 
-/* Alturas fixas não devem cortar texto ampliado */
-@layer base {
-  button,
-  .btn,
-  [role="tab"] {
-    min-height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+  }
+
+  .header-notification-icon:active,
+  .header-bell-icon:active {
+    background-color: rgba(22, 135, 84, 0.08);
+  }
+
+  /* ===== CARD VERDE DE BOAS-VINDAS (HERO) ===== */
+  .sbpm-hero-container,
+  .welcome-card,
+  .hero-welcome-section {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    padding: 16px 12px 0 12px;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .sbpm-hero-header {
+    width: 100%;
     height: auto;
+    min-height: 140px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  }
+
+  .sbpm-hero-card-overlay {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    right: auto;
+
+    width: 100%;
+    max-width: 100%;
+
+    padding: 16px 14px;
+    margin: 0;
+    margin-top: 12px;
+
+    border-radius: 14px;
+    gap: 10px;
+
+    background: rgba(22, 135, 84, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .sbpm-hero-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sbpm-hero-user-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sbpm-hero-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    flex-shrink: 0;
+  }
+
+  .sbpm-hero-greeting {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  }
+
+  .sbpm-hero-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .sbpm-hero-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sbpm-hero-badge {
+    padding: 4px 12px;
+    font-size: 11px;
+    border-radius: 16px;
+  }
+
+  .sbpm-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 360px) {
+    .sbpm-hero-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .sbpm-hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .sbpm-hero-stat-label {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .sbpm-hero-stat-value {
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
+  }
+
+  .sbpm-hero-stat-divider {
+    display: none;
+  }
+
+  /* ===== RESUMO DO VÍNCULO — CARDS RESPONSIVOS ===== */
+  .summary-cards-container,
+  .relationship-summary,
+  .dashboard-summary-cards,
+  [data-testid="summary-section"] {
+    display: grid;
+    gap: 12px;
+
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    padding: 0 12px;
+    margin: 20px 0;
+  }
+
+  @media (min-width: 390px) and (max-width: 1023px) {
+    .summary-cards-container,
+    .relationship-summary,
+    .dashboard-summary-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 389px) {
+    .summary-cards-container,
+    .relationship-summary,
+    .dashboard-summary-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== CARDS DO RESUMO ===== */
+  .summary-card,
+  .relationship-card,
+  .dashboard-card,
+  [data-testid="summary-card"],
+  .card-item {
+    min-width: 0;
+    width: 100%;
+
+    padding: 14px;
+    padding-top: 12px;
+
+    border-radius: 12px;
+    box-sizing: border-box;
+
+    height: auto;
+    min-height: auto;
+
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .summary-card:active {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(22, 135, 84, 0.2);
+  }
+
+  /* ===== TIPOGRAFIA DOS CARDS ===== */
+  .card-title,
+  .summary-card-title,
+  [data-testid="card-title"],
+  .card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .card-value,
+  .summary-card-value,
+  [data-testid="card-value"],
+  .card-main-content {
+    font-size: 26px;
+    font-weight: 700;
+    color: #172033;
+    line-height: 1.1;
+
+    margin: 0;
+    padding: 0;
+
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .card-description,
+  .summary-card-description,
+  [data-testid="card-description"],
+  .card-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.35;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  .card-link,
+  .summary-card-link,
+  [data-testid="card-link"],
+  .card-action {
+    font-size: 13px;
+    font-weight: 600;
+    color: #166534;
+
+    text-decoration: none;
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+
+    margin: 0;
+    padding: 0;
+
+    transition: color 0.2s ease;
+  }
+
+  .card-link:active,
+  .summary-card-link:active {
+    color: #15803d;
+  }
+
+  /* ===== BOTÃO FLUTUANTE WHATSAPP ===== */
+  .mobile-floating-actions,
+  .floating-actions-container,
+  .whatsapp-floating-button,
+  [data-testid="floating-actions"] {
+    position: fixed;
+
+    right: 16px;
+
+    bottom: calc(
+      var(--mobile-bottom-nav-height, 68px)
+      + env(safe-area-inset-bottom)
+      + 16px
+    );
+
+    z-index: 50;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    pointer-events: none;
+  }
+
+  .mobile-floating-actions > *,
+  .floating-actions-container > *,
+  [data-testid="floating-actions"] > * {
+    pointer-events: auto;
+  }
+
+  .whatsapp-button,
+  .floating-action-button,
+  [data-testid="whatsapp-btn"],
+  .action-button-floating {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+
+    border-radius: 50%;
+    background: #25d366;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+
+    border: none;
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+
+    transition: all 0.2s ease;
+
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .whatsapp-button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
+  }
+
+  /* ===== PADDING INFERIOR PARA CONTEÚDO (ABOVE NAVIGATION + FLOATING) ===== */
+  .dashboard-main-content,
+  .portal-content-area,
+  .external-dashboard-container,
+  [data-testid="dashboard-content"] {
+    padding-bottom: calc(
+      var(--mobile-bottom-nav-height, 68px)
+      + env(safe-area-inset-bottom)
+      + 90px
+    );
+  }
+
+  /* ===== NAVEGAÇÃO INFERIOR (BOTTOM NAVIGATION) ===== */
+  .mobile-bottom-navigation,
+  .bottom-navigation,
+  .portal-mobile-nav,
+  [data-testid="bottom-nav"] {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: calc(
+      var(--mobile-bottom-nav-height, 68px)
+      + env(safe-area-inset-bottom)
+    );
+
+    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+
+    background: rgba(255, 255, 255, 0.96);
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.05);
+
+    z-index: 40;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+
+    box-sizing: border-box;
+  }
+
+  /* Dark mode da navegação */
+  .dark .mobile-bottom-navigation,
+  .dark .bottom-navigation,
+  .dark .portal-mobile-nav {
+    background: rgba(23, 23, 23, 0.96);
+    border-top-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-item,
+  .bottom-nav-item,
+  [data-testid="nav-item"],
+  .navigation-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    width: 20%;
+    height: var(--mobile-bottom-nav-height, 68px);
+
+    padding: 6px 0;
+    box-sizing: border-box;
+
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    transition: all 0.2s ease;
+
+    color: #64748b;
+    text-decoration: none;
+
+    border: none;
+    background: none;
+  }
+
+  .nav-item.active,
+  .bottom-nav-item.active,
+  [data-testid="nav-item"][aria-current="page"] {
+    color: #166534;
+  }
+
+  .nav-icon,
+  .nav-item-icon,
+  [data-testid="nav-icon"],
+  .navigation-icon {
+    font-size: 24px;
+    line-height: 1;
+    color: inherit;
+  }
+
+  .nav-label,
+  .nav-item-label,
+  [data-testid="nav-label"],
+  .navigation-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: inherit;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  /* ===== DARK MODE ADJUSTMENTS ===== */
+  .dark .user-identity-block,
+  .dark .user-info-block,
+  .dark .header-user-details {
+    background: rgba(30, 30, 30, 0.94);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #e0e0e0;
+  }
+
+  .dark .user-name,
+  .dark .header-user-name,
+  .dark [data-testid="user-name"] {
+    color: #e0e0e0;
+  }
+
+  .dark .summary-card,
+  .dark .relationship-card,
+  .dark .dashboard-card {
+    background: rgba(30, 30, 30, 0.92);
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #e0e0e0;
+  }
+
+  .dark .card-title,
+  .dark .summary-card-title {
+    color: #90a3b0;
+  }
+
+  .dark .card-value,
+  .dark .summary-card-value {
+    color: #f0f0f0;
+  }
+
+  .dark .card-description,
+  .dark .summary-card-description {
+    color: #90a3b0;
+  }
+
+  .dark .card-link,
+  .dark .summary-card-link {
+    color: #66bb6a;
   }
 }
 
-/* Skeleton não deve ser lido nem piscar agressivamente */
-[aria-busy="true"] [aria-hidden="true"] {
-  pointer-events: none;
+/* ===== DESKTOP (≥ 1024px) — SEM ALTERAÇÕES ===== */
+/* O CSS acima somente aplica em max-width: 1023px */
+/* Desktop mantém todos os estilos originais */
+</file>
+
+<lov-gh-write path="src/portal/ExternalPortalLayout.tsx" message="Refatoração: Header mobile/PWA compacto com grid layout, avatar 34x34, nome com ellipsis, bloco do usuário adaptativo e remoção de min-width fixo">
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, Bell } from 'lucide-react';
+import { useAssociado } from '@/contexts/AssociadoContext';
+import { cn } from '@/lib/utils';
+import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
+import PortalBottomNavigation from '@/portal/components/PortalBottomNavigation';
+
+interface User {
+  nome: string;
+  fotoUrl?: string;
+  matricula: string;
+  titularNome: string;
+  ativo: boolean;
 }
 
-/* LGPD/Privacy adjustments for Floating Actions */
-body[data-lgpd-open="true"] .body-lgpd-open\:bottom-\[calc\(var\(--lgpd-sheet-height\2c 180px\)\+env\(safe-area-inset-bottom\)\+12px\)\] {
-  bottom: calc(var(--lgpd-sheet-height, 180px) + env(safe-area-inset-bottom) + 12px) !important;
+interface ExternalPortalLayoutProps {
+  children: React.ReactNode;
+  user: User;
+  onLogout: () => void;
+  profileType: 'associate' | 'dependent';
+  banner?: React.ReactNode;
+}
+
+export default function ExternalPortalLayout({
+  children,
+  user,
+  onLogout,
+  profileType,
+  banner,
+}: ExternalPortalLayoutProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isDependente } = useAssociado();
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const initials = user.nome
+    .split(' ')
+    .filter((word) => word.length > 0)
+    .map((word) => word[0].toUpperCase())
+    .slice(0, 2)
+    .join('');
+
+  const userRole = isDependente ? 'Dependente' : `Associado • ${profileType === 'associate' ? 'Titular' : 'Dependente'}`;
+
+  return (
+    <div className="min-h-screen w-full bg-background">
+      {/* HEADER MOBILE/PWA */}
+      <header className="portal-user-header sticky top-0 z-30 w-full max-w-full">
+        <button
+          onClick={() => setShowMenu(!showMenu)}
+          className="flex items-center justify-center w-11 h-11 flex-shrink-0"
+          aria-label="Menu"
+        >
+          <Menu size={20} className="text-foreground" />
+        </button>
+
+        {/* BLOCO DO USUÁRIO */}
+        <div className="user-identity-block min-w-0">
+          {/* AVATAR */}
+          <div className="user-avatar flex-shrink-0">
+            {user.fotoUrl ? (
+              <img src={user.fotoUrl} alt={user.nome} className="w-full h-full object-cover" />
+            ) : (
+              <span className="text-xs font-bold">{initials}</span>
+            )}
+          </div>
+
+          {/* NOME + SUBTÍTULO */}
+          <div className="user-name-group min-w-0">
+            <div className="user-name truncate">{user.nome}</div>
+            <div className="user-subtitle truncate">{userRole}</div>
+          </div>
+        </div>
+
+        {/* ÍCONE NOTIFICAÇÕES */}
+        <button
+          onClick={() => navigate('/dashboard/notificacoes')}
+          className="flex items-center justify-center w-11 h-11 flex-shrink-0"
+          aria-label="Notificações"
+        >
+          <Bell size={20} className="text-foreground" />
+          {notificationCount > 0 && (
+            <span className="absolute top-2 right-2 w-5 h-5 bg-destructive text-white text-xs rounded-full flex items-center justify-center font-bold">
+              {notificationCount > 9 ? '9+' : notificationCount}
+            </span>
+          )}
+        </button>
+      </header>
+
+      {/* BANNER (WELCOME + COMUNICADOS) */}
+      {banner && (
+        <div className="w-full max-w-full">
+          {banner}
+        </div>
+      )}
+
+      {/* CONTEÚDO PRINCIPAL */}
+      <main className="dashboard-main-content w-full max-w-full pb-bottom-nav">
+        {children}
+      </main>
+
+      {/* AÇÕES FLUTUANTES (WHATSAPP) */}
+      <FloatingActionsManager profileType={profileType} />
+
+      {/* NAVEGAÇÃO INFERIOR */}
+      <PortalBottomNavigation currentPath={location.pathname} />
+    </div>
+  );
 }

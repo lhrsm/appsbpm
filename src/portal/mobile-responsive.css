@@ -1,0 +1,494 @@
+
+/* ===================================================================
+   MOBILE RESPONSIVE — Layout do Painel Autenticado (<1024px)
+   APENAS MOBILE/PWA — NUNCA DESKTOP
+   =================================================================== */
+
+/* CSS Variables para Mobile */
+:root {
+  --mobile-header-height: 56px;
+  --mobile-bottom-nav-height: 68px;
+  --mobile-avatar-size: 34px;
+  --mobile-padding: 12px;
+  --mobile-gap: 8px;
+}
+
+/* ===================================================================
+   HEADER MOBILE/PWA — Compacto
+   Grid: [44px | 1fr | 44px]
+   =================================================================== */
+
+@media (max-width: 1023px) {
+  .mobile-portal-layout {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: hsl(var(--background));
+    overflow-x: hidden;
+  }
+
+  .mobile-portal-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: var(--mobile-header-height);
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    z-index: 40;
+    padding-top: env(safe-area-inset-top);
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .mobile-header-container {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: var(--mobile-header-height);
+    padding: 8px 12px;
+    box-sizing: border-box;
+  }
+
+  .mobile-header-button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    color: #172033;
+    padding: 0;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .mobile-header-button:active {
+    background-color: rgba(15, 23, 42, 0.08);
+  }
+
+  /* ===== USER BLOCK — Grid Compacto ===== */
+  .mobile-user-block {
+    display: grid;
+    grid-template-columns: var(--mobile-avatar-size) minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+
+  .mobile-user-avatar {
+    width: var(--mobile-avatar-size);
+    height: var(--mobile-avatar-size);
+    min-width: var(--mobile-avatar-size);
+    min-height: var(--mobile-avatar-size);
+    border-radius: 50%;
+    background: white;
+    border: 2px solid rgba(22, 135, 84, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .mobile-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mobile-avatar-initials {
+    font-size: 12px;
+    font-weight: 700;
+    color: #166534;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .mobile-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #172033;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+
+  .mobile-user-role {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .mobile-portal-main {
+    margin-top: calc(
+      var(--mobile-header-height) + env(safe-area-inset-top)
+    );
+    flex: 1;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-portal-content {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* ===== BOTTOM SPACING (para não cobrir conteúdo com WhatsApp + Nav) ===== */
+  .mobile-bottom-spacing {
+    height: calc(
+      var(--mobile-bottom-nav-height)
+      + env(safe-area-inset-bottom)
+      + 90px
+    );
+    width: 100%;
+  }
+
+  /* ===== FLOATING ACTIONS (WhatsApp) ===== */
+  .mobile-floating-actions {
+    position: fixed;
+    right: 16px;
+    bottom: calc(
+      var(--mobile-bottom-nav-height, 68px)
+      + env(safe-area-inset-bottom)
+      + 18px
+    );
+    z-index: 60;
+  }
+
+  .mobile-floating-actions button {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+/* ===================================================================
+   CARD VERDE DE BOAS-VINDAS — Responsivo
+   =================================================================== */
+
+@media (max-width: 1023px) {
+  .sbpm-hero-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 16px 0 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .sbpm-hero-header {
+    width: 100%;
+    height: 160px;
+    border-radius: 16px;
+  }
+
+  .sbpm-hero-card-overlay {
+    width: calc(100% - 32px);
+    max-width: calc(100% - 32px);
+    left: 16px;
+    right: 16px;
+    bottom: -30px;
+    padding: 16px 16px;
+    border-radius: 14px;
+    gap: 12px;
+  }
+
+  .sbpm-hero-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sbpm-hero-user-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sbpm-hero-avatar {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .sbpm-hero-greeting {
+    font-size: 15px;
+  }
+
+  .sbpm-hero-subtitle {
+    font-size: 12px;
+  }
+
+  .sbpm-hero-badges {
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .sbpm-hero-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+
+  .sbpm-hero-stats {
+    gap: 12px;
+  }
+
+  .sbpm-hero-stat-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .sbpm-hero-card-overlay {
+    bottom: -25px;
+    padding: 14px 12px;
+  }
+
+  .sbpm-hero-avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* ===================================================================
+   RESUMO DO VÍNCULO — Cards Responsivos
+   Grid: 390–1023px = 2 colunas | <390px = 1 coluna
+   =================================================================== */
+
+@media (max-width: 1023px) {
+  /* Container do resumo */
+  .portal-vínculo-grid {
+    display: grid;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 0 16px;
+  }
+
+  /* Entre 390px e 1023px: 2 colunas */
+  @media (min-width: 390px) and (max-width: 1023px) {
+    .portal-vínculo-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Abaixo de 390px: 1 coluna */
+  @media (max-width: 389px) {
+    .portal-vínculo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Cards do resumo */
+  .portal-vínculo-card {
+    min-width: 0;
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .portal-vínculo-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  .portal-vínculo-card-value {
+    font-size: 26px;
+    font-weight: 700;
+    color: #172033;
+    line-height: 1.2;
+  }
+
+  .portal-vínculo-card-description {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.35;
+  }
+
+  .portal-vínculo-card-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: #166534;
+    text-decoration: none;
+    margin-top: 4px;
+  }
+}
+
+/* ===================================================================
+   NAVEGAÇÃO INFERIOR FIXA — 68px
+   =================================================================== */
+
+@media (max-width: 1023px) {
+  .mobile-bottom-navigation {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    height: var(--mobile-bottom-nav-height);
+    background: rgba(255, 255, 255, 0.96);
+    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 50;
+    box-sizing: border-box;
+  }
+
+  .mobile-bottom-nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: var(--mobile-bottom-nav-height);
+    gap: 0;
+  }
+
+  .mobile-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 8px;
+    min-height: var(--mobile-bottom-nav-height);
+    flex: 1;
+    Claude (claude-haiku-4-5-20251001) da Anthropic: pointer;
+    text-decoration: none;
+    background: none;
+    border: none;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-bottom-nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-bottom-nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .mobile-bottom-nav-item.inactive {
+    color: #64748b;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: #166534;
+  }
+
+  .mobile-bottom-nav-item.active .mobile-bottom-nav-icon svg {
+    stroke-width: 3;
+  }
+}
+
+/* ===================================================================
+   DARK MODE — Manter Responsividade
+   =================================================================== */
+
+@media (max-width: 1023px) {
+  .dark .mobile-portal-header {
+    background: rgba(30, 30, 45, 0.96);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .mobile-user-block {
+    background: rgba(30, 30, 45, 0.96);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .mobile-user-name {
+    color: #e0e7ff;
+  }
+
+  .dark .mobile-user-role {
+    color: #a0aec0;
+  }
+
+  .dark .mobile-bottom-navigation {
+    background: rgba(30, 30, 45, 0.96);
+    border-top-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .dark .mobile-bottom-nav-item.inactive {
+    color: #a0aec0;
+  }
+
+  .dark .mobile-bottom-nav-item.active {
+    color: #4ade80;
+  }
+}
+
+/* ===================================================================
+   PROTEÇÃO DESKTOP — Nenhuma regra acima de 1023px
+   =================================================================== */
+
+@media (min-width: 1024px) {
+  /* Desktop layout NÃO É ALTERADO */
+  .mobile-portal-layout,
+  .mobile-portal-header,
+  .mobile-portal-main,
+  .mobile-floating-actions,
+  .mobile-bottom-navigation {
+    display: none !important;
+  }
+}

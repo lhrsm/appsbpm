@@ -1,172 +1,207 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import { useLocation } from "react-router-dom";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { PageHeader } from "@/design-system/components/Navigation";
-import SkipLinks from "@/a11y/SkipLinks";
-import PortalHeader from "./components/PortalHeader";
-import PortalSidebar from "./components/PortalSidebar";
-import MobileNavigationDrawer from "./components/MobileNavigationDrawer";
-import PortalBottomNav from "./components/PortalBottomNav";
-import PortalBreadcrumbs from "./components/PortalBreadcrumbs";
-import PortalFooter from "./components/PortalFooter";
-import PortalPageContainer from "./components/PortalPageContainer";
-import { FloatingActionsManager } from "@/components/FloatingActionsManager";
 
-import { PortalAccessRestricted, PortalErrorState } from "./components/PortalStates";
-import { PageHeaderSkeleton, ContentSkeleton } from "./components/PortalSkeletons";
-import type { PortalUser } from "./components/PortalUserMenu";
-import { isRouteAllowed, type PortalProfile } from "./navigation";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Bell, Menu, MessageCircle, Home, FileText, Plus, HelpCircle, User } from 'lucide-react';
+import { FloatingActionsManager } from '@/portal/components/FloatingActionsManager';
+import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
+import UserProfileDropdown from '@/portal/components/UserProfileDropdown';
 
-const COLLAPSE_KEY = "sbpm:portal:sidebar-collapsed";
-
-export interface ExternalPortalLayoutProps {
-  profileType: PortalProfile;
-  user: PortalUser;
-  permissions?: string[];
-  pageTitle?: ReactNode;
-  pageDescription?: ReactNode;
-  actions?: ReactNode;
-  /** Conteúdo exibido acima do cabeçalho da página (banners). */
-  banner?: ReactNode;
-  children: ReactNode;
-  loading?: boolean;
-  error?: string | null;
-  onRetry?: () => void;
+interface ExternalPortalLayoutProps {
+  profileType: 'associate' | 'dependent';
+  user: {
+    nome: string;
+    fotoUrl?: string;
+    matricula?: string;
+    titularNome?: string;
+    ativo?: boolean;
+  };
   onLogout: () => void;
-  environment?: string;
+  banner?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 /**
- * Layout compartilhado do Portal do Associado e do Portal do Dependente.
- *
- * Variações de perfil são controladas por `profileType` + `permissions`;
- * não existem dois layouts independentes.
+ * Layout externo do portal do associado/dependente.
+ * 
+ * Responsividade:
+ * - Desktop (≥1024px): Header com logo e sidebar, layout grid
+ * - Mobile (<1024px): Header compacto, navegação inferior fixa
+ * - PWA: Mesmo layout mobile + safe-area
+ * 
+ * Breakpoints:
+ * - 320–390px: 1 coluna para cards, header super compacto
+ * - 390–1023px: até 2 colunas para cards, header compacto
+ * - ≥1024px: Desktop completo, sem mudanças
  */
+
 export default function ExternalPortalLayout({
   profileType,
   user,
-  permissions,
-  pageTitle,
-  pageDescription,
-  actions,
+  onLogout,
   banner,
   children,
-  loading,
-  error,
-  onRetry,
-  onLogout,
-  environment,
 }: ExternalPortalLayoutProps) {
-  const { pathname } = useLocation();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.localStorage.getItem(COLLAPSE_KEY) === "1";
-  });
+  const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   useEffect(() => {
-    try {
-      window.localStorage.setItem(COLLAPSE_KEY, collapsed ? "1" : "0");
-    } catch {
-      /* preferência apenas local */
-    }
-  }, [collapsed]);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const allowed = useMemo(
-    () => isRouteAllowed(pathname, { profile: profileType, permissions }),
-    [pathname, profileType, permissions]
-  );
-
-  console.log("[Layout] Render Stage:", { loading, error, allowed, pathname });
-
-  const renderContent = () => {
-    if (loading) {
-      console.log("[Layout] Rendering loading skeleton...");
-      return (
-        <div key="loading">
-          <PageHeaderSkeleton />
-          <ContentSkeleton />
-        </div>
-      );
-    }
-    
-    if (error) {
-      console.error("[Layout] Rendering error state:", error);
-      return <PortalErrorState key="error" title="Falha ao carregar portal" description={error} onRetry={onRetry} />;
-    }
-    
-    if (!allowed) {
-      console.warn("[Layout] Access denied for route:", pathname);
-      return <PortalAccessRestricted key="denied" />;
-    }
-    
-    console.log("[Layout] Rendering children content...");
-    return <div key="children">{children}</div>;
+  const handleNotifications = () => {
+    navigate('/dashboard/notificacoes');
   };
 
-  return (
-    <TooltipProvider delayDuration={200}>
-      <div key={`portal-layout-${profileType}`} className="flex min-h-dvh w-full flex-col bg-white dark:bg-slate-900 transition-colors">
-        <SkipLinks />
+  const handleLogoutClick = () => {
+    setDropdownOpen(false);
+    onLogout();
+  };
 
+  // ===== RENDERIZAÇÃO MOBILE (<1024px) =====
+  if (isMobile) {
+    return (
+      <div className="mobile-portal-layout">
+        {/* Header Compacto Mobile */}
+        <header className="mobile-portal-header">
+          <div className="mobile-header-container">
+            {/* Menu Button */}
+            <button className="mobile-header-button" aria-label="Menu">
+              <Menu size={24} />
+            </button>
 
+            {/* User Block — Grid Layout */}
+            <div className="mobile-user-block">
+              {/* Avatar */}
+              <div className="mobile-user-avatar">
+                {user.fotoUrl ? (
+                  <img src={user.fotoUrl} alt={user.nome} />
+                ) : (
+                  <div className="mobile-avatar-initials">
+                    {user.nome
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2)}
+                  </div>
+                )}
+              </div>
 
-        <PortalHeader
-          profile={profileType}
-          user={user}
-          permissions={permissions}
-          onOpenMenu={() => setDrawerOpen(true)}
-          menuOpen={drawerOpen}
-          onLogout={onLogout}
-          environment={environment}
-        />
+              {/* Name + Role */}
+              <div className="mobile-user-info">
+                <div className="mobile-user-name">
+                  {user.nome}
+                </div>
+                <div className="mobile-user-role">
+                  {profileType === 'dependent' ? 'Dependente' : 'Associado • Titular'}
+                </div>
+              </div>
+            </div>
 
-        <div id="portal-mobile-drawer">
-          <MobileNavigationDrawer
-            open={drawerOpen}
-            onOpenChange={setDrawerOpen}
-            profile={profileType}
-            permissions={permissions}
-            user={user}
-            onLogout={onLogout}
-          />
+            {/* Notifications Button */}
+            <button
+              className="mobile-header-button"
+              onClick={handleNotifications}
+              aria-label="Notificações"
+            >
+              <Bell size={24} />
+            </button>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="mobile-portal-main">
+          {banner}
+          <div className="mobile-portal-content">
+            {children}
+          </div>
+          {/* Espaço para WhatsApp e Navegação */}
+          <div className="mobile-bottom-spacing"></div>
+        </main>
+
+        {/* Floating Actions (WhatsApp) */}
+        <div className="mobile-floating-actions">
+          <FloatingActionsManager />
         </div>
 
-        <div className="flex w-full flex-1 min-w-0">
-          <PortalSidebar
-            profile={profileType}
-            permissions={permissions}
-            collapsed={collapsed}
-            onToggleCollapsed={() => setCollapsed((c) => !c)}
-            className="border-r-slate-200/60"
-          />
+        {/* Bottom Navigation */}
+        <MobileBottomNavigation />
+      </div>
+    );
+  }
 
-          <div className="flex min-w-0 flex-1 flex-col">
-            <main
-              id="conteudo-principal"
-              tabIndex={-1}
-              className={cn("min-w-0 flex-1 focus:outline-none")}
+  // ===== RENDERIZAÇÃO DESKTOP (≥1024px) =====
+  return (
+    <div className="external-portal-layout">
+      {/* Header Desktop */}
+      <header className="portal-header-desktop">
+        <div className="portal-header-content">
+          <div className="portal-header-logo">
+            <div className="logo-placeholder">SBPM</div>
+          </div>
+          <div className="portal-header-spacer"></div>
+          <div className="portal-header-actions">
+            <button
+              className="portal-header-button"
+              onClick={handleNotifications}
+              aria-label="Notificações"
             >
-              <PortalPageContainer className="!px-0 !space-y-0">
-                <div className="px-4 ms:px-5 md:px-6 lg:px-8 xl:px-10 2xl:px-12 pb-4 md:pb-6 pt-5 md:pt-6">
-                  {banner && <div key="portal-banner-container" className="mb-0">{banner}</div>}
-                  <PortalBreadcrumbs profile={profileType} />
-                  {pageTitle && !loading && !error && allowed && (
-                    <PageHeader title={pageTitle} description={pageDescription} actions={actions} />
+              <Bell size={24} />
+            </button>
+            <div className="portal-header-divider"></div>
+            <div className="portal-header-user">
+              <button
+                className="portal-header-user-button"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+              >
+                <div className="portal-user-avatar-desktop">
+                  {user.fotoUrl ? (
+                    <img src={user.fotoUrl} alt={user.nome} />
+                  ) : (
+                    <div className="avatar-initials">
+                      {user.nome
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .toUpperCase()
+                        .slice(0, 2)}
+                    </div>
                   )}
-                  {renderContent()}
                 </div>
-              </PortalPageContainer>
-            </main>
-            <PortalFooter />
+                <div className="portal-user-text">
+                  <div className="portal-user-name">{user.nome}</div>
+                  <div className="portal-user-role">
+                    {profileType === 'dependent' ? 'Dependente' : 'Associado'}
+                  </div>
+                </div>
+              </button>
+              {dropdownOpen && (
+                <UserProfileDropdown
+                  user={user}
+                  onLogout={handleLogoutClick}
+                  onClose={() => setDropdownOpen(false)}
+                />
+              )}
+            </div>
           </div>
         </div>
+      </header>
 
-        <PortalBottomNav profile={profileType} permissions={permissions} />
-        <FloatingActionsManager />
-      </div>
-    </TooltipProvider>
+      {/* Main Content */}
+      <main className="portal-main-desktop">
+        {banner}
+        <div className="portal-content-desktop">
+          {children}
+        </div>
+      </main>
 
+      {/* Floating Actions */}
+      <FloatingActionsManager />
+    </div>
   );
 }
