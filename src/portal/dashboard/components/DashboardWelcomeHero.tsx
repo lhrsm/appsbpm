@@ -55,41 +55,42 @@ export function DashboardWelcomeHero() {
             </div>
           </div>
 
-          <div className="sbpm-hero-badges">
-            <div className="sbpm-hero-badge">
-              <span className="sbpm-hero-status-dot" />
+          <div className="sbpm-hero-badges flex flex-row items-center gap-2">
+            <div className="sbpm-hero-badge flex items-center gap-1.5 py-1 px-3 bg-white/12 text-white rounded-full text-[10px] md:text-xs font-medium">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.4)]" />
               Associado Ativo
             </div>
-            <div className="sbpm-hero-badge">
-              <Shield size={12} className="mr-1" />
+            <div className="sbpm-hero-badge flex items-center gap-1.5 py-1 px-3 bg-white/12 text-white rounded-full text-[10px] md:text-xs font-medium">
+              <Shield size={12} />
               {tipoMilitar}
             </div>
           </div>
         </div>
 
-        <div className="sbpm-hero-stats gap-3 md:gap-12">
-          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
-            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Matrícula</span>
-            <span className="sbpm-hero-stat-value text-sm md:text-lg">{maskMatricula(matricula)}</span>
+        <div className="sbpm-hero-stats flex items-center justify-between md:justify-start gap-4 md:gap-12 mt-4 pt-3 border-t border-white/8 w-full">
+          <div className="sbpm-hero-stat flex flex-col items-start min-w-0">
+            <span className="sbpm-hero-stat-label text-[9px] md:text-[10px] text-white/55 uppercase tracking-wider font-medium">Matrícula</span>
+            <span className="sbpm-hero-stat-value text-sm md:text-lg text-white font-bold truncate">{maskMatricula(matricula)}</span>
           </div>
           
-          <div className="sbpm-hero-stat-divider" />
+          <div className="hidden md:block h-7 w-[1px] bg-white/8" />
 
-          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
-            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Situação</span>
-            <span className={cn("sbpm-hero-stat-value text-sm md:text-lg", situacao === 'Regular' && "sbpm-hero-status-ok")}>
+          <div className="sbpm-hero-stat flex flex-col items-start min-w-0">
+            <span className="sbpm-hero-stat-label text-[9px] md:text-[10px] text-white/55 uppercase tracking-wider font-medium">Situação</span>
+            <span className={cn("sbpm-hero-stat-value text-sm md:text-lg font-bold truncate", situacao === 'Regular' ? "text-green-400" : "text-white")}>
               {situacao}
             </span>
           </div>
 
-          <div className="sbpm-hero-stat-divider" />
+          <div className="hidden md:block h-7 w-[1px] bg-white/8" />
 
-          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
-            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Tempo</span>
-            <span className="sbpm-hero-stat-value text-sm md:text-lg">{calcularTempoAssociacao()}</span>
+          <div className="sbpm-hero-stat flex flex-col items-start min-w-0">
+            <span className="sbpm-hero-stat-label text-[9px] md:text-[10px] text-white/55 uppercase tracking-wider font-medium">Tempo</span>
+            <span className="sbpm-hero-stat-value text-sm md:text-lg text-white font-bold truncate">{calcularTempoAssociacao()}</span>
           </div>
         </div>
       </div>
     </div>
+
   );
 }
