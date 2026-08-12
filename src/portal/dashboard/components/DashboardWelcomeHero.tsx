@@ -37,8 +37,8 @@ export function DashboardWelcomeHero() {
 
   return (
     <div className="animate-slide-up-in">
-      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full min-h-[140px] md:min-h-0">
-        <div className="sbpm-hero-card-content">
+      <div className="sbpm-hero-card-overlay !static !inset-auto !w-full !max-w-none !shadow-lg !border-0 !bg-[#168754] !backdrop-blur-none !mb-0 !rounded-2xl md:!rounded-2xl mx-4 md:mx-0 !w-[calc(100%-32px)] md:!w-full min-h-[120px] md:min-h-0 py-4 px-4 md:py-6 md:px-6">
+        <div className="sbpm-hero-card-content gap-2 md:gap-4">
           <div className="sbpm-hero-user-info">
             <div className="sbpm-hero-avatar">
               <User size={24} />
@@ -67,25 +67,25 @@ export function DashboardWelcomeHero() {
         </div>
 
         <div className="sbpm-hero-stats gap-3 md:gap-12">
-          <div className="sbpm-hero-stat p-2 md:p-0">
-            <span className="sbpm-hero-stat-label">Matrícula</span>
-            <span className="sbpm-hero-stat-value">{maskMatricula(matricula)}</span>
+          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
+            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Matrícula</span>
+            <span className="sbpm-hero-stat-value text-sm md:text-lg">{maskMatricula(matricula)}</span>
           </div>
           
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat p-2 md:p-0">
-            <span className="sbpm-hero-stat-label">Situação</span>
-            <span className={cn("sbpm-hero-stat-value", situacao === 'Regular' && "sbpm-hero-status-ok")}>
+          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
+            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Situação</span>
+            <span className={cn("sbpm-hero-stat-value text-sm md:text-lg", situacao === 'Regular' && "sbpm-hero-status-ok")}>
               {situacao}
             </span>
           </div>
 
           <div className="sbpm-hero-stat-divider" />
 
-          <div className="sbpm-hero-stat p-2 md:p-0">
-            <span className="sbpm-hero-stat-label">Tempo de associação</span>
-            <span className="sbpm-hero-stat-value">{calcularTempoAssociacao()}</span>
+          <div className="sbpm-hero-stat p-2 md:p-0 flex flex-col items-start">
+            <span className="sbpm-hero-stat-label text-[10px] md:text-xs">Tempo</span>
+            <span className="sbpm-hero-stat-value text-sm md:text-lg">{calcularTempoAssociacao()}</span>
           </div>
         </div>
       </div>

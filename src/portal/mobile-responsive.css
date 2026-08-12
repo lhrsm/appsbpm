@@ -6,7 +6,7 @@
 
 /* CSS Variables para Mobile */
 :root {
-  --mobile-header-height: 72px; /* Ajustado para 72-84px conforme requisito 1 */
+  --mobile-header-height: 80px; /* Ajustado para 72-84px conforme requisito 1 */
   --mobile-bottom-nav-height: 68px;
   --mobile-avatar-size: 42px;   /* Ajustado para 42px conforme requisito 1 */
   --mobile-padding: 16px;
@@ -52,8 +52,8 @@
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    height: var(--mobile-header-height);
-    padding: 8px 12px;
+    height: 100%;
+    padding: 0 12px;
     box-sizing: border-box;
   }
 
@@ -154,6 +154,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin-top: -2px; /* Reduz espaço */
   }
 
   /* ===== MAIN CONTENT ===== */
@@ -263,6 +264,7 @@
 
   .sbpm-hero-subtitle {
     font-size: 12px;
+    opacity: 0.9;
   }
 
   .sbpm-hero-badges {
@@ -273,8 +275,8 @@
   }
 
   .sbpm-hero-badge {
-    font-size: 11px;
-    padding: 3px 10px;
+    font-size: 10px; /* Reduzido */
+    padding: 2px 8px; /* Reduzido */
   }
 
   .sbpm-hero-stats {
