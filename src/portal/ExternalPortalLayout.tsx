@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, Menu, MessageCircle, Home, FileText, Plus, HelpCircle, User } from 'lucide-react';
-import { FloatingActionsManager } from '@/portal/components/FloatingActionsManager';
+import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
 import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
 import UserProfileDropdown from '@/portal/components/UserProfileDropdown';
 
