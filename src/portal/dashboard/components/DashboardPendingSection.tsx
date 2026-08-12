@@ -40,7 +40,7 @@ export function DashboardPendingSection({ items, max = 5 }: { items: PendingItem
         return (
           <li
             key={item.id}
-            className={cn("flex flex-wrap items-start gap-3 rounded-[18px] md:rounded-xl border border-l-4 bg-card p-5 md:p-4 shadow-sm md:shadow-none", borda[item.priority])}
+            className={cn("flex flex-wrap items-start gap-3 rounded-[18px] md:rounded-xl border border-l-4 bg-card p-4 md:p-4 shadow-sm md:shadow-none", borda[item.priority])}
           >
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted" aria-hidden>
               <Icon className="h-4 w-4 text-foreground" />

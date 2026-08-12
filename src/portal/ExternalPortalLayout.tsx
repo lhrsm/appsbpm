@@ -134,7 +134,7 @@ export default function ExternalPortalLayout({
         </main>
 
         {/* Floating Actions (WhatsApp) */}
-        <div className="mobile-floating-actions">
+        <div className="mobile-floating-actions" style={{ bottom: 'calc(var(--mobile-bottom-nav-height, 68px) + env(safe-area-inset-bottom) + 24px)' }}>
           <FloatingActionsManager profileType={profileType} />
         </div>
 
