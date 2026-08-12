@@ -123,14 +123,17 @@ export default function Solicitacoes() {
         description="Acompanhe pelo protocolo todos os pedidos abertos junto à SBPM."
         source="Base institucional"
         action={
-          <PortalButton 
-            iconLeft={icons.adicionar} 
-            onClick={() => navigate("/dashboard/solicitacoes/nova")}
-            className="w-full md:w-auto h-[52px] max-w-[380px] mx-auto font-semibold rounded-[14px] flex items-center justify-center"
-          >
-            Nova solicitação
-          </PortalButton>
+          <div className="w-full flex justify-center pt-2 md:pt-0">
+            <PortalButton 
+              iconLeft={icons.adicionar} 
+              onClick={() => navigate("/dashboard/solicitacoes/nova")}
+              className="w-full md:w-auto h-[50px] max-w-[380px] font-bold rounded-[14px] flex items-center justify-center text-[15px] shadow-sm active:scale-[0.98] transition-all"
+            >
+              Nova solicitação
+            </PortalButton>
+          </div>
         }
+
       />
 
       <DataToolbar
