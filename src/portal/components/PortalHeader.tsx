@@ -82,21 +82,26 @@ export default function PortalHeader({
 
 
         <div className={cn(
-          "flex items-center gap-2 min-w-0 md:flex hidden",
-          isDashboard && "bg-white/78 backdrop-blur-md rounded-[10px] px-3 py-2 border border-white/40 shadow-sm"
+          "flex items-center gap-2.5 min-w-0 md:flex hidden",
+          isDashboard 
+            ? "lg:absolute lg:left-8 lg:top-6 2xl:left-10 2xl:top-7" 
+            : "bg-white/78 backdrop-blur-md rounded-[10px] px-3 py-2 border border-white/40 shadow-sm"
         )}>
           <img
-            src="/sbpm-logo.jpeg"
+            src="/assets/sbpm-logo-transparent.png"
             alt="SBPM"
-            className="h-9 w-auto shrink-0"
+            className={cn(
+              "shrink-0",
+              isDashboard ? "h-[50px] 2xl:h-[58px] w-auto" : "h-9 w-auto"
+            )}
             onError={(e) => {
-              e.currentTarget.src = "https://www.sbpmbahia.com.br/wp-content/uploads/2021/05/cropped-logo-sbpm-1-192x192.png";
+              e.currentTarget.src = "/sbpm-logo.jpeg";
             }}
           />
           {isDashboard && (
-            <div className="flex flex-col leading-none">
-              <span className="text-[12px] font-bold text-[#172033]">Portal da SBPM</span>
-              <span className="text-[10px] font-medium text-slate-500">Associado</span>
+            <div className="flex flex-col leading-[1.15] text-white" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.35)' }}>
+              <span className="text-[16px] font-bold">Portal da SBPM</span>
+              <span className="text-[11px] font-medium text-white/82">Portal do Associado</span>
             </div>
           )}
         </div>
@@ -106,13 +111,11 @@ export default function PortalHeader({
 
         <div className="flex shrink-0 items-center gap-1.5 md:gap-4 w-full md:w-auto justify-end">
           <div className={cn(
-            "hidden md:flex items-center gap-2 rounded-full px-2 py-1 border shadow-sm",
-            isDashboard 
-              ? "bg-white/88 backdrop-blur-md border-white/40" 
-              : "bg-slate-50/80 backdrop-blur-md border-slate-200"
+            "hidden md:flex items-center gap-3",
+            !isDashboard && "rounded-full px-2 py-1 border shadow-sm bg-slate-50/80 backdrop-blur-md border-slate-200"
           )}>
             <PortalGlobalSearch profile={profile} permissions={permissions} variant="icon" />
-            <div className={cn("w-[1px] h-4 mx-1", isDashboard ? "bg-white/40" : "bg-slate-200")} />
+            {!isDashboard && <div className="w-[1px] h-4 mx-1 bg-slate-200" />}
             <PortalNotificationCenter />
           </div>
 
