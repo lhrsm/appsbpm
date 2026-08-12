@@ -109,7 +109,8 @@ export default function PortalNotificationCenter() {
     <Button
       variant="ghost"
       size="icon"
-      className="relative min-h-11 min-w-11 text-primary-foreground hover:bg-primary-foreground/15"
+      className="relative min-h-11 min-w-11 text-[#172033] hover:bg-black/5"
+
       aria-label={naoLidas > 0 ? `Notificações, ${naoLidas} não lidas` : "Notificações"}
       aria-expanded={open}
     >
