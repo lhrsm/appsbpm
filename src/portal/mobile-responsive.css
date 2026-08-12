@@ -485,6 +485,10 @@
      DARK MODE COMPLEMENTAR — HEADER MOBILE/PWA
      =================================================================== */
 
+  /* ===================================================================
+     DARK MODE COMPLEMENTAR — HEADER MOBILE/PWA
+     =================================================================== */
+
   .dark .mobile-portal-header {
     background: #0f172a !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -579,7 +583,7 @@
     background: #ef4444;
     border-radius: 50%;
     border: 1.5px solid #0f172a;
-    display: block; /* Apenas se houver lógica, mas aqui deixamos fixo para estilo */
+    display: block;
   }
 
   /* Seta Dark */
@@ -589,23 +593,6 @@
 
   .dark [data-state="open"] .mobile-dropdown-arrow {
     color: #4ade80;
-  }
-}
-
-  .dark .mobile-user-name {
-    color: #f8fafc !important;
-  }
-
-  .dark .mobile-user-role {
-    color: #94a3b8 !important;
-  }
-
-  .dark .mobile-user-avatar {
-    background: rgba(255, 255, 255, 0.96) !important;
-  }
-
-  .dark .mobile-avatar-initials {
-    color: #166534 !important;
   }
 
   .dark .mobile-bottom-navigation {
@@ -619,10 +606,6 @@
 
   .dark .mobile-bottom-nav-item.active {
     color: #22c55e !important;
-  }
-  /* Dark mode protection for Mobile Drawer */
-  .dark [data-radix-portal] [data-state='open'].fixed.z-50.bg-[#0f172a] {
-    background: #0f172a !important;
   }
 }
 
