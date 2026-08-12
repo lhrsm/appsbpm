@@ -96,8 +96,6 @@ export default function ExternalPortalLayout({
               {menuOpen ? <icons.fechar size={24} /> : <Menu size={24} />}
             </button>
 
-
-
             {/* User Block — Grid Layout */}
             <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
               <DropdownMenuTrigger asChild>
@@ -120,7 +118,7 @@ export default function ExternalPortalLayout({
 
                   {/* Name + Role */}
                   <div className="mobile-user-info">
-                    <div className="text-[11px] font-medium text-slate-500 leading-none mb-0.5">
+                    <div className="mobile-greeting">
                       Bom dia,
                     </div>
                     <div className="mobile-user-name">
@@ -132,7 +130,7 @@ export default function ExternalPortalLayout({
                   </div>
 
                   {/* Icon Dropdown */}
-                  <div className="text-slate-400">
+                  <div className="mobile-dropdown-arrow">
                     <icons.expandir size={14} className={cn("transition-transform duration-200", dropdownOpen && "rotate-180")} />
                   </div>
                 </div>
@@ -227,13 +225,16 @@ export default function ExternalPortalLayout({
             </DropdownMenu>
 
             {/* Notifications Button */}
-            <button
-              className="mobile-header-button"
-              onClick={handleNotifications}
-              aria-label="Notificações"
-            >
-              <Bell size={24} />
-            </button>
+            <div className="mobile-notification-container">
+              <button
+                className="mobile-notification-button"
+                onClick={handleNotifications}
+                aria-label="Notificações"
+              >
+                <Bell size={24} />
+                <span className="mobile-notification-badge"></span>
+              </button>
+            </div>
           </div>
         </header>
 
