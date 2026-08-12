@@ -50,10 +50,12 @@ export default function PortalPageHeader({
     <header className={cn("space-y-3", className, isKeyboardOpen && "hidden")}>
       {!hideBreadcrumbs && <PortalBreadcrumbs />}
 
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+      <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <Text as="h1" variant="h3" className="min-w-0 break-words">
+            <Text as="h1" variant="h3" className="min-w-0 break-words text-[22px] md:text-[24px] lg:text-[28px] font-bold">
+
+
               {title}
             </Text>
             {statusInfo && (

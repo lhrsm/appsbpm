@@ -97,7 +97,7 @@ export function MobileRecordCard({
     </>
   );
 
-  const base = "rounded-[16px] border bg-card p-4 text-left ds-shadow-sm transition-colors";
+  const base = "rounded-[18px] border bg-card p-4 text-left ds-shadow-sm transition-colors";
 
   if (onClick) {
     return (
@@ -126,7 +126,7 @@ export function MobileRecordCardSkeleton({ items = 3 }: { items?: number }) {
   return (
     <div className="space-y-3" aria-hidden>
       {Array.from({ length: items }).map((_, i) => (
-        <div key={i} className="rounded-[16px] border bg-card p-4 ds-shadow-sm">
+        <div key={i} className="rounded-[18px] border bg-card p-4 ds-shadow-sm">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-2/3" />

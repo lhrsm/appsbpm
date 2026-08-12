@@ -36,11 +36,12 @@ export function SectionErrorState({
       role="alert"
       aria-live="polite"
       className={cn(
-        "flex flex-col gap-3 rounded-[14px] border border-warning/40 bg-warning/10 text-left",
-        compact ? "p-3" : "p-4",
+        "flex flex-col gap-3 rounded-[18px] border border-warning/40 bg-white/50 backdrop-blur-md text-left",
+        compact ? "p-4" : "p-5",
         className,
       )}
     >
+
       <div className="flex gap-3">
         <Alerta className="h-5 w-5 shrink-0 text-warning" aria-hidden />
         <div className="min-w-0">
@@ -96,8 +97,9 @@ export function PageErrorState({
   return (
     <div
       role="alert"
-      className={cn("flex flex-col items-center gap-4 rounded-[16px] border bg-card p-8 text-center", className)}
+      className={cn("flex flex-col items-center gap-4 rounded-[18px] border bg-card p-8 text-center", className)}
     >
+
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10" aria-hidden>
         <Alerta className="h-6 w-6 text-destructive" />
       </span>
@@ -153,8 +155,9 @@ export function AccessRestrictedState({
   return (
     <div
       role="status"
-      className={cn("flex flex-col items-center gap-4 rounded-[16px] border bg-card p-8 text-center", className)}
+      className={cn("flex flex-col items-center gap-4 rounded-[18px] border bg-card p-8 text-center", className)}
     >
+
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-muted" aria-hidden>
         <Lock className="h-6 w-6 text-muted-foreground" />
       </span>
@@ -223,11 +226,12 @@ export function IntegrationPendingState({
     <div
       role="status"
       className={cn(
-        "flex flex-col items-center gap-3 rounded-[14px] border border-dashed bg-muted/30 text-center",
+        "flex flex-col items-center gap-3 rounded-[18px] border border-dashed bg-muted/30 text-center",
         compact ? "p-4" : "p-6",
         className,
       )}
     >
+
       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-muted" aria-hidden>
         <Sync className="h-5 w-5 text-muted-foreground" />
       </span>
@@ -254,10 +258,11 @@ export function DemonstrationDataNotice({ className, inline }: { className?: str
       role="status"
       className={cn(
         "inline-flex items-center gap-2 rounded-full border border-warning/40 bg-warning/10 px-3 py-1 text-xs font-medium text-warning-foreground",
-        !inline && "w-full justify-center rounded-[14px] py-2",
+        !inline && "w-full justify-center rounded-[18px] py-2",
         className,
       )}
     >
+
       <Info className="h-3.5 w-3.5" aria-hidden />
       Ambiente de demonstração — dados fictícios.
     </p>
@@ -283,8 +288,9 @@ export function OfflineNotice({ lastUpdated, availableFeatures, onRetry, retryin
     <div
       role="status"
       aria-live="polite"
-      className={cn("flex flex-col gap-3 rounded-[14px] border border-destructive/35 bg-destructive/[0.06] p-4", className)}
+      className={cn("flex flex-col gap-3 rounded-[18px] border border-destructive/35 bg-destructive/[0.06] p-4", className)}
     >
+
       <div className="flex gap-3">
         <WifiOff className="h-5 w-5 shrink-0 text-destructive" aria-hidden />
         <div className="min-w-0 space-y-1">

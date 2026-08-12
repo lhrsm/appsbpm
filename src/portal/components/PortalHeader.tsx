@@ -73,12 +73,13 @@ export default function PortalHeader({
         <Button
           variant="ghost"
           size="icon"
-          className="h-10 w-10 shrink-0 md:hidden flex items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 mt-2"
+          className="h-10 w-10 shrink-0 md:hidden flex items-center justify-center rounded-full bg-white/12 backdrop-blur-md border border-white/20 mt-1.5"
           onClick={onOpenMenu}
         >
           <Menu className="h-6 w-6 text-white" aria-hidden />
           <span className="sr-only">Abrir menu</span>
         </Button>
+
 
 
         <div className={cn(
@@ -120,11 +121,12 @@ export default function PortalHeader({
           </div>
 
           <div className="flex items-center gap-2 md:block">
-             <div className="md:hidden flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 mr-1">
+             <div className="md:hidden flex items-center gap-2 bg-white/12 backdrop-blur-md rounded-full px-2 py-1 border border-white/20 mr-1.5">
                 <PortalNotificationCenter />
              </div>
              <PortalUserMenu profile={profile} user={user} onLogout={onLogout} />
           </div>
+
         </div>
 
       </div>

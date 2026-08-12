@@ -13,8 +13,9 @@ import {
 import { icons } from '@/design-system/icons';
 import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
 import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
-import UserProfileDropdown from '@/portal/components/UserProfileDropdown';
+import MobileNavigationDrawer from '@/portal/components/MobileNavigationDrawer';
 import PortalHeader from './components/PortalHeader';
+
 
 interface ExternalPortalLayoutProps {
 
@@ -55,6 +56,8 @@ export default function ExternalPortalLayout({
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
 
@@ -83,9 +86,11 @@ export default function ExternalPortalLayout({
         <header className="mobile-portal-header">
           <div className="mobile-header-container">
             {/* Menu Button */}
-            <button className="mobile-header-button" aria-label="Menu">
+            <button className="mobile-header-button" aria-label="Menu" onClick={() => setMenuOpen(true)}>
               <Menu size={24} />
             </button>
+
+
 
             {/* User Block — Grid Layout */}
             <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
@@ -215,6 +220,16 @@ export default function ExternalPortalLayout({
 
         {/* Bottom Navigation */}
         <MobileBottomNavigation />
+
+        {/* Navigation Drawer */}
+        <MobileNavigationDrawer
+          open={menuOpen}
+          onOpenChange={setMenuOpen}
+          profile={profileType === 'associate' ? 'associate' : 'dependent'}
+          user={user}
+          onLogout={onLogout}
+        />
+
       </div>
     );
   }

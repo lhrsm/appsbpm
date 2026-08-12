@@ -26,11 +26,12 @@ export default function PortalBreadcrumbs({ profile }: { profile?: PortalProfile
       <button
         type="button"
         onClick={() => navigate(anterior?.to ?? "/dashboard")}
-        className="flex min-h-11 items-center gap-1 text-sm text-muted-foreground transition hover:text-foreground sm:hidden"
+        className="flex min-h-11 items-center gap-1 text-sm text-muted-foreground transition hover:text-foreground sm:hidden px-1"
       >
         <Voltar className="h-4 w-4" aria-hidden />
-        Voltar para {anterior?.label ?? "Início"}
+        <span className="truncate max-w-[240px]">Voltar para {anterior?.label ?? "Início"}</span>
       </button>
+
 
       <nav aria-label="Trilha de navegação" className="hidden sm:block">
         <ol className="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">

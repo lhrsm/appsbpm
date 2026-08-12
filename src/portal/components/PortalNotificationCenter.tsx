@@ -113,10 +113,11 @@ export default function PortalNotificationCenter() {
         "relative transition-all duration-[160ms] ease hover:-translate-y-[1px]",
         "flex items-center justify-center rounded-full",
         "h-11 w-11 2xl:h-[46px] 2xl:w-[46px]",
-        "bg-[rgba(255,255,255,0.90)] backdrop-blur-[10px] border border-[rgba(255,255,255,0.60)] shadow-[0_6px_18px_rgba(15,23,42,0.16)]",
+        "bg-[rgba(255,255,255,0.92)] backdrop-blur-[12px] border border-[rgba(255,255,255,0.68)] shadow-[0_6px_18px_rgba(15,23,42,0.16)]",
         "hover:bg-[rgba(255,255,255,0.98)] hover:shadow-[0_8px_22px_rgba(15,23,42,0.20)]",
-        "text-[#172033] hover:text-[#168a49]"
+        "text-[#172033] hover:text-[#168a49] pointer-events-auto"
       )}
+
       aria-label={naoLidas > 0 ? `Notificações, ${naoLidas} não lidas` : "Notificações"}
       aria-expanded={open}
     >
@@ -132,16 +133,31 @@ export default function PortalNotificationCenter() {
   if (isMobile) {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="right" className="w-full max-w-sm p-0">
-          <SheetHeader className="border-b p-4">
-            <SheetTitle>Notificações</SheetTitle>
+        <SheetTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-white/12 backdrop-blur-md border border-white/20 relative"
+            aria-label={naoLidas > 0 ? `Notificações, ${naoLidas} não lidas` : "Notificações"}
+          >
+            <Bell className="h-5 w-5 text-white" aria-hidden />
+            {naoLidas > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-[#ef4444] px-1 text-[9px] font-bold text-white shadow-sm ring-1 ring-[#168754]">
+                {naoLidas > 99 ? "99+" : naoLidas}
+              </span>
+            )}
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-full max-w-sm p-0 rounded-l-[22px] overflow-hidden">
+          <SheetHeader className="border-b p-5 bg-slate-50">
+            <SheetTitle className="text-lg font-bold text-slate-900">Notificações</SheetTitle>
           </SheetHeader>
           <ListaNotificacoes onNavigate={() => setOpen(false)} />
         </SheetContent>
       </Sheet>
     );
   }
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

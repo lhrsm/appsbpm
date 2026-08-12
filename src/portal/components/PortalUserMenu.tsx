@@ -84,13 +84,14 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuContent 
           align="end" 
           sideOffset={8}
-          className="w-[320px] max-w-[calc(100vw-32px)] p-2.5 !text-[#263244] !opacity-100 border border-slate-900/10 shadow-[0_16px_38px_rgba(15,23,42,0.20)] rounded-[18px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
+          className="w-[320px] max-w-[calc(100vw-32px)] p-2.5 !text-[#172033] !opacity-100 border border-slate-200 shadow-[0_16px_38px_rgba(15,23,42,0.22)] rounded-[18px] overflow-hidden z-[9999] dark:!text-[#e2e8f0] dark:border-white/10"
           style={{ 
             backgroundColor: 'rgba(255, 255, 255, 0.985)',
             backdropFilter: 'blur(16px)', 
             WebkitBackdropFilter: 'blur(16px)'
           }}
-          data-dropdown-version="user-dropdown-v5"
+          data-dropdown-version="user-dropdown-v6"
+
           onPointerDownCapture={(e) => {
             // Teste visual magenta forçado ao clicar no menu
             const el = e.currentTarget;
@@ -102,7 +103,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
               <DropdownMenuItem 
                 key={item.label} 
                 asChild
-                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] dark:focus:!bg-[rgba(34,197,94,0.14)] dark:focus:!text-[#86efac] transition-colors group"
+                className="flex items-center gap-2.5 px-3 py-2.5 !text-[#172033] dark:!text-[#e2e8f0] font-semibold rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] dark:focus:!bg-[rgba(34,197,94,0.14)] dark:focus:!text-[#86efac] transition-colors group"
               >
                 <Link to={item.to}>
                   <item.icon className="h-4 w-4 !text-[#64748b] dark:!text-[#94a3b8] group-focus:text-inherit" aria-hidden />
@@ -112,12 +113,14 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
             ))}
           </div>
 
+
           <DropdownMenuSeparator className="my-2 bg-slate-900/8 dark:bg-white/8" />
           
           <div className="px-1 py-1">
-            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#64748b] uppercase tracking-wider">
+            <div className="px-2 py-1.5 mb-1 text-[11px] font-bold !text-[#475569] uppercase tracking-wider">
               Aparência
             </div>
+
             <div className="flex flex-col gap-1">
               <DropdownMenuItem 
                 className="flex items-center gap-2.5 px-3 py-2.5 !text-[#263244] dark:!text-[#e2e8f0] font-medium rounded-lg cursor-pointer focus:!bg-[rgba(240,253,244,0.96)] focus:!text-[#166534] transition-colors"
