@@ -52,7 +52,7 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4 px-0" style={{ colorScheme: 'light' }}>
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-0 px-0" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
         className="mx-auto w-full max-w-[680px] md:max-w-full bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
@@ -432,15 +432,15 @@ export default function Carteirinha() {
   // Se é dependente logado, mostra apenas a carteirinha dele
   if (isDependente && dependenteLogado) {
     return (
-      <div className="space-y-6 animate-fade-in">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Minha Carteirinha</h2>
-          <p className="text-muted-foreground">
+      <div className="animate-fade-in lg:space-y-6">
+        <div className="px-4 md:px-0 mt-5 md:mt-0 space-y-1 mb-6 lg:mb-0">
+          <h2 className="text-[22px] leading-tight md:text-2xl font-bold text-foreground">Minha Carteirinha</h2>
+          <p className="text-[13px] md:text-sm leading-snug text-muted-foreground">
             Sua carteirinha de identificação junto à SBPM
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-4 w-full">
+        <div className="flex flex-col items-center gap-5 lg:gap-4 w-full px-4 md:px-0">
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
@@ -469,7 +469,7 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 gap-3 w-full max-w-lg px-0 my-6">
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg px-0 mb-6 lg:mb-0 mt-0 lg:my-6">
             <Button onClick={handleDownloadPDF} className="w-full h-[54px] bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[12px] border-none flex items-center justify-center font-semibold">
               <Download className="h-5 w-5 mr-2" />
               <span className="font-semibold text-base">Baixar (PDF)</span>
@@ -522,8 +522,8 @@ export default function Carteirinha() {
 
   // Visão do titular - pode ver sua carteirinha e dos dependentes
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="px-4 md:px-0 mt-5 md:mt-0 space-y-1">
+    <div className="animate-fade-in lg:space-y-6">
+      <div className="px-4 md:px-0 mt-5 md:mt-0 space-y-1 mb-6 lg:mb-0">
         <h2 className="text-[22px] leading-tight md:text-2xl font-bold text-foreground">Carteirinha Digital</h2>
         <p className="text-[13px] md:text-sm leading-snug text-muted-foreground">
           Sua carteirinha de identificação junto à SBPM
@@ -531,9 +531,9 @@ export default function Carteirinha() {
       </div>
 
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-6 px-4 md:px-0">
         {/* Carteirinha Display */}
-        <div className="space-y-4">
+        <div className="space-y-5 lg:space-y-4">
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
@@ -561,7 +561,7 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg mb-6 lg:mb-0">
             <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
               <Download className="h-5 w-5 mr-2" />
               <span className="font-semibold text-base">Baixar (PDF)</span>
@@ -574,15 +574,15 @@ export default function Carteirinha() {
         </div>
 
         {/* Seletor de Pessoa */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+        <Card className="border-none lg:border shadow-none lg:shadow-sm bg-transparent lg:bg-card">
+          <CardHeader className="px-0 lg:px-6 pt-0 lg:pt-6 pb-4 lg:pb-6">
+            <CardTitle className="flex items-center gap-2 text-lg lg:text-xl font-bold">
               <Users className="h-5 w-5" />
               Selecionar Carteirinha
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="grid grid-cols-1 gap-3">
+          <CardContent className="space-y-3 lg:space-y-2 px-0 lg:px-6 pb-6 lg:pb-6">
+            <div className="grid grid-cols-1 gap-3 lg:gap-3">
               <Button
                 variant={!selectedDependente ? 'default' : 'outline'}
                 className="w-full min-h-[52px] h-auto flex items-center justify-between text-left px-4 py-3 gap-3 border-[1.25px] overflow-hidden"
