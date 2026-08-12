@@ -52,11 +52,11 @@ function CarteirinhaCard({
   };
 
   return (
-    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4" style={{ colorScheme: 'light' }}>
+    <div className="w-full max-w-full overflow-hidden digital-membership-card mb-4 px-4 md:px-0" style={{ colorScheme: 'light' }}>
       <div
         ref={cardRef}
-        className="mx-auto w-full max-w-[680px] bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
-        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content' }}
+        className="mx-auto w-full max-w-[680px] md:max-w-full bg-white border-[1.5px] border-green-500 rounded-[22px] shadow-lg overflow-hidden flex flex-col print:shadow-none print:border-green-600 print:m-0 print:rounded-none"
+        style={{ fontFamily: 'Arial, sans-serif', minHeight: 'fit-content', maxWidth: 'calc(100vw - 32px)' }}
       >
         {/* Header com Logo/Foto e Título */}
         <div className="grid grid-cols-[auto,1fr] gap-3 p-3 border-b border-gray-200 bg-white text-gray-800 items-center">
@@ -467,8 +467,8 @@ export default function Carteirinha() {
             </div>
           </button>
 
-          <div className="grid grid-cols-1 gap-3 w-full max-w-lg">
-            <Button onClick={handleDownloadPDF} className="w-full h-12 bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[10px] border-none">
+          <div className="grid grid-cols-1 gap-3 w-full max-w-lg px-4 md:px-0 my-6">
+            <Button onClick={handleDownloadPDF} className="w-full h-[54px] bg-[#168a49] hover:bg-[#168a49]/90 text-white rounded-[12px] border-none flex items-center justify-center font-semibold">
               <Download className="h-5 w-5 mr-2" />
               <span className="font-semibold text-base">Baixar (PDF)</span>
             </Button>

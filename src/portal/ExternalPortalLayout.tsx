@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Menu, MessageCircle, Home, FileText, Plus, HelpCircle, User } from 'lucide-react';
+import { Bell, Menu, MessageCircle, Home, FileText, Plus, HelpCircle, User, ChevronDown } from 'lucide-react';
+import { icons } from '@/design-system/icons';
 import FloatingActionsManager from '@/portal/components/FloatingActionsManager';
 import MobileBottomNavigation from '@/portal/components/MobileBottomNavigation';
 import UserProfileDropdown from '@/portal/components/UserProfileDropdown';
@@ -91,15 +92,20 @@ export default function ExternalPortalLayout({
                   </div>
                 )}
               </div>
-
+...
               {/* Name + Role */}
               <div className="mobile-user-info">
                 <div className="mobile-user-name">
                   {user.nome}
                 </div>
                 <div className="mobile-user-role">
-                  {profileType === 'dependent' ? 'Dependente' : 'Associado • Titular'}
+                  {profileType === 'dependent' ? 'Dependente • Titular' : 'Associado • Titular'}
                 </div>
+              </div>
+
+              {/* Icon Dropdown */}
+              <div className="text-slate-400">
+                <icons.expandir size={14} />
               </div>
             </div>
 

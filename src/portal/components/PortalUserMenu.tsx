@@ -53,7 +53,7 @@ export default function PortalUserMenu({ profile, user, onLogout }: PortalUserMe
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="group flex h-auto items-center gap-3 px-2 md:px-3 py-1.5 md:py-2 text-inherit border border-white/72 rounded-xl md:rounded-[16px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] w-full md:min-w-[300px] md:max-w-[390px] !bg-[rgba(255,255,255,0.96)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)]"
+            className="group flex h-auto items-center gap-3 px-2 md:px-3 py-1.5 md:py-2 text-inherit border border-white/72 rounded-xl md:rounded-[16px] transition-all duration-[160ms] hover:shadow-[0_8px_20px_rgba(15,23,42,0.16)] hover:-translate-y-[1px] w-full md:min-w-[300px] md:max-w-[390px] !bg-[rgba(255,255,255,0.96)] !text-[#172033] !border-[1px_solid_rgba(255,255,255,0.72)] !shadow-[0_6px_18px_rgba(15,23,42,0.14)] pointer-events-auto"
             style={{ 
               backdropFilter: 'blur(12px)', 
               WebkitBackdropFilter: 'blur(12px)' 

@@ -122,7 +122,11 @@ export default function Solicitacoes() {
         description="Acompanhe pelo protocolo todos os pedidos abertos junto à SBPM."
         source="Base institucional"
         action={
-          <PortalButton iconLeft={icons.adicionar} onClick={() => navigate("/dashboard/solicitacoes/nova")}>
+          <PortalButton 
+            iconLeft={icons.adicionar} 
+            onClick={() => navigate("/dashboard/solicitacoes/nova")}
+            className="w-full md:w-auto h-[52px] max-w-[380px] mx-auto font-semibold rounded-[14px] flex items-center justify-center"
+          >
             Nova solicitação
           </PortalButton>
         }
