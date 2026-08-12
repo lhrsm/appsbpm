@@ -48,10 +48,11 @@ export function ResponsiveDataView<T>(props: ResponsiveDataViewProps<T>) {
     return <SectionErrorState title="Não foi possível carregar os registros." description={error} onRetry={onRetry} />;
   if (!data.length)
     return (
-      <div className="rounded-[16px] border bg-card">
+      <div className="rounded-[18px] border bg-card">
         <PortalEmptyState {...(empty ?? { title: "Nenhum registro encontrado" })} />
       </div>
     );
+
 
   const allowed = (rowActions ?? []).filter((a) => hasPermission(permissions, a.permission));
 

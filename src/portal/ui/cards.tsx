@@ -102,7 +102,7 @@ export function StatCard({
 
   if (!to) return content;
   return (
-    <Link to={to} className="block rounded-[16px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+    <Link to={to} className="block rounded-[18px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
       {content}
     </Link>
   );
