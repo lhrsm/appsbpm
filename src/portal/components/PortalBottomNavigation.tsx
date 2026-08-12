@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, CreditCard, FileText, Users, User } from 'lucide-react';
+import { Eye, CreditCard, FileText, Users, User, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
