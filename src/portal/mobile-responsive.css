@@ -6,12 +6,13 @@
 
 /* CSS Variables para Mobile */
 :root {
-  --mobile-header-height: 80px; /* Ajustado para 72-84px conforme requisito 1 */
-  --mobile-bottom-nav-height: 68px;
-  --mobile-avatar-size: 42px;   /* Ajustado para 42px conforme requisito 1 */
+  --mobile-header-height: 72px; /* Reduzido levemente */
+  --mobile-bottom-nav-height: 72px; /* Aumentado para melhor ergonomia */
+  --mobile-avatar-size: 38px;   /* Refinado */
   --mobile-padding: 16px;
-  --mobile-gap: 16px;           /* Padronizado para 16px conforme requisito 11 */
+  --mobile-gap: 16px;
 }
+
 
 /* ===================================================================
    HEADER MOBILE/PWA — Compacto
@@ -174,7 +175,9 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    padding-bottom: 24px;
   }
+
 
   /* ===== BOTTOM SPACING (para não cobrir conteúdo com WhatsApp + Nav) ===== */
   .mobile-bottom-spacing {
@@ -191,10 +194,11 @@
     position: fixed;
     right: 16px;
     bottom: calc(
-      var(--mobile-bottom-nav-height, 68px)
+      var(--mobile-bottom-nav-height, 72px)
       + env(safe-area-inset-bottom)
-      + 18px
+      + 24px
     );
+
     z-index: 70;
   }
 
@@ -226,8 +230,9 @@
 
   .sbpm-hero-header {
     width: 100%;
-    height: 120px; /* Reduzido conforme requisito 3 */
-    border-radius: 16px;
+    height: 140px;
+    border-radius: 20px;
+
   }
 
   .sbpm-hero-card-overlay {
@@ -336,8 +341,9 @@
   .portal-vínculo-card {
     min-width: 0;
     width: 100%;
-    padding: 14px; /* Reduzido conforme requisito 4 */
-    border-radius: 14px;
+    padding: 20px; 
+    border-radius: 18px;
+
     box-sizing: border-box;
     height: auto;
     display: flex;
