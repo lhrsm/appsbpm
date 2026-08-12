@@ -274,7 +274,23 @@ export default function ExternalPortalLayout({
 
       {/* Main Content */}
       <main className="portal-main-desktop">
-        {banner}
+        {/* Hero Institucional (Imagem PMBA + CBMBA) - Visível apenas em Desktop/Ultrawide */}
+        <div className="hidden lg:block w-full overflow-hidden relative institutional-hero-container">
+          <img 
+            src="/hero-background.png" 
+            alt="Institucional" 
+            className="w-full object-cover object-[center_38%] h-[220px] 2xl:h-[240px] border-b-[24px] border-transparent rounded-b-[24px]"
+            style={{ 
+              borderRadius: '0 0 24px 24px',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/15 to-transparent pointer-events-none rounded-b-[24px]" />
+        </div>
+
+        <div className="lg:mt-6">
+          {banner}
+        </div>
+        
         <div className="portal-content-desktop">
           {children}
         </div>
