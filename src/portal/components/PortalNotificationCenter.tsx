@@ -109,14 +109,20 @@ export default function PortalNotificationCenter() {
     <Button
       variant="ghost"
       size="icon"
-      className="relative min-h-11 min-w-11 text-[#172033] hover:bg-black/5"
-
+      className={cn(
+        "relative transition-all duration-[160ms] ease hover:-translate-y-[1px]",
+        "flex items-center justify-center rounded-full",
+        "h-11 w-11 2xl:h-[46px] 2xl:w-[46px]",
+        "bg-[rgba(255,255,255,0.90)] backdrop-blur-[10px] border border-[rgba(255,255,255,0.60)] shadow-[0_6px_18px_rgba(15,23,42,0.16)]",
+        "hover:bg-[rgba(255,255,255,0.98)] hover:shadow-[0_8px_22px_rgba(15,23,42,0.20)]",
+        "text-[#172033] hover:text-[#168a49]"
+      )}
       aria-label={naoLidas > 0 ? `Notificações, ${naoLidas} não lidas` : "Notificações"}
       aria-expanded={open}
     >
-      <Bell className="h-5 w-5" aria-hidden />
+      <Bell className="h-5 2xl:h-[20px] w-5 2xl:w-[20px]" aria-hidden />
       {naoLidas > 0 && (
-        <span className="absolute right-1.5 top-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-bold text-destructive-foreground">
+        <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#dc2626] px-1 text-[10px] font-bold text-white shadow-sm">
           {naoLidas > 99 ? "99+" : naoLidas}
         </span>
       )}
